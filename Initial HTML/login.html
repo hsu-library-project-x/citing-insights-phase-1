@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> Login Form </title>
+
+  <link href="normalize.css" type="text/css" rel="stylesheet"/>
+
+  <link href="login.css" type="text/css" rel="stylesheet"/>
+
+</head>
+<body>
+
+<h2>Login Form</h2>
+
+<div class="thewholething">
+<button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
+
+<div id="id01" class="pop">
+  <form class="pop-content animate" id="login_form" action="https://www.warbyparker.com/">
+    <div class="imgcontainer">
+      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Pop">&times;</span>
+      <img src="328fc.png" alt="Avatar" class="avatar">
+    </div>
+
+    <div class="container">
+      <label for="uname">Username</label>
+      <input type="text" placeholder="Enter Username" name="uname" required>
+
+      <label for="psw">Password</label>
+      <input type="password" placeholder="Enter Password" name="psw" required>
+        
+      <button type="submit"  >Login</button>
+      <label>
+        <input type="checkbox" checked="checked" name="remember"> Remember me
+      </label>
+    </div>
+
+    <div class="container" style="background-color:#f1f1f1">
+      <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+      <span class="psw"> <a href="#"> Forgot password?</span>
+    </div>
+  </form>
+</div>
+</div>
+</body>
+</html>
