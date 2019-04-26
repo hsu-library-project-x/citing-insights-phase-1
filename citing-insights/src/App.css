@@ -38,6 +38,15 @@ input[type=text], input[type=password]
   text-align: center;
 }
 
+.head-1{
+  margin-bottom: 2em;
+  margin-top: .5em;
+  background-color: plum;
+  border-radius: 25px;
+  width: 100%;
+  text-align: center;
+}
+
 .container
 {
   padding: .10em;
