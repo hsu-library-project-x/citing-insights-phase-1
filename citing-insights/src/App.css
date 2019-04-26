@@ -38,6 +38,15 @@ input[type=text], input[type=password]
   text-align: center;
 }
 
+.owl{
+  width: 100%;
+  margin-bottom: -13.5%;
+}
+
+.alt-text{
+  color: white;
+}
+
 .head-1{
   margin-bottom: 2em;
   margin-top: .5em;
