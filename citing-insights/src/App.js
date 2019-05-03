@@ -38,12 +38,14 @@ class App extends Component {
                   // This links our Login navagation item to our Login page
                   <NavLink to="/login">Login</NavLink>
                 </NavItem>
-                <NavItem><NavLink to="/main">Main Menu</NavLink></NavItem>
                 <NavItem>
-                  <NavLink>Upload</NavLink>
+                  <NavLink to="/main">Main Menu</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink>More Tests</NavLink>
+                  <NavLink to="/upload">Upload</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink to="/test">More Tests</NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink to="/demo">Demo</NavLink>

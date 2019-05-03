@@ -33,6 +33,24 @@ input[type=text], input[type=password]
   box-sizing: border-box;
 }
 
+li.nav-item{
+  list-style-type: none;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+nav{
+  padding-top: none;
+}
+
+li.nav-item:hover{
+
+}
+
+a.active{
+  color: black;
+}
+
 .head{
   margin-top: 1em;
   text-align: center;
