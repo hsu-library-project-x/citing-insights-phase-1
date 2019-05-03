@@ -38,15 +38,6 @@ input[type=text], input[type=password]
   text-align: center;
 }
 
-.owl{
-  width: 100%;
-  margin-bottom: -13.5%;
-}
-
-.alt-text{
-  color: white;
-}
-
 .head-1{
   margin-bottom: 2em;
   margin-top: .5em;
@@ -59,6 +50,23 @@ input[type=text], input[type=password]
 .container
 {
   padding: .10em;
+}
+
+.biblio-box{
+  height: 6em;
+  border-style: solid;
+  border-radius: 15px;
+  border-color: black;
+  margin-bottom: 2em;
+  padding: 1em;
+  transition: border-color .25s, background-color .25s, color .25s;
+}
+
+.biblio-box:hover{
+  border-color: white;
+  background-color: black;
+  color: white;
+
 }
 
 .cancelbtn 
@@ -85,6 +93,12 @@ span.psw
 {
   float: right;
   padding-top: .5em;
+}
+
+.pop{
+  padding-top: 2em;
+  margin-top: 2em;
+  border-radius: 50px;
 }
 
 .pop-content
