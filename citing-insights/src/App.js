@@ -1,10 +1,7 @@
 // Libraries that we imported
-
 import ReactDOM from 'react-dom';
 import React, {Component} from 'react';
 import './App.css';
-import { Jumbotron, Button, Badge } from 'reactstrap';
-import { Container, Row, Col } from 'reactstrap';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 // Hashrouter allows us to do routing for website
@@ -26,16 +23,16 @@ class App extends Component {
           <h2 class="alt-text">Citing Insights Login Form</h2>
           <p class="alt-text">Welcome to Citing Insights Portal</p>
 
-          //Hashrouter! Defining our Router (Reactstrap)
+          {/*Hashrouter! Defining our Router (React-Dom)*/}
           <HashRouter>
 
-          // Navbar (Reactstrap) -- Defining a Navagation bar for our website
-            <Navbar color="light" light expand="md">
+          {/* Navbar (Reactstrap) -- Defining a Navagation bar for our website*/}
+            <Navbar color="primary" primary expand="md">
                 <NavbarBrand>Citing Insights</NavbarBrand>
 
-                // NavItem (Reactstrap) -- item in our navation bar
+                {/* NavItem (Reactstrap) -- item in our navation bar*/}
                 <NavItem>
-                  // This links our Login navagation item to our Login page
+                  {/* This links our Login navagation item to our Login page*/}
                   <NavLink to="/login">Login</NavLink>
                 </NavItem>
                 <NavItem>
@@ -52,14 +49,14 @@ class App extends Component {
                 </NavItem>
             </Navbar>
 
-            //This tells us what compenent to load after going to login, home, demo etc.
+            {/*This tells us what compenent to load after going to login, home, demo etc.*/}
             <div id="id01" class="pop content">
               <Route path="/main" component={Home}/>
               <Route path="/login" component={Login}/>
               <Route path="/demo" component={Demo}/>
             </div>
 
-          //End our router
+            {/*End our router*/}
           </HashRouter>
         </div>
       </div>

@@ -33,18 +33,16 @@ input[type=text], input[type=password]
   box-sizing: border-box;
 }
 
+
+
 li.nav-item{
   list-style-type: none;
   padding-left: 1em;
   padding-right: 1em;
 }
 
-nav{
-  padding-top: none;
-}
-
-li.nav-item:hover{
-
+li > a{
+  color: white;
 }
 
 a.active{
@@ -58,9 +56,10 @@ a.active{
 
 .head-1{
   margin-bottom: 2em;
-  margin-top: .5em;
-  background-color: plum;
-  border-radius: 25px;
+  padding: .5em;
+  background-color: teal;
+  color:white;
+  width: 100%;
   width: 100%;
   text-align: center;
 }
@@ -114,9 +113,6 @@ span.psw
 }
 
 .pop{
-  padding-top: 2em;
-  margin-top: 2em;
-  border-radius: 50px;
 }
 
 .pop-content
