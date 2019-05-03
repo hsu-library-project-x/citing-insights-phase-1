@@ -9,6 +9,7 @@ import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, Uncontrolle
 import { Route, NavLink, HashRouter } from "react-router-dom";
 import Demo from "./Demo";
 import Login from "./Login";
+import Home from "./Home";
 
 class App extends Component {
   render(){
@@ -19,12 +20,11 @@ class App extends Component {
           <p class="alt-text">Welcome to Citing Insights Portal</p>
           <HashRouter>
             <Navbar color="light" light expand="md">
-              
                 <NavbarBrand>Citing Insights</NavbarBrand>
                 <NavItem>
                   <NavLink to="/login">Login</NavLink>
                 </NavItem>
-                <NavItem><NavLink to="/">Main Menu</NavLink></NavItem>
+                <NavItem><NavLink to="/main">Main Menu</NavLink></NavItem>
                 <NavItem>
                   <NavLink>Upload</NavLink>
                 </NavItem>
@@ -34,9 +34,9 @@ class App extends Component {
                 <NavItem>
                   <NavLink to="/demo">Demo</NavLink>
                 </NavItem>
-              
             </Navbar>
             <div id="id01" class="pop content">
+              <Route path="/main" component={Home}/>
               <Route path="/login" component={Login}/>
               <Route path="/demo" component={Demo}/>
             </div>
