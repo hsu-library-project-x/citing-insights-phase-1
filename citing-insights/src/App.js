@@ -1,3 +1,5 @@
+// Libraries that we imported
+
 import ReactDOM from 'react-dom';
 import React, {Component} from 'react';
 import './App.css';
@@ -45,5 +47,6 @@ class App extends Component {
   }
   
 }
+
 
 export default App;
