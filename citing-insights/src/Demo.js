@@ -1,17 +1,35 @@
-
+// Importing Libraries
 import React, {Component} from 'react';
 import './App.css';
+
+// This lets us use Jumbotron, Badge, and Progress in HTML from Reactstrap
+//    This is all we are using for now. May import more styling stuff later
 import { Jumbotron, Badge, Progress } from 'reactstrap';
+
+// Lets us use column / row and layout for our webpage using Reactstrap
 import { Container, Row, Col } from 'reactstrap';
 
+// Demo is (for now) is our Analyze page
 class Demo extends Component{
 	render(){
 		return(
+
+		/* Analyze Mode HTML Start */
 			<div class="DemoContents">
 				<h1 class="head-1"> Analyze Mode </h1>
-				<Container>
+
+			{/* One Giant container that will let us use rows / columns */}
+			 	<Container>
+
+			 	{/* Row One: Contains -- Student Paper Drop Down; 
+			 							 Works Cited Bibliogrpahy;
+			 							 and Word Map Feature  */}
 			      <Row>
-			        <Col xs="2">
+
+			  		{/* Col 1 of Row 1 : Student Paper Drop Down. 
+			  							(for now it is hardcoded) */}
+
+			        <Col xs="2"> {/*xs is used for placement of the col. 2/12 */}
 			          <p>Select A Student Paper!</p>
 			          <select name="student">
 			            <option value="1">Kyle</option>
@@ -21,11 +39,15 @@ class Demo extends Component{
 			            <option value="5">Ben</option>
 			          </select> 
 			        </Col>
+
+			        {/* Col 2 of Row 1 : Works Cited Citation */}
 			        <Col xs="6">
 			          <div class="biblio-box">
 			            <p>Bibliography Goes Here</p>
 			          </div>
 			        </Col>
+
+			        {/* Col 3 of Row 1 : Works Cited Citation */}
 			        <Col xs="4">
 			          <div class="word-map">
 			            <Badge color="success" pill>Words</Badge>
@@ -46,14 +68,22 @@ class Demo extends Component{
 			          </div>
 			        </Col>
 			      </Row>
+
+			 	{/* Row Two: Contains Headers for Student Paper Text and Research Text; */}
 			      <Row>
 			        <Col xs="2"><h2> Other Stuff</h2></Col>
 			        <Col xs="6"><h2> Student Paper Block Text </h2></Col>
 			        <Col xs="4"><h2> Research Block Text </h2></Col>
 			      </Row>
+
+			  	{/* Row Three: Contains -- Student Paper Text; Research Text; */}
 			      <Row>
+
+			      	{/* Col 1 of Row Three: Dummy Column ....for now */}
 			        <Col xs="2">
 			        </Col>
+
+			    	{/* Col 2 of Row Three: Student Paper Text */}
 			        <Col xs="6">
 			          <p class="student"> 
 			            Spicy jalapeno bacon ipsum dolor amet meatloaf nulla pork belly elit boudin capicola exercitation nostrud consequat cupim alcatra bresaola in. 
@@ -79,17 +109,24 @@ class Demo extends Component{
 			            Proident ex deserunt pariatur reprehenderit ham voluptate alcatra ad eiusmod. Venison aliqua ground round, quis nisi boudin jerky. Beef ribs capicola mollit quis boudin meatball cupim tenderloin.
 			          </p>
 			        </Col>
+
+			    	{/* Col 3 of Row Three: Research Text */}
 			        <Col xs="4">
-			          <Jumbotron>
+
+			          {/* Jumbotron is Reactstrap--used for styling */}
+			          <Jumbotron> 
 			            <p class="research"> 
 			                Veggies es bonus vobis, proinde vos postulo essum magis kohlrabi welsh onion daikon amaranth tatsoi tomatillo melon azuki bean garlic.
 			                Gumbo beet greens corn soko endive gumbo gourd. Parsley shallot courgette tatsoi pea sprouts fava bean collard greens dandelion okra wakame tomato. Dandelion cucumber earthnut pea peanut soko zucchini.
 			                Turnip greens yarrow ricebean rutabaga endive cauliflower sea lettuce kohlrabi amaranth water spinach avocado daikon napa cabbage asparagus winter purslane kale.
 			            </p>
 			          </Jumbotron>
+
+			      	  {/* Hardcoded Progress bar */}
 			          <p>Total Assessed: 74%</p>
 			          <Progress value={75} />
 			        </Col>
+
 			      </Row>
 		    	</Container>
 		    </div>
