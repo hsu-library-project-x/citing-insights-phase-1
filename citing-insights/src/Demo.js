@@ -1,7 +1,7 @@
 
 import React, {Component} from 'react';
 import './App.css';
-import { Jumbotron, Badge, Progress } from 'reactstrap';
+import { ListGroup, ListGroupItem, Button, Input, Jumbotron, Badge, Progress } from 'reactstrap';
 import { Container, Row, Col } from 'reactstrap';
 
 class Demo extends Component{
@@ -11,8 +11,8 @@ class Demo extends Component{
 				<h1 class="head-1"> Analyze Mode </h1>
 				<Container>
 			      <Row>
-			        <Col xs="2">
-			          <p>Select A Student Paper!</p>
+			        <Col xs="4">
+			          <p>Current Student</p>
 			          <select name="student">
 			            <option value="1">Kyle</option>
 			            <option value="2">Liz</option>
@@ -21,12 +21,12 @@ class Demo extends Component{
 			            <option value="5">Ben</option>
 			          </select> 
 			        </Col>
-			        <Col xs="6">
+			        <Col xs="5">
 			          <div class="biblio-box">
 			            <p>Bibliography Goes Here</p>
 			          </div>
 			        </Col>
-			        <Col xs="4">
+			        <Col xs="3">
 			          <div class="word-map">
 			            <Badge color="success" pill>Words</Badge>
 			            <Badge color="success" pill>More Words</Badge>
@@ -47,15 +47,28 @@ class Demo extends Component{
 			        </Col>
 			      </Row>
 			      <Row>
-			        <Col xs="2"><h2> Other Stuff</h2></Col>
-			        <Col xs="6"><h2> Student Paper Block Text </h2></Col>
-			        <Col xs="4"><h2> Research Block Text </h2></Col>
+			        <Col xs="4"><h2>Found Sources</h2></Col>
+			        <Col xs="5"><h2> Student Paper Block Text </h2></Col>
+			        <Col xs="3"></Col>
 			      </Row>
 			      <Row>
-			        <Col xs="2">
+			        <Col xs="4">
+			        	<ListGroup id="ResearchList">
+			        		<ListGroupItem active tag="button" action>Research One</ListGroupItem>
+			        		<ListGroupItem tag="button" action>Research Two</ListGroupItem>
+			        		<ListGroupItem tag="button" action>Research Three</ListGroupItem>
+			        		<ListGroupItem tag="button" action>Research Four</ListGroupItem>
+			        		<ListGroupItem tag="button" action>Research Five</ListGroupItem>
+			        	</ListGroup>
+			            <p class="research"> 
+			                Veggies es bonus vobis, proinde vos postulo essum magis kohlrabi welsh onion daikon amaranth tatsoi tomatillo melon azuki bean garlic.
+			                Gumbo beet greens corn soko endive gumbo gourd. Parsley shallot courgette tatsoi pea sprouts fava bean collard greens dandelion okra wakame tomato. Dandelion cucumber earthnut pea peanut soko zucchini.
+			                Turnip greens yarrow ricebean rutabaga endive cauliflower sea lettuce kohlrabi amaranth water spinach avocado daikon napa cabbage asparagus winter purslane kale.
+			            </p>
 			        </Col>
-			        <Col xs="6">
-			          <p class="student"> 
+			        <Col xs="5">
+			        <Jumbotron>
+			          <p class="student">
 			            Spicy jalapeno bacon ipsum dolor amet meatloaf nulla pork belly elit boudin capicola exercitation nostrud consequat cupim alcatra bresaola in. 
 
 			            Ad fugiat occaecat fatback. Short ribs ball tip excepteur esse in. Exercitation fugiat cupim beef, picanha leberkas nisi porchetta. Landjaeger ground round short loin dolor aliquip kevin quis tail. 
@@ -77,18 +90,14 @@ class Demo extends Component{
 			            Ipsum chicken cupim, dolor adipisicing sunt cupidatat culpa dolore. Picanha sed adipisicing reprehenderit commodo exercitation kielbasa cupidatat anim flank filet mignon ham hock. 
 
 			            Proident ex deserunt pariatur reprehenderit ham voluptate alcatra ad eiusmod. Venison aliqua ground round, quis nisi boudin jerky. Beef ribs capicola mollit quis boudin meatball cupim tenderloin.
-			          </p>
+			          </p></Jumbotron>
 			        </Col>
-			        <Col xs="4">
-			          <Jumbotron>
-			            <p class="research"> 
-			                Veggies es bonus vobis, proinde vos postulo essum magis kohlrabi welsh onion daikon amaranth tatsoi tomatillo melon azuki bean garlic.
-			                Gumbo beet greens corn soko endive gumbo gourd. Parsley shallot courgette tatsoi pea sprouts fava bean collard greens dandelion okra wakame tomato. Dandelion cucumber earthnut pea peanut soko zucchini.
-			                Turnip greens yarrow ricebean rutabaga endive cauliflower sea lettuce kohlrabi amaranth water spinach avocado daikon napa cabbage asparagus winter purslane kale.
-			            </p>
-			          </Jumbotron>
-			          <p>Total Assessed: 74%</p>
-			          <Progress value={75} />
+			        <Col xs="3">
+			        	<Input type="textarea" name="annotation" id="curAnno" />
+			        	<Button color="success" id="finishButton">Finished</Button>
+			        	<Button color="danger" id="cancelButton">Cancel</Button>
+			          	<p>Total Assessed: 74%</p>
+			          	<Progress value={75} />
 			        </Col>
 			      </Row>
 		    	</Container>

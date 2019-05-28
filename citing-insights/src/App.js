@@ -5,7 +5,7 @@ import './App.css';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 // Hashrouter allows us to do routing for website
-import { Route, NavLink, HashRouter } from "react-router-dom"; 
+import { Switch, Route, NavLink, HashRouter } from "react-router-dom"; 
 
 // Demo, Login, and Home are all pages for our website
 import Demo from "./Demo";
@@ -20,12 +20,11 @@ class App extends Component {
       return (
       <div>
         <div class="head">
-          <h2 class="alt-text">Citing Insights Login Form</h2>
+          <h2 class="alt-text">Citing Insights</h2>
           <p class="alt-text">Welcome to Citing Insights Portal</p>
 
           {/*Hashrouter! Defining our Router (React-Dom)*/}
           <HashRouter>
-
           {/* Navbar (Reactstrap) -- Defining a Navagation bar for our website*/}
             <Navbar color="primary" primary expand="md">
                 <NavbarBrand>Citing Insights</NavbarBrand>
@@ -45,15 +44,17 @@ class App extends Component {
                   <NavLink to="/test">More Tests</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink to="/demo">Demo</NavLink>
+                  <NavLink to="/analyze">Analyze</NavLink>
                 </NavItem>
             </Navbar>
 
             {/*This tells us what compenent to load after going to login, home, demo etc.*/}
             <div id="id01" class="pop content">
-              <Route path="/main" component={Home}/>
-              <Route path="/login" component={Login}/>
-              <Route path="/demo" component={Demo}/>
+              <Switch>
+                <Route exact path="/" component={Home}/>
+                <Route path="/login" component={Login}/>
+                <Route path="/analyze" component={Demo}/>   
+              </Switch>
             </div>
 
             {/*End our router*/}
