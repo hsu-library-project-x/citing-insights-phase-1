@@ -79,11 +79,13 @@ class Demo extends Component{
 			        		<ListGroupItem tag="button" action>Research Four</ListGroupItem>
 			        		<ListGroupItem tag="button" action>Research Five</ListGroupItem>
 			        	</ListGroup>
+			        	<Jumbotron>
 			            <p class="research"> 
 			                Veggies es bonus vobis, proinde vos postulo essum magis kohlrabi welsh onion daikon amaranth tatsoi tomatillo melon azuki bean garlic.
 			                Gumbo beet greens corn soko endive gumbo gourd. Parsley shallot courgette tatsoi pea sprouts fava bean collard greens dandelion okra wakame tomato. Dandelion cucumber earthnut pea peanut soko zucchini.
 			                Turnip greens yarrow ricebean rutabaga endive cauliflower sea lettuce kohlrabi amaranth water spinach avocado daikon napa cabbage asparagus winter purslane kale.
 			            </p>
+			            </Jumbotron>
 			        </Col>
 			        <Col xs="5">
 			        <Jumbotron>
@@ -111,7 +113,6 @@ class Demo extends Component{
 			            Proident ex deserunt pariatur reprehenderit ham voluptate alcatra ad eiusmod. Venison aliqua ground round, quis nisi boudin jerky. Beef ribs capicola mollit quis boudin meatball cupim tenderloin.
 			          </p></Jumbotron>
 			        </Col>
-<<<<<<< HEAD
 			        <Col xs="3">
 			        	<Input type="textarea" name="annotation" id="curAnno" />
 			        	<Button color="success" id="finishButton">Finished</Button>
