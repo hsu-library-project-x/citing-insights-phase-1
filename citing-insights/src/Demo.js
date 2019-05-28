@@ -1,18 +1,33 @@
-
+// Importing Libraries
 import React, {Component} from 'react';
 import './App.css';
+// This lets us use Jumbotron, Badge, and Progress in HTML from Reactstrap
+//    This is all we are using for now. May import more styling stuff later
 import { ListGroup, ListGroupItem, Button, Input, Jumbotron, Badge, Progress } from 'reactstrap';
+
+// Lets us use column / row and layout for our webpage using Reactstrap
 import { Container, Row, Col } from 'reactstrap';
 
+// Demo is (for now) is our Analyze page
 class Demo extends Component{
 	render(){
 		return(
+
+		/* Analyze Mode HTML Start */
 			<div class="DemoContents">
 				<h1 class="head-1"> Analyze Mode </h1>
-				<Container>
+
+			{/* One Giant container that will let us use rows / columns */}
+			 	<Container>
+
+			 	{/* Row One: Contains -- Student Paper Drop Down; 
+			 							 Works Cited Bibliogrpahy;
+			 							 and Word Map Feature  */}
 			      <Row>
+
 			        <Col xs="4">
 			          <p>Current Student</p>
+
 			          <select name="student">
 			            <option value="1">Kyle</option>
 			            <option value="2">Liz</option>
@@ -46,11 +61,15 @@ class Demo extends Component{
 			          </div>
 			        </Col>
 			      </Row>
+
+			 	{/* Row Two: Contains Headers for Student Paper Text and Research Text; */}
 			      <Row>
 			        <Col xs="4"><h2>Found Sources</h2></Col>
 			        <Col xs="5"><h2> Student Paper Block Text </h2></Col>
 			        <Col xs="3"></Col>
 			      </Row>
+
+			  	{/* Row Three: Contains -- Student Paper Text; Research Text; */}
 			      <Row>
 			        <Col xs="4">
 			        	<ListGroup id="ResearchList">
@@ -92,6 +111,7 @@ class Demo extends Component{
 			            Proident ex deserunt pariatur reprehenderit ham voluptate alcatra ad eiusmod. Venison aliqua ground round, quis nisi boudin jerky. Beef ribs capicola mollit quis boudin meatball cupim tenderloin.
 			          </p></Jumbotron>
 			        </Col>
+<<<<<<< HEAD
 			        <Col xs="3">
 			        	<Input type="textarea" name="annotation" id="curAnno" />
 			        	<Button color="success" id="finishButton">Finished</Button>
@@ -99,6 +119,7 @@ class Demo extends Component{
 			          	<p>Total Assessed: 74%</p>
 			          	<Progress value={75} />
 			        </Col>
+
 			      </Row>
 		    	</Container>
 		    </div>

@@ -1,3 +1,5 @@
+// App.js is going to interact with our server
+
 // Libraries that we imported
 import ReactDOM from 'react-dom';
 import React, {Component} from 'react';
