@@ -11,12 +11,14 @@ import { Container, Row, Col } from 'reactstrap';
 //Function to dynamically call source material
 function displaySource(props)
 {
-	//This is where we pull research and display 
-	var research = document.getElementById("source");
-	alert("test");
-	//put dynamic call here
-		//eventually this veggie ipsum will be replaced by a variable
-	research.innerHTML = "Veggies es bonus vobis, proinde vos postulo essum magis kohlrabi welsh onion daikon amaranth tatsoi tomatillo melon azuki bean garlic.Gumbo beet greens corn soko endive gumbo gourd. Parsley shallot courgette tatsoi pea sprouts fava bean collard greens dandelion okra wakame tomato. Dandelion cucumber earthnut pea peanut soko zucchini.";
+	//Dynamically get id
+	var source = props.target.id;
+	// Put text in ListItem
+	var ListItemTextbox = document.getElementById(source);
+	//append inner HTML of List Item Text Box
+		//eventually this veggie ipsum will be replaced by a variable 
+	var currentText = ListItemTextbox.innerHTML;
+	ListItemTextbox.innerHTML = currentText + " <Jumbotron>" + "Veggies es bonus vobis, proinde vos postulo essum magis kohlrabi welsh onion daikon amaranth tatsoi tomatillo melon azuki bean garlic.Gumbo beet greens corn soko endive gumbo gourd. Parsley shallot courgette tatsoi pea sprouts fava bean collard greens dandelion okra wakame tomato. Dandelion cucumber earthnut pea peanut soko zucchini. </Jumbotron>" ;
 }
 
 function displayPaper(props)
@@ -91,10 +93,10 @@ class Demo extends Component{
 			        <Col xs="4">
 			        	<ListGroup id="ResearchList">
 			        		<ListGroupItem id="CiteItem1" active tag="button" action onClick={displaySource}>Research One</ListGroupItem>
-			        		<ListGroupItem tag="button" action>Research Two</ListGroupItem>
-			        		<ListGroupItem tag="button" action>Research Three</ListGroupItem>
-			        		<ListGroupItem tag="button" action>Research Four</ListGroupItem>
-			        		<ListGroupItem tag="button" action>Research Five</ListGroupItem>
+			        		<ListGroupItem  id="CiteItem2" tag="button" action onClick={displaySource}>Research Two</ListGroupItem>
+			        		<ListGroupItem  id="CiteItem3" tag="button" action onClick={displaySource}>Research Three</ListGroupItem>
+			        		<ListGroupItem  id="CiteItem4" tag="button" action onClick={displaySource}>Research Four</ListGroupItem>
+			        		<ListGroupItem  id="CiteItem5" tag="button" action onClick={displaySource}>Research Five</ListGroupItem>
 			        	</ListGroup>
 			        	<Jumbotron id="source">
 			            </Jumbotron>
