@@ -8,8 +8,24 @@ import { ListGroup, ListGroupItem, Button, Input, Jumbotron, Badge, Progress } f
 // Lets us use column / row and layout for our webpage using Reactstrap
 import { Container, Row, Col } from 'reactstrap';
 
+
+//Function to dynamically call source material
+function displaySource(props)
+{
+	//This is where we pull research and display 
+	var research = document.getElementById("source");
+	
+	//put dynamic call here
+		//eventually this veggie ipsum will be replaced by a variable
+
+	research.innerHTML = "Veggies es bonus vobis, proinde vos postulo essum magis kohlrabi welsh onion daikon amaranth tatsoi tomatillo melon azuki bean garlic.Gumbo beet greens corn soko endive gumbo gourd. Parsley shallot courgette tatsoi pea sprouts fava bean collard greens dandelion okra wakame tomato. Dandelion cucumber earthnut pea peanut soko zucchini.";
+}
+
 // Demo is (for now) is our Analyze page
 class Demo extends Component{
+
+
+
 	render(){
 		return(
 
@@ -73,18 +89,13 @@ class Demo extends Component{
 			      <Row>
 			        <Col xs="4">
 			        	<ListGroup id="ResearchList">
-			        		<ListGroupItem active tag="button" action>Research One</ListGroupItem>
+			        		<ListGroupItem active tag="button" action onClick={displaySource}>Research One</ListGroupItem>
 			        		<ListGroupItem tag="button" action>Research Two</ListGroupItem>
 			        		<ListGroupItem tag="button" action>Research Three</ListGroupItem>
 			        		<ListGroupItem tag="button" action>Research Four</ListGroupItem>
 			        		<ListGroupItem tag="button" action>Research Five</ListGroupItem>
 			        	</ListGroup>
-			        	<Jumbotron>
-			            <p class="research"> 
-			                Veggies es bonus vobis, proinde vos postulo essum magis kohlrabi welsh onion daikon amaranth tatsoi tomatillo melon azuki bean garlic.
-			                Gumbo beet greens corn soko endive gumbo gourd. Parsley shallot courgette tatsoi pea sprouts fava bean collard greens dandelion okra wakame tomato. Dandelion cucumber earthnut pea peanut soko zucchini.
-			                Turnip greens yarrow ricebean rutabaga endive cauliflower sea lettuce kohlrabi amaranth water spinach avocado daikon napa cabbage asparagus winter purslane kale.
-			            </p>
+			        	<Jumbotron id="source">
 			            </Jumbotron>
 			        </Col>
 			        <Col xs="5">
