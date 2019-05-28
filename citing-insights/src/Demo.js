@@ -21,6 +21,21 @@ function displaySource(props)
 	research.innerHTML = "Veggies es bonus vobis, proinde vos postulo essum magis kohlrabi welsh onion daikon amaranth tatsoi tomatillo melon azuki bean garlic.Gumbo beet greens corn soko endive gumbo gourd. Parsley shallot courgette tatsoi pea sprouts fava bean collard greens dandelion okra wakame tomato. Dandelion cucumber earthnut pea peanut soko zucchini.";
 }
 
+function displayPaper(props)
+{
+	var paper = document.getElementById("student");
+	var selectedStudent = document.getElementById("selectedStudent");
+
+	//put dynamic call here
+		//eventually this meat ipsum will be replaced by a variable
+
+	paper.innerHTML = "Spicy jalapeno bacon ipsum dolor amet meatloaf nulla pork belly elit boudin capicola exercitation nostrud consequat cupim alcatra bresaola in." + "\n" + "Ad fugiat occaecat fatback. Short ribs ball tip excepteur esse in. Exercitation fugiat cupim beef, picanha leberkas nisi porchetta. Landjaeger ground round short loin dolor aliquip kevin quis tail." +"\n" 
+		+"Sed turducken kevin nostrud andouille, ball tip officia mollit in short ribs. Ribeye pastrami pig nulla brisket jerky tenderloin fatback tongue consecteturut commodo short ribs minim. ongue aliquip do lorem dolor." +"\n" + "Brisket minim pork venison burgdoggen shankle, chuck nulla. Officia fatback commodo pancetta pork loin irure.";
+
+
+
+}
+
 // Demo is (for now) is our Analyze page
 class Demo extends Component{
 
@@ -44,7 +59,10 @@ class Demo extends Component{
 			        <Col xs="4">
 			          <p>Current Student</p>
 
-			          <select name="student">
+			          <select id="selectedStudent" name="student" onChange={displayPaper}>
+
+			      {/* These should be automatically generated with AJAX and API */}
+			      		<option value="0">Please Select Student</option>
 			            <option value="1">Kyle</option>
 			            <option value="2">Liz</option>
 			            <option value="3">Mitchel</option>
@@ -82,10 +100,10 @@ class Demo extends Component{
 			      <Row>
 			        <Col xs="4"><h2>Found Sources</h2></Col>
 			        <Col xs="5"><h2> Student Paper Block Text </h2></Col>
-			        <Col xs="3"></Col>
+			        <Col xs="3"><h2> Annotation Box </h2></Col>
 			      </Row>
 
-			  	{/* Row Three: Contains -- Student Paper Text; Research Text; */}
+			  	{/* Row Three: Contains -- Student Paper Text; Research Text; and Annotation textbox */}
 			      <Row>
 			        <Col xs="4">
 			        	<ListGroup id="ResearchList">
@@ -99,35 +117,22 @@ class Demo extends Component{
 			            </Jumbotron>
 			        </Col>
 			        <Col xs="5">
+
+			    {/* Student paper -- eventually to be replaced with JSON object */}
 			        <Jumbotron>
-			          <p class="student">
-			            Spicy jalapeno bacon ipsum dolor amet meatloaf nulla pork belly elit boudin capicola exercitation nostrud consequat cupim alcatra bresaola in. 
-
-			            Ad fugiat occaecat fatback. Short ribs ball tip excepteur esse in. Exercitation fugiat cupim beef, picanha leberkas nisi porchetta. Landjaeger ground round short loin dolor aliquip kevin quis tail. 
-
-			            Sed turducken kevin nostrud andouille, ball tip officia mollit in short ribs. Ribeye pastrami pig nulla brisket jerky tenderloin fatback tongue consectetur ut commodo short ribs minim. ongue aliquip do lorem dolor. 
-			            Brisket minim pork venison burgdoggen shankle, chuck nulla. Officia fatback commodo pancetta pork loin irure. 
-
-			            Pork pork loin cupim, buffalo spare ribs nisi boudin sint ut cillum. Sirloin eu tenderloin frankfurter, nisi laboris commodo dolore lorem et deserunt. Enim spare ribs elit tongue tail veniam pork chop non jowl cupidatat. 
-			            Esse kevin aliqua, adipisicing aute nostrud hamburger in commodo meatball jowl sed. 
-
-			            Picanha bacon burgdoggen, adipisicing fatback ut proident pig ipsum aliqua. Culpa laboris ex pancetta aliqua meatball magna sint.
-
-			            Meatball flank laborum incididunt sausage ad shoulder, leberkas labore. Tail andouille ut, brisket beef turducken nisi ut incididunt. 
-
-			            Burgdoggen enim irure, biltong bacon et fatback reprehenderit mollit anim eu ball tip. 
-
-			            Qui biltong ribeye est t-bone enim mollit andouille swine minim ut ut adipisicing. Landjaeger bacon ut, venison picanha est occaecat adipisicing flank. Ut frankfurter ground round incididunt ad picanha nostrud sausage culpa ipsum. Shank leberkas tenderloin, anim velit sed burgdoggen adipisicing mollit ribeye ex. 
-
-			            Ipsum chicken cupim, dolor adipisicing sunt cupidatat culpa dolore. Picanha sed adipisicing reprehenderit commodo exercitation kielbasa cupidatat anim flank filet mignon ham hock. 
-
-			            Proident ex deserunt pariatur reprehenderit ham voluptate alcatra ad eiusmod. Venison aliqua ground round, quis nisi boudin jerky. Beef ribs capicola mollit quis boudin meatball cupim tenderloin.
+			          <p id="student">
+			    
+			    		Please select a student's paper 
 			          </p></Jumbotron>
 			        </Col>
+
+			    	{/* Textbox for user annotations */}
 			        <Col xs="3">
 			        	<Input type="textarea" name="annotation" id="curAnno" />
 			        	<Button color="success" id="finishButton">Finished</Button>
 			        	<Button color="danger" id="cancelButton">Cancel</Button>
+
+			       		{/* Progress Bar */}
 			          	<p>Total Assessed: 74%</p>
 			          	<Progress value={75} />
 			        </Col>
