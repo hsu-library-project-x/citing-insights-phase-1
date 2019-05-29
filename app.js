@@ -16,9 +16,9 @@ var fs = require('fs');
 
 app.get('/process_paper/:prof/:name', function (req, res) {
   if (shell.exec('anystyle -w -f json find ./json/' + req.params.prof + '/'+ req.params.name + '.pdf json/' + req.params.prof).code == 0) {
-    res.json(JSON.stringify({"status": 200}));
+    res.status(200).send("Success");
   } else {
-    res.json(JSON.stringify({"status": 400}));
+    res.status(400).send("Failure");
   }
 });
 
