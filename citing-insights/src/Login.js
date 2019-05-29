@@ -1,14 +1,13 @@
 // Our Login "Page" for Citing Insights
 
 // Import Libraries
-import ReactDOM from 'react-dom';
 import React, {Component} from 'react';
 import './App.css';
 
 // Jumbotron, Button, Badge, Container, Row, Col are all Reactrap elements that we are 
 //     going to use for our login
-import { Jumbotron, Button, Badge } from 'reactstrap';
-import { Container, Row, Col } from 'reactstrap';
+//import { Jumbotron, Button, Badge } from 'reactstrap';
+//import { Container, Row, Col } from 'reactstrap';
 
 
 class Login extends Component{
@@ -46,7 +45,7 @@ class Login extends Component{
 			So far cancel button works. Forgot password does not*/}
 	      <div class="container">
 	        <button type="button" class="cancelbtn">Cancel</button>
-	        <span class="psw"> <a href=""> Forgot password?</a></span>
+	        <span class="psw"> <a href="/"> Forgot password?</a></span>
 	      </div>
 
 

@@ -1,10 +1,10 @@
 // App.js is going to interact with our server
 
 // Libraries that we imported
-import ReactDOM from 'react-dom';
+//import ReactDOM from 'react-dom';
 import React, {Component} from 'react';
 import './App.css';
-import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Navbar, NavbarBrand, NavItem } from 'reactstrap';
 
 // Hashrouter allows us to do routing for website
 import { Switch, Route, NavLink, HashRouter } from "react-router-dom"; 
