@@ -78,7 +78,6 @@ class Demo extends Component{
 			<div class="DemoContents">
 				<h1 class="head-1"> Analyze Mode </h1>
 			{/* One Giant container that will let us use rows / columns */}
-			 	<Container>
 			 	{/* Row One: Contains -- Student Paper Drop Down; 
 			 							 Works Cited Bibliogrpahy;
 			 							 and Word Map Feature  */}
@@ -157,7 +156,6 @@ class Demo extends Component{
 			        </Col>
 
 			      </Row>
-		    	</Container>
 		    </div>
 		);
 	}

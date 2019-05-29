@@ -85,7 +85,12 @@ a.active{
 
 .container
 {
-  padding: .10em;
+  padding: .01em;
+}
+
+.row{
+  margin-right: .1em;
+  margin-left: .1em;
 }
 
 #biblio-box{
@@ -99,7 +104,6 @@ a.active{
 
 #biblio-box:hover{
   background-color: rgba(73, 80, 87, .1);
-
 }
 
 .cancelbtn 

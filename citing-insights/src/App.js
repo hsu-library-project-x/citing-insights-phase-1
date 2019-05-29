@@ -13,6 +13,7 @@ import { Switch, Route, NavLink, HashRouter } from "react-router-dom";
 import Demo from "./Demo";
 import Login from "./Login";
 import Home from "./Home";
+import Main from "./Main";
 
 
 // App acts as the main page for intial rendering -- all pages and stages are called 
@@ -55,7 +56,8 @@ class App extends Component {
               <Switch>
                 <Route exact path="/" component={Home}/>
                 <Route path="/login" component={Login}/>
-                <Route path="/analyze" component={Demo}/>   
+                <Route path="/analyze" component={Demo}/>
+                <Route path="/main" component={Main}/> 
               </Switch>
             </div>
 
