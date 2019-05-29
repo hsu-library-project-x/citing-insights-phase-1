@@ -44,7 +44,7 @@ class Login extends Component{
 				        <button type="submit">Login</button>
 				        <label>
 				          Remember Me
-				          <input type="checkbox" checked="checked" name="remember"/>
+				          <input type="checkbox"  name="remember"/>
 				        </label>
 				    </div>
 			     
