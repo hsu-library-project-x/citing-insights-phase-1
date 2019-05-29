@@ -45,7 +45,7 @@ class Login extends Component{
 			So far cancel button works. Forgot password does not*/}
 	      <div class="container">
 	        <button type="button" class="cancelbtn">Cancel</button>
-	        <span class="psw"> <a href="/"> Forgot password?</a></span>
+	        <span class="psw"> <a href="#"> Forgot password?</a></span>
 	      </div>
 
 

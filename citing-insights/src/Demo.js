@@ -13,16 +13,36 @@ function displaySource(props)
 {
 	//Dynamically get id
 	var source = props.target.id;
+
+	if(source == "sourceJumbo"){
+		return;
+	}
 	// Put text in ListItem
 	var ListItemTextbox = document.getElementById(source);
-	//append inner HTML of List Item Text Box
-		//eventually this veggie ipsum will be replaced by a variable 
-	var currentText = ListItemTextbox.innerHTML;
-	ListItemTextbox.innerHTML = currentText + "<Jumbotron>Veggies es bonus vobis, proinde vos postulo essum magis kohlrabi welsh onion daikon amaranth tatsoi tomatillo melon azuki bean garlic.Gumbo beet greens corn soko endive gumbo gourd. Parsley shallot courgette tatsoi pea sprouts fava bean collard greens dandelion okra wakame tomato. Dandelion cucumber earthnut pea peanut soko zucchini. </Jumbotron>" ;
+	
+	var bibBox = document.getElementById("biblio-box");
+	
+	if(ListItemTextbox.classList.contains("selectedResearch")){
+		//reset here --- Replace with Original Text of Citation
+		ListItemTextbox.innerHTML = "Reset Text";
+		ListItemTextbox.classList.remove("selectedResearch");
+		bibBox.innerHTML = "Please Select A Source";
+	}
+	else{
+
+		ListItemTextbox.classList.add("selectedResearch");
+		var SourceText = "This is where the Research Text will populate and show up!";
+
+		var currentText = ListItemTextbox.innerHTML;
+		//from here populate the bibliography box with more information
+		bibBox.innerHTML = currentText + " Additional Information of the Citation";
+		//append inner HTML of List Item Text Box
+		//eventually this veggie ipsum will be replaced by a variable
+		ListItemTextbox.innerHTML = currentText + "<br/> <hr><Jumbotron id='sourceJumbo'>" + SourceText + "</Jumbotron>" ;
+	}	
 }
 
-function displayPaper(props)
-{
+function displayPaper(props){
 	var paper = document.getElementById("student");
 	//var selectedStudent = document.getElementById("selectedStudent");
 	//put dynamic call here
@@ -57,9 +77,7 @@ class Demo extends Component{
 			          </select> 
 			        </Col>
 			        <Col xs="5">
-			          <div class="biblio-box">
-			            <p>Bibliography Goes Here</p>
-			          </div>
+			            <p id="biblio-box">Bibliography Goes Here</p>
 			        </Col>
 			        <Col xs="3">
 			          <div class="word-map">
@@ -91,14 +109,12 @@ class Demo extends Component{
 			      <Row>
 			        <Col xs="4">
 			        	<ListGroup id="ResearchList">
-			        		<ListGroupItem id="CiteItem1" active tag="button" action onClick={displaySource}>Research One</ListGroupItem>
+			        		<ListGroupItem id="CiteItem1" tag="button" action onClick={displaySource}>Research One</ListGroupItem>
 			        		<ListGroupItem  id="CiteItem2" tag="button" action onClick={displaySource}>Research Two</ListGroupItem>
 			        		<ListGroupItem  id="CiteItem3" tag="button" action onClick={displaySource}>Research Three</ListGroupItem>
 			        		<ListGroupItem  id="CiteItem4" tag="button" action onClick={displaySource}>Research Four</ListGroupItem>
 			        		<ListGroupItem  id="CiteItem5" tag="button" action onClick={displaySource}>Research Five</ListGroupItem>
 			        	</ListGroup>
-			        	<Jumbotron id="source">
-			            </Jumbotron>
 			        </Col>
 			        <Col xs="5">
 			    {/* Student paper -- eventually to be replaced with JSON object */}
