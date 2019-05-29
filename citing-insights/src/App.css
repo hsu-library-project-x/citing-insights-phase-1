@@ -23,9 +23,10 @@ button:hover
 
 #image_container
 {
-  background-image: url("ciprian-boiciuc-655314-unsplash.jpg");
-  height: 500px;
-  background-position: center; 
+  background-image: url("karina-vorozheeva-666313-unsplash.jpg");
+  height: 1200px;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 form

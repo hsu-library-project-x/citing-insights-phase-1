@@ -18,12 +18,12 @@ class Login extends Component{
 		<div id= "login_page" class="animate">
 
 		<Row>
-			<Col xs="6">
+			<Col xs="5">
 				<div id="image_container">
 				{/* <img id="login_image" src="login_img.jpg" alt="library_picture" /> */}
 				</div>
 			</Col>
-			<Col xs="6">
+			<Col xs="7">
 				<form id="login_form" > 
 					<h1 class="title"> Login </h1>
 					<div class="container" >
