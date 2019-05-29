@@ -24,8 +24,11 @@ app.get('/process_paper', function (req, res) {
   }
 });
 
-app.get('/get_paper', function (req, res) {
-  shell.exec('gs -sDEVICE=txtwrite -o output.txt samplebibliography.pdf');
+app.get('/get_paper/:prof/:name', function (req, res) {
+  // we may want to change how this path is structured. 
+  // im imagining each prof having a directory that holds all of their papers.
+  // ideally the path wouldnt matter because we would query from a dtabase instead. 
+  shell.exec('gs -sDEVICE=txtwrite -o output.txt ./json/' + req.query.prof + '/' + req.query.name  + '.pdf');
   // the replace functions just get rid of carriage returns 
   res.json(JSON.stringify({"raw": fs.readFileSync('output.txt').toString().replace(/\r+/g, "").replace(/\n+/g, "") }));
 });
