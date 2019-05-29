@@ -14,7 +14,7 @@ function displaySource(props)
 	//Dynamically get id
 	var source = props.target.id;
 
-	if(source == "sourceJumbo"){
+	if(source === "sourceJumbo"){
 		return;
 	}
 	// Put text in ListItem
@@ -42,6 +42,7 @@ function displaySource(props)
 	}	
 }
 
+//This function will change the students paper
 function displayPaper(props){
 	var paper = document.getElementById("student");
 	//var selectedStudent = document.getElementById("selectedStudent");
@@ -49,6 +50,20 @@ function displayPaper(props){
 		//eventually this meat ipsum will be replaced by a variable
 	paper.innerHTML = "Spicy jalapeno bacon ipsum dolor amet meatloaf nulla pork belly elit boudin capicola exercitation nostrud consequat cupim alcatra bresaola in. \n Ad fugiat occaecat fatback. Short ribs ball tip excepteur esse in. Exercitation fugiat cupim beef, picanha leberkas nisi porchetta. Landjaeger ground round short loin dolor aliquip kevin quis tail. \n Sed turducken kevin nostrud andouille, ball tip officia mollit in short ribs. Ribeye pastrami pig nulla brisket jerky tenderloin fatback tongue consecteturut commodo short ribs minim. ongue aliquip do lorem dolor. \n Brisket minim pork venison burgdoggen shankle, chuck nulla. Officia fatback commodo pancetta pork loin irure.";
 }
+
+//This function will dynamically change the value in our progress bar 
+function testProgress(props){
+
+	//get id
+	
+	var bar = document.getElementById("progress").getElementsByClassName("progress-bar");
+
+	// Change the value in the progress bar --- 
+		//Eventually will change to be dynamically generated
+	bar[0].attributes[2].nodeValue = "75";
+	bar[0].attributes["style"].nodeValue = "width: 75%";
+}
+
 
 // Demo is (for now) is our Analyze page
 class Demo extends Component{
@@ -130,9 +145,11 @@ class Demo extends Component{
 			        	<Button color="success" id="finishButton">Finished</Button>
 			        	<Button color="danger" id="cancelButton">Cancel</Button>
 
-			       		{/* Progress Bar */}
+			       		{/* Progress Bar -- Still need to make dynamic */}
+
 			          	<p>Total Assessed: 74%</p>
-			          	<Progress value={75} />
+			          	<Progress id="progress" value="20" />
+			          	<Button color="warning" id="ProgressTest" onClick={testProgress}> Test Button </Button>
 			        </Col>
 
 			      </Row>
