@@ -10,14 +10,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //file reader
 var fs = require('fs');
 
-
-
 // even though the command is in a conditional, it will still do the processing
 // in the future we need to know which paper to process
 // We need to update the url to pass the name(id?) of paper that needs processing
 
-app.get('/process_paper', function (req, res) {
-  if (shell.exec('anystyle -w -f json find samplebibliography.pdf  json').code == 0) {
+app.get('/process_paper/:prof/:name', function (req, res) {
+  if (shell.exec('anystyle -w -f json find ./json/' + req.params.prof + '/'+ req.params.name + '.pdf json/' + req.params.prof).code == 0) {
     res.json(JSON.stringify({"status": 200}));
   } else {
     res.json(JSON.stringify({"status": 400}));
@@ -32,6 +30,7 @@ app.get('/get_paper/:prof/:name', function (req, res) {
   // the replace functions just get rid of carriage returns 
   res.json(JSON.stringify({"raw": fs.readFileSync('output.txt').toString().replace(/\r+/g, "").replace(/\n+/g, "") }));
 });
+
 
 app.get('/get_citations/:prof/:name', function (req, res) {
   const data = require('./json/' + req.params.prof + '/' + req.params.name + '.json')
