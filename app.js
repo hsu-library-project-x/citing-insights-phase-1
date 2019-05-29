@@ -28,13 +28,13 @@ app.get('/get_paper/:prof/:name', function (req, res) {
   // we may want to change how this path is structured. 
   // im imagining each prof having a directory that holds all of their papers.
   // ideally the path wouldnt matter because we would query from a dtabase instead. 
-  shell.exec('gs -sDEVICE=txtwrite -o output.txt ./json/' + req.query.prof + '/' + req.query.name  + '.pdf');
+  shell.exec('gs -sDEVICE=txtwrite -o output.txt ./json/' + req.params.prof + '/' + req.params.name  + '.pdf');
   // the replace functions just get rid of carriage returns 
   res.json(JSON.stringify({"raw": fs.readFileSync('output.txt').toString().replace(/\r+/g, "").replace(/\n+/g, "") }));
 });
 
-app.get('/get_citations', function (req, res) {
-  const data = require('./json/samplebibliography.json')
+app.get('/get_citations/:prof/:name', function (req, res) {
+  const data = require('./json/' + req.params.prof + '/' + req.params.name + '.json')
   res.json(data);
 });
 
