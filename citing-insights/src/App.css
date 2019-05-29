@@ -21,15 +21,16 @@ button:hover
 }
 
 
-#login_image
+#image_container
 {
-
-  
+  background-image: url("ciprian-boiciuc-655314-unsplash.jpg");
+  height: 500px;
+  background-position: center; 
 }
 
 form
 {
-  
+  margin-top: 5em;
 }
 
 input[type=text], input[type=password]
