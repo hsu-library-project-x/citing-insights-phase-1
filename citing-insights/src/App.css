@@ -11,6 +11,8 @@ button
   padding: 0.5em;
   cursor:pointer ;
   width: auto;
+  margin-right: 1em;
+
 }
 
 button:hover
@@ -18,14 +20,21 @@ button:hover
   opacity: 0.8;
 }
 
+
+#login_image
+{
+
+  
+}
+
 form
 {
-  border: 0.5em solid black;
+  
 }
 
 input[type=text], input[type=password]
 {
-  width: 100% ;
+  width: 70% ;
   padding: 12px 20px;
   margin: 8px 0;
   display: inline-block;
@@ -142,10 +151,11 @@ span.psw
   color:red;
   cursor:pointer;
 }
+
 .animate
 {
   -webkit-animation: animatezoom 0.6s ;
-  animation: animatezoom 0.6s;
+  animation: animatezoom 0.6s; 
 }
 
 
@@ -173,4 +183,16 @@ span.psw
   {
     width: 100%;
   }
+}
+
+
+
+#bottom_of_login
+{
+  margin-top: 1em;
+}
+
+.title
+{
+  margin-bottom:1em;
 }

@@ -15,6 +15,10 @@ function displaySource(props)
 	var source = props.target.id;
 
 	if(source === "sourceJumbo"){
+		//code to make research text collapseable here 
+
+		// Get Id of element above Jumbotron
+		//run code in lower if stmt
 		return;
 	}
 	// Put text in ListItem
