@@ -24,15 +24,25 @@ button:hover
 #image_container
 {
   background-image: url("karina-vorozheeva-666313-unsplash.jpg");
-  height: 500px;
-  background-position: center;
+  height: 85%;
+  width: 50%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: -1000;
   background-repeat: no-repeat;
+
 }
 
 #image_container2
 {
   background-image: url("joe-caione-781415-unsplash.jpg");
-  height: 500px;
+  height: 85%;
+  width: 50%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: -1000;
   background-position: right;
   background-repeat: no-repeat;
 }
@@ -74,6 +84,18 @@ li > a{
   color: white;
 }
 
+.sidemenu{
+  color: black;
+}
+
+.sidebar{
+  width: 20%;
+}
+
+#MainContent{
+  width: 80%;
+}
+
 a.active{
   color: black;
 }
@@ -91,6 +113,9 @@ a.active{
   width: 100%;
   width: 100%;
   text-align: center;
+}
+.head-2{
+  margin-bottom: 1em;
 }
 
 .container
@@ -203,4 +228,9 @@ span.psw
 #signup
 {
   display: none;
+}
+
+#MainMenuDrop{
+  text-align: left;
+  margin-left: 5%;
 }

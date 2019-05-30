@@ -3,38 +3,32 @@
 //Imprort Libraries
 import React, {Component} from 'react';
 import './App.css';
-import { Jumbotron, Container, Row, Col } from 'reactstrap';
-
-
-
+import { Jumbotron, Container, Row, Col, Button } from 'reactstrap';
+import { Navbar, NavbarBrand, NavItem } from 'reactstrap';
+import { Switch, Route, NavLink, HashRouter, Router, Link } from "react-router-dom";
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'; 
+import { ListGroup, ListGroupItem } from 'reactstrap';
+import Classes from "./Classes";
 // Class to render our homepage
 class Main extends Component{
+
 	render(){
 		return(
 			<div id="MainContainer">
-				<h1 class="head-1"> Main Menu </h1>
-				
-				<Row class="titlerow">
-					<Col xs="4"><h2>Classes and Assignments</h2></Col>
-					<Col xs="4"><h2>Account Information</h2></Col>
-					<Col xs="4"><h2>Third Thing Here</h2></Col>
-				</Row>
-				<Row class="mainrow">
-					<Col xs="4">
-						<Jumbotron class="MainJumbo">
-
-						</Jumbotron>
-					</Col>
-					<Col xs="4">
-						<Jumbotron class="MainJumbo">
-						</Jumbotron>
-					</Col>
-					<Col xs="4">
-						<Jumbotron class="MainJumbo">
-						</Jumbotron>
-					</Col>
-				</Row>
-				
+				<h1 class="head-1 head-2"> Main Menu </h1>
+					<HashRouter>
+						<div class="sidebar">
+							<ListGroup>
+								<ListGroupItem><Link to="/main/account" class="sidemenu">Account</Link></ListGroupItem>
+								<ListGroupItem><Link to="/main/classes" class="sidemenu">Classes</Link></ListGroupItem>
+							</ListGroup>
+						</div>
+					</HashRouter>	
+					<div id="mainContent">
+						<Switch>
+							<Route path="/main/classes" component={Classes}/>
+						</Switch>
+					</div>
 			</div>
 		);
 	}

@@ -70,7 +70,7 @@ function testProgress(props){
 
 
 // Demo is (for now) is our Analyze page
-class Demo extends Component{
+class Analyze extends Component{
 	render(){
 		return(
 
@@ -161,4 +161,4 @@ class Demo extends Component{
 	}
 }
 
-export default Demo;
+export default Analyze;

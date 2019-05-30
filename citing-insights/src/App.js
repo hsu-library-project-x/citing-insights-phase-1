@@ -9,11 +9,12 @@ import { Navbar, NavbarBrand, NavItem } from 'reactstrap';
 // Hashrouter allows us to do routing for website
 import { Switch, Route, NavLink, HashRouter } from "react-router-dom"; 
 
-// Demo, Login, and Home are all pages for our website
-import Demo from "./Demo";
+// Analyze, Login, and Home are all pages for our website
+import Analyze from "./Analyze";
 import Login from "./Login";
 import Home from "./Home";
 import Main from "./Main";
+
 
 
 // App acts as the main page for intial rendering -- all pages and stages are called 
@@ -31,11 +32,10 @@ class App extends Component {
           {/* Navbar (Reactstrap) -- Defining a Navagation bar for our website*/}
             <Navbar color="primary" primary expand="md">
                 <NavbarBrand>Citing Insights</NavbarBrand>
-
                 {/* NavItem (Reactstrap) -- item in our navation bar*/}
                 <NavItem>
                   {/* This links our Login navagation item to our Login page*/}
-                  <NavLink to="/">Login</NavLink>
+                  <NavLink to="/login">Login</NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink to="/main">Main Menu</NavLink>
@@ -50,16 +50,16 @@ class App extends Component {
                   <NavLink to="/analyze">Analyze</NavLink>
                 </NavItem>
             </Navbar>
-
             {/*This tells us what compenent to load after going to login, home, demo etc.*/}
             <div id="id01" class="pop content">
               <Switch>
                 <Route exact path="/" component={Login}/>
-                <Route path="/analyze" component={Demo}/>
+                <Route exact path="/login" component={Login}/>
+                <Route path="/analyze" component={Analyze}/>
                 <Route path="/main" component={Main}/> 
+                
               </Switch>
             </div>
-
             {/*End our router*/}
           </HashRouter>
         </div>
