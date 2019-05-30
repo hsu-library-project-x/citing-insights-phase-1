@@ -35,7 +35,7 @@ class App extends Component {
                 {/* NavItem (Reactstrap) -- item in our navation bar*/}
                 <NavItem>
                   {/* This links our Login navagation item to our Login page*/}
-                  <NavLink to="/login">Login</NavLink>
+                  <NavLink to="/">Login</NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink to="/main">Main Menu</NavLink>
@@ -54,8 +54,7 @@ class App extends Component {
             {/*This tells us what compenent to load after going to login, home, demo etc.*/}
             <div id="id01" class="pop content">
               <Switch>
-                <Route exact path="/" component={Home}/>
-                <Route path="/login" component={Login}/>
+                <Route exact path="/" component={Login}/>
                 <Route path="/analyze" component={Demo}/>
                 <Route path="/main" component={Main}/> 
               </Switch>

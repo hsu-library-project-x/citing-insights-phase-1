@@ -17,7 +17,7 @@ class Main extends Component{
 				<Row class="titlerow">
 					<Col xs="4"><h2>Classes and Assignments</h2></Col>
 					<Col xs="4"><h2>Account Information</h2></Col>
-					<Col xs="4"><h2>Third Thing here</h2></Col>
+					<Col xs="4"><h2>Third Thing Here</h2></Col>
 				</Row>
 				<Row class="mainrow">
 					<Col xs="4">

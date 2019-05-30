@@ -24,8 +24,16 @@ button:hover
 #image_container
 {
   background-image: url("karina-vorozheeva-666313-unsplash.jpg");
-  height: 1200px;
+  height: 500px;
   background-position: center;
+  background-repeat: no-repeat;
+}
+
+#image_container2
+{
+  background-image: url("joe-caione-781415-unsplash.jpg");
+  height: 500px;
+  background-position: right;
   background-repeat: no-repeat;
 }
 
@@ -34,7 +42,8 @@ form
   margin-top: 5em;
 }
 
-input[type=text], input[type=password]
+
+input[type=text], input[type=password], input[type=email]
 {
   width: 70% ;
   padding: 12px 20px;
@@ -191,14 +200,7 @@ span.psw
   }
 }
 
-
-
-#bottom_of_login
+#signup
 {
-  margin-top: 1em;
-}
-
-.title
-{
-  margin-bottom:1em;
+  display: none;
 }
