@@ -20,6 +20,13 @@ app.get('/process_paper/:prof/:name', function (req, res) {
   }
 });
 
+
+app.get('/', function (req, res) {
+
+  res.json({"foo":"bar"});
+
+});
+
 app.get('/get_paper/:prof/:name', function (req, res) {
   // we may want to change how this path is structured. 
   shell.exec('gs -sDEVICE=txtwrite -o output.txt ./json/' + req.params.prof + '/' + req.params.name  + '.pdf');
