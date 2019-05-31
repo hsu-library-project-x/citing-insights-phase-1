@@ -1,16 +1,20 @@
 const express = require('express')
 const bodyParser = require('body-parser');
 const request = require('request');
+const path = require('path');
 const app = express();
 let shell = require('shelljs');
 app.use(express.static('public'));
 app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+
 //file reader
 var fs = require('fs');
 
-
+// Serve the static files from the React app
+app.use(express.static(path.join(__dirname, '/citing-insights/build')));
 
 // even though the command is in a conditional, it will still do the processing
 // in the future we need to know which paper to process
@@ -38,7 +42,17 @@ app.get('/get_citations/:prof/:name', function (req, res) {
   res.json(data);
 });
 
+app.get('/current_time', function (req, res) {
+  res.json({"time": new Date()});
+});
 
-app.listen(process.env.PORT || 3000, function(){
+// Handles any requests that don't match the ones above
+app.get('*', (req,res) =>{
+    res.sendFile(path.join(__dirname+'/citing-insights/build/index.html'));
+});
+
+
+
+app.listen(process.env.PORT || 5000, function(){
   console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
 });
