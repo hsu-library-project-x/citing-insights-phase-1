@@ -20,10 +20,14 @@ function goBackLogin(props){
 	document.getElementById("signup").style.display="none";
 }
 
+function forgotInfo(props){
+	window.location.href="#/passrecov";
+}
+
 class Login extends Component{
 	render(){
 		return(
-		<div>
+		<div className="container">
 			<div id= "login_page">
 
 				<Row>
@@ -45,14 +49,18 @@ class Login extends Component{
 						        <Input type="password" placeholder="Enter Password" name="psw" required/>
 						        <br/>
 						        <Button color="success">Login</Button>
-						        <Button color="primary" onClick={createAccount}>Create Account </Button>
-						        <br />
+						        
+						         <Button color="secondary" onClick={forgotInfo}  > Forgot username or password </Button>
+
+						        <br /> <br />
+						        {/* 
 						        <label>
 						          Remember Me
 						          <input type="checkbox"  name="remember"/>
-						        </label>
+						        </label> */} 
 						        {/*href placeholder for now */}
-						        <a href="#/passrecov" > Forgot username or password </a>
+
+						        <Button color="primary" onClick={createAccount}>Create Account </Button>
 						    </FormGroup>
 					     
 					     </Form>

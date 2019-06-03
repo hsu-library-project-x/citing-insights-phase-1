@@ -24,7 +24,7 @@ button:hover
 #image_container
 {
   background-image: url("karina-vorozheeva-666313-unsplash.jpg");
-  height: 85%;
+  height: 82%;
   width: 50%;
   position: fixed;
   bottom: 0;
@@ -32,12 +32,13 @@ button:hover
   z-index: -1000;
   background-repeat: no-repeat;
 
+
 }
 
 #image_container2
 {
   background-image: url("joe-caione-781415-unsplash.jpg");
-  height: 85%;
+  height: 82%;
   width: 50%;
   position: fixed;
   bottom: 0;
@@ -45,11 +46,14 @@ button:hover
   z-index: -1000;
   background-position: right;
   background-repeat: no-repeat;
+  
 }
+
 
 form
 {
   margin-top: 5em;
+  margin-left: 5.5em;
 }
 
 
@@ -74,6 +78,7 @@ input[type=text], input[type=password], input[type=email]
 #ResearchList{
   margin-bottom: .5em;
 }
+
 li.nav-item{
   list-style-type: none;
   padding-left: 1em;
@@ -234,3 +239,10 @@ span.psw
   text-align: left;
   margin-left: 5%;
 }
+
+.button1
+{
+  border-radius: 50%;
+
+}
+
