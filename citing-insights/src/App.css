@@ -91,14 +91,10 @@ li > a{
 
 .sidemenu{
   color: black;
-  border-radius: 50%;
-  background-color: tan;
 }
 
 .sidebar{
-  width: 60%;
-   border-radius: 50%;
-  background-color: pink;
+  width: 100%;
 }
 
 #MainContent{
@@ -243,6 +239,15 @@ span.psw
   text-align: left;
   margin-left: 5%;
 }
+
+.menuButton{
+
+  width: 10em;
+  height: 10em;
+  border-radius: 50%;
+  background-color: #ffc0cb;
+  
+  }
 
 
 

@@ -6,20 +6,9 @@ import './App.css';
 import { Jumbotron, Container, Row, Col, Button } from 'reactstrap';
 import { Navbar, NavbarBrand, NavItem } from 'reactstrap';
 import { Switch, Route, NavLink, HashRouter, Router, Link } from "react-router-dom";
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'; 
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem,Badge } from 'reactstrap'; 
 import { ListGroup, ListGroupItem } from 'reactstrap';
 import Classes from "./Classes";
-
-
-function goToClass(props)
-{
-	window.location.href="/main/classes";
-}
-
-function goToAccount(props)
-{
-	window.location.href="/main/account";
-}
 
 // Class to render our homepage
 class Main extends Component{
@@ -31,20 +20,13 @@ class Main extends Component{
 				 
 					<HashRouter>
 						<div class="sidebar">
-							<ListGroup id="makeCircle">
-								<ListGroupItem  ><Link to="/main/account" class="sidemenu">Account</Link></ListGroupItem>
-								<ListGroupItem><Link to="/main/classes" class="sidemenu">Classes</Link></ListGroupItem>
-							</ListGroup>
+							<Link to="/main/account"> <button class="menuButton"> One</button></Link>
+							<Link to="/main/classes"> <button class="menuButton">Two</button> </Link>
+							<Link to=""> <button class="menuButton"> Three</button></Link>
+							<Link to=""><button class="menuButton"> Four </button> </Link>
 						</div>
 					</HashRouter>
-				 
-				{/*
-				<Button size="lg" onClick={goToAccount}> Account</Button>
-				<Button size="lg" onClick={goToClass}> Classes </Button> 
-				<Button size="lg"> third </Button>
-				<Button size="lg"> forth </Button>
 
-				*/}
 					<div id="mainContent">
 						<Switch>
 							<Route path="/main/classes" component={Classes}/>
