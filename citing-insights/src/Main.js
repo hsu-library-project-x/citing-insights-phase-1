@@ -13,24 +13,27 @@ class Main extends Component{
 		return(
 			<div id="MainContainer">
 				<h1 class="head-1 head-2"> Main Menu </h1>
-				 
 					<HashRouter>
 						<div class="sidebar">
 							<div class="button-container">
-								<Link to="/main/account"><button class="menuButton">One</button></Link>
+								<Link to="/main/account">
+									<button class="menuButton">
+										<p>One</p>
+										<p>Button Text Goes Here: Testing Overflow blabalb alb lablablabl abla blabla blab lablabl</p>
+									</button>
+								</Link>
 							</div>
 							<div class="button-container">
-							<Link to="/main/classes"><button class="menuButton">Two</button></Link>
+								<Link to="/main/classes"><button class="menuButton">Two</button></Link>
 							</div>
 							<div class="button-container">
-							<Link to=""><button class="menuButton">Three</button></Link>
+								<Link to=""><button class="menuButton">Three</button></Link>
 							</div>
 							<div class="button-container">
-							<Link to=""><button class="menuButton">Four</button></Link>
+								<Link to=""><button class="menuButton">Four</button></Link>
 							</div>
 						</div>
-					</HashRouter>
-
+					</HashRouter> 
 					<div id="mainContent">
 						<Switch>
 							<Route path="/main/classes" component={Classes}/>
