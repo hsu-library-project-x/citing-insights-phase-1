@@ -38,6 +38,9 @@ class App extends Component {
                   <NavLink to="/login">Login</NavLink>
                 </NavItem>
                 <NavItem>
+                  <NavLink to="/home">Home</NavLink>
+                </NavItem>
+                <NavItem>
                   <NavLink to="/main">Main Menu</NavLink>
                 </NavItem>
                 <NavItem>
@@ -55,6 +58,7 @@ class App extends Component {
               <Switch>
                 <Route exact path="/" component={Login}/>
                 <Route exact path="/login" component={Login}/>
+                <Route exact path="/home" component={Home}/>
                 <Route path="/analyze" component={Analyze}/>
                 <Route path="/main" component={Main}/> 
                 

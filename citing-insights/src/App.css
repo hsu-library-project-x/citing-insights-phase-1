@@ -261,4 +261,25 @@ span.psw
   width: 12em;
 }
 
+.hubButton 
+{
+  background-color: pink;
+  border-radius: 50%;
+  width:8.48375em;
+  height: 8.48375em;
+  margin-right: 0;
+  margin-left: 0;
+}
 
+.hubIcon
+{
+  background-color: pink;
+}
+
+#hub
+{
+  margin-top: 3em;
+  margin-right: 5em;
+  margin-left: 5em;
+  margin-bottom: 3em;
+}
