@@ -1,6 +1,11 @@
 *
 {
   font-family: sans-serif;
+
+}
+
+body{
+  background-color: #F7f6E7;
 }
 
 button
@@ -94,7 +99,14 @@ li > a{
 }
 
 .sidebar{
-  width: 100%;
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+  background-color: teal;
+  height: 14em;
+  padding: 2em;
+  border-bottom-right-radius: 25px;
+  border-bottom-left-radius: 25px;
 }
 
 .button-container{
@@ -120,12 +132,15 @@ a.active{
   padding: .5em;
   background-color: teal;
   color:white;
-  width: 100%;
-  width: 100%;
+  width: 90%;
+  margin-right: 5%;
+  margin-left: 5%;
+  margin-top: 1em;
   text-align: center;
+  border-top-left-radius: 25px;
 }
 .head-2{
-  margin-bottom: 1em;
+  margin-bottom: 0;
 }
 
 .container
@@ -246,19 +261,29 @@ span.psw
 }
 
 .menuButton{
-
   width: 10em;
   height: 10em;
   border-radius: 144px;
-  border:none;
-  background-color: #ffc0cb;
-  transition: height .25s, width .25s;
+  background-color: lightblue;
+  transition: height .25s;
+  vertical-align: top;
+  overflow: hidden;
+  margin-bottom: 2.5em;
+  opacity: 1;
+  border: 5px solid #FFAC1D;
+  color: black;
+  z-index: 100;
 }
 
 .menuButton:hover{
-  border: 5px solid black;
-  height: 25em;
-  width: 12em;
+  height: 15em;
+  opacity: 1;
+  z-index: 100;
 }
 
-
+.classes-container{
+  padding-top: 5em;
+  background-color: ;
+  width: 100%;
+  
+}

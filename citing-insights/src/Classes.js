@@ -8,7 +8,9 @@ class Classes extends Component{
 		return(
 
 			/* So far our homepage is just a h1 tag with text */
-			<h1>Hey you made a classes page!</h1>
+			<div class="classes-container">
+				<h1>Hey you made a classes page!</h1>
+			</div>
 		);
 	}
 }
