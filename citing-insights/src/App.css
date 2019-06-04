@@ -97,6 +97,11 @@ li > a{
   width: 100%;
 }
 
+.button-container{
+  display: inline-block;
+  vertical-align: top;
+}
+
 #MainContent{
   width: 80%;
 }
@@ -244,10 +249,16 @@ span.psw
 
   width: 10em;
   height: 10em;
-  border-radius: 50%;
+  border-radius: 144px;
+  border:none;
   background-color: #ffc0cb;
-  
-  }
+  transition: height .25s, width .25s;
+}
 
+.menuButton:hover{
+  border: 5px solid black;
+  height: 25em;
+  width: 12em;
+}
 
 

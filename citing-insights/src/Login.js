@@ -29,7 +29,6 @@ class Login extends Component{
 		return(
 		<div className="container">
 			<div id= "login_page">
-
 				<Row>
 					<Col xs="5">
 						<div id="image_container">

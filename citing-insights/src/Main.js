@@ -3,11 +3,7 @@
 //Imprort Libraries
 import React, {Component} from 'react';
 import './App.css';
-import { Jumbotron, Container, Row, Col, Button } from 'reactstrap';
-import { Navbar, NavbarBrand, NavItem } from 'reactstrap';
-import { Switch, Route, NavLink, HashRouter, Router, Link } from "react-router-dom";
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem,Badge } from 'reactstrap'; 
-import { ListGroup, ListGroupItem } from 'reactstrap';
+import { Switch, Route, HashRouter, Link } from "react-router-dom";
 import Classes from "./Classes";
 
 // Class to render our homepage
@@ -20,10 +16,18 @@ class Main extends Component{
 				 
 					<HashRouter>
 						<div class="sidebar">
-							<Link to="/main/account"> <button class="menuButton"> One</button></Link>
-							<Link to="/main/classes"> <button class="menuButton">Two</button> </Link>
-							<Link to=""> <button class="menuButton"> Three</button></Link>
-							<Link to=""><button class="menuButton"> Four </button> </Link>
+							<div class="button-container">
+								<Link to="/main/account"><button class="menuButton">One</button></Link>
+							</div>
+							<div class="button-container">
+							<Link to="/main/classes"><button class="menuButton">Two</button></Link>
+							</div>
+							<div class="button-container">
+							<Link to=""><button class="menuButton">Three</button></Link>
+							</div>
+							<div class="button-container">
+							<Link to=""><button class="menuButton">Four</button></Link>
+							</div>
 						</div>
 					</HashRouter>
 
