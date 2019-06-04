@@ -19,11 +19,11 @@ class Home extends Component{
 				<br />
 
 				<Row>
-					{/* Empty Col for formatting purposes 
+					{/* Empty Col for formatting purposes */}
 					<Col xs="2">
-					</Col>*/}
+					</Col>
 
-					<Col xs="6">
+					<Col xs="4">
 						{/* Jumbotron to hold the Tasks button/ option for user */}
 						<Jumbotron>
 							<button class="hubButton">
@@ -33,7 +33,7 @@ class Home extends Component{
 						</Jumbotron>
 					</Col>
 
-					<Col xs="6"> 
+					<Col xs="4"> 
 						{/* Jumbotron to hold the account settings button/ option for user */}
 						<Jumbotron>
 							<button class="hubButton">
@@ -43,10 +43,10 @@ class Home extends Component{
 						</Jumbotron>
 					</Col>
 
-					{/* Empty Col for formatting purposes 
+					{/* Empty Col for formatting purposes */} 
 					<Col xs="2">
 					</Col>
-					*/}
+					
 				</Row>
 
 
