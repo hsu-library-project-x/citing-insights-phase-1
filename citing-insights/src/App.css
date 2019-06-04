@@ -25,6 +25,10 @@ button:hover
   opacity: 0.8;
 }
 
+.navbar{
+  background-color: #FFAC1D;
+}
+
 
 #image_container
 {
@@ -36,8 +40,6 @@ button:hover
   left: 0;
   z-index: -1000;
   background-repeat: no-repeat;
-
-
 }
 
 #image_container2
@@ -102,7 +104,7 @@ li > a{
   width: 90%;
   margin-left: 5%;
   margin-right: 5%;
-  background-color: teal;
+  background-color: #274259;
   height: 14em;
   padding: 2em;
   border-bottom-right-radius: 25px;
@@ -127,10 +129,31 @@ a.active{
   text-align: center;
 }
 
+.mainCollapse{
+  height: 1.5em;
+  width: 1.5em;
+  border-radius: 50%;
+  background-color: #FFAC1D;
+  z-index: 1000;
+  position: absolute;
+  right: 2.5%;
+  top: 215px;
+  padding: .25em;
+}
+
+.miniCircle{
+  height: 1em;
+  width: 1em;
+  border-radius: 50%;
+  z-index: 1001;
+  background-color: #274259;
+  
+}
+
 .head-1{
   margin-bottom: 2em;
   padding: .5em;
-  background-color: teal;
+  background-color: #274259;
   color:white;
   width: 90%;
   margin-right: 5%;
@@ -264,13 +287,13 @@ span.psw
   width: 10em;
   height: 10em;
   border-radius: 144px;
-  background-color: lightblue;
+  background-color: #DFDDC5;
   transition: height .25s;
   vertical-align: top;
   overflow: hidden;
   margin-bottom: 2.5em;
   opacity: 1;
-  border: 5px solid #FFAC1D;
+  border: 5px solid #274259;
   color: black;
   z-index: 100;
 }
@@ -308,6 +331,4 @@ span.psw
   padding-top: 5em;
   background-color: ;
   width: 100%;
-  
-
 }
