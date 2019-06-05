@@ -3,7 +3,7 @@
 // Libraries that we imported
 //import ReactDOM from 'react-dom';
 import React, {Component} from 'react';
-import './App.css';
+import './css/App.css';
 import { Navbar, NavbarBrand, NavItem } from 'reactstrap';
 
 // Hashrouter allows us to do routing for website

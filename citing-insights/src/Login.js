@@ -7,12 +7,12 @@ import React, {Component} from 'react';
 // Button,Container, Row, Col are all Reactrap elements that we are 
 //     going to use for our login
 import {Row, Col, Button, Form, FormGroup, Input} from 'reactstrap';
-import './App.css';
-import './login.css';
+import './css/App.css';
+import './css/login.css';
 
 //import pictures
-import loggin from './images/cropCatMed.jpg';
-import siggnup from './images/joe-caione-781415-unsplash.jpg';
+import loggin from './images/puppySm.jpg';
+import siggnup from './images/yakSm.jpg';
 
 
 function createAccount(props){

@@ -3,8 +3,8 @@
 //Imprort Libraries
 import React, {Component} from 'react';
 import { Switch, Route, HashRouter, Link } from "react-router-dom";
-import './App.css';
-import './Home.css';
+import './css/App.css';
+import './css/Home.css';
 
 //import jumbotron for looks
 //import container, row, anc col for formatting

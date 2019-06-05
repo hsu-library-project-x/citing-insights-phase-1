@@ -2,8 +2,8 @@
 
 //Imprort Libraries
 import React, {Component} from 'react';
-import './App.css';
-import './Tasks.css';
+import './css/App.css';
+import './css/Tasks.css';
 
 
 import { Switch, Route, HashRouter, Link } from "react-router-dom";
