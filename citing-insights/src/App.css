@@ -324,7 +324,7 @@ span.psw
 
 .hubButton 
 {
-  background-color: pink;
+  background-color: #274259;
   border-radius: 50%;
   width:8.48375em;
   height: 8.48375em;
@@ -332,9 +332,15 @@ span.psw
   margin-left: 0;
 }
 
-.hubIcon
+
+.hubBackground
 {
-  background-color: pink;
+  background-color:#DFDDC5;
+  padding-left:1em;
+  padding-right: 1em;
+  padding-top: 4em;
+  padding-bottom:4em;
+  height: 252px;
 }
 
 #hub
@@ -356,13 +362,17 @@ span.psw
 
    .hubButton 
   {
-  background-color: pink;
-  border-radius: 50%;
-  width:3.69725em;
-  height: 3.69725em;
-  margin-right: 0;
-  margin-left: 0;
+    width:3.69725em;
+    height: 3.69725em;
   }
+
+  .hubIcon
+  {
+    width:50%;
+    height: 50%;
+  }
+
+
 
 }
 

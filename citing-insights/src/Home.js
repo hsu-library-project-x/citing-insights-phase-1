@@ -9,6 +9,12 @@ import './App.css';
 //import container, row, anc col for formatting
 import {Jumbotron, Container, Row, Col} from 'reactstrap';
 
+//import pictures!
+import settings from './images/settings.jpg';
+import tasks from './images/tasks.jpg';
+ 
+
+
 
 // Class to render our homepage
 class Home extends Component{
@@ -21,29 +27,31 @@ class Home extends Component{
 
 				<Row>
 					{/* Empty Col for formatting purposes */}
-					<Col xs="2">
-					</Col>
+					<Col xs="2"></Col>
 
 					<Col xs="4">
 						<HashRouter>
 							{/* Jumbotron to hold the Tasks button/ option for user */}
-							<Jumbotron>
+							<div class="hubBackground">
 								<Link to="/tasks"><button class="hubButton">
-									<img class="hubIcon" src="khadeeja-yasser-1236779-unsplash.jpg" />
+									<img class="hubIcon" src={tasks} />
 								</button> </Link>
 								<p>Tasks</p>
-							</Jumbotron>
+							</div>
 						</HashRouter>
 					</Col>
 
+
 					<Col xs="4"> 
-						{/* Jumbotron to hold the account settings button/ option for user */}
-						<Jumbotron>
-							<button class="hubButton">
-								<img class="hubIcon" src="khadeeja-yasser-1236779-unsplash.jpg" />
-							</button>
-							<p>Account Settings</p>
-						</Jumbotron>
+						<HashRouter>
+							{/* Jumbotron to hold the account settings button/ option for user */}
+							<div class="hubBackground">
+								<Link to="/accountsettings"><button class="hubButton">
+									<img class="hubIcon" src={settings} />
+								</button> </Link>
+								<p>Account Settings</p>
+							</div>
+						</HashRouter>
 					</Col>
 
 					{/* Empty Col for formatting purposes */} 

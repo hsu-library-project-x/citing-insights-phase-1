@@ -2,13 +2,14 @@
 
 // Import Libraries
 import React, {Component} from 'react';
+
+
+// Button,Container, Row, Col are all Reactrap elements that we are 
+//     going to use for our login
 import {Row, Col, Button, Form, FormGroup, Input} from 'reactstrap';
 import './App.css';
 
-// Jumbotron, Button, Badge, Container, Row, Col are all Reactrap elements that we are 
-//     going to use for our login
-//import { Jumbotron, Button, Badge } from 'reactstrap';
-//import { Container, Row, Col } from 'reactstrap';
+
 
 function createAccount(props){
 	document.getElementById("login_page").style.display="none";
@@ -31,9 +32,7 @@ class Login extends Component{
 			<div id= "login_page">
 				<Row>
 					<Col xs="5">
-						<div id="image_container">
-						{/* <img id="login_image" src="login_img.jpg" alt="library_picture" /> */}
-						</div>
+						<div id="image_container"></div>
 					</Col>
 					<Col xs="7">
 						<Form id="login_form" > 
@@ -70,7 +69,6 @@ class Login extends Component{
 				<Row>
 					<Col xs="5">
 						<div id="image_container2">
-						{/* <img id="login_image" src="login_img.jpg" alt="library_picture" /> */}
 						</div>
 					</Col>
 					<Col xs="7">
