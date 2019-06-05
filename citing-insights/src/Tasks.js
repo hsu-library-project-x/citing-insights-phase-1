@@ -36,47 +36,50 @@ class Tasks extends Component{
 	render(){
 		return(
 			<div id="MainContainer">
-				<h1 class="head-1 head-2" id="headTitle">Tasks</h1><div class="mainCollapse"><div class="miniCircle" onClick={CollapseMain}></div></div>
-					<HashRouter>
-						<div class="sidebar" id="SideBar">
-							<div class="button-container">
-								<Link to="/tasks/classes">
-									<button class="menuButton" id="Class" onClick={this.changeName}>
-										Classes
-									</button>
-								</Link>
-							</div>
-							<div class="button-container">
-								<Link to="/tasks/assignments">
-									<button class="menuButton" id="Assignments" onClick={this.changeName}>
-										Assignments
-									</button>
-								</Link>
-							</div>
-							<div class="button-container">
-								<Link to="/tasks/continue">
-									<button class="menuButton" id="Continue" onClick={this.changeName}>
-										Continue
-									</button>
-								</Link>
-							</div>
-							<div class="button-container">
-								<Link to="/tasks/download">
-									<button class="menuButton" id="Download" onClick={this.changeName}>
-										Download
-									</button>
-								</Link>
-							</div>
+				<h1 class="head-1 head-2" id="headTitle">Tasks</h1>
+				<div class="mainCollapse">
+					<div class="miniCircle" onClick={CollapseMain}></div>
+				</div>
+				<HashRouter>
+					<div class="sidebar" id="SideBar">
+						<div class="button-container">
+							<Link to="/tasks/classes">
+								<button class="menuButton" id="Class" onClick={this.changeName}>
+									Classes
+								</button>
+							</Link>
 						</div>
-					</HashRouter> 
-					<div id="mainContent">
-						<Switch>
-							<Route path="/tasks/classes" component={Classes}/>
-							<Route path="/tasks/assignments" component={Assignments}/>
-							<Route path="/tasks/continue" component={Analyze}/>
-							<Route path="/tasks/download" component={Download}/>
-						</Switch>
+						<div class="button-container">
+							<Link to="/tasks/assignments">
+								<button class="menuButton" id="Assignments" onClick={this.changeName}>
+									Assignments
+								</button>
+							</Link>
+						</div>
+						<div class="button-container">
+							<Link to="/tasks/continue">
+								<button class="menuButton" id="Continue" onClick={this.changeName}>
+									Continue
+								</button>
+							</Link>
+						</div>
+						<div class="button-container">
+							<Link to="/tasks/download">
+								<button class="menuButton" id="Download" onClick={this.changeName}>
+									Download
+								</button>
+							</Link>
+						</div>
 					</div>
+				</HashRouter> 
+				<div id="mainContent">
+					<Switch>
+						<Route path="/tasks/classes" component={Classes}/>
+						<Route path="/tasks/assignments" component={Assignments}/>
+						<Route path="/tasks/continue" component={Analyze}/>
+						<Route path="/tasks/download" component={Download}/>
+					</Switch>
+				</div>
 			</div>
 		);
 	}
