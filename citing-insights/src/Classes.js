@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './App.css';
 
 
+
 // Class to render our homepage
 class Classes extends Component{
 	render(){
