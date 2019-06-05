@@ -20,7 +20,7 @@ function CollapseMain(props){
 }
 
 // Class to render our homepage
-class Main extends Component{
+class Tasks extends Component{
 	render(){
 		return(
 			<div id="MainContainer">
@@ -29,7 +29,7 @@ class Main extends Component{
 					<HashRouter>
 						<div class="sidebar" id="SideBar">
 							<div class="button-container">
-								<Link to="/main/classes">
+								<Link to="/tasks/classes">
 									<button class="menuButton">
 										<p>One</p>
 										<p>Button Text Goes Here: Testing Overflow blabalb alb lablablabl abla blabla blab lablabl</p>
@@ -37,19 +37,19 @@ class Main extends Component{
 								</Link>
 							</div>
 							<div class="button-container">
-								<Link to="/main/assignment"><button class="menuButton">Two</button></Link>
+								<Link to="/tasks/assignment"><button class="menuButton">Two</button></Link>
 							</div>
 							<div class="button-container">
-								<Link to="/main/continue"><button class="menuButton">Three</button></Link>
+								<Link to="/tasks/continue"><button class="menuButton">Three</button></Link>
 							</div>
 							<div class="button-container">
-								<Link to="/main/download"><button class="menuButton">Four</button></Link>
+								<Link to="/tasks/download"><button class="menuButton">Four</button></Link>
 							</div>
 						</div>
 					</HashRouter> 
 					<div id="mainContent">
 						<Switch>
-							<Route path="/main/classes" component={Classes}/>
+							<Route path="/tasks/classes" component={Classes}/>
 						</Switch>
 					</div>
 			</div>
@@ -57,4 +57,4 @@ class Main extends Component{
 	}
 }
 
-export default Main;
+export default Tasks;

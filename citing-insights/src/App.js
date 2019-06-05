@@ -13,7 +13,7 @@ import { Switch, Route, NavLink, HashRouter } from "react-router-dom";
 import Analyze from "./Analyze";
 import Login from "./Login";
 import Home from "./Home";
-import Main from "./Main";
+import Tasks from "./Tasks";
 
 
 
@@ -41,7 +41,7 @@ class App extends Component {
                   <NavLink to="/home">Home</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink to="/main">Main Menu</NavLink>
+                  <NavLink to="/tasks">Tasks</NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink to="/upload">Upload</NavLink>
@@ -60,7 +60,7 @@ class App extends Component {
                 <Route exact path="/login" component={Login}/>
                 <Route exact path="/home" component={Home}/>
                 <Route path="/analyze" component={Analyze}/>
-                <Route path="/main" component={Main}/> 
+                <Route path="/tasks" component={Tasks}/> 
                 
               </Switch>
             </div>

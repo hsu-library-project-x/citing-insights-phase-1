@@ -118,11 +118,6 @@ li > a{
   animation-timing-function: ease-out;
 }
 
-@keyframes collapse{
-  0% {height: 14em; padding: 2em;}
-  60% {height: 0em; padding: 0;}
-  100% {height: 0; padding: 0;}
-}
 
 .expand-main{
   animation-name: expand;
@@ -131,11 +126,7 @@ li > a{
   animation-timing-function: ease-out;
 }
 
-@keyframes expand{
-  0% {height: 0; padding: 0;}
-  60% {height: 14em; padding: 2em;}
-  100% {height: 14em; padding: 2em;}
-}
+
 
 .button-container{
   display: inline-block;
@@ -373,4 +364,62 @@ span.psw
   margin-left: 0;
   }
 
+}
+
+@media only screen and (max-width:870px){
+
+  .menuButton{
+    width: 5em;
+    height: 5em;
+  }
+
+  .sidebar{
+     height: 3.5em;
+     padding: 0.5em;
+  }
+
+  .expand-main{
+    animation-name: expandMini;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+  }
+
+  .collapse-main{
+    overflow: hidden;
+    animation-name: collapseMini;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+  }
+
+  .menuButton:hover{
+    height: 8em;
+  }
+
+
+}
+
+@keyframes expand{
+  0% {height: 0; padding: 0;}
+  60% {height: 14em; padding: 2em;}
+  100% {height: 14em; padding: 2em;}
+}
+
+@keyframes collapse{
+  0% {height: 14em; padding: 2em;}
+  60% {height: 0em; padding: 0;}
+  100% {height: 0; padding: 0;}
+}
+
+@keyframes expandMini{
+    0% {height: 0; padding: 0;}
+  60% {height: 7em; padding: 0.5em;}
+  100% {height: 7em; padding: 0.5em;}
+}
+
+@keyframes collapseMini{
+  0% {height: 7em; padding: 0.5em;}
+  60% {height: 0em; padding: 0;}
+  100% {height: 0; padding: 0;}
 }

@@ -2,6 +2,7 @@
 
 //Imprort Libraries
 import React, {Component} from 'react';
+import { Switch, Route, HashRouter, Link } from "react-router-dom";
 import './App.css';
 
 //import jumbotron for looks
@@ -24,13 +25,15 @@ class Home extends Component{
 					</Col>
 
 					<Col xs="4">
-						{/* Jumbotron to hold the Tasks button/ option for user */}
-						<Jumbotron>
-							<button class="hubButton">
-								<img class="hubIcon" src="khadeeja-yasser-1236779-unsplash.jpg" />
-							</button>
-							<p>Tasks</p>
-						</Jumbotron>
+						<HashRouter>
+							{/* Jumbotron to hold the Tasks button/ option for user */}
+							<Jumbotron>
+								<Link to="/tasks"><button class="hubButton">
+									<img class="hubIcon" src="khadeeja-yasser-1236779-unsplash.jpg" />
+								</button> </Link>
+								<p>Tasks</p>
+							</Jumbotron>
+						</HashRouter>
 					</Col>
 
 					<Col xs="4"> 
