@@ -1,0 +1,44 @@
+.hubButton 
+{
+  background-color: #274259;
+  border-radius: 50%;
+  width:8.48375em;
+  height: 8.48375em;
+  margin-right: 0;
+  margin-left: 0;
+}
+
+
+.hubBackground
+{
+  background-color:#DFDDC5;
+  padding-left:1em;
+  padding-right: 1em;
+  padding-top: 4em;
+  padding-bottom:4em;
+  height: 252px;
+}
+
+#hub{
+  margin-top: 3em;
+  margin-right: 5em;
+  margin-left: 5em;
+  margin-bottom: 3em;
+}
+
+@media only screen and (max-width: 800px){
+
+
+   .hubButton 
+  {
+    width:3.69725em;
+    height: 3.69725em;
+  }
+
+  .hubIcon
+  {
+    width:50%;
+    height: 50%;
+  }
+
+}

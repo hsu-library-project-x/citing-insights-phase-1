@@ -3,6 +3,9 @@
 //Imprort Libraries
 import React, {Component} from 'react';
 import './App.css';
+import './Tasks.css';
+
+
 import { Switch, Route, HashRouter, Link } from "react-router-dom";
 import Classes from "./Classes";
 import Assignments from "./Assignments";

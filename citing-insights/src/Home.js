@@ -4,6 +4,7 @@
 import React, {Component} from 'react';
 import { Switch, Route, HashRouter, Link } from "react-router-dom";
 import './App.css';
+import './Home.css';
 
 //import jumbotron for looks
 //import container, row, anc col for formatting
@@ -13,8 +14,6 @@ import {Jumbotron, Container, Row, Col} from 'reactstrap';
 import settings from './images/settings.jpg';
 import tasks from './images/tasks.jpg';
  
-
-
 
 // Class to render our homepage
 class Home extends Component{

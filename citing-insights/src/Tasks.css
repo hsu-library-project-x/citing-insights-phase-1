@@ -1,0 +1,145 @@
+.sidemenu{
+  color: black;
+}
+
+.sidebar{
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+  background-color: #274259;
+  height: 14em;
+  padding: 2em;
+  border-bottom-right-radius: 25px;
+  border-bottom-left-radius: 25px;
+}
+
+.collapse-main{
+  overflow: hidden;
+  animation-name: collapse;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+}
+
+.expand-main{
+  animation-name: expand;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+}
+
+.button-container{
+  display: inline-block;
+  vertical-align: top;
+}
+
+#MainContent{
+  width: 80%;
+}
+
+
+#MainMenuDrop{
+  text-align: left;
+  margin-left: 5%;
+}
+
+.menuButton{
+  width: 10em;
+  height: 10em;
+  border-radius: 144px;
+  background-color: #DFDDC5;
+  transition: height .25s;
+  vertical-align: top;
+  overflow: hidden;
+  margin-bottom: 2.5em;
+  opacity: 1;
+  border: 5px solid #274259;
+  color: black;
+  z-index: 100;
+}
+
+.menuButton:hover{
+  height: 15em;
+  opacity: 1;
+  z-index: 100;
+}
+
+.mainCollapse{
+  text-align: center;
+  height: 3em;
+  width: 3em;
+  border-radius: 50%;
+  background-color: #FFAC1D;
+  z-index: 1000;
+  position: absolute;
+  right: 2.5%;
+  top: 215px;
+  padding: .5em;
+}
+
+.miniCircle{
+  height: 2em;
+  width: 2em;
+  border-radius: 50%;
+  z-index: 1001;
+  background-color: #274259;
+}
+
+
+@media only screen and (max-width:870px){
+
+  .menuButton{
+    width: 5em;
+    height: 5em;
+  }
+
+  .sidebar{
+     height: 3.5em;
+     padding: 0.5em;
+  }
+
+  .expand-main{
+    animation-name: expandMini;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+  }
+
+  .collapse-main{
+    overflow: hidden;
+    animation-name: collapseMini;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+  }
+
+  .menuButton:hover{
+    height: 8em;
+  }
+}
+
+
+
+@keyframes expand{
+  0% {height: 0; padding: 0;}
+  60% {height: 14em; padding: 2em;}
+  100% {height: 14em; padding: 2em;}
+}
+
+@keyframes collapse{
+  0% {height: 14em; padding: 2em;}
+  60% {height: 0em; padding: 0;}
+  100% {height: 0; padding: 0;}
+}
+
+@keyframes expandMini{
+    0% {height: 0; padding: 0;}
+  60% {height: 7em; padding: 0.5em;}
+  100% {height: 7em; padding: 0.5em;}
+}
+
+@keyframes collapseMini{
+  0% {height: 7em; padding: 0.5em;}
+  60% {height: 0em; padding: 0;}
+  100% {height: 0; padding: 0;}
+}

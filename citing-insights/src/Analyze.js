@@ -1,6 +1,7 @@
 // Importing Libraries
 import React, {Component} from 'react';
 import './App.css';
+import './Analyze.css';
 // This lets us use Jumbotron, Badge, and Progress in HTML from Reactstrap
 //    This is all we are using for now. May import more styling stuff later
 import { ListGroup, ListGroupItem, Button, Input, Jumbotron, Badge, Progress } from 'reactstrap';

@@ -8,7 +8,11 @@ import React, {Component} from 'react';
 //     going to use for our login
 import {Row, Col, Button, Form, FormGroup, Input} from 'reactstrap';
 import './App.css';
+import './login.css';
 
+//import pictures
+import loggin from './images/cropCatMed.jpg';
+import siggnup from './images/joe-caione-781415-unsplash.jpg';
 
 
 function createAccount(props){
@@ -32,7 +36,9 @@ class Login extends Component{
 			<div id= "login_page">
 				<Row>
 					<Col xs="5">
-						<div id="image_container"></div>
+						<div id="image_container">
+							<img  src={loggin} />
+						</div>
 					</Col>
 					<Col xs="7">
 						<Form id="login_form" > 
@@ -69,6 +75,7 @@ class Login extends Component{
 				<Row>
 					<Col xs="5">
 						<div id="image_container2">
+							<img  src={siggnup} />
 						</div>
 					</Col>
 					<Col xs="7">
