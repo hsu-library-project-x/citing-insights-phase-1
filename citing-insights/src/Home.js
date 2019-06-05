@@ -22,9 +22,7 @@ class Home extends Component{
 		return(
 			/* div to hold the hub */
 			<div id="hub">
-
 				<br />
-
 				<Row>
 					{/* Empty Col for formatting purposes */}
 					<Col xs="2"></Col>
@@ -35,6 +33,7 @@ class Home extends Component{
 							<div class="hubBackground">
 								<Link to="/tasks"><button class="hubButton">
 									<img class="hubIcon" src={tasks} />
+
 								</button> </Link>
 								<p>Tasks</p>
 							</div>
@@ -44,7 +43,7 @@ class Home extends Component{
 
 					<Col xs="4"> 
 						<HashRouter>
-							{/* Jumbotron to hold the account settings button/ option for user */}
+							
 							<div class="hubBackground">
 								<Link to="/accountsettings"><button class="hubButton">
 									<img class="hubIcon" src={settings} />
@@ -53,14 +52,10 @@ class Home extends Component{
 							</div>
 						</HashRouter>
 					</Col>
-
 					{/* Empty Col for formatting purposes */} 
 					<Col xs="2">
 					</Col>
-					
 				</Row>
-
-
 			</div>
 			
 		);
