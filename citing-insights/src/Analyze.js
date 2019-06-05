@@ -58,11 +58,8 @@ function displayPaper(props){
 
 //This function will dynamically change the value in our progress bar 
 function testProgress(props){
-
 	//get id
-	
 	var bar = document.getElementById("progress").getElementsByClassName("progress-bar");
-
 	// Change the value in the progress bar --- 
 		//Eventually will change to be dynamically generated
 	bar[0].attributes[2].nodeValue = "75";
@@ -74,10 +71,8 @@ function testProgress(props){
 class Analyze extends Component{
 	render(){
 		return(
-
 		/* Analyze Mode HTML Start */
 			<div class="DemoContents">
-				<h1 class="head-1"> Analyze Mode </h1>
 			{/* One Giant container that will let us use rows / columns */}
 			 	{/* Row One: Contains -- Student Paper Drop Down; 
 			 							 Works Cited Bibliogrpahy;
