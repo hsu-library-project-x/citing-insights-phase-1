@@ -15,8 +15,6 @@ import Login from "./Login";
 import Home from "./Home";
 import Tasks from "./Tasks";
 
-
-
 // App acts as the main page for intial rendering -- all pages and stages are called 
 // from App function
 class App extends Component {
@@ -26,7 +24,6 @@ class App extends Component {
         <div class="head">
           <h2 class="alt-text">Citing Insights</h2>
           <p class="alt-text">Welcome to Citing Insights Portal</p>
-
           {/*Hashrouter! Defining our Router (React-Dom)*/}
           <HashRouter>
           {/* Navbar (Reactstrap) -- Defining a Navagation bar for our website*/}
@@ -60,8 +57,7 @@ class App extends Component {
                 <Route exact path="/login" component={Login}/>
                 <Route exact path="/home" component={Home}/>
                 <Route path="/analyze" component={Analyze}/>
-                <Route path="/tasks" component={Tasks}/> 
-                
+                <Route path="/tasks" component={Tasks}/>
               </Switch>
             </div>
             {/*End our router*/}
