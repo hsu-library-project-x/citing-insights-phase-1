@@ -8,7 +8,7 @@ class Download extends Component{
 		return(
 
 			/* So far our homepage is just a h1 tag with text */
-			<div class="Download-container">
+			<div class="download-container classes-container">
 				<h1>Hey you made a classes page!</h1>
 			</div>
 		);
