@@ -72,7 +72,8 @@
   background-color: #FFAC1D;
   z-index: 1000;
   position: absolute;
-  right: 2.5%;
+  right: 4.8%;
+  padding-left: 2.5%;
   top: 215px;
   padding: .5em;
 }
