@@ -12,7 +12,8 @@ class Main extends Component{
 	render(){
 		return(
 			<div id="MainContainer">
-				<h1 class="head-1 head-2"> Main Menu </h1>
+				
+				<h1 class="head-1 head-2">Main Menu<div class="mainCollapse"><div class="miniCircle"><p>-</p></div></div></h1>
 					<HashRouter>
 						<div class="sidebar">
 							<div class="button-container">

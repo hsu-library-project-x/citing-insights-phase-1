@@ -30,7 +30,7 @@ class App extends Component {
           {/*Hashrouter! Defining our Router (React-Dom)*/}
           <HashRouter>
           {/* Navbar (Reactstrap) -- Defining a Navagation bar for our website*/}
-            <Navbar color="primary" primary expand="md">
+            <Navbar primary expand="md">
                 <NavbarBrand>Citing Insights</NavbarBrand>
                 {/* NavItem (Reactstrap) -- item in our navation bar*/}
                 <NavItem>
