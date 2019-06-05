@@ -3,7 +3,6 @@
 // Import Libraries
 import React, {Component} from 'react';
 
-
 // Button,Container, Row, Col are all Reactrap elements that we are 
 //     going to use for our login
 import {Row, Col, Button, Form, FormGroup, Input} from 'reactstrap';
@@ -57,13 +56,7 @@ class Login extends Component{
 						         <Button color="secondary" onClick={forgotInfo}  > Forgot username or password </Button>
 
 						        <br /> <br />
-						        {/* 
-						        <label>
-						          Remember Me
-						          <input type="checkbox"  name="remember"/>
-						        </label> */} 
 						        {/*href placeholder for now */}
-
 						        <Button color="primary" onClick={createAccount}>Create Account </Button>
 						    </FormGroup>
 					     
