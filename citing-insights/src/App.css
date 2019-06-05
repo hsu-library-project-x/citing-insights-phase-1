@@ -32,7 +32,7 @@ button:hover
 
 #image_container
 {
-  background-image: url("karina-vorozheeva-666313-unsplash.jpg");
+  /*background-image: url("./src/images/karina-vorozheeva-666313-unsplash.jpg");*/
   height: 82%;
   width: 50%;
   position: fixed;
@@ -44,7 +44,7 @@ button:hover
 
 #image_container2
 {
-  background-image: url("joe-caione-781415-unsplash.jpg");
+  /*background-image: url("./src/images/joe-caione-781415-unsplash.jpg");*/
   height: 82%;
   width: 50%;
   position: fixed;
