@@ -12,7 +12,7 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   margin-top: 2.5em;
   border-radius: 25px;
-  z-index: 10000;
+  z-index: 100;
   border: 2px solid #FFAC1D;
 }
 
@@ -52,12 +52,12 @@
   height: 10em;
   border-radius: 144px;
   background-color: #274259;
-  transition: height .25s, background-color .25s;
+  transition: height .25s, background-color .25s, color .25s;
   vertical-align: top;
   overflow: hidden;
   margin-bottom: 2.5em;
   opacity: 1;
-  color: black;
+  color: white;
   z-index: 100;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
@@ -67,6 +67,7 @@
   opacity: 1;
   z-index: 100;
   background-color: #FFAC1D;
+  color: black;
 }
 
 .mainCollapse{
