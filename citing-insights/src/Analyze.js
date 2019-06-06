@@ -7,7 +7,7 @@ import './css/Analyze.css';
 import { ListGroup, ListGroupItem, Button, Input, Jumbotron, Badge, Progress } from 'reactstrap';
 
 // Lets us use column / row and layout for our webpage using Reactstrap
-import { Container, Row, Col } from 'reactstrap';
+import {Row, Col } from 'reactstrap';
 
 //Function to dynamically call source material
 function displaySource(props)

@@ -10,8 +10,8 @@ import './css/App.css';
 import './css/login.css';
 
 //import pictures
-import loggin from './images/puppySm.jpg';
-import siggnup from './images/yakSm.jpg';
+import login from './images/puppySm.jpg';
+import signup from './images/yakSm.jpg';
 
 
 function createAccount(props){
@@ -36,7 +36,7 @@ class Login extends Component{
 				<Row>
 					<Col xs="5">
 						<div id="image_container">
-							<img  src={loggin} />
+							<img  alt="" src={login} />
 						</div>
 					</Col>
 					<Col xs="7">
@@ -52,9 +52,7 @@ class Login extends Component{
 						        <Input type="password" placeholder="Enter Password" name="psw" required/>
 						        <br/>
 						        <Button color="success">Login</Button>
-						        
-						         <Button color="secondary" onClick={forgotInfo}  > Forgot username or password </Button>
-
+						        <Button color="secondary" onClick={forgotInfo}  > Forgot username or password </Button>
 						        <br /> <br />
 						        {/*href placeholder for now */}
 						        <Button color="primary" onClick={createAccount}>Create Account </Button>
@@ -68,7 +66,7 @@ class Login extends Component{
 				<Row>
 					<Col xs="5">
 						<div id="image_container2">
-							<img  src={siggnup} />
+							<img alt="" src={signup} />
 						</div>
 					</Col>
 					<Col xs="7">
