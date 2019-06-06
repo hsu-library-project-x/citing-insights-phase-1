@@ -11,3 +11,18 @@ citation:
   title: string
   paper: objectid
 end
+
+
+user:
+  firstname: string
+  lastname: string
+  email: string -- probably read about passport before we use this guy
+  password: string
+end
+
+
+
+
+
+
+
