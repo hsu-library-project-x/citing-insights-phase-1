@@ -36,12 +36,13 @@ class Tasks extends Component{
 	render(){
 		return(
 			<div id="MainContainer">
-				<h1 class="head-1 head-2" id="headTitle">Tasks</h1>
+				
 				<div class="mainCollapse">
 					<div class="miniCircle" onClick={CollapseMain}></div>
 				</div>
 				<HashRouter>
 					<div class="sidebar" id="SideBar">
+						<h1 class="head-1 head-2" id="headTitle">Tasks</h1>
 						<div class="button-container">
 							<Link to="/tasks/classes">
 								<button class="menuButton" id="Class" onClick={this.changeName}>

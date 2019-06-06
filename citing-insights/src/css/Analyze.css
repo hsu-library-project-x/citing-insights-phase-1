@@ -37,3 +37,8 @@ li > a{
 #biblio-box:hover{
   background-color: rgba(73, 80, 87, .1);
 }
+
+#DemoContents{
+  background-color: #F7F6E7;
+  margin-top: 2.5%;
+}
