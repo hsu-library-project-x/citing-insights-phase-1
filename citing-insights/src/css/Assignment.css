@@ -6,6 +6,10 @@ form{
 
 .assign-container{
 	height: 500px;
+	background-color: #F7F6E7;
+	color: black;
+	border-radius: 15px;
+	z-index: -200;
 }
 
 #selectClass{
@@ -22,6 +26,10 @@ label{
 	width: 20%;
 }
 
+form{
+	padding: 1.5em;
+}
+
 .form-control{
 	display: inline-block;
 	width: 80%;
@@ -30,6 +38,7 @@ label{
 .form-control-file{
 	display: inline-block;
 	width: 80%;
+	margin-bottom: 1em;
 }
 
 .btn{

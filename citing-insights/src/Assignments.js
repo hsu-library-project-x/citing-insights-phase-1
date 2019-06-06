@@ -16,12 +16,11 @@ class Assignment extends Component{
 				<h1>Upload Assignment</h1>
 				<Row>
 					<Col xs="2">
-						Empty Col
 					</Col>
 					<Col xs="8">
 						<Form>
 							<FormGroup>
-								<Label for="selectClass">Select a Class</Label>
+								<Label for="selectClass">Select Class</Label>
 								<Input type="select" id="selectClass" name="class" required>
 									<option></option>
 							        <option value="1">Class: 1</option>
@@ -32,7 +31,7 @@ class Assignment extends Component{
 							    </Input>
 							</FormGroup>
 							<FormGroup class="uploadWrapper">
-								<Label for="UploadDoc">Upload Documents</Label>
+								<Label for="UploadDoc">Upload File</Label>
           						<Input type="file" name="paper" id="UploadDoc" required/>
 							</FormGroup>
 							<FormGroup>
@@ -41,7 +40,6 @@ class Assignment extends Component{
 						</Form>
 					</Col>
 					<Col xs="2">
-						Empty Col
 					</Col>
 				</Row>
 			</div>

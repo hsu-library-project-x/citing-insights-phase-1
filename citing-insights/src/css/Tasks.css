@@ -6,11 +6,14 @@
   width: 90%;
   margin-left: 5%;
   margin-right: 5%;
-  background-color: #274259;
-  height: 14em;
+  background-color: #F7F6E7;
+  height: 20em;
   padding: 2em;
-  border-bottom-right-radius: 25px;
-  border-bottom-left-radius: 25px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-top: 2.5em;
+  border-radius: 25px;
+  z-index: 10000;
+  border: 2px solid #FFAC1D;
 }
 
 .collapse-main{
@@ -43,25 +46,27 @@
   margin-left: 5%;
 }
 
+
 .menuButton{
   width: 10em;
   height: 10em;
   border-radius: 144px;
-  background-color: #DFDDC5;
-  transition: height .25s;
+  background-color: #274259;
+  transition: height .25s, background-color .25s;
   vertical-align: top;
   overflow: hidden;
   margin-bottom: 2.5em;
   opacity: 1;
-  border: 5px solid #274259;
   color: black;
   z-index: 100;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .menuButton:hover{
   height: 15em;
   opacity: 1;
   z-index: 100;
+  background-color: #FFAC1D;
 }
 
 .mainCollapse{
@@ -122,25 +127,25 @@
 
 
 @keyframes expand{
-  0% {height: 0; padding: 0;}
-  60% {height: 14em; padding: 2em;}
-  100% {height: 14em; padding: 2em;}
+  0% {height: 5.5em; padding: 0;}
+  60% {height: 20em; padding: 2em;}
+  100% {height: 20em; padding: 2em;}
 }
 
 @keyframes collapse{
-  0% {height: 14em; padding: 2em;}
-  60% {height: 0em; padding: 0;}
-  100% {height: 0; padding: 0;}
+  0% {height: 20em; padding: 2em;}
+  60% {height: 5.5em; padding: 0;}
+  100% {height: 5.5em; padding: 0;}
 }
 
 @keyframes expandMini{
-  0% {height: 0; padding: 0;}
-  60% {height: 7em; padding: 0.5em;}
-  100% {height: 7em; padding: 0.5em;}
+  0% {height: 2.75em; padding: 0;}
+  60% {height: 10em; padding: 0.5em;}
+  100% {height: 10em; padding: 0.5em;}
 }
 
 @keyframes collapseMini{
-  0% {height: 7em; padding: 0.5em;}
-  60% {height: 0em; padding: 0;}
-  100% {height: 0; padding: 0;}
+  0% {height: 10em; padding: 0.5em;}
+  60% {height: 2.75em; padding: 0;}
+  100% {height: 2.75em; padding: 0;}
 }
