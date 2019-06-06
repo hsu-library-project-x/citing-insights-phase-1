@@ -45,12 +45,6 @@ class App extends Component {
                   <NavLink to="/accountsettings">Settings</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink to="/upload">Upload</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink to="/test">More Tests</NavLink>
-                </NavItem>
-                <NavItem>
                   <NavLink to="/analyze">Analyze</NavLink>
                 </NavItem>
             </Navbar>
