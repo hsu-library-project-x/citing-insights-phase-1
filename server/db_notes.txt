@@ -1,0 +1,13 @@
+citation:
+  author: string --family, given, particle
+                  -- might have a couple authors
+  date: string
+  editor: family, given
+  container-title: string --?
+  edition: string
+  volume: string
+  pages: string
+  type: string
+  title: string
+  paper: objectid
+end
