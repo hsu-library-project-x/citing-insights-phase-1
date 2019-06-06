@@ -22,17 +22,18 @@ class Assignment extends Component{
 						<Form>
 							<FormGroup>
 								<Label for="selectClass">Select a Class</Label>
-								<Input type="select" id="selectClass" name="class">
-							        <option>Class: 1</option>
-							        <option>Class: 2</option>
-							        <option>Class: 3</option>
-							        <option>Class: 4</option>
-							        <option>Class: 5</option>
+								<Input type="select" id="selectClass" name="class" required>
+									<option></option>
+							        <option value="1">Class: 1</option>
+							        <option value="2">Class: 2</option>
+							        <option value="3">Class: 3</option>
+							        <option value="4">Class: 4</option>
+							        <option value="5">Class: 5</option>
 							    </Input>
 							</FormGroup>
-							<FormGroup>
+							<FormGroup class="uploadWrapper">
 								<Label for="UploadDoc">Upload Documents</Label>
-          						<Input type="file" name="paper" id="UploadDoc" />
+          						<Input type="file" name="paper" id="UploadDoc" required/>
 							</FormGroup>
 							<FormGroup>
 								<Button>Submit</Button>

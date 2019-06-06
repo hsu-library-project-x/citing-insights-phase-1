@@ -29,6 +29,7 @@ a.active{
   margin-top: 1em;
   text-align: center;
   border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
 }
 
 .head-2{

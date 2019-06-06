@@ -12,3 +12,26 @@ form{
 	
 }
 
+#UploadDoc{
+	background-color: white;
+	border: 1px solid #ced4da;
+    border-radius: .25rem;
+}
+
+label{
+	width: 20%;
+}
+
+.form-control{
+	display: inline-block;
+	width: 80%;
+}
+
+.form-control-file{
+	display: inline-block;
+	width: 80%;
+}
+
+.btn{
+	width: 100%;
+}
