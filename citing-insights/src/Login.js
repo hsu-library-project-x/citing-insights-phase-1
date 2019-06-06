@@ -47,9 +47,9 @@ class Login extends Component{
 						          Login button. Also has a remember me checkbox. Currently remember me is not
 						      	  functional and Login will just take you to our Demo page*/}
 						        {/* <label for="uname">Username</label> */}
-						        <Input type="text" placeholder="Enter Username" name="uname" required/>
+						        <Input type="text" placeholder="Enter Username" name="uname" id="user" required/>
 						        {/* <label for="psw">Password</label> */}
-						        <Input type="password" placeholder="Enter Password" name="psw" required/>
+						        <Input type="password" placeholder="Enter Password" name="psw" id="password" required/>
 						        <br/>
 						        <Button color="success">Login</Button>
 						        <Button color="secondary" onClick={forgotInfo}  > Forgot username or password </Button>

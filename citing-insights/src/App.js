@@ -14,6 +14,7 @@ import Analyze from "./Analyze";
 import Login from "./Login";
 import Home from "./Home";
 import Tasks from "./Tasks";
+import AccountSettings from "./AccountSettings";
 
 // App acts as the main page for intial rendering -- all pages and stages are called 
 // from App function
@@ -41,6 +42,9 @@ class App extends Component {
                   <NavLink to="/tasks">Tasks</NavLink>
                 </NavItem>
                 <NavItem>
+                  <NavLink to="/accountsettings">Settings</NavLink>
+                </NavItem>
+                <NavItem>
                   <NavLink to="/upload">Upload</NavLink>
                 </NavItem>
                 <NavItem>
@@ -58,6 +62,7 @@ class App extends Component {
                 <Route exact path="/home" component={Home}/>
                 <Route path="/analyze" component={Analyze}/>
                 <Route path="/tasks" component={Tasks}/>
+                <Route path="/accountSettings" component={AccountSettings} />
               </Switch>
             </div>
             {/*End our router*/}
