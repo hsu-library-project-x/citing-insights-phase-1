@@ -16,6 +16,13 @@ button:hover
   opacity: 0.8;
 }
 
+.title
+{
+  width:90%;
+  margin-left: 20%;
+  font-weight: bold;
+}
+
 .imgcontainer
 {
   text-align: center;
@@ -26,7 +33,7 @@ button:hover
 #image_container
 {
   height: 82%;
-  width: 50%;
+  width: 100%;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -49,12 +56,11 @@ button:hover
 form
 {
   margin-top: 5em;
-  margin-left: 5.5em;
   color: black;
   /*background-color: #F7F6E7;*/
 }
 
-input[type=text], input[type=password], input[type=email]
+#user, #password
 {
   width: 70% ;
   padding: 12px 20px;
@@ -64,7 +70,29 @@ input[type=text], input[type=password], input[type=email]
   box-sizing: border-box;
 }
 
+#logIn
+{
+  margin-left: 20%;
+}
+#logIn, #Forgot
+{
+  width:20%;
+  border-radius: 2em;
+}
+
+#createacnt
+{
+  width:50%;
+  margin-left: 10%;
+  margin-top: 2em;
+}
+
 #signup
 {
   display: none;
+}
+
+#login_page
+{
+
 }

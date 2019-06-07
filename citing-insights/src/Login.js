@@ -10,7 +10,7 @@ import './css/App.css';
 import './css/login.css';
 
 //import pictures
-import login from './images/puppySm.jpg';
+import login from './images/puppyXs.jpg';
 import signup from './images/yakSm.jpg';
 
 
@@ -34,12 +34,12 @@ class Login extends Component{
 		<div className="container">
 			<div id= "login_page">
 				<Row>
-					<Col xs="5">
+					<Col xs="7">
 						<div id="image_container">
 							<img  alt="" src={login} />
 						</div>
 					</Col>
-					<Col xs="7">
+					<Col xs="5">
 						<Form id="login_form" > 
 							<h1 class="title"> Welcome </h1>
 							<FormGroup class="container">
@@ -47,15 +47,15 @@ class Login extends Component{
 						          Login button. Also has a remember me checkbox. Currently remember me is not
 						      	  functional and Login will just take you to our Demo page*/}
 						        {/* <label for="uname">Username</label> */}
-						        <Input type="text" placeholder="Enter Username" name="uname" id="user" required/>
+						        <Input type="text" placeholder="Enter Username" name="uname" id="user" required/> <br />
 						        {/* <label for="psw">Password</label> */}
 						        <Input type="password" placeholder="Enter Password" name="psw" id="password" required/>
 						        <br/>
-						        <Button color="success">Login</Button>
-						        <Button color="secondary" onClick={forgotInfo}  > Forgot username or password </Button>
+						        <Button id="logIn" color="success">Login</Button>
+						        <Button id="Forgot" color="secondary" onClick={forgotInfo}> Forgot</Button>
 						        <br /> <br />
 						        {/*href placeholder for now */}
-						        <Button color="primary" onClick={createAccount}>Create Account </Button>
+						        <Button id="createacnt" color="primary" onClick={createAccount}>Create Account </Button>
 						    </FormGroup>
 					     
 					     </Form>
