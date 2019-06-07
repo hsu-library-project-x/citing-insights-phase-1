@@ -78,7 +78,7 @@ class Analyze extends Component{
 			 							 Works Cited Bibliogrpahy;
 			 							 and Word Map Feature  */}
 			      <Row>
-			        <Col xs="4">
+			        <Col xs="3">
 			          <p>Current Student</p>
 			          <select id="selectedStudent" name="student" onChange={displayPaper}>
 			      {/* These should be automatically generated with AJAX and API */}
@@ -90,7 +90,7 @@ class Analyze extends Component{
 			            <option value="5">Ben</option>
 			          </select> 
 			        </Col>
-			        <Col xs="5">
+			        <Col xs="6">
 			            <p id="biblio-box">Bibliography Goes Here</p>
 			        </Col>
 			        <Col xs="3">
@@ -115,13 +115,13 @@ class Analyze extends Component{
 			      </Row>
 			 	{/* Row Two: Contains Headers for Student Paper Text and Research Text; */}
 			      <Row>
-			        <Col xs="4"><h2>Found Sources</h2></Col>
-			        <Col xs="5"><h2> Student Paper Block Text </h2></Col>
+			        <Col xs="3"><h2>Found Sources</h2></Col>
+			        <Col xs="6"><h2> Student Paper Block Text </h2></Col>
 			        <Col xs="3"><h2> Annotation Box </h2></Col>
 			      </Row>
 			  	{/* Row Three: Contains -- Student Paper Text; Research Text; and Annotation textbox */}
 			      <Row>
-			        <Col xs="4">
+			        <Col xs="3">
 			        	<ListGroup id="ResearchList">
 			        		<ListGroupItem id="CiteItem1" tag="button" action onClick={displaySource}>Research One</ListGroupItem>
 			        		<ListGroupItem  id="CiteItem2" tag="button" action onClick={displaySource}>Research Two</ListGroupItem>
@@ -130,7 +130,7 @@ class Analyze extends Component{
 			        		<ListGroupItem  id="CiteItem5" tag="button" action onClick={displaySource}>Research Five</ListGroupItem>
 			        	</ListGroup>
 			        </Col>
-			        <Col xs="5">
+			        <Col xs="6">
 			    {/* Student paper -- eventually to be replaced with JSON object */}
 			        <Jumbotron>
 			          <p id="student">

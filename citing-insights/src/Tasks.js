@@ -68,8 +68,8 @@ class Tasks extends Component{
 						</div>
 						<div class="button-container">
 							<Link to="/tasks/continue">
-								<button class="menuButton" id="Continue" onClick={this.changeName}>
-									Continue
+								<button class="menuButton" id="Analyze" onClick={this.changeName}>
+									Analyze
 								</button>
 							</Link>
 						</div>
