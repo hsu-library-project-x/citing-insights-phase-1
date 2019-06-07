@@ -14,15 +14,24 @@ import Analyze from "./Analyze";
 
 function CollapseMain(props){
 	let sidebar = document.getElementById("SideBar");
+	let buttons = document.getElementsByClassName("menuButton");
 	if(sidebar.classList.contains("collapse-main")){
-		sidebar.classList.add("expand-main");
 		sidebar.classList.remove("collapse-main");
+		sidebar.classList.add("expand-main");
+		for (let i = 0; i < buttons.length; i++){
+			buttons[i].classList.add("opacityAnimation");
+		}
+		
 	}
 	else{
+		for (let i = 0; i < buttons.length; i++){
+			buttons[i].classList.remove("opacityAnimation");
+		}
 		sidebar.classList.remove("expand-main");
 		sidebar.classList.add('collapse-main');
 	}	
 }
+
 
 // Class to render our homepage
 class Tasks extends Component{
