@@ -10,8 +10,8 @@ import './css/App.css';
 import './css/login.css';
 
 //import pictures
-import login from './images/puppyXs.jpg';
-import signup from './images/yakSm.jpg';
+import login from './images/handXs.jpg';
+import signup from './images/yakMed.jpg';
 
 
 function createAccount(props){
@@ -31,36 +31,36 @@ function forgotInfo(props){
 class Login extends Component{
 	render(){
 		return(
-		<div className="container">
-			<div id= "login_page">
+		<div class="container">
+			<div id="login_page">
 				<Row>
-					<Col xs="7">
+					<Col xs="6">
 						<div id="image_container">
-							<img  alt="" src={login} />
+							<img id="welcome_img" alt="" src={login} />
 						</div>
 					</Col>
-					<Col xs="5">
+					<Col xs="6">					
 						<Form id="login_form" > 
-							<h1 class="title"> Welcome </h1>
+							<h1 class="title"> Welcome Back! </h1>
 							<FormGroup class="container">
 						      {/* div of class container holds the username, password, and 
 						          Login button. Also has a remember me checkbox. Currently remember me is not
 						      	  functional and Login will just take you to our Demo page*/}
 						        {/* <label for="uname">Username</label> */}
-						        <Input type="text" placeholder="Enter Username" name="uname" id="user" required/> <br />
+						        <input type="text" placeholder="Enter Username" name="uname" id="user" required/> <br />
 						        {/* <label for="psw">Password</label> */}
-						        <Input type="password" placeholder="Enter Password" name="psw" id="password" required/>
+						        <input type="password" placeholder="Enter Password" name="psw" id="password" required/>
 						        <br/>
-						        <Button id="logIn" color="success">Login</Button>
-						        <Button id="Forgot" color="secondary" onClick={forgotInfo}> Forgot</Button>
+						        <button id="Forgot" onClick={forgotInfo}>Forgot</button>
+						        <button id="logIn">Login</button>
 						        <br /> <br />
 						        {/*href placeholder for now */}
-						        <Button id="createacnt" color="primary" onClick={createAccount}>Create Account </Button>
+						        <button id="createacnt" color="primary" onClick={createAccount}>Sign Up</button>
 						    </FormGroup>
 					     
 					     </Form>
-				     </Col>
-			    </Row>
+					</Col>
+				</Row>
 			</div>
 			<div id="signup">
 				<Row>
