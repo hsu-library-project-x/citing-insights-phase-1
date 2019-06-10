@@ -7,7 +7,11 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/test', {useNewUrlParser: true});
 
 var routes = require('./routes/index');
-var cars = require('./routes/carRoutes');
+var users = require('./routes/userRoutes');
+var classes = require('./routes/classRoutes');
+var assignments = require('./routes/assignmentRoutes');
+var papers = require('./routes/paperRoutes');
+var citations = require('./routes/citationRoutes');
 
 var app = express();
 
@@ -18,7 +22,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/cars', cars);
+app.use('/users', users );
+app.use('/classes', classes);
+app.use('/assignments', assignments);
+app.use('/papers', papers);
+app.use('/citations', citations);
+
+
 
 // this code is deprecated
 // we want to ultimately call CitationsController.show
