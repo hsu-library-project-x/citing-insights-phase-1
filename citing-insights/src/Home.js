@@ -11,8 +11,8 @@ import './css/Home.css';
 import {Jumbotron, Container, Row, Col} from 'reactstrap';
 
 //import pictures!
-import settings from './images/settings.jpg';
-import tasks from './images/tasks.jpg';
+import settings from './images/gears.svg';
+import tasks from './images/pencil.svg';
  
 
 // Class to render our homepage
@@ -32,17 +32,14 @@ class Home extends Component{
 							<div class="hubBackground">
 								<Link to="/tasks"><button class="hubButton">
 									<img class="hubIcon" src={tasks} />
-
 								</button> </Link>
 								<p>Tasks</p>
 							</div>
 						</HashRouter>
 					</Col>
-
-
+					
 					<Col xs="4"> 
 						<HashRouter>
-							
 							<div class="hubBackground">
 								<Link to="/accountsettings"><button class="hubButton">
 									<img class="hubIcon" src={settings} />

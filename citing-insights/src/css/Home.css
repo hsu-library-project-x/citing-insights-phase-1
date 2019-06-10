@@ -4,19 +4,25 @@
   border-radius: 50%;
   width:8.48375em;
   height: 8.48375em;
-  margin-right: 0;
+  margin-top: 50px;
+  margin-bottom: 50px;
   margin-left: 0;
+  margin-right: 0;
 }
 
 
 .hubBackground
 {
-  background-color:#DFDDC5;
+  background-color:#F7F6E7;
   padding-left:1em;
   padding-right: 1em;
   padding-top: 4em;
   padding-bottom:4em;
-  height: 252px;
+  height: 400px;
+  width: 275px;
+  border-radius: 2em;
+  margin-left: 2em;
+  color: #383D3B;
 }
 
 #hub{
@@ -24,6 +30,11 @@
   margin-right: 5em;
   margin-left: 5em;
   margin-bottom: 3em;
+}
+
+.hubIcon
+{
+  width:80%;
 }
 
 @media only screen and (max-width: 800px){
