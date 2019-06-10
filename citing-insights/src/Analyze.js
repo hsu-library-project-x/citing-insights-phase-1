@@ -67,16 +67,74 @@ function testProgress(props){
 }
 
 
+const Rubric = () => (
+	<div class="rubricContainer">
+		<Card>
+			<CardBody>
+				<CardTitle>Rubric Component</CardTitle>
+				<CardText>Text about what this Rubric Component is goes here</CardText>
+					<Label for="rubricValue">Score</Label>
+					<Input type="select" name="select" id="rubricValue">
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+					</Input>
+			</CardBody>
+		</Card>
+		<Card>
+			<CardBody>
+				<CardTitle>Rubric Component</CardTitle>
+				<CardText>Text about what this Rubric Component is goes here</CardText>
+				<Label for="rubricValue">Score</Label>
+					<Input type="select" name="select" id="rubricValue">
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+					</Input>
+			</CardBody>
+		</Card>
+		<Card>
+			<CardBody>
+				<CardTitle>Rubric Component</CardTitle>
+				<CardText>Text about what this Rubric Component is goes here</CardText>
+				<Label for="rubricValue">Score</Label>
+					<Input type="select" name="select" id="rubricValue">
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+					</Input>
+			</CardBody>
+		</Card>
+	</div>
+)
+
 // Demo is (for now) is our Analyze page
 class Analyze extends Component{
+	constructor () {
+	    super()
+	    this.state = {
+	      	isHidden: true
+	    }
+	}
+
+	toggleHidden(){
+		this.setState({
+			isHidden: !this.state.isHidden
+		})
+	}
+
 	render(){
 		return(
 		/* Analyze Mode HTML Start */
 			<div class="DemoContents classes-container">
 			{/* One Giant container that will let us use rows / columns */}
-			 	{/* Row One: Contains -- Student Paper Drop Down; 
-			 							 Works Cited Bibliogrpahy;
-			 							 and Word Map Feature  */}
+			 	{/* Row One: Contains -- Student Paper Drop Down; Works Cited Bibliogrpahy; and Word Map Feature  */}
 			      <Row>
 			        <Col xs="3">
 			          <p>Current Student</p>
@@ -117,50 +175,7 @@ class Analyze extends Component{
 			 	{/* Row Two: Contains Rubric on display; */}
 			      <Row>
 			        <Col xs="12">
-			        	<div class="rubricContainer">
-			        		<Card>
-			        			<CardBody>
-			        				<CardTitle>Rubric Component</CardTitle>
-									<CardText>Text about what this Rubric Component is goes here</CardText>
-										<Label for="rubricValue">Score</Label>
-										<Input type="select" name="select" id="rubricValue">
-											<option>1</option>
-											<option>2</option>
-											<option>3</option>
-											<option>4</option>
-											<option>5</option>
-										</Input>
-			        			</CardBody>
-			        		</Card>
-			        		<Card>
-			        			<CardBody>
-			        				<CardTitle>Rubric Component</CardTitle>
-									<CardText>Text about what this Rubric Component is goes here</CardText>
-									<Label for="rubricValue">Score</Label>
-										<Input type="select" name="select" id="rubricValue">
-											<option>1</option>
-											<option>2</option>
-											<option>3</option>
-											<option>4</option>
-											<option>5</option>
-										</Input>
-			        			</CardBody>
-			        		</Card>
-			        		<Card>
-			        			<CardBody>
-			        				<CardTitle>Rubric Component</CardTitle>
-									<CardText>Text about what this Rubric Component is goes here</CardText>
-									<Label for="rubricValue">Score</Label>
-										<Input type="select" name="select" id="rubricValue">
-											<option>1</option>
-											<option>2</option>
-											<option>3</option>
-											<option>4</option>
-											<option>5</option>
-										</Input>
-			        			</CardBody>
-			        		</Card>
-			        	</div>
+			        	{!this.state.isHidden && <Rubric />}
 			        </Col>
 			      </Row>
 			  	{/* Row Three: Contains -- Student Paper Text; Research Text; and Annotation textbox */}
@@ -169,10 +184,10 @@ class Analyze extends Component{
 			        	<h2>Found Sources</h2>
 			        	<ListGroup id="ResearchList">
 			        		<ListGroupItem id="CiteItem1" tag="button" action onClick={displaySource}>Research One</ListGroupItem>
-			        		<ListGroupItem  id="CiteItem2" tag="button" action onClick={displaySource}>Research Two</ListGroupItem>
-			        		<ListGroupItem  id="CiteItem3" tag="button" action onClick={displaySource}>Research Three</ListGroupItem>
-			        		<ListGroupItem  id="CiteItem4" tag="button" action onClick={displaySource}>Research Four</ListGroupItem>
-			        		<ListGroupItem  id="CiteItem5" tag="button" action onClick={displaySource}>Research Five</ListGroupItem>
+			        		<ListGroupItem id="CiteItem2" tag="button" action onClick={displaySource}>Research Two</ListGroupItem>
+			        		<ListGroupItem id="CiteItem3" tag="button" action onClick={displaySource}>Research Three</ListGroupItem>
+			        		<ListGroupItem id="CiteItem4" tag="button" action onClick={displaySource}>Research Four</ListGroupItem>
+			        		<ListGroupItem id="CiteItem5" tag="button" action onClick={displaySource}>Research Five</ListGroupItem>
 			        	</ListGroup>
 			        </Col>
 			        <Col xs="6">
@@ -188,7 +203,7 @@ class Analyze extends Component{
 			        	<div class="anno-contain">
 				        	<h2> Annotation Box </h2>
 				        	<Input type="textarea" name="annotation" id="curAnno" />
-				        	<Button id="rubricButton">Rubric</Button>
+				        	<Button id="rubricButton" onClick={this.toggleHidden.bind(this)}>Rubric</Button>
 				        	<Button color="success" id="finishButton">Finished</Button>
 				        	<Button color="danger" id="cancelButton">Cancel</Button>
 
