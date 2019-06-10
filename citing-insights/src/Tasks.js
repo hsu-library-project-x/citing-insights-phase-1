@@ -19,6 +19,7 @@ function CollapseMain(props){
 		sidebar.classList.remove("collapse-main");
 		sidebar.classList.add("expand-main");
 		for (let i = 0; i < buttons.length; i++){
+			buttons[i].classList.remove("opacityHideAnimation");
 			buttons[i].classList.add("opacityAnimation");
 		}
 		
@@ -26,6 +27,7 @@ function CollapseMain(props){
 	else{
 		for (let i = 0; i < buttons.length; i++){
 			buttons[i].classList.remove("opacityAnimation");
+			buttons[i].classList.add("opacityHideAnimation");
 		}
 		sidebar.classList.remove("expand-main");
 		sidebar.classList.add('collapse-main');
@@ -77,6 +79,13 @@ class Tasks extends Component{
 							<Link to="/tasks/download">
 								<button class="menuButton" id="Download" onClick={this.changeName}>
 									Download
+								</button>
+							</Link>
+						</div>
+						<div class="button-container">
+							<Link to="/tasks/rubric">
+								<button class="menuButton" id="Rubric" onClick={this.changeName}>
+									Rubric
 								</button>
 							</Link>
 						</div>
