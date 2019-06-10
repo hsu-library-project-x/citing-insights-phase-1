@@ -24,7 +24,7 @@ button:hover
   border-radius: 5em;
 }
 
-.title
+h1
 {
   font-weight: bold;
   font-family: "avenir", sans-serif;
@@ -50,7 +50,7 @@ button:hover
   background-repeat: no-repeat;
 }
 
-#welcome_img 
+#welcome_img, #createImage
 {
   border-right: solid #FFAC1D 0.24em; 
   border-top-left-radius: 4.75em;
@@ -64,11 +64,9 @@ button:hover
 {
   height: 82%;
   width: 50%;
-  position: fixed;
   bottom: 0;
   left: 0;
   z-index: -1000;
-  background-position: right;
   background-repeat: no-repeat;
 }
 
@@ -77,24 +75,25 @@ form
 {
   margin-top: 5em;
   color: black;
-  /*background-color: #F7F6E7; */
 }
 
 
-#user, #password
+input[type="text"], input[type="password"], input[type="email"]
 {
-  width: 70% ;
   margin-top: 8px;
   margin-right: 0;
-  margin-left: 5em;
-  padding-left: 0.5em;
+  margin-left: 8.5em;
+  padding-left: 1em;
+  padding-right:1em;
+  padding-top: 0.1em;
+  padding-bottom: 0.1em;
   display: inline-block;
   border: 1px solid grey;
   box-sizing: border-box;
 }
 
 
-#logIn
+.continue
 {
   width:15%;
   border-radius: 2em;
@@ -103,9 +102,11 @@ form
   background-color: #274259;
 }
 
-#Forgot
+.back
 {
   margin-left: 55%;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
   width:15%;
   border-radius: 2em;
   line-height: 0;

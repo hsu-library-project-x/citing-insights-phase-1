@@ -40,19 +40,19 @@ class Login extends Component{
 						</div>
 					</Col>
 					<Col xs="6">					
-						<Form id="login_form" > 
-							<h1 class="title"> Welcome Back! </h1>
+						<Form  > 
+							<h1> Welcome Back! </h1>
 							<FormGroup class="container">
 						      {/* div of class container holds the username, password, and 
 						          Login button. Also has a remember me checkbox. Currently remember me is not
 						      	  functional and Login will just take you to our Demo page*/}
 						        {/* <label for="uname">Username</label> */}
-						        <input type="text" placeholder="Enter Username" name="uname" id="user" required/> <br />
+						        <input type="text" placeholder="Enter Username" name="uname" required/> <br />
 						        {/* <label for="psw">Password</label> */}
-						        <input type="password" placeholder="Enter Password" name="psw" id="password" required/>
+						        <input type="password" placeholder="Enter Password" name="psw" required/>
 						        <br/>
-						        <button id="Forgot" onClick={forgotInfo}>Forgot</button>
-						        <button id="logIn">Login</button>
+						        <button class="back" id="Forgot" onClick={forgotInfo}>Forgot</button>
+						        <button class="continue">Login</button>
 						        <br /> <br />
 						        {/*href placeholder for now */}
 						        <button id="createacnt" color="primary" onClick={createAccount}>Sign Up</button>
@@ -66,20 +66,20 @@ class Login extends Component{
 				<Row>
 					<Col xs="5">
 						<div id="image_container2">
-							<img alt="" src={signup} />
+							<img id="createImage" alt="" src={signup} />
 						</div>
 					</Col>
 					<Col xs="7">
-						<Form>
+						<Form >
 						<h1> Create an Account </h1>
-							<FormGroup>
-								<Input type="email" name="email" placeholder="Enter Email" /> 
-								<Input type="text" name="username" placeholder="Enter Username" />
-								<Input type="password" name="password" placeholder="Enter Password" />
-								<Input type="password" name="confirm_password" placeholder="Confirm Password" />
+							<FormGroup class="container">
+								<input type="email" name="email" placeholder="Enter Email" /> <br />
+								<input type="text" name="uname" placeholder="Enter Username" /><br />
+								<input type="password" name="psw" placeholder="Enter Password" /><br />
+								<input type="password" name="confirm_password" placeholder="Confirm Password" />
 								<br />
-								<Button color="success"> Submit </Button>
-								<Button color="danger" onClick={goBackLogin}> Cancel </Button>
+								<button class="back" color="danger" onClick={goBackLogin}> Cancel </button>
+								<button class="continue" color="success"> Submit </button>
 							</FormGroup>
 						</Form>
 					</Col>
