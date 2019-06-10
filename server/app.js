@@ -20,6 +20,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/cars', cars);
 
+// this code is deprecated
+// we want to ultimately call CitationsController.show
+app.get('/get_citations/:prof/:name', function (req, res) {
+  const data = require('./json/' + req.params.prof + '/' + req.params.name + '.json')
+  res.json(data);
+});
+
 module.exports = app;
 
 
