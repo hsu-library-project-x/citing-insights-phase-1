@@ -46,23 +46,23 @@ class AccountSettings extends Component{
 						<h1> <img class="icon" alt="pencil icon" src={tasks} /> Account Settings </h1>
 						<FormGroup>
 							<label for="uname"> Username </label>
-							<Input id="cur_uname" type="text" placeholder={getUsername()} name="uname" /><br />
+							<input class="uname_change" type="text" placeholder={getUsername()}  /><br />
 							
 							<label for="email"> Email </label>
-							<Input id="cur_email" type="email" placeholder={getEmail()} name="email" /><br />
+							<input id="cur_email" type="email" placeholder={getEmail()} class="email_change" /><br />
 
 							<label for="new_psw"> Change Password </label>
-							<Input id="cur_psw" type="Password" placeholder="New Password" name="new_psw" /><br />
+							<input class="psw_change" type="Password" placeholder="New Password"  /><br />
 
 							<label for="confirm_psw"> Confirm Password </label>
-							<Input type="Password" placeholder="Confirm New Password" name="confirm_psw" /><br />
+							<input class="psw_change" type="Password" placeholder="Confirm New Password"  /><br />
 
-							<label for="check"> Enter current password </label>
-							<Input type="Password" placeholder="Enter old Password" name="check"/><br />
+							<label for="check"> Enter old password </label>
+							<input type="Password" placeholder="Enter old Password" class="change"/><br />
 
-							<Button id="make_changes" color="success">Ok</Button>
-							<Button id="cancel_changes" color="secondary" onClick={goBack}>Cancel</Button>
-							<Button id="delete_account" color="danger" onClick={deleteAccount}>Delete Account </Button>
+							<button class="back" color="secondary" onClick={goBack}>Cancel</button>
+							<button class="continue" color="success">Ok</button>
+							<button class="delete" color="danger" onClick={deleteAccount}>Delete Account </button>
 						</FormGroup>
 					</Form>
 				</Col>

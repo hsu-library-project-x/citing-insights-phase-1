@@ -2,13 +2,17 @@
   background-color: #FFAC1D;
 }
 
-
+p
+{
+  margin-top: 2em;
+}
 #curAnno{
   margin-bottom: .5em;
 }
 
 #finishButton{
-  margin-right: .5em
+  margin-right: .5em;
+  width:40%;
 }
 
 #ResearchList{
@@ -41,4 +45,9 @@ li > a{
 #DemoContents{
   background-color: #F7F6E7;
   margin-top: 2.5%;
+}
+
+#cancelButton
+{
+  width:40%;
 }

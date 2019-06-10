@@ -77,12 +77,16 @@ form
   color: black;
 }
 
+.form-group
+{
+  margin-left: 5em;
+}
 
-input[type="text"], input[type="password"], input[type="email"]
+.email, .uname, .psw
 {
   margin-top: 8px;
   margin-right: 0;
-  margin-left: 8.5em;
+  margin-left: 5em;
   padding-left: 1em;
   padding-right:1em;
   padding-top: 0.1em;
@@ -104,7 +108,7 @@ input[type="text"], input[type="password"], input[type="email"]
 
 .back
 {
-  margin-left: 55%;
+  margin-left: 45%;
   padding-left: 0.5em;
   padding-right: 0.5em;
   width:15%;
@@ -117,7 +121,7 @@ input[type="text"], input[type="password"], input[type="email"]
   color:#274259; 
 }
 
-#createacnt
+.acnt_stuff
 {
   width:45%;
   margin-left: 25%;

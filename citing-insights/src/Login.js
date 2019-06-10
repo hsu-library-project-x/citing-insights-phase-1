@@ -47,15 +47,15 @@ class Login extends Component{
 						          Login button. Also has a remember me checkbox. Currently remember me is not
 						      	  functional and Login will just take you to our Demo page*/}
 						        {/* <label for="uname">Username</label> */}
-						        <input type="text" placeholder="Enter Username" name="uname" required/> <br />
+						        <input type="text" placeholder="Enter Username" class="uname" required/> <br />
 						        {/* <label for="psw">Password</label> */}
-						        <input type="password" placeholder="Enter Password" name="psw" required/>
+						        <input type="password" placeholder="Enter Password" class="psw" required/>
 						        <br/>
-						        <button class="back" id="Forgot" onClick={forgotInfo}>Forgot</button>
+						        <button class="back" onClick={forgotInfo}>Forgot</button>
 						        <button class="continue">Login</button>
 						        <br /> <br />
 						        {/*href placeholder for now */}
-						        <button id="createacnt" color="primary" onClick={createAccount}>Sign Up</button>
+						        <button class="acnt_stuff" color="primary" onClick={createAccount}>Sign Up</button>
 						    </FormGroup>
 					     
 					     </Form>
@@ -73,10 +73,10 @@ class Login extends Component{
 						<Form >
 						<h1> Create an Account </h1>
 							<FormGroup class="container">
-								<input type="email" name="email" placeholder="Enter Email" /> <br />
-								<input type="text" name="uname" placeholder="Enter Username" /><br />
-								<input type="password" name="psw" placeholder="Enter Password" /><br />
-								<input type="password" name="confirm_password" placeholder="Confirm Password" />
+								<input type="email" class="email" placeholder="Enter Email" /> <br />
+								<input type="text" class="uname" placeholder="Enter Username" /><br />
+								<input type="password" class="psw" placeholder="Enter Password" /><br />
+								<input type="password" class="psw" placeholder="Confirm Password" />
 								<br />
 								<button class="back" color="danger" onClick={goBackLogin}> Cancel </button>
 								<button class="continue" color="success"> Submit </button>

@@ -123,7 +123,7 @@ class Analyze extends Component{
 			      <Row>
 			        <Col xs="3">
 			        	<ListGroup id="ResearchList">
-			        		<ListGroupItem id="CiteItem1" tag="button" action onClick={displaySource}>Research One</ListGroupItem>
+			        		<ListGroupItem  id="CiteItem1" tag="button" action onClick={displaySource}>Research One</ListGroupItem>
 			        		<ListGroupItem  id="CiteItem2" tag="button" action onClick={displaySource}>Research Two</ListGroupItem>
 			        		<ListGroupItem  id="CiteItem3" tag="button" action onClick={displaySource}>Research Three</ListGroupItem>
 			        		<ListGroupItem  id="CiteItem4" tag="button" action onClick={displaySource}>Research Four</ListGroupItem>
