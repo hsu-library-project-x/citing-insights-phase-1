@@ -6,6 +6,15 @@ User:
   password: string
 end
 
+
+/*********************
+Rubric:
+  component: array
+  user_id : <ObjectId1> (ref: user);
+end   
+*************************/
+
+
 Classes:
   _id: <ObjectId2> 
   name: string
@@ -20,19 +29,8 @@ end
 
 Paper:
   _id: <ObjectId4>
-  title_author: string            //For now, a way to identify whose paper it is(concatenate title of paper and last name or something) 
-  annotations: [string]
-    
-  /******************************
-  POSSIBLE ALTERNATIVE for annotations:
-  annotations: {
-    annotation: string,
-    citation_id: <ObjectId5> (ref: Citation)
-    //This may not work, seems pretty circular. But the annotations will be linked to a particular citation, so maybe
-    //annotations will become another Collection.
-  }
-  *******************************/
-
+  title: string
+  name: string            //For now, a way to identify whose paper it is(concatenate title of paper and last name or something) 
   assignment_id: <ObjectId3> (ref: Assignment)
 end
 
@@ -48,6 +46,7 @@ Citation:
   pages: string
   type: string
   title: string
+  annotation: string
+  doi: string
   paper_id: <ObjectId4> (ref: Paper);
 end
-
