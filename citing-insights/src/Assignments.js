@@ -8,7 +8,7 @@ import './css/Assignment.css';
 // Class to render our homepage
 class Assignment extends Component{
 	
-
+	
 	render(){
 		return(
 			/* So far our homepage is just a h1 tag with text */

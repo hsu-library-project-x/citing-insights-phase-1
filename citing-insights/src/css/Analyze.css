@@ -2,10 +2,6 @@
   background-color: #FFAC1D;
 }
 
-p
-{
-  margin-top: 2em;
-}
 #curAnno{
   margin-bottom: .5em;
 }
@@ -47,7 +43,33 @@ li > a{
   margin-top: 2.5%;
 }
 
+
 #cancelButton
 {
   width:40%;
+}
+
+.rubricContainer{
+  display: inline-block;
+  padding: 1em;
+}
+
+.card{
+  width: 33%;
+  display:inline-block;
+}
+
+.card-body{
+  padding: 1em;
+  text-align: left;
+}
+
+.card-body > label{
+  width: 100%;
+  text-align: left;
+}
+
+.anno-contain > .btn{
+  margin-top: .5em;
+  margin-bottom: .25em;
 }
