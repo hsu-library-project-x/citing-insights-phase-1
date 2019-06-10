@@ -1,112 +1,112 @@
-var carModel = require('../models/carModel.js');
+var classModel = require('../models/classModel.js');
 
 /**
- * carController.js
+ * classController.js
  *
- * @description :: Server-side logic for managing cars.
+ * @description :: Server-side logic for managing classs.
  */
 module.exports = {
 
     /**
-     * carController.list()
+     * classController.list()
      */
     list: function (req, res) {
-        carModel.find(function (err, cars) {
+        classModel.find(function (err, classs) {
             if (err) {
                 return res.status(500).json({
-                    message: 'Error when getting car.',
+                    message: 'Error when getting class.',
                     error: err
                 });
             }
-            return res.json(cars);
+            return res.json(classs);
         });
     },
 
     /**
-     * carController.show()
+     * classController.show()
      */
     show: function (req, res) {
         var id = req.params.id;
-        carModel.findOne({_id: id}, function (err, car) {
+        classModel.findOne({_id: id}, function (err, class) {
             if (err) {
                 return res.status(500).json({
-                    message: 'Error when getting car.',
+                    message: 'Error when getting class.',
                     error: err
                 });
             }
-            if (!car) {
+            if (!class) {
                 return res.status(404).json({
-                    message: 'No such car'
+                    message: 'No such class'
                 });
             }
-            return res.json(car);
+            return res.json(class);
         });
     },
 
     /**
-     * carController.create()
+     * classController.create()
      */
     create: function (req, res) {
-        var car = new carModel({
-			carDoor : req.body.carDoor,
-			color : req.body.color
+        var class = new classModel({
+			name : req.body.name,
+			user_id : req.body.user_id
 
         });
 
-        car.save(function (err, car) {
+        class.save(function (err, class) {
             if (err) {
                 return res.status(500).json({
-                    message: 'Error when creating car',
+                    message: 'Error when creating class',
                     error: err
                 });
             }
-            return res.status(201).json(car);
+            return res.status(201).json(class);
         });
     },
 
     /**
-     * carController.update()
+     * classController.update()
      */
     update: function (req, res) {
         var id = req.params.id;
-        carModel.findOne({_id: id}, function (err, car) {
+        classModel.findOne({_id: id}, function (err, class) {
             if (err) {
                 return res.status(500).json({
-                    message: 'Error when getting car',
+                    message: 'Error when getting class',
                     error: err
                 });
             }
-            if (!car) {
+            if (!class) {
                 return res.status(404).json({
-                    message: 'No such car'
+                    message: 'No such class'
                 });
             }
 
-            car.carDoor = req.body.carDoor ? req.body.carDoor : car.carDoor;
-			car.color = req.body.color ? req.body.color : car.color;
+            class.name = req.body.name ? req.body.name : class.name;
+			class.user_id = req.body.user_id ? req.body.user_id : class.user_id;
 			
-            car.save(function (err, car) {
+            class.save(function (err, class) {
                 if (err) {
                     return res.status(500).json({
-                        message: 'Error when updating car.',
+                        message: 'Error when updating class.',
                         error: err
                     });
                 }
 
-                return res.json(car);
+                return res.json(class);
             });
         });
     },
 
     /**
-     * carController.remove()
+     * classController.remove()
      */
     remove: function (req, res) {
         var id = req.params.id;
-        carModel.findByIdAndRemove(id, function (err, car) {
+        classModel.findByIdAndRemove(id, function (err, class) {
             if (err) {
                 return res.status(500).json({
-                    message: 'Error when deleting the car.',
+                    message: 'Error when deleting the class.',
                     error: err
                 });
             }
