@@ -4,8 +4,8 @@ import './css/App.css';
 import './css/Analyze.css';
 // This lets us use Jumbotron, Badge, and Progress in HTML from Reactstrap
 //    This is all we are using for now. May import more styling stuff later
-import { ListGroup, ListGroupItem, Button, Input, Jumbotron, Badge, Progress } from 'reactstrap';
-
+import { Label, ListGroup, ListGroupItem, Button, Input, Jumbotron, Badge, Progress } from 'reactstrap';
+import {Card, CardText, CardBody, CardTitle} from 'reactstrap';
 // Lets us use column / row and layout for our webpage using Reactstrap
 import {Row, Col } from 'reactstrap';
 
@@ -95,6 +95,7 @@ class Analyze extends Component{
 			        </Col>
 			        <Col xs="3">
 			          <div class="word-map">
+			         	{/*To be populated by an actual function that grabs the most common words TBD*/}
 			            <Badge color="success" pill>Words</Badge>
 			            <Badge color="success" pill>More Words</Badge>
 			            <Badge color="success" pill>Extra-Words</Badge>
@@ -113,15 +114,59 @@ class Analyze extends Component{
 			          </div>
 			        </Col>
 			      </Row>
-			 	{/* Row Two: Contains Headers for Student Paper Text and Research Text; */}
+			 	{/* Row Two: Contains Rubric on display; */}
 			      <Row>
-			        <Col xs="3"><h2>Found Sources</h2></Col>
-			        <Col xs="6"><h2> Student Paper Block Text </h2></Col>
-			        <Col xs="3"><h2> Annotation Box </h2></Col>
+			        <Col xs="12">
+			        	<div class="rubricContainer">
+			        		<Card>
+			        			<CardBody>
+			        				<CardTitle>Rubric Component</CardTitle>
+									<CardText>Text about what this Rubric Component is goes here</CardText>
+										<Label for="rubricValue">Score</Label>
+										<Input type="select" name="select" id="rubricValue">
+											<option>1</option>
+											<option>2</option>
+											<option>3</option>
+											<option>4</option>
+											<option>5</option>
+										</Input>
+			        			</CardBody>
+			        		</Card>
+			        		<Card>
+			        			<CardBody>
+			        				<CardTitle>Rubric Component</CardTitle>
+									<CardText>Text about what this Rubric Component is goes here</CardText>
+									<Label for="rubricValue">Score</Label>
+										<Input type="select" name="select" id="rubricValue">
+											<option>1</option>
+											<option>2</option>
+											<option>3</option>
+											<option>4</option>
+											<option>5</option>
+										</Input>
+			        			</CardBody>
+			        		</Card>
+			        		<Card>
+			        			<CardBody>
+			        				<CardTitle>Rubric Component</CardTitle>
+									<CardText>Text about what this Rubric Component is goes here</CardText>
+									<Label for="rubricValue">Score</Label>
+										<Input type="select" name="select" id="rubricValue">
+											<option>1</option>
+											<option>2</option>
+											<option>3</option>
+											<option>4</option>
+											<option>5</option>
+										</Input>
+			        			</CardBody>
+			        		</Card>
+			        	</div>
+			        </Col>
 			      </Row>
 			  	{/* Row Three: Contains -- Student Paper Text; Research Text; and Annotation textbox */}
 			      <Row>
 			        <Col xs="3">
+			        	<h2>Found Sources</h2>
 			        	<ListGroup id="ResearchList">
 			        		<ListGroupItem id="CiteItem1" tag="button" action onClick={displaySource}>Research One</ListGroupItem>
 			        		<ListGroupItem  id="CiteItem2" tag="button" action onClick={displaySource}>Research Two</ListGroupItem>
@@ -131,24 +176,28 @@ class Analyze extends Component{
 			        	</ListGroup>
 			        </Col>
 			        <Col xs="6">
-			    {/* Student paper -- eventually to be replaced with JSON object */}
-			        <Jumbotron>
-			          <p id="student">
-			    		Please select a student's paper 
-			          </p></Jumbotron>
+			    		<h2> Student Paper Block Text </h2>
+			        	<Jumbotron>
+			        		{/* Student paper -- eventually to be replaced with JSON object */}
+			          		<p id="student">Please select a student's paper</p>
+			          	</Jumbotron>
 			        </Col>
 
 			    	{/* Textbox for user annotations */}
 			        <Col xs="3">
-			        	<Input type="textarea" name="annotation" id="curAnno" />
-			        	<Button color="success" id="finishButton">Finished</Button>
-			        	<Button color="danger" id="cancelButton">Cancel</Button>
+			        	<div class="anno-contain">
+				        	<h2> Annotation Box </h2>
+				        	<Input type="textarea" name="annotation" id="curAnno" />
+				        	<Button id="rubricButton">Rubric</Button>
+				        	<Button color="success" id="finishButton">Finished</Button>
+				        	<Button color="danger" id="cancelButton">Cancel</Button>
 
-			       		{/* Progress Bar -- Still need to make dynamic */}
+				       		{/* Progress Bar -- Still need to make dynamic */}
 
-			          	<p>Total Assessed: 74%</p>
-			          	<Progress id="progress" value="20" />
-			          	<Button color="warning" id="ProgressTest" onClick={testProgress}> Test Button </Button>
+				          	<p>Total Assessed: 74%</p>
+				          	<Progress id="progress" value="20" />
+				          	<Button color="warning" id="ProgressTest" onClick={testProgress}> Test Button </Button>
+			        	</div>
 			        </Col>
 
 			      </Row>

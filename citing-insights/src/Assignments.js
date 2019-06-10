@@ -8,6 +8,11 @@ import './css/Assignment.css';
 // Class to render our homepage
 class Assignment extends Component{
 	
+	toggleHidden(){
+		this.setState({
+			isHidden: !this.state.isHidden
+		})
+	}
 
 	render(){
 		return(

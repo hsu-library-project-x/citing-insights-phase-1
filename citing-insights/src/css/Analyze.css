@@ -42,3 +42,28 @@ li > a{
   background-color: #F7F6E7;
   margin-top: 2.5%;
 }
+
+.rubricContainer{
+  display: inline-block;
+  padding: 1em;
+}
+
+.card{
+  width: 33%;
+  display:inline-block;
+}
+
+.card-body{
+  padding: 1em;
+  text-align: left;
+}
+
+.card-body > label{
+  width: 100%;
+  text-align: left;
+}
+
+.anno-contain > .btn{
+  margin-top: .5em;
+  margin-bottom: .25em;
+}
