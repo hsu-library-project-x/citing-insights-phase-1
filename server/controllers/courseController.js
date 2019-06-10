@@ -1,112 +1,112 @@
-var classModel = require('../models/classModel.js');
+var courseModel = require('../models/courseModel.js');
 
 /**
- * classController.js
+ * courseController.js
  *
- * @description :: Server-side logic for managing classs.
+ * @description :: Server-side logic for managing courses.
  */
 module.exports = {
 
     /**
-     * classController.list()
+     * courseController.list()
      */
     list: function (req, res) {
-        classModel.find(function (err, classs) {
+        courseModel.find(function (err, courses) {
             if (err) {
                 return res.status(500).json({
-                    message: 'Error when getting class.',
+                    message: 'Error when getting course.',
                     error: err
                 });
             }
-            return res.json(classs);
+            return res.json(courses);
         });
     },
 
     /**
-     * classController.show()
+     * courseController.show()
      */
     show: function (req, res) {
         var id = req.params.id;
-        classModel.findOne({_id: id}, function (err, class) {
+        courseModel.findOne({_id: id}, function (err, course) {
             if (err) {
                 return res.status(500).json({
-                    message: 'Error when getting class.',
+                    message: 'Error when getting course.',
                     error: err
                 });
             }
-            if (!class) {
+            if (!course) {
                 return res.status(404).json({
-                    message: 'No such class'
+                    message: 'No such course'
                 });
             }
-            return res.json(class);
+            return res.json(course);
         });
     },
 
     /**
-     * classController.create()
+     * courseController.create()
      */
     create: function (req, res) {
-        var class = new classModel({
+        var course = new courseModel({
 			name : req.body.name,
 			user_id : req.body.user_id
 
         });
 
-        class.save(function (err, class) {
+        course.save(function (err, course) {
             if (err) {
                 return res.status(500).json({
-                    message: 'Error when creating class',
+                    message: 'Error when creating course',
                     error: err
                 });
             }
-            return res.status(201).json(class);
+            return res.status(201).json(course);
         });
     },
 
     /**
-     * classController.update()
+     * courseController.update()
      */
     update: function (req, res) {
         var id = req.params.id;
-        classModel.findOne({_id: id}, function (err, class) {
+        courseModel.findOne({_id: id}, function (err, course) {
             if (err) {
                 return res.status(500).json({
-                    message: 'Error when getting class',
+                    message: 'Error when getting course',
                     error: err
                 });
             }
-            if (!class) {
+            if (!course) {
                 return res.status(404).json({
-                    message: 'No such class'
+                    message: 'No such course'
                 });
             }
 
-            class.name = req.body.name ? req.body.name : class.name;
-			class.user_id = req.body.user_id ? req.body.user_id : class.user_id;
+            course.name = req.body.name ? req.body.name : course.name;
+			course.user_id = req.body.user_id ? req.body.user_id : course.user_id;
 			
-            class.save(function (err, class) {
+            course.save(function (err, course) {
                 if (err) {
                     return res.status(500).json({
-                        message: 'Error when updating class.',
+                        message: 'Error when updating course.',
                         error: err
                     });
                 }
 
-                return res.json(class);
+                return res.json(course);
             });
         });
     },
 
     /**
-     * classController.remove()
+     * courseController.remove()
      */
     remove: function (req, res) {
         var id = req.params.id;
-        classModel.findByIdAndRemove(id, function (err, class) {
+        courseModel.findByIdAndRemove(id, function (err, course) {
             if (err) {
                 return res.status(500).json({
-                    message: 'Error when deleting the class.',
+                    message: 'Error when deleting the course.',
                     error: err
                 });
             }

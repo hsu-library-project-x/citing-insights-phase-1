@@ -8,7 +8,7 @@ mongoose.connect('mongodb://localhost:27017/test', {useNewUrlParser: true});
 
 var routes = require('./routes/index');
 var users = require('./routes/userRoutes');
-var classes = require('./routes/classRoutes');
+var courses = require('./routes/courseRoutes');
 var assignments = require('./routes/assignmentRoutes');
 var papers = require('./routes/paperRoutes');
 var citations = require('./routes/citationRoutes');
@@ -23,7 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users );
-app.use('/classes', classes);
+app.use('/courses', courses);
 app.use('/assignments', assignments);
 app.use('/papers', papers);
 app.use('/citations', citations);

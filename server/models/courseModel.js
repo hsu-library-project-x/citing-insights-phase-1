@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
 
-var classSchema = new Schema({
+var courseSchema = new Schema({
 	'name' : String,
 	'user_id' : {
 	 	type: Schema.Types.ObjectId,
@@ -9,4 +9,4 @@ var classSchema = new Schema({
 	}
 });
 
-module.exports = mongoose.model('class', classSchema);
+module.exports = mongoose.model('course', courseSchema);
