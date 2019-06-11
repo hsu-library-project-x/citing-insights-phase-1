@@ -1,0 +1,213 @@
+.sidemenu{
+  color: black;
+}
+
+.sidebar{
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+  background-color: #F7F6E7;
+  height: 20em;
+  padding: 2em;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-top: 2.5em;
+  border-radius: 25px;
+  z-index: 100;
+  border: 2px solid #FFAC1D;
+}
+
+.collapse-main{
+  overflow: hidden;
+  animation-name: collapse;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+}
+
+.expand-main{
+  animation-name: expand;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+}
+
+.button-container{
+  display: inline-block;
+  vertical-align: top;
+}
+
+#MainContent{
+  width: 80%;
+}
+
+
+#MainMenuDrop{
+  text-align: left;
+  margin-left: 5%;
+}
+
+
+.menuButton{
+  width: 10em;
+  height: 10em;
+  border-radius: 144px;
+  background-color: #274259;
+  transition: height .25s, background-color .25s, color .25s;
+  vertical-align: top;
+  overflow: hidden;
+  margin-bottom: 2.5em;
+  opacity: 1;
+  color: white;
+  z-index: 100;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.menuButton:hover{
+  height: 15em;
+  opacity: 1;
+  z-index: 100;
+  background-color: #FFAC1D;
+  color: black;
+}
+
+.mainCollapse{
+  text-align: center;
+  height: 3em;
+  width: 3em;
+  border-radius: 50%;
+  background-color: #FFAC1D;
+  z-index: 1000;
+  position: absolute;
+  right: 5%;
+  padding-left: 2.5%;
+  top: 14.9em;
+  padding: .5em;
+}
+
+.miniCircle{
+  height: 2em;
+  width: 2em;
+  border-radius: 50%;
+  z-index: 1001;
+  background-color: #274259;
+}
+
+.opacityAnimation{
+  animation-name: opacityAnimation;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+}
+
+.opacityHideAnimation{
+  opacity: 0;
+  animation-name: opacityHideAnimation;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+}
+@media only screen and (max-width:1054px){
+  .menuButton{
+    width:8em;
+    height:8em;
+  }
+  .sidebar{
+    padding: 1em;
+    height: 16em;
+  }
+
+  .expand-main{
+    animation-name: expandMedium;
+  }
+
+  .collapse-main{
+    overflow: hidden;
+    animation-name: collapseMedium;
+  }
+
+  .menuButton:hover{
+    height: 12em;
+  }
+}
+
+@media only screen and (max-width:870px){
+  .menuButton{
+    width: 5em;
+    height: 5em;
+    
+  }
+
+  .sidebar{
+     height: 12em;
+     padding: 0.5em;
+  }
+
+  .expand-main{
+    animation-name: expandMini;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+  }
+
+  .collapse-main{
+    overflow: hidden;
+    animation-name: collapseMini;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+  }
+
+  .menuButton:hover{
+    height: 8em;
+  }
+}
+
+
+
+@keyframes expand{
+  0% {height: 5.5em; padding: 0;}
+  60% {height: 20em; padding: 2em;}
+  100% {height: 20em; padding: 2em;}
+}
+
+@keyframes collapse{
+  0% {height: 20em; padding: 2em;}
+  60% {height: 5.5em; padding: 0;}
+  100% {height: 5.5em; padding: 0;}
+}
+
+@keyframes expandMedium{
+  0% {height: 2.75em; padding: 0;}
+  60% {height: 16em; padding: 1em;}
+  100% {height: 16em; padding: 1em;}
+}
+
+@keyframes collapseMedium{
+  0% {height: 16em; padding: 1em;}
+  60% {height: 5.5em; padding: 0;}
+  100% {height: 5.5em; padding: 0;}
+}
+
+@keyframes expandMini{
+  0% {height: 5em; padding: 0;}
+  60% {height: 12em; padding: 0.5em;}
+  100% {height: 12em; padding: 0.5em;}
+}
+
+@keyframes collapseMini{
+  0% {height: 12em; padding: 0.5em;}
+  60% {height: 5em; padding: 0;}
+  100% {height: 5em; padding: 0;}
+}
+
+@keyframes opacityAnimation{
+  0% {opacity: 0;}
+  40% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+@keyframes opacityHideAnimation{
+  0% {opacity: 1;}
+  30% {opacity: 0;}
+  100% {opacity: 0;}
+}

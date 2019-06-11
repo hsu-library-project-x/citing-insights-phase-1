@@ -1,0 +1,82 @@
+.navbar{
+  background-color: #FFAC1D;
+}
+
+#curAnno{
+  margin-bottom: .5em;
+}
+
+#finishButton{
+  margin-right: .5em;
+}
+
+#ResearchList{
+  margin-bottom: .5em;
+}
+
+li.nav-item{
+  list-style-type: none;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+li > a{
+  color: white;
+}
+
+#biblio-box{
+  height: 6em;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: 5px; 
+  margin-bottom: 2em;
+  padding: 1em;
+  transition: background-color .25s;
+}
+
+#biblio-box:hover{
+  background-color: rgba(73, 80, 87, .1);
+}
+
+#mainContent{
+  margin-bottom: 6%;
+}
+
+#DemoContents{
+  background-color: #F7F6E7;
+  margin-top: 2.5%;
+}
+
+
+.rubricContainer{
+  display: inline-block;
+  padding: 1em;
+}
+
+.card{
+  width: 33%;
+  display:inline-block;
+}
+
+.card-body{
+  padding: 1em;
+  text-align: left;
+}
+
+.card-body > label{
+  width: 100%;
+  text-align: left;
+}
+
+.analyze-container .btn{
+  margin-top: .75em;
+  margin-bottom: 1em;
+}
+
+.anno-contain > .btn{
+  margin: auto;
+  margin-top: .5em;
+  margin-bottom: .25em;
+  width:100%;
+}
+
+
