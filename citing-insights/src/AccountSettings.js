@@ -7,7 +7,7 @@ import './css/App.css';
 import './css/AccountSettings.css';
 
 //Import Icon
-import tasks from './images/tasks.jpg'
+import tasks from './images/pencil.svg'
 
 //Create functions
 function getUsername(props){
