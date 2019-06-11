@@ -1,0 +1,66 @@
+.hubButton 
+{
+  background-color: #274259;
+  border-radius: 50%;
+  width:8.48375em;
+  height: 8.48375em;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+
+.hubBackground
+{
+  background-color:#F7F6E7;
+  padding-left:1em;
+  padding-right: 1em;
+  padding-top: 4em;
+  padding-bottom:4em;
+  height: 400px;
+  border-radius: 2em;
+  color: #383D3B;
+}
+
+#hub{
+  margin-top: 3em;
+  margin-right: 5em;
+  margin-left: 5em;
+  margin-bottom: 3em;
+}
+
+.hubIcon
+{
+  width:80%;
+}
+
+@media only screen and (max-width: 800px){
+
+  .hubBackground{
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .hubButton 
+  {
+    width:3.69725em;
+    height: 3.69725em;
+    margin: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+
+  .hubIcon
+  {
+    width:50%;
+    height: 50%;
+  }
+
+}
+
+@media only screen and (min-width: 1080px){
+  .hubBackground{
+    width: 275px;
+    margin:auto;
+  }
+}
