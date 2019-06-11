@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import React, { Component } from 'react';
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { Button } from 'reactstrap';
@@ -38,27 +38,8 @@ function LoginForm(props){
 function LogoutForm(props){
   alert("logout");
 }
-class App extends Component {
-  
-  constructor(props){
-    super(props);
-    this.state = {
-      time: "fetch from server"
-    }
-  }
 
-
-  componentDidMount() {
-    this.fetchFromServer();
-  }
-
-  fetchFromServer = () => {
-    fetch('/current_time')
-    .then(res => res.json())
-    .then(data => this.setState({ time: data.time }))
-  }
-
-  render = () => {
+function App() {
   return (
     <div>
       <div class="head">
@@ -67,14 +48,11 @@ class App extends Component {
         <Button color="success" onClick={() => LoginForm()}>Login</Button>
         <Button color="warning" onClick={() => LogoutForm()}>Logout</Button>
       </div>
-
       <div id="id01" class="pop">
-    <p style={{textAlign: "center"}}> {this.state.time} </p> 
         
       </div>
     </div>
   );
-  }
 }
 
 export default App;
