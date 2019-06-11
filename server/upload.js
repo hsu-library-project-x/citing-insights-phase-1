@@ -8,6 +8,7 @@ module.exports = function upload(req, res) {
     // e.g. save it to the database
     // you can access it using file.path
     console.log('received');
+    console.log(file.path);
   })
 
 
