@@ -3,7 +3,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+const upload = require('./upload');
+const cors = require('cors');
 const mongoose = require('mongoose');
+
 mongoose.connect('mongodb://localhost:27017/test', {useNewUrlParser: true});
 
 var routes = require('./routes/index');
@@ -15,11 +18,19 @@ var citations = require('./routes/citationRoutes');
 
 var app = express();
 
+var corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200,
+}
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(cors(corsOptions));
+app.post('/upload', upload);
 
 app.use('/', routes);
 app.use('/users', users );
