@@ -2,6 +2,8 @@
 import React, {Component} from 'react';
 import './css/App.css';
 import './css/Analyze.css';
+import Annotate from './Annotate';
+import Markup from './Markup';
 // This lets us use Jumbotron, Badge, and Progress in HTML from Reactstrap
 //    This is all we are using for now. May import more styling stuff later
 import { Label, ListGroup, ListGroupItem, Button, Input, Jumbotron, Badge, Progress } from 'reactstrap';
@@ -10,8 +12,7 @@ import {Card, CardText, CardBody, CardTitle} from 'reactstrap';
 import {Row, Col } from 'reactstrap';
 
 //Function to dynamically call source material
-function displaySource(props)
-{
+function displaySource(props){
 	//Dynamically get id
 	var source = props.target.id;
 
@@ -54,16 +55,6 @@ function displayPaper(props){
 	//put dynamic call here
 		//eventually this meat ipsum will be replaced by a variable
 	paper.innerHTML = "Spicy jalapeno bacon ipsum dolor amet meatloaf nulla pork belly elit boudin capicola exercitation nostrud consequat cupim alcatra bresaola in. \n Ad fugiat occaecat fatback. Short ribs ball tip excepteur esse in. Exercitation fugiat cupim beef, picanha leberkas nisi porchetta. Landjaeger ground round short loin dolor aliquip kevin quis tail. \n Sed turducken kevin nostrud andouille, ball tip officia mollit in short ribs. Ribeye pastrami pig nulla brisket jerky tenderloin fatback tongue consecteturut commodo short ribs minim. ongue aliquip do lorem dolor. \n Brisket minim pork venison burgdoggen shankle, chuck nulla. Officia fatback commodo pancetta pork loin irure.";
-}
-
-//This function will dynamically change the value in our progress bar 
-function testProgress(props){
-	//get id
-	var bar = document.getElementById("progress").getElementsByClassName("progress-bar");
-	// Change the value in the progress bar --- 
-		//Eventually will change to be dynamically generated
-	bar[0].attributes[2].nodeValue = "75";
-	bar[0].attributes["style"].nodeValue = "width: 75%";
 }
 
 
@@ -119,7 +110,8 @@ class Analyze extends Component{
 	constructor () {
 	    super()
 	    this.state = {
-	      	isHidden: true
+	      	isHidden: true,
+	      	isMarkup: true
 	    }
 	}
 
@@ -129,7 +121,13 @@ class Analyze extends Component{
 		})
 	}
 
-	render(){
+	toggleMarkup(){
+		this.setState({
+			isMarkup: !this.state.isMarkup
+		})
+	}
+
+	render() {
 		return(
 		/* Analyze Mode HTML Start */
 			<div class="DemoContents classes-container">
@@ -138,38 +136,33 @@ class Analyze extends Component{
 			      <Row>
 			        <Col xs="3">
 			          <p>Current Student</p>
-			          <select id="selectedStudent" name="student" onChange={displayPaper}>
-			      {/* These should be automatically generated with AJAX and API */}
-			      		<option value="0">Please Select Student</option>
-			            <option value="1">Kyle</option>
-			            <option value="2">Liz</option>
-			            <option value="3">Mitchel</option>
-			            <option value="4">Cindy</option>
-			            <option value="5">Ben</option>
-			          </select> 
+				         <select id="selectedStudent" name="student" onChange={displayPaper}>
+				     		{/* These should be automatically generated with AJAX and API */}
+				      		<option value="0">Please Select Student</option>
+				            <option value="1">Kyle</option>
+				            <option value="2">Liz</option>
+				            <option value="3">Mitchel</option>
+				            <option value="4">Cindy</option>
+				            <option value="5">Ben</option>
+				         </select> 
+				         <Button id="rubricButton" onClick={this.toggleHidden.bind(this)}>Rubric</Button>
 			        </Col>
 			        <Col xs="6">
 			            <p id="biblio-box">Bibliography Goes Here</p>
 			        </Col>
 			        <Col xs="3">
-			          <div class="word-map">
-			         	{/*To be populated by an actual function that grabs the most common words TBD*/}
-			            <Badge color="success" pill>Words</Badge>
-			            <Badge color="success" pill>More Words</Badge>
-			            <Badge color="success" pill>Extra-Words</Badge>
-			            <Badge color="danger" pill>Firetruck</Badge>
-			            <Badge color="info" pill>Vegan</Badge>
-			            <Badge color="info" pill>Meatball</Badge>
-			            <Badge color="success" pill>Words</Badge>
-			            <Badge color="success" pill>Ribeye</Badge>
-			            <Badge color="success" pill>Cupim</Badge>
-			            <Badge color="success" pill>Beef</Badge>
-			            <Badge color="danger" pill>Broccoli</Badge>
-			            <Badge color="success" pill>Liver</Badge>
-			            <Badge color="info" pill>Kidney</Badge>
-			            <Badge color="success" pill>Form</Badge>
-			            <Badge color="success" pill>Test</Badge>
-			          </div>
+			        	
+			          	<div class="word-map">
+				         	{/*To be populated by an actual function that grabs the most common words TBD*/}
+				           
+				            <Badge color="success" pill>Cupim</Badge>
+				            <Badge color="success" pill>Beef</Badge>
+				            <Badge color="danger" pill>Broccoli</Badge>
+				            <Badge color="success" pill>Liver</Badge>
+				            <Badge color="info" pill>Kidney</Badge>
+				            <Badge color="success" pill>Form</Badge>
+				            <Badge color="success" pill>Test</Badge>
+			          	</div>
 			        </Col>
 			      </Row>
 			 	{/* Row Two: Contains Rubric on display; */}
@@ -197,22 +190,11 @@ class Analyze extends Component{
 			          		<p id="student">Please select a student's paper</p>
 			          	</Jumbotron>
 			        </Col>
-
 			    	{/* Textbox for user annotations */}
 			        <Col xs="3">
-			        	<div class="anno-contain">
-				        	<h2> Annotation Box </h2>
-				        	<Input type="textarea" name="annotation" id="curAnno" />
-				        	<Button id="rubricButton" onClick={this.toggleHidden.bind(this)}>Rubric</Button>
-				        	<Button color="success" id="finishButton">Finished</Button>
-				        	<Button color="danger" id="cancelButton">Cancel</Button>
-				       		{/* Progress Bar -- Still need to make dynamic */}
-				          	<p>Total Assessed: 74%</p>
-				          	<Progress id="progress" value="20" />
-				          	<Button color="warning" id="ProgressTest" onClick={testProgress}> Test Button </Button>
-			        	</div>
+			        	<Button onClick={this.toggleMarkup.bind(this)}>Markup Inline Citations</Button>
+			        	{(!this.state.isMarkup) ? <Annotate /> : <Markup />}
 			        </Col>
-
 			      </Row>
 		    </div>
 		);

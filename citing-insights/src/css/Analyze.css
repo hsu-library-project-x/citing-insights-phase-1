@@ -67,9 +67,16 @@ li > a{
   text-align: left;
 }
 
+.classes-container .btn{
+  margin-top: .75em;
+  margin-bottom: 1em;
+}
+
 .anno-contain > .btn{
+  margin: auto;
   margin-top: .5em;
   margin-bottom: .25em;
-  width:40%;
+  width:100%;
 }
+
 

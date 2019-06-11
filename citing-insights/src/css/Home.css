@@ -19,9 +19,7 @@
   padding-top: 4em;
   padding-bottom:4em;
   height: 400px;
-  width: 275px;
   border-radius: 2em;
-  margin-left: 2em;
   color: #383D3B;
 }
 
@@ -39,11 +37,17 @@
 
 @media only screen and (max-width: 800px){
 
-
-   .hubButton 
+  .hubBackground{
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .hubButton 
   {
     width:3.69725em;
     height: 3.69725em;
+    margin: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
   }
 
   .hubIcon
@@ -52,4 +56,11 @@
     height: 50%;
   }
 
+}
+
+@media only screen and (min-width: 1080px){
+  .hubBackground{
+    width: 275px;
+    margin:auto;
+  }
 }
