@@ -37,6 +37,10 @@ li > a{
   background-color: rgba(73, 80, 87, .1);
 }
 
+#mainContent{
+  margin-bottom: 6%;
+}
+
 #DemoContents{
   background-color: #F7F6E7;
   margin-top: 2.5%;

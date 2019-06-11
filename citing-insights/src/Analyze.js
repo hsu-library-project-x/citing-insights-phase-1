@@ -206,9 +206,7 @@ class Analyze extends Component{
 				        	<Button id="rubricButton" onClick={this.toggleHidden.bind(this)}>Rubric</Button>
 				        	<Button color="success" id="finishButton">Finished</Button>
 				        	<Button color="danger" id="cancelButton">Cancel</Button>
-
 				       		{/* Progress Bar -- Still need to make dynamic */}
-
 				          	<p>Total Assessed: 74%</p>
 				          	<Progress id="progress" value="20" />
 				          	<Button color="warning" id="ProgressTest" onClick={testProgress}> Test Button </Button>
