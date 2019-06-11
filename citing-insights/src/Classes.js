@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
+import {Row, Col, Form, FormGroup, Input, Label, Button} from 'reactstrap'
 import './css/App.css';
+import './css/Classes.css'
 
 
 
@@ -9,8 +11,27 @@ class Classes extends Component{
 		return(
 			/* So far our homepage is just a h1 tag with text */
 			<div class="classes-container">
-				<h1>Hey you made a classes page!</h1>
+			<Row>
+				
+				<Col xs="6">
+					<h2>New Class</h2>
+					<Form>
+						<FormGroup>
+							<Label for="className">Class Name</Label>
+							<Input type="text" id="className" name="ClassName" placeholder="Type class name here"/>
+							<Label for="classNotes">Notes: </Label>
+							<Input type="textarea" id="classNotes" name="ClassNotes" placeholder="Optional Notes on the class" />
+						</FormGroup> 
+						<FormGroup>
+							<Button>Ok</Button>
+							<Button>Cancel</Button>
+						</FormGroup>
+					</Form>
+				</Col>
+				<Col xs="6"></Col>
+			</Row>
 			</div>
+
 		);
 	}
 }
