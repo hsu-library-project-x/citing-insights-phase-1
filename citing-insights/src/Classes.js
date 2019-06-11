@@ -28,7 +28,9 @@ class Classes extends Component{
 						</FormGroup>
 					</Form>
 				</Col>
-				<Col xs="6"></Col>
+				<Col xs="6">
+					{/*Populate Element here with existing Classes through an API call*/}
+				</Col>
 			</Row>
 			</div>
 

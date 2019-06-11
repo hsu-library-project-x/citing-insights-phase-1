@@ -130,7 +130,7 @@ class Analyze extends Component{
 	render() {
 		return(
 		/* Analyze Mode HTML Start */
-			<div class="DemoContents classes-container">
+			<div class="DemoContents analyze-container">
 			{/* One Giant container that will let us use rows / columns */}
 			 	{/* Row One: Contains -- Student Paper Drop Down; Works Cited Bibliogrpahy; and Word Map Feature  */}
 			      <Row>
