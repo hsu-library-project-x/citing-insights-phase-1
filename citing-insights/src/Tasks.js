@@ -85,7 +85,7 @@ class Tasks extends Component{
 						<div class="button-container">
 							<Link to="/tasks/rubric">
 								<button class="menuButton" id="Rubric" onClick={this.changeName}>
-									Rubric
+									Edit Rubrics
 								</button>
 							</Link>
 						</div>

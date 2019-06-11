@@ -8,7 +8,7 @@ class Markup extends Component {
   render() {
     return(
     	<div class="markup-container">
-    		<h2>Load Markup Component here: </h2>
+    		<p>Load Markup Component here: </p>
     		<p>This component allows faculty and staff to select and mark intext citations</p>
 	    	
 		</div>
