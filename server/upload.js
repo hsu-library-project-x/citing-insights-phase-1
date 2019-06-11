@@ -10,9 +10,6 @@ module.exports = function upload(req, res) {
     console.log('received');
   })
 
-  form.on('fileBegin', function(name, file) {
-    console.log('starting');
-  });
 
   form.on('end', () => {
     res.json()
