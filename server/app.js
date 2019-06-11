@@ -18,6 +18,9 @@ var citations = require('./routes/citationRoutes');
 
 var app = express();
 
+//this line is just for the file uypload test
+app.engine('html', require('ejs').renderFile);
+
 var corsOptions = {
   origin: '*',
   optionsSuccessStatus: 200,
@@ -39,7 +42,10 @@ app.use('/assignments', assignments);
 app.use('/papers', papers);
 app.use('/citations', citations);
 
-
+// this delivers a test uploader page
+app.get('/file_upload', function (req, res) {
+  res.render('test.html');
+})
 
 // this code is deprecated
 // we want to ultimately call CitationsController.show
