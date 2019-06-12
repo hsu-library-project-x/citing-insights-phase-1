@@ -168,4 +168,19 @@ button:hover
  {
    height: 122%;
  }
+
+ .continue, .back
+ {
+  width:30%;
+ }
+
+ .back
+ {
+  margin-left: 20%;
+ }
+
+ .email, .uname, .psw
+ {
+  width:95%;
+ }
 }
