@@ -120,7 +120,7 @@ span.psw
 
 
 .analyze-container{
-  padding-top: 5em;
+  padding-top: 2em;
   background-color: #F7F6E7;
   width: 100%;
   color: black;
@@ -133,6 +133,7 @@ span.psw
   padding-left: 2em;
   padding-right: 2em;
   padding-bottom: 2em;
+  text-align: left;
 }
 
 

@@ -16,6 +16,10 @@
   border: 2px solid #FFAC1D;
 }
 
+.sidebar img{
+  margin-bottom: 1em;
+}
+
 .collapse-main{
   overflow: hidden;
   animation-name: collapse;
