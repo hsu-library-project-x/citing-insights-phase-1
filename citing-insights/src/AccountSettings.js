@@ -42,29 +42,31 @@ class AccountSettings extends Component{
 			<Row>
 				<Col xs="1"></Col>
 				<Col xs="10">
-					<Form id="user_settings">
-						<h1> <img class="icon" alt="pencil icon" src={tasks} /> Account Settings </h1>
-						<FormGroup>
-							<label for="uname"> Username </label>
-							<input class="uname_change" type="text" placeholder={getUsername()}  /><br />
-							
-							<label for="email"> Email </label>
-							<input id="cur_email" type="email" placeholder={getEmail()} class="email_change" /><br />
+					<div class="settings_form">
+						<Form>
+							<h1> <img class="icon" alt="pencil icon" src={tasks} /> Account Settings </h1>
+							<FormGroup>
+								<label for="uname"> Username </label>
+								<input class="uname_change" type="text" placeholder={getUsername()}  /><br />
+								
+								<label for="email"> Email </label>
+								<input id="cur_email" type="email" placeholder={getEmail()} class="email_change" /><br />
 
-							<label for="new_psw"> Change Password </label>
-							<input class="psw_change" type="Password" placeholder="New Password"  /><br />
+								<label for="new_psw"> Change Password </label>
+								<input class="psw_change" type="Password" placeholder="New Password"  /><br />
 
-							<label for="confirm_psw"> Confirm Password </label>
-							<input class="psw_change" type="Password" placeholder="Confirm New Password"  /><br />
+								<label for="confirm_psw"> Confirm Password </label>
+								<input class="psw_change" type="Password" placeholder="Confirm New Password"  /><br />
 
-							<label for="check"> Enter old password </label>
-							<input type="Password" placeholder="Enter old Password" class="change"/><br />
+								<label for="check"> Enter old password </label>
+								<input type="Password" placeholder="Enter old Password" class="change"/><br />
 
-							<button class="back" color="secondary" onClick={goBack}>Cancel</button>
-							<button class="continue" color="success">Ok</button>
-							<button class="delete" color="danger" onClick={deleteAccount}>Delete Account </button>
-						</FormGroup>
-					</Form>
+								<button class="back" onClick={goBack}>Cancel</button>
+								<button class="continue">Ok</button>
+								<button class="delete" color="danger" onClick={deleteAccount}>Delete Account </button>
+							</FormGroup>
+						</Form>
+					</div>
 				</Col>
 				<Col xs="1"></Col>
 			</Row>

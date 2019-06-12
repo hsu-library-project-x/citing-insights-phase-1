@@ -1,4 +1,14 @@
-h1
+.settings_form > form 
+{
+	color: #274259;
+	margin-top: 3em;
+	padding: 1em;
+	background-color: #F7F6E7;
+	border-radius: 2em;
+	text-align: center;
+}
+
+.settings_form > form > h1
 {
 	padding-bottom: 0.5em;
 	padding-top: 0.5em;
@@ -9,15 +19,6 @@ h1
 {
 	max-width: 50px;
 	max-height: 50px;
-}
-
-#user_settings
-{
-	margin-top: 3em;
-	padding: 1em;
-	background-color: #F7F6E7;
-	border-radius: 2em;
-	text-align: center;
 }
 
 .uname_change, .psw_change, .email_change, .change
@@ -31,30 +32,6 @@ label
 {
 	text-align: right;
 	margin-right: 1em;
-}
-
-#make_changes
-{
-	width:10%;
-	margin-left: 55%;
-	margin-top: 1em;
-	border-radius: 2em;
-	background-color: #FFAC1D;
-	border:none;
-}
-
-#cancel_changes
-{
-	width:10%;
-	margin-top: 1em;
-	border-radius: 2em;
-}
-
-#delete_account
-{
-	margin-top: 4em;
-	margin-left: 70%;
-	width: 30%;
 }
 
 .delete
