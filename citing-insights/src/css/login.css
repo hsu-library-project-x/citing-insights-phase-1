@@ -43,7 +43,6 @@ h1
 {
   height: 82%;
   width: 50%;
-  /*position: fixed;*/
   bottom: 0;
   left: 0;
   z-index: -1000;
@@ -96,7 +95,6 @@ form
   box-sizing: border-box;
 }
 
-
 .continue
 {
   width:15%;
@@ -104,7 +102,7 @@ form
   line-height: 0;
   margin-top: 1em;
   background-color: #274259;
-   padding-left: 0.1em;
+  padding-left: 0.1em;
   padding-right: 0.1em;
 }
 
@@ -138,4 +136,18 @@ form
   display: none;
 }
 
-/*995px*/
+@media only screen and (max-width:995px){
+
+  #image_container
+  {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+
+
+
+
+  
+}
+

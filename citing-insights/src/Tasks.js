@@ -47,13 +47,12 @@ function CollapseMain(props){
 // Class to render our homepage
 class Tasks extends Component{
 
-	// ---------WHAT DOES THIS DO
+	// This changes the page title to correspond to what was clicked
 	changeName(evt){
 		const id = evt.target.getAttribute("id");
 		let head = document.getElementById("headTitle");
 		head.innerHTML = id;
 	}
-	//----------------------------------------------
 
 	render(){
 		return(

@@ -9,9 +9,8 @@ import {Row, Col, Form, FormGroup} from 'reactstrap';
 import './css/App.css';
 import './css/login.css';
 
-//import pictures
-import login from './images/handXs.jpg';
-import signup from './images/createAccountLg.jpg';
+//import picture
+import login from './images/UniversityCenterLG.jpg';
 
 
 function createAccount(props){
@@ -66,7 +65,7 @@ class Login extends Component{
 				<Row>
 					<Col xs="5">
 						<div id="image_container2">
-							<img id="createImage" alt="" src={signup} />
+							<img id="createImage" alt="" src={login} />
 						</div>
 					</Col>
 					<Col xs="7">
