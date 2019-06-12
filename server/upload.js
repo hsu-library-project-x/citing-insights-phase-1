@@ -2,6 +2,10 @@ const IncomingForm = require('formidable').IncomingForm;
 const mongoose = require('mongoose');
 const fs = require('fs');
 const shell = require('shelljs')
+
+var paperModel = require('./models/paperModel.js');
+
+
 module.exports = function upload(req, res) {
 
   console.log('goin into it');
@@ -26,7 +30,20 @@ module.exports = function upload(req, res) {
       shell.exec('gs -sDEVICE=txtwrite -o output.txt ' + file.path);
 
       //the replace functions just get rid of carriage returns
-      res.json(JSON.stringify({ "raw": fs.readFileSync('output.txt').toString().replace(/\r+/g, "").replace(/\n+/g, "") }));  
+      var raw_text = { "body": fs.readFileSync('output.txt').toString().replace(/\r+/g, "").replace(/\n+/g, ""), "title" : null, "name": null };  
+
+      var paper = new paperModel(raw_text);
+
+      paper.save(function (err, paper) {
+        if (err) {
+          return res.status(500).json({
+            message: 'Error when creating paper',
+            error: err
+          });
+        }
+        return res.status(201).json(paper);
+      });
+
     })
     .on('end', () => {
       console.log('ending');
