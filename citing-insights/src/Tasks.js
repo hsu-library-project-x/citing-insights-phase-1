@@ -49,7 +49,7 @@ class Tasks extends Component{
 
 	// This changes the page title to correspond to what was clicked
 	changeName(evt){
-		const id = evt.target.getAttribute("id");
+		const id = evt.target.id;
 		let head = document.getElementById("headTitle");
 		head.innerHTML = id;
 	}
@@ -57,50 +57,48 @@ class Tasks extends Component{
 	render(){
 		return(
 			<div id="MainContainer">
-				
 				<div class="mainCollapse">
 					<div class="miniCircle" onClick={CollapseMain}></div>
 				</div>
-
 				<HashRouter>
 					<div class="sidebar" id="SideBar">
 						<h1 class="head-1 head-2" id="headTitle">Tasks</h1>
 						<div class="button-container">
 							<Link to="/tasks/classes">
-								<button class="menuButton" id="Class" onClick={this.changeName}>
-								<img alt="classesIcon" src={addClass} />
+								<button class="menuButton" onClick={this.changeName}>
+								<img alt="classesIcon" id="Class" src={addClass} />
 									Manage Courses
 								</button>
 							</Link>
 						</div>
 						<div class="button-container">
 							<Link to="/tasks/assignments">
-								<button class="menuButton" id="Assignments" onClick={this.changeName}>
-								<img alt="assignmentIcon" src={addAssignment} />
+								<button class="menuButton" onClick={this.changeName}>
+								<img alt="assignmentIcon" id="Assignments" src={addAssignment} />
 									Manage Assignments
 								</button>
 							</Link>
 						</div>
 						<div class="button-container">
 							<Link to="/tasks/continue">
-								<button class="menuButton" id="Analyze" onClick={this.changeName}>
-								<img alt="continueIcon" src={Continue} />
+								<button class="menuButton" onClick={this.changeName}>
+								<img alt="continueIcon" id="Analyze" src={Continue} />
 									Continue
 								</button>
 							</Link>
 						</div>
 						<div class="button-container">
 							<Link to="/tasks/download">
-								<button class="menuButton" id="Download" onClick={this.changeName}>
-								<img alt="downloadIcon" src={download} />
+								<button class="menuButton" onClick={this.changeName}>
+								<img alt="downloadIcon" id="Download" src={download} />
 									Download
 								</button>
 							</Link>
 						</div>
 						<div class="button-container">
 							<Link to="/tasks/rubric">
-								<button class="menuButton" id="Rubric" onClick={this.changeName}>
-								<img alt="rubricIcon" src={rubric} />
+								<button class="menuButton" onClick={this.changeName}>
+								<img alt="rubricIcon" id="Rubric" src={rubric} />
 									Manage Rubrics
 								</button>
 							</Link>
