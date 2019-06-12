@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Label, ListGroup, ListGroupItem, Button, Input, Jumbotron, Badge, Progress } from 'reactstrap';
+import { Button, Input, Progress } from 'reactstrap';
 
 //This function will dynamically change the value in our progress bar 
 function testProgress(props){

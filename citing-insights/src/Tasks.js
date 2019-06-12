@@ -69,7 +69,7 @@ class Tasks extends Component{
 						<div class="button-container">
 							<Link to="/tasks/classes">
 								<button class="menuButton" id="Class" onClick={this.changeName}>
-								<img src={addClass} />
+								<img alt="classesIcon" src={addClass} />
 									Manage Courses
 								</button>
 							</Link>
@@ -77,7 +77,7 @@ class Tasks extends Component{
 						<div class="button-container">
 							<Link to="/tasks/assignments">
 								<button class="menuButton" id="Assignments" onClick={this.changeName}>
-								<img src={addAssignment} />
+								<img alt="assignmentIcon" src={addAssignment} />
 									Manage Assignments
 								</button>
 							</Link>
@@ -85,7 +85,7 @@ class Tasks extends Component{
 						<div class="button-container">
 							<Link to="/tasks/continue">
 								<button class="menuButton" id="Analyze" onClick={this.changeName}>
-								<img src={Continue} />
+								<img alt="continueIcon" src={Continue} />
 									Continue
 								</button>
 							</Link>
@@ -93,7 +93,7 @@ class Tasks extends Component{
 						<div class="button-container">
 							<Link to="/tasks/download">
 								<button class="menuButton" id="Download" onClick={this.changeName}>
-								<img src={download} />
+								<img alt="downloadIcon" src={download} />
 									Download
 								</button>
 							</Link>
@@ -101,7 +101,7 @@ class Tasks extends Component{
 						<div class="button-container">
 							<Link to="/tasks/rubric">
 								<button class="menuButton" id="Rubric" onClick={this.changeName}>
-								<img src={rubric} />
+								<img alt="rubricIcon" src={rubric} />
 									Manage Rubrics
 								</button>
 							</Link>

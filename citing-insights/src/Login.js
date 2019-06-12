@@ -5,7 +5,7 @@ import React, {Component} from 'react';
 
 // Button,Container, Row, Col are all Reactrap elements that we are 
 //     going to use for our login
-import {Row, Col, Button, Form, FormGroup, Input} from 'reactstrap';
+import {Row, Col, Form, FormGroup} from 'reactstrap';
 import './css/App.css';
 import './css/login.css';
 

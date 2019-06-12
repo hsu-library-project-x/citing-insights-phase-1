@@ -1,6 +1,6 @@
 //Imprort Libraries that we need
 import React, {Component} from 'react';
-import {Form, FormGroup, Input,Button, Row, Col} from 'reactstrap';
+import {Form, FormGroup, Row, Col} from 'reactstrap';
 
 //Import CSS
 import './css/App.css';

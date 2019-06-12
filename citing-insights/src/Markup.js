@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Label, ListGroup, ListGroupItem, Button, Input, Jumbotron, Badge, Progress } from 'reactstrap';
 
 
 class Markup extends Component {
