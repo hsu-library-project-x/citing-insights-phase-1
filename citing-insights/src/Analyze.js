@@ -195,7 +195,7 @@ class Analyze extends Component{
 			          		<p id="student">Please select a student's paper</p>
 			          		
 			          	</Jumbotron>
-			          	<Button onClick={this.toggleMarkup.bind(this)}>Markup Inline Citations</Button>
+			          	<Button onClick={this.toggleMarkup.bind(this)}>Switch Markup/Annotate</Button>
 			        		{(!this.state.isMarkup) ? <Annotate /> : <Markup />}
 			        </Col>
 			        <Col xs="3">
@@ -216,7 +216,7 @@ class Analyze extends Component{
 					      	<Progress id="assignmentProgress" value="0" />
 				      	</div>
 				      	<Button color="success" id="paperDone" onClick={testProgress}> Save Paper </Button>
-
+				      	<Button id="nextPaper"> Next Paper > </Button>
 			        </Col>
 			    </Row>
 		    </div>
