@@ -119,38 +119,40 @@ class Assignment extends Component{
 					<Col xs="2">
 					</Col>
 					<Col xs="8">
-						<Form>
-							<FormGroup>
-								<Label for="selectClass">Select Class</Label>
-								<Input type="select" id="selectClass" name="class" required>
-									<option></option>
-							        <option value="1">Class: 1</option>
-							        <option value="2">Class: 2</option>
-							        <option value="3">Class: 3</option>
-							        <option value="4">Class: 4</option>
-							        <option value="5">Class: 5</option>
-							    </Input>
-							</FormGroup>
-							<div className="Upload">
-        						<span className="Title">Upload Files</span>
-        						<div className="Content">
-          							<div>
-            							<Dropzone onFilesAdded={this.onFilesAdded} disabled={this.state.uploading || this.state.successfullUploaded}/>
-          							</div>
-          							<div className="Files">
-            							{this.state.files.map(file => {
-							              	return (
-								                <div key={file.name} className="Row">
-								                  	<span className="Filename">{file.name}</span>
-								                  	{this.renderProgress(file)}
-								                </div>
-							              	);
-							            })}
-							        </div>
-							    </div>
-							    <div className="Actions">{this.renderActions()}</div>
-							</div>
-						</Form>
+						<div class="assignment_form">
+							<Form>
+								<FormGroup>
+									<Label for="selectClass">Select Class</Label>
+									<Input type="select" id="selectClass" name="class" required>
+										<option></option>
+								        <option value="1">Class: 1</option>
+								        <option value="2">Class: 2</option>
+								        <option value="3">Class: 3</option>
+								        <option value="4">Class: 4</option>
+								        <option value="5">Class: 5</option>
+								    </Input>
+								</FormGroup>
+								<div className="Upload">
+	        						<span className="Title">Upload Files</span>
+	        						<div className="Content">
+	          							<div>
+	            							<Dropzone onFilesAdded={this.onFilesAdded} disabled={this.state.uploading || this.state.successfullUploaded}/>
+	          							</div>
+	          							<div className="Files">
+	            							{this.state.files.map(file => {
+								              	return (
+									                <div key={file.name} className="Row">
+									                  	<span className="Filename">{file.name}</span>
+									                  	{this.renderProgress(file)}
+									                </div>
+								              	);
+								            })}
+								        </div>
+								    </div>
+								    <div className="Actions">{this.renderActions()}</div>
+								</div>
+							</Form>
+						</div>
 					</Col>
 					<Col xs="2">
 					</Col>

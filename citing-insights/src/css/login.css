@@ -24,7 +24,7 @@ button:hover
   border-radius: 5em;
 }
 
-h1
+.beside_picture > form > h1
 {
   font-weight: bold;
   font-family: "avenir", sans-serif;
@@ -54,7 +54,7 @@ h1
   border-right: solid #FFAC1D 0.24em; 
   border-top-left-radius: 4.75em;
   border-bottom-left-radius:4.75em;
-  width:600px;
+  width:250%;
   margin-left: -1em;
   padding-left: 0;
 }
@@ -69,23 +69,24 @@ h1
   background-repeat: no-repeat;
 }
 
-
-form
+.beside_picture
 {
-  margin-top: 5em;
+  margin-left: 1em;
+}
+
+.beside_picture > form
+{
+  margin-top: 1em;
   color: black;
+  margin-left: 0;
+  margin-right: 0;
+  font-size: 90%;
 }
 
-.form-group
-{
-  margin-left: 5em;
-}
 
 .email, .uname, .psw
 {
-  margin-top: 8px;
-  margin-right: 0;
-  margin-left: 5em;
+  margin-top: 0.5em;
   padding-left: 1em;
   padding-right:1em;
   padding-top: 0.1em;
@@ -136,18 +137,35 @@ form
   display: none;
 }
 
-@media only screen and (max-width:995px){
 
-  #image_container
-  {
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-  }
-
-
-
-
-  
+@media only screen and (max-width:992px){
+/*.form-group
+{
+  margin-bottom: 0;
 }
 
+.acnt_stuff
+{
+  margin-top: 0;
+}
+  
+.beside_picture > form
+{
+  margin-top: 0;
+  font-size: 75%;
+}
+
+.beside_picture > form > h1
+{
+  margin-bottom: 0;
+}
+}
+
+
+@media only screen and (max-width:767px)
+{*/
+  #welcome_img, #createImage
+ {
+   height: 122%;
+ }
+}
