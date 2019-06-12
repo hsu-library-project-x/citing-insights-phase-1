@@ -11,7 +11,7 @@ import './css/login.css';
 
 //import pictures
 import login from './images/handXs.jpg';
-import signup from './images/yakMed.jpg';
+import signup from './images/createAccountLg.jpg';
 
 
 function createAccount(props){

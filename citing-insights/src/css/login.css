@@ -104,13 +104,15 @@ form
   line-height: 0;
   margin-top: 1em;
   background-color: #274259;
+   padding-left: 0.1em;
+  padding-right: 0.1em;
 }
 
 .back
 {
   margin-left: 45%;
-  padding-left: 0.5em;
-  padding-right: 0.5em;
+  padding-left: 0.1em;
+  padding-right: 0.1em;
   width:15%;
   border-radius: 2em;
   line-height: 0;
