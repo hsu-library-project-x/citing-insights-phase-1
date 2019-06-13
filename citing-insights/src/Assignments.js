@@ -60,6 +60,12 @@ class Assignment extends Component{
 	}
 
 	async uploadFiles() {
+		let unit = document.getElementById("selectClass");
+		if(unit.value == ""){
+			alert('Select a Class Please');
+			return;
+		}
+
 	    this.setState({ uploadProgress: {}, uploading: true });
 	    const promises = [];
 	    this.state.files.forEach(file => {
@@ -103,13 +109,15 @@ class Assignment extends Component{
 		    reject(req.response);
 		});
 
-		const formData = new FormData();
-		formData.append("file", file, file.name);
+		let unit = document.getElementById("selectClass");
 
+		const formData = new FormData();
+		formData.append(unit.value, file, file.name);
 		req.open("POST", "http://localhost:5000/upload");
 		req.send(formData);
 	 });
 	}
+
 	render(){	
 		return(
 			/* So far our homepage is just a h1 tag with text */
@@ -121,17 +129,16 @@ class Assignment extends Component{
 					<Col xs="8">
 						<div class="assignment_form">
 							<Form>
-								<FormGroup>
-									<Label for="selectClass">Select Class</Label>
-									<Input type="select" id="selectClass" name="class" required>
-										<option></option>
-								        <option value="1">Class: 1</option>
-								        <option value="2">Class: 2</option>
-								        <option value="3">Class: 3</option>
-								        <option value="4">Class: 4</option>
-								        <option value="5">Class: 5</option>
-								    </Input>
-								</FormGroup>
+								<Label for="selectClass">Select Class</Label>
+								<Input type="select" id="selectClass" name="class" required>
+									<option></option>
+								    <option value="1">Class: 1</option>
+								    <option value="2">Class: 2</option>
+								    <option value="3">Class: 3</option>
+								    <option value="4">Class: 4</option>
+								    <option value="5">Class: 5</option>
+								</Input>
+
 								<div className="Upload">
 	        						<span className="Title">Upload Files</span>
 	        						<div className="Content">
