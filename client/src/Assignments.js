@@ -110,9 +110,11 @@ class Assignment extends Component{
 		});
 
 		let unit = document.getElementById("selectClass");
+		//check if document is a pdf.. if not go to catch statement
+		
 
 		const formData = new FormData();
-		formData.append(unit.value, file, file.name);
+		formData.append("ClassID", file, file.name);
 		req.open("POST", "http://localhost:5000/upload");
 		req.send(formData);
 	 });
