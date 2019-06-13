@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import './css/App.css';
 import './css/Analyze.css';
 import Annotate from './Annotate';
+//maybe rename the componet
 import Markup from './Markup';
 // This lets us use Jumbotron, Badge, and Progress in HTML from Reactstrap
 //    This is all we are using for now. May import more styling stuff later
@@ -69,7 +70,6 @@ function testProgress(props){
 	text.innerHTML = ("Total Assessed: " + nodeVal + "%");
 }
 
-
 const Rubric = () => (
 	<div class="rubricContainer">
 		<Card>
@@ -123,8 +123,55 @@ class Analyze extends Component{
 	    super()
 	    this.state = {
 	      	isHidden: true,
-	      	isMarkup: true
+	      	isMarkup: true,
+	      	uploading: false,
+	      	successfullUpload: false,
+	      	intextExists: false,
+	      	citation: [],
+	      	curHighlight: ""
 	    }
+
+	    this.renderActions = this.renderActions.bind(this);
+	    this.uploadCitation = this.uploadCitation.bind(this);
+	    this.sendRequest = this.sendRequest.bind(this);
+	    this.resetButton = this.resetButton.bind(this);
+	}
+
+	renderActions() {
+	    return (
+	        <button disabled={this.state.intextExists = false || this.state.uploading} onClick={this.uploadCitation}>Submit Intext Citations</button>
+	    );
+	}
+	//might not need this
+	resetButton(){
+		this.setState({successfullUpload: false});
+	}
+
+	async uploadCitation(){
+		let citation = document.getElementById("citationSelect");
+		let text = document.getElementById("highlightText");
+		this.setState.uploading = true;
+		const promise = [];
+		promise.push(this.sendRequest(citation.value, text.value));
+		try {
+	    	this.setState({ successfullUpload: true, uploading: false });
+	  	} catch (e) {
+	    	// Not Production ready! Do some error handling here instead...
+	    	this.setState({ successfullUpload: true, uploading: false });
+	  	}
+
+	}
+
+	sendRequest(citation, text) {
+	 return new Promise((resolve, reject) => {
+		const req = new XMLHttpRequest();
+		const formPackage = [];
+		formPackage.push(citation, text);
+		const formData = new FormData();
+		formData.append("Paper ID", formPackage);
+		req.open("POST", "http://localhost:5000/intextcitation");
+		req.send(formData);
+	 });
 	}
 
 	toggleHidden(){
@@ -196,7 +243,8 @@ class Analyze extends Component{
 			          		
 			          	</Jumbotron>
 			          	<Button onClick={this.toggleMarkup.bind(this)}>Switch Markup/Annotate</Button>
-			        		{(!this.state.isMarkup) ? <Annotate /> : <Markup />}
+			        		{(!this.state.isMarkup) ? <Annotate /> : <div class="markup"><Markup /> <div className="Actions">{this.renderActions()}</div></div>}
+			        	
 			        </Col>
 			        <Col xs="3">
 			        	<h4>Found Sources</h4>

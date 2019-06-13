@@ -33,9 +33,11 @@ class Markup extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			curHighlight: "Highlighted Text shows up here"
+			curHighlight: "Put Highlighted Text Here!"
 		};
+
 		this.setHighlightedText = this.setHighlightedText.bind(this);
+		this.clearCitation = this.clearCitation.bind(this);
 	}
 
 	//function that changes the state of this to be what was highlighted
@@ -44,6 +46,10 @@ class Markup extends Component {
 		this.setState({
 			curHighlight: highlight
 		})
+	}
+
+	clearCitation(){
+		this.setState({curHighlight: ""});
 	}
 
 	//rendering html 
@@ -67,7 +73,7 @@ class Markup extends Component {
 						<option>Source 5</option>
 					</Input>
 					{/* Button to submit In-Text Citation */}
-		    		<Button onClick={testGetTextArea}>Submit In-Text Citation</Button>
+		    		<Button onClick={this.clearCitation}>Clear Text</Button>
 		    	</Form>
 			</div>
     	);
