@@ -11,7 +11,7 @@ import Classes from "./Classes";
 import Assignments from "./Assignments";
 import Download from "./Download";
 import Analyze from "./Analyze";
-
+import RubricEditor from "./RubricEditor";
 //Import Icons
 import addClass from './images/class.svg';
 import addAssignment from './images/assignment.svg';
@@ -64,7 +64,7 @@ class Tasks extends Component{
 					<div class="sidebar" id="SideBar">
 						<h1 class="head-1 head-2" id="headTitle">Tasks</h1>
 						<div class="button-container">
-							<Link to="/tasks/classes">
+							<Link to="/tasks/courses">
 								<button class="menuButton" onClick={this.changeName}>
 								<img alt="classesIcon" id="Class" src={addClass} />
 									Manage Courses
@@ -96,10 +96,10 @@ class Tasks extends Component{
 							</Link>
 						</div>
 						<div class="button-container">
-							<Link to="/tasks/rubric">
+							<Link to="/tasks/rubriceditor">
 								<button class="menuButton" onClick={this.changeName}>
 								<img alt="rubricIcon" id="Rubric" src={rubric} />
-									Manage Rubrics
+									Edit Rubrics
 								</button>
 							</Link>
 						</div>
@@ -107,10 +107,11 @@ class Tasks extends Component{
 				</HashRouter> 
 				<div id="mainContent">
 					<Switch>
-						<Route path="/tasks/classes" component={Classes}/>
+						<Route path="/tasks/courses" component={Classes}/>
 						<Route path="/tasks/assignments" component={Assignments}/>
 						<Route path="/tasks/continue" component={Analyze}/>
 						<Route path="/tasks/download" component={Download}/>
+						<Route path="/tasks/rubriceditor" component={RubricEditor}/>
 					</Switch>
 				</div>
 			</div>
