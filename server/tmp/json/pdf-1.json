@@ -1,0 +1,340 @@
+[
+  {
+    "title": [
+      "Secondary sources are cited like this (Author, 1905, as cited in Citer"
+    ],
+    "date": [
+      "2011"
+    ],
+    "pages": [
+      "6"
+    ],
+    "location": [
+      "These"
+    ],
+    "type": null
+  },
+  {
+    "author": [
+      {
+        "family": "Association",
+        "given": "American Psychological"
+      }
+    ],
+    "date": [
+      "2007"
+    ],
+    "title": [
+      "APA style guide to electronic references"
+    ],
+    "location": [
+      "Washington, D.C"
+    ],
+    "publisher": [
+      "American Psychological Association."
+    ],
+    "type": "book"
+  },
+  {
+    "author": [
+      {
+        "family": "Association",
+        "given": "American Psychological"
+      }
+    ],
+    "date": [
+      "2010"
+    ],
+    "title": [
+      "Publication manual of the American Psychological Association"
+    ],
+    "edition": [
+      "6th"
+    ],
+    "location": [
+      "Washington, D. C"
+    ],
+    "publisher": [
+      "American Psychological Association."
+    ],
+    "type": "book"
+  },
+  {
+    "author": [
+      {
+        "family": "Author",
+        "given": "N.E."
+      }
+    ],
+    "date": [
+      "1999"
+    ],
+    "title": [
+      "How to write a great paper: Thoughts and ruminations from the library"
+    ],
+    "volume": [
+      "39"
+    ],
+    "pages": [
+      "124–133"
+    ],
+    "type": "article-journal",
+    "container-title": [
+      "International Journal of Regular Capitalization"
+    ],
+    "issue": [
+      "2"
+    ]
+  },
+  {
+    "author": [
+      {
+        "family": "Bennett",
+        "given": "M.P."
+      }
+    ],
+    "date": [
+      "1997"
+    ],
+    "title": [
+      "The effect of mirthful laughter on stress and natural killer cell cytotosicity"
+    ],
+    "volume": [
+      "58"
+    ],
+    "pages": [
+      "3553"
+    ],
+    "type": "article-journal",
+    "container-title": [
+      "Dissertation Abstracts International"
+    ],
+    "issue": [
+      "07-B"
+    ]
+  },
+  {
+    "author": [
+      {
+        "family": "Citer",
+        "given": "R."
+      }
+    ],
+    "date": [
+      "2011"
+    ],
+    "title": [
+      "The purpose of life"
+    ],
+    "edition": [
+      "7th"
+    ],
+    "location": [
+      "Boston, MA"
+    ],
+    "publisher": [
+      "McGraw-Hill"
+    ],
+    "type": "book"
+  },
+  {
+    "author": [
+      {
+        "family": "First",
+        "given": "A.B."
+      },
+      {
+        "family": "Second",
+        "given": "C."
+      }
+    ],
+    "date": [
+      "1994"
+    ],
+    "title": [
+      "The funny bone: Discovered in the brain"
+    ],
+    "volume": [
+      "233"
+    ],
+    "pages": [
+      "1040–1132"
+    ],
+    "doi": [
+      "10.1126/science.291.5513.2529a"
+    ],
+    "type": "article-journal",
+    "container-title": [
+      "Science"
+    ],
+    "issue": [
+      "6"
+    ]
+  },
+  {
+    "author": [
+      {
+        "family": "First",
+        "given": "A.B."
+      },
+      {
+        "family": "Second",
+        "given": "C."
+      },
+      {
+        "family": "Third",
+        "given": "D."
+      },
+      {
+        "family": "Fourth",
+        "given": "E.F."
+      }
+    ],
+    "date": [
+      "1984"
+    ],
+    "note": [
+      "Identical twins: Separated at birth."
+    ],
+    "type": null
+  },
+  {
+    "volume": [
+      "44"
+    ],
+    "pages": [
+      "114–155"
+    ],
+    "doi": [
+      "10.1016/j.cell.2010.10.012"
+    ],
+    "type": "article-journal",
+    "container-title": [
+      "The Journal of Cellular Medicine"
+    ],
+    "issue": [
+      "1"
+    ]
+  },
+  {
+    "author": [
+      {
+        "family": "First",
+        "given": "A.B."
+      },
+      {
+        "family": "Second",
+        "given": "C."
+      },
+      {
+        "family": "Third",
+        "given": "D."
+      },
+      {
+        "family": "Fourth",
+        "given": "E.F."
+      },
+      {
+        "family": "Fifth",
+        "given": "G."
+      },
+      {
+        "family": "Sixth",
+        "given": "H.I."
+      },
+      {
+        "family": "Seventh",
+        "given": "J."
+      }
+    ],
+    "date": [
+      "1955"
+    ],
+    "title": [
+      "The perils of Pauline"
+    ],
+    "volume": [
+      "13"
+    ],
+    "pages": [
+      "12–27"
+    ],
+    "doi": [
+      "10.1103/RevModPhys.74.47"
+    ],
+    "type": "article-journal",
+    "container-title": [
+      "The Review of Modern Physiology"
+    ],
+    "issue": [
+      "3"
+    ]
+  },
+  {
+    "author": [
+      {
+        "family": "Marx",
+        "given": "J."
+      },
+      {
+        "family": "Marx",
+        "given": "H."
+      },
+      {
+        "family": "Marx",
+        "given": "A."
+      },
+      {
+        "family": "Marx",
+        "given": "L."
+      }
+    ],
+    "date": [
+      "1984"
+    ],
+    "title": [
+      "Jokes and their relation to the cognitive unconscious"
+    ],
+    "editor": [
+      {
+        "family": "Dopa",
+        "given": "L."
+      },
+      {
+        "family": "Later",
+        "given": "C.U."
+      }
+    ],
+    "container-title": [
+      "Cognitive constraints on communication: Representations and processes"
+    ],
+    "volume": [
+      "2"
+    ],
+    "pages": [
+      "55–86"
+    ],
+    "location": [
+      "Hingham, MA"
+    ],
+    "publisher": [
+      "Reidel"
+    ],
+    "type": "chapter"
+  },
+  {
+    "title": [
+      "New study shows shocking findings"
+    ],
+    "date": [
+      "2001-08-22"
+    ],
+    "pages": [
+      "22 , 48–50"
+    ],
+    "type": "article-journal",
+    "container-title": [
+      "The New York Times"
+    ]
+  }
+]

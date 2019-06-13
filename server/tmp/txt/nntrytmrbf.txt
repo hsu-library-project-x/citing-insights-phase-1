@@ -1,0 +1,249 @@
+            Running head: A SHORT TITLE FOR YOUR PAPER                                 1 
+                                                   
+                                                   
+                                                   
+                                                   
+                                                   
+                                                   
+                                                   
+                                                   
+                          Your Fully Explanatory Title: In About a Dozen Words or So 
+                                        Your Professional Name 
+                                         Upper Iowa University 
+      A SHORT TITLE FOR YOUR PAPER          2 
+                        Abstract 
+      Here, with no indentation at all, summarize your study and its results in 100 to 150 words.  Focus 
+      less on your intentions or the importance of your topic than the work you did and the results you 
+      found.  The truth is that some people never read the full paper; they just read the abstract or 
+      executive summary and use the body of the paper as if it were an extended footnote.  So make 
+      sure this abstract tells the whole story.  This, like everything else in your paper without 
+      exception, is in 12-point Times Roman font, double-spaced, with one-inch margins in all 
+      directions.  Please note that the title “Abstract” (like the title “References” and the title of your 
+      paper) is not bolded.  Only headings, sub-headings, and the rare third-level headings are bolded. 
+          A SHORT TITLE FOR YOUR PAPER                            3 
+                    Your Fully Explanatory Title: In About a Dozen Words or So 
+              Your paper begins right away with an introduction, but without the title “Introduction,” 
+                                   th
+          which is never used in APA.  New to the 6  edition of the Publication Manual, we are putting 
+          two spaces after each sentence.  This is natural for many of us and is a welcomed change from 
+          the previous instruction to leave only one space.  Every page, including the first page, has a short 
+          title at the left and a simple page number, flush right.  On the first page only, that short title is 
+          preceded by “Running head:” All of that is placed within the one-inch margin (i.e., one-half inch 
+          below the top of the paper). 
+              Be sure to use TAB to move to positions such as the right margin, or to make a half-inch 
+          indent.  It is not enough to hit the Space bar over and over until the position looks right.  That is 
+          not robust and any change in the document will disrupt it. 
+              The abstract, main body, and reference sections each begin on a brand new page.  This is 
+          accomplished in Microsoft Word by using Control-Enter.  It is not enough to keep hitting the 
+          Enter key until the page advances, because any change in the document will disrupt that … use 
+          Control-Enter. 
+              However, everything else in the paper stays wherever it is.  For example, if a new 
+          heading or sub-heading appears at the bottom of a page, and it would make sense to just move it 
+          to the next page, do not do so.  Leave it there, no matter how it looks, and never hit Enter twice 
+          to create a blank line.  To make sure these details are handled according to APA rules, some of 
+          the default settings of Microsoft Word have to be over-ridden. 
+                              Preparing Microsoft Word 
+              Under the Home tab at the top of the page, there is a menu item for Paragraph.  Clicking 
+          the arrow in its bottom right corner opens a dialog box with more choices.  On the first page of 
+      A SHORT TITLE FOR YOUR PAPER          4 
+      that dialog box (called Indents and Spacing), select double spacing, and click the box that says, 
+      “Don’t add space between paragraphs of the same style.”  This prevents the software from 
+      making an exception to the double spacing when you hit Enter, which is not allowed in APA.  
+      Later, we will come back to this same location to create “Hanging Indents” in the References 
+      section. 
+         On the second page of that same dialog box (called Line and Page Breaks), clear the box 
+      that is marked, “Widow/Orphan control.”  This prevents the software from moving one or two 
+      lines of text from the bottom of a page onto the next page, to make the document look better.  
+      Keep in mind that it is not the goal of APA format to make the document look nice.  On the 
+      contrary, it is the goal of APA format to make the document look dry, cautious, unadventurous, 
+      credible, and thus authoritative. 
+         The title page requires three elements: the full title of the paper, your formal name, and 
+      your affiliation (Upper Iowa University).  Your instructor may ask for more information, such as 
+      which campus you are at, the due date, or course information.  That is fine, as long as the three 
+      required elements are there.  All that information is centered on the page and appears (at the 
+      bottom of) the top half of the page (more or less centered vertically as well as horizontally). 
+         Remember that everything is double-spaced, without exception, and that there is never a 
+      blank line anywhere (i.e., the ENTER key is not pressed twice in a row). 
+                      In-Text Citations 
+         All research is cited; any idea that you found anywhere is identified as such.  You might 
+      think that this detracts from your work, because you are using other people’s ideas, but that is not 
+      the case.  The fact that your claim comes from a proper source strengthens your argument.  You 
+      are not expected to generate brand new ideas, just to gather ideas together and apply them to new 
+      A SHORT TITLE FOR YOUR PAPER          5 
+      situations. 
+         Every citation in the paper must have a corresponding entry in the reference section at the 
+      end, and nothing that is not cited in the paper may appear in that reference section.  Remember 
+      that the reference section is not a bibliography of related articles or a list of sources that you 
+      claim to have read.  It merely provides the details of the sources you mentioned, so a curious 
+      reader can find them and follow up, if desired. 
+         You can use a signal phrase in your papers or cite at the end of the sentence.  A signal 
+      phrase is an indication to the reader that the writer is referencing a source. For example: Lyttle 
+      (2001) found that Dilbert humor increased the persuasiveness of a business ethics training 
+      exercise.  You can also cite at the end of the sentence: Dilbert humor increased the 
+      persuasiveness of a business ethics training exercise (Lyttle, 2001).   
+      Quotations 
+         If you quote anything at all, even one phrase, then you must include it within quotation 
+      marks and “cite the exact page on which it was found” (Author, 1999, p. 126).  This is one of 
+      many reasons to avoid direct quotes and, instead, paraphrase what you have read in your own 
+      words.  Note that the whole citation appears within the sentence; there is no sentence-ending 
+      period until after the citation.  The helps link the citation to the idea it is supporting. 
+         If 40 or more words are quoted (rarely a good idea for a short paper, since you are being 
+         graded on your contribution to the discussion), they are presented as part of a block.  The 
+         entire quotation is indented one-half inch, instead of using quotation marks (there are no 
+         quotation marks).  The citation in parentheses follows the period at the end of the last 
+         sentence, since there is no ambiguity about what is being documented.  Naturally, 
+         because it is a quote, the citation includes the page(s) on which the quote can be found.  
+      A SHORT TITLE FOR YOUR PAPER          6 
+         (Author, 1999, pp. 128-129) 
+      The next paragraph can begin at the left margin, without any indent, so that it is not confused 
+      with the block quotation above it.  However, as always, do not insert a blank line for spacing. 
+      Authors 
+         Sources by two authors are always cited like this (First & Second, 1994) and sources with 
+      six or more authors are always cited like this (First et al., 1955).  However, sources with three, 
+      four, or five authors are handled differently. 
+         The first time the source is mentioned, all of the authors are listed (First, Second, Third, 
+      & Fourth, 1984).  If and when the same article is mentioned again in the same paper, the 
+      following citation form is used (First et al., 1984). 
+         If the author is an organization, the name of that organization is specified as if it were a 
+      personal author (American Psychological Association, 2010).  If you find a suitable source 
+      without an identifiable author, the citation begins with the first few words of the title (“New 
+      Study Shows,” 2001). 
+         An interview, letter, or other personal communication is cited like this (J. Lyttle, personal 
+      communication, January 31, 2011), and there is no matching entry in the references list.  
+      Secondary Sources 
+         Secondary sources are cited like this (Author, 1905, as cited in Citer, 2011, p. 6).  These 
+      should be used sparingly in academic work, because we should try to read the original source (or 
+      its English translation, at least) and not trust a citer’s interpretation of what the author meant.  
+      Thus, citing your textbook is rarely appropriate.  Unless your textbook is an original source, or 
+      an anthology of sources, it is a secondary source.  It is designed to give you a summary or 
+      overview of the literature.  Anything it discusses should be cited in its footnotes or endnotes, so 
+      A SHORT TITLE FOR YOUR PAPER          7 
+      you can look up the actual source. 
+                        APA Style 
+      Seriation 
+         Seriation is a fancy word for lists.  Lists of words include a comma after every word 
+      except the last one, such as shoes, ships, ceiling wax, cabbages, and kings.  Note the comma after 
+      the word cabbages.  Lists within sentences are identified with small letters and parentheses, as 
+      follows: (a) the first point, (b) the second point, (c) a third one, and (d) the final one.  Lists of 
+      sentences are treated as separate paragraphs.  (Bulleted lists are rarely appropriate, and should 
+      only be used when numbering the items would imply a misleading sense of priority.)  Here is an 
+      example of a list of sentences: 
+         1. Slide your card quickly in and out of the slot. 
+         2. Be sure no one is watching over your shoulder to learn your PIN.  That person could 
+      take your card and use the PIN to gain access to your funds. 
+         3. Enter your PIN. 
+      Numbers 
+         Numbers below 10, such as three or nine, are spelled out in letters unless they are page 
+      numbers.  Numbers higher than nine are rendered as digits, except at the beginning of a sentence. 
+      Apostrophes 
+         In spite of popular misconceptions, an apostrophe is never used to pluralize a word.  
+      Many CEOs have their bios checked by those with MAs in English.  Contractions are not used in 
+      formal writing, and the word it’s should thus never appear.  If you mean it is, write it is.  If you 
+      mean the possessive, it is spelled its.  For example, Upper Iowa University has provided its 
+      students with a flexible education since 1857. 
+      A SHORT TITLE FOR YOUR PAPER          8 
+      Tense 
+         Research is referred to in the past tense: “several authors have pointed out…” instead of 
+      “several authors point out...”  This is typical in the social sciences and unlike the humanities, in 
+      which one might write, “Aristotle takes the opposite position...”  Although the ideas are still 
+      current, the study is in the past.  It is safe to assume that a study that has already been designed, 
+      conducted, analyzed, written up, reviewed, re-written, and then published is a study that has 
+      happened in the past. 
+      Gender 
+         It has been several decades since it was appropriate to write, “Each manager should 
+      check his messages in the morning.”  It is awkward to write, “Each manager should check his or 
+      her messages in the morning,” so this form should be used sparingly.  It is ungrammatical (and 
+      thus unacceptable) to write, “Each manager should check their messages in the morning.”  With 
+      a little thought, we can come up with something clever, such as “Managers should check their 
+      messages in the morning,” or “Each manager should check for messages in the morning.”  In the 
+      same vein, the word server is better than waitperson as a generic replacement for waiter or 
+      waitress.  Of course, if you are referring to one specific person of known gender, it is acceptable 
+      to use gendered language. 
+                      The Reference List 
+         There is a sample reference list at the end of this document, so you can see how the 
+      entries are formatted.  Look very carefully at the placement of commas, spaces, italics, and such 
+      in each case.  These examples must be followed precisely in order to be correct.  There are many 
+      details to consider, but here are some of the basic principles. 
+      Principles 
+      A SHORT TITLE FOR YOUR PAPER          9 
+         References are arranged alphabetically by the family name of the first author.  If there are 
+      multiple authors for one source, the order of those names is not changed to be alphabetical.  
+      Works by the same author are listed chronologically, with the earliest source is mentioned first. 
+         Like everything else, references are double spaced.  They begin at the left margin and any 
+      other lines within the same reference are indented one-half inch.  This is accomplished in 
+      Microsoft Word by selecting “hanging indent” from the drop box under “Special” within the 
+      “Indents and Spacing” page under the main heading of “Paragraph.”  Each reference is made up 
+      of several elements, and the most common cases are described here in some detail.  Consult your 
+      Publication Manual for special or exceptional types of references.  
+      Elements 
+         The first element of a reference is the author’s family name (usually the last name, in 
+      America) followed by the initial(s) of the “first” name(s).  Originally, first names were 
+      abbreviated to disguise the gender of the author and avoid discrimination.  There is a space after 
+      punctuation in APA, so there will be a space between the initials of an author as in Jeremiah, I. 
+      C.  If the author is an organization, its name is listed in full.  When there is a source with no 
+      author, and when that source is suitable for an academic paper, the reference begins with the title 
+      itself. 
+         The second element of a reference is the date, in parentheses, followed by a period.  In 
+      most cases, that is simply the year (2001).  In the case of a monthly periodical or a conference 
+      paper, it includes the year and month (2001, July).  In the case of something like a daily 
+      newspaper, it includes the full date (2001, July 5). 
+         Unless an entire book is being referred to, the third element is the title of the document, 
+      which might be a journal article or book chapter.  Only the first word of the title and subtitle, and 
+          A SHORT TITLE FOR YOUR PAPER                            10 
+          any proper nouns, are capitalized.  No italics or quotation marks are used.  If the reference is to 
+          an entire book, the third element is the title of the publication, discussed below. 
+              In the case of a journal article, the fourth element is its name (the title of the publication).  
+          This is presented in italics with all the important words capitalized.  It is followed by a comma 
+          and the volume number, both of which are also italicized.  The issue number then appears in 
+          parentheses and is not italicized.  There is no space between these elements, so the italicized 
+          volume number seems to almost lean against the parentheses that surround the issue number. 
+              Please note that the APA has a rule about when to mention the issue number, but I 
+          generally invite students to ignore that rule and always report the issue number.  (Students rarely 
+          have enough information to decide if a given journal uses serial pagination, and thus whether the 
+          issue number is necessary.)  The issue number is followed by a non-italicized comma and the 
+          first and last pages of the article.  Each page number is specified in full, such as 131-139 instead 
+          of 131-9.  After the name of the journal, no abbreviations (such as p., pp.. or Vol.) are used. 
+              In the case of a book section, the fourth element is different.  It is the name of the 
+          editor(s), identified by the term (Ed.). or (Eds.).  When referring to a person who is an Editor, an 
+                                                       nd
+          upper case E is used. When referring to an edition, a lower case e is used (2  ed.). 
+              The next element is the name of the book (the title of the publication), which is italicized.  
+          Only the first word of the title and subtitle, and any proper nouns, are capitalized.  Sometimes 
+          there are other details such as an edition number, volume number, or page numbers of a chapter.  
+          These are placed within parentheses at the end of the title.  They are not italicized and are not 
+          separated from the title by a comma, and they are followed by a period.  This whole section is 
+          followed by the place of publication (city and two-letter state), a colon, and a brief form of the 
+          name of the publisher. 
+            A SHORT TITLE FOR YOUR PAPER                                          11 
+            DOI 
+                           th
+                 New to the 6  edition of the Publication Manual, we are using the Digital Object 
+            Identifier (doi) to let our readers know where they can find a copy of the article.  There are 
+            several examples of that in the reference section.  The doi is preferred instead of a “Retrieved 
+            from” statement, which is now recommended only if the content cited is likely to change or be 
+            updated (APA Style Guide, 2007, pp. 2, 10).  There are several examples of using this in the next 
+            section. 
+          A SHORT TITLE FOR YOUR PAPER                            12 
+                                    References 
+          American Psychological Association. (2007). APA style guide to electronic references. 
+              Washington, D.C.: Author. 
+          American Psychological Association. (2010). Publication manual of the American Psychological 
+                       th
+              Association (6  ed.). Washington, D. C.: Author. 
+          Author, N. E. (1999). How to write a great paper: Thoughts and ruminations from the library.  
+              International Journal of Regular Capitalization, 39(2), 124-133. 
+          Bennett, M. P. (1997). The effect of mirthful laughter on stress and natural killer cell 
+              cytotosicity. Dissertation Abstracts International, 58(07-B), 3553. 
+                                 th
+          Citer, R. (2011). The purpose of life (7  ed.). Boston, MA: McGraw-Hill. 
+          First, A. B., & Second, C. (1994). The funny bone: Discovered in the brain. Science, 233(6), 
+              1040-1132. doi: 10.1126/science.291.5513.2529a 
+          First, A. B., Second, C., Third, D., & Fourth, E. F. (1984). Identical twins: Separated at birth. 
+              The Journal of Cellular Medicine, 44(1), 114-155. doi: 10.1016/j.cell.2010.10.012 
+          First, A. B., Second, C., Third, D., Fourth, E. F., Fifth, G., Sixth, H. I., & Seventh, J. (1955). The 
+              perils of Pauline. The Review of Modern Physiology, 13(3), 12-27. doi: 
+              10.1103/RevModPhys.74.47 
+          Marx, J., Marx, H., Marx, A., & Marx, L. (1984). Jokes and their relation to the cognitive 
+              unconscious. In L. Dopa & C. U. Later (Eds.), Cognitive constraints on communication: 
+              Representations and processes (Vol. 2, pp. 55-86). Hingham, MA: Reidel. 
+          New study shows shocking findings. (2001, August 22). The New York Times, pp. 22A, 48-50. 
