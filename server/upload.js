@@ -6,7 +6,6 @@ const shell = require("shelljs")
 var Chance = require("chance");
 var chance = new Chance();
 
-
 var paperModel = require("./models/paperModel.js");
 var citationModel = require("./models/citationModel.js");
 
@@ -28,10 +27,12 @@ module.exports = function upload(req, res) {
     form
         .on("file", (field, file) => {
             console.log("received");
-            console.log(file.path);
 
             // this length be increased if there are collisions
-            var file_name = chance.string({ pool: "abcdefghijklmnopqrstuvwxyz", length: 10 });
+            var file_name = chance.string({
+                pool: "abcdefghijklmnopqrstuvwxyz", 
+                length: 10 
+            });
 
             //Ghostscript strips pdf into raw text
             var txt_path = "./tmp/txt/" + file_name + ".txt"
@@ -39,16 +40,18 @@ module.exports = function upload(req, res) {
 
 
             //the replace functions just get rid of carriage returns
-            var raw_text = { "body": fs.readFileSync(txt_path).toString().replace(/\r+/g, "").replace(/\n+/g, ""), "title": null, "name": null };
-
+            var raw_text = { 
+                "body": fs.readFileSync(txt_path).toString().replace(/\r+/g, "").replace(/\n+/g, ""), 
+                "title": null, 
+                "name": null 
+            };
+            // we actually want to set a variable to see whether or not things happenned successfully
+            var check = true;
+            
+            // instantiate the paper and save to db
             var paper = new paperModel(raw_text);
 
-            console.log("paper id: " + paper.id);
-
-            var check = true;
-
             paper.save(function (err, paper) {
-                // we actually want to set a variable to see whether or not things happenned successfully
                 if (err) {
                     check = false;
                     console.log(err);
@@ -56,10 +59,7 @@ module.exports = function upload(req, res) {
             });
 
 
-
             //** citations start */
-
-
 
             var json_path = "./tmp/json/";
 
@@ -67,9 +67,15 @@ module.exports = function upload(req, res) {
             shell.exec("anystyle -w -f json find " + file.path + " " + json_path);
 
             //successful parse
-            var json_file = require(json_path + file.path.replace("fileUpload/", "").replace(".pdf", ".json"));
+            var json_file = require(
+                json_path + file.path
+                .replace("fileUpload/", "")
+                .replace(".pdf", ".json")
+            );
 
-            var full_json_path = json_path + file.path.replace("fileUpload/", "").replace(".pdf", ".json");
+            var full_json_path = json_path + file.path
+                .replace("fileUpload/", "")
+                .replace(".pdf", ".json");
 
             for (index in json_file) {
                 var citation = new citationModel(json_file[index]);
