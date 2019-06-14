@@ -132,39 +132,8 @@ button:hover
   background-color: #274259;
 }
 
-#signup
-{
-  display: none;
-}
-
-
 @media only screen and (max-width:992px){
-/*.form-group
-{
-  margin-bottom: 0;
-}
-
-.acnt_stuff
-{
-  margin-top: 0;
-}
-  
-.beside_picture > form
-{
-  margin-top: 0;
-  font-size: 75%;
-}
-
-.beside_picture > form > h1
-{
-  margin-bottom: 0;
-}
-}
-
-
-@media only screen and (max-width:767px)
-{*/
-  #welcome_img, #createImage
+ #welcome_img, #createImage
  {
    height: 122%;
  }
