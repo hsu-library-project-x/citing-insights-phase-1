@@ -30,18 +30,44 @@ function goBack(props){
 	return "";		
 }
 
-function deleteAccount(props){
-	return(
-		<div class="popUp">
-			<h2> Are you sure you want to delete your account? </h2>
-			<p> After deleting the account nothing will be saved and all progress will be lost </p>
-			<button> Yes, I am sure. </button>
-			<button> No! Go Back! </button>
-		</div>);
-}
 
 //start our webpage
 class AccountSettings extends Component{
+
+	constructor(props)
+	{
+		super(props);
+		this.state={ 
+			isDeleting: false
+		}
+
+		this.changeisDeleting=this.changeisDeleting.bind(this);
+		this.renderActions=this.renderActions.bind(this);
+	}
+
+	renderActions()
+	{
+		if(this.state.isDeleting){
+			//run render for component
+			return (
+				<div class="popUp">
+					<h2> Are you sure you want to delete your account? </h2>
+					<p> After deleting the account nothing will be saved and all progress will be lost </p>
+					<button id="popUpDelete"> Yes, I am sure. </button>
+					<button onClick={this.changeisDeleting}> No! Go Back! </button>
+				</div>
+	 		);
+		}
+	}
+
+	changeisDeleting()
+	{
+		this.setState({
+			//Use toggles! =)
+			isDeleting: !this.state.isDeleting
+		});
+	}
+
 	render(){
 		return(
 		<div className="container">
@@ -69,15 +95,21 @@ class AccountSettings extends Component{
 
 								<button class="back" onClick={goBack}>Cancel</button>
 								<button class="continue">Ok</button>
-								<button class="delete" onClick={deleteAccount}>Delete Account </button>
+								<button class="delete" onClick={this.changeisDeleting}>Delete Account </button>
 							</FormGroup>
 						</Form>
 					</div>
 				</Col>
 				<Col xs="1"></Col>
 			</Row>
+
+			<div id="deleteCheck">
+			{this.renderActions()}
+			</div> 
+
 		</div>
 
+		
 		/* 
 		<div>Icons made by <a href="https://www.flaticon.com/authors/situ-herrera" title="Situ Herrera">Situ Herrera</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
 		*/
