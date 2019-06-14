@@ -28,24 +28,26 @@ class Home extends Component{
 
 					<Col xs="4">
 						<HashRouter>
-							{/* Jumbotron to hold the Tasks button/ option for user */}
-							<div class="hubBackground">
-								<Link to="/tasks"><button class="hubButton">
-									<img alt="taskIcon" class="hubIcon" src={tasks} />
-								</button> </Link>
-								<p>Tasks</p>
-							</div>
+							{/* div to hold the Tasks button/ option for user */}
+							
+								<Link to="/tasks">
+									<button class="hubButton">
+										<img alt="taskIcon" class="hubIcon" src={tasks} />
+									<p>Tasks</p>
+								</button> 
+							</Link>
+							
 						</HashRouter>
 					</Col>
 					
 					<Col xs="4"> 
 						<HashRouter>
-							<div class="hubBackground">
-								<Link to="/accountsettings"><button class="hubButton">
-									<img alt="settingsIcon" class="hubIcon" src={settings} />
-								</button> </Link>
-								<p>Account Settings</p>
-							</div>
+							<Link to="/accountsettings">
+								<button class="hubButton">
+										<img alt="settingsIcon" class="hubIcon" src={settings} /> 
+										<p>Account Settings</p>
+								</button>
+							</Link>
 						</HashRouter>
 					</Col>
 					{/* Empty Col for formatting purposes */} 
