@@ -1,0 +1,12 @@
+.cardStorage .rubricContainer{
+	display: inline-block;
+	width: 40%;
+}
+
+.rubricContainer .card{
+	width:auto;
+}
+
+.rubricContainer input{
+	border-radius: 25px;
+}
