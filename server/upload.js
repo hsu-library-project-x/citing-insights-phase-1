@@ -66,12 +66,10 @@ module.exports = function upload(req, res) {
             //Need to now run anystyle on pdf
             shell.exec("anystyle -w -f json find " + file.path + " " + json_path);
 
-            console.log(file.path + " LOOOOOK HEEEEEERE");
-            //console.log(json_path + file.path + '.json');
             //successful parse
             var json_file = require(json_path + file.path.replace("fileUpload/", "").replace(".pdf", ".json"));
 
-            console.log(json_path + file.path.replace("fileUpload/", "").replace(".pdf", "") + '.json' + 'LOOOOOK HEEERE');
+            var full_json_path = json_path + file.path.replace("fileUpload/", "").replace(".pdf", ".json");
 
             for (index in json_file) {
                 var citation = new citationModel(json_file[index]);
@@ -85,7 +83,11 @@ module.exports = function upload(req, res) {
                 })
             }
 
+            console.log(full_json_path + '\n' + file.path);
 
+            shell.exec('rm ' + full_json_path);
+            shell.exec('rm ' + file.path);
+            shell.exec('rm ' + txt_path);
 
             //after creating a citation model, save to db
         })
