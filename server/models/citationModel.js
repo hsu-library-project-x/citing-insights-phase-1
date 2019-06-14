@@ -9,9 +9,10 @@ var citationSchema = new Schema({
 	'date' : [
 		String
 	],
-	'editor' : [
-		String
-	],
+	'editor' : [{
+		'family' : String,
+        'given' : String
+    }],
 	'edition' : [
 		String
 	],

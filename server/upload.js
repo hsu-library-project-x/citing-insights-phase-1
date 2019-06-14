@@ -43,6 +43,8 @@ module.exports = function upload(req, res) {
 
             var paper = new paperModel(raw_text);
 
+            console.log("paper id: " + paper.id);
+
             var check = true;
 
             paper.save(function (err, paper) {
@@ -73,6 +75,7 @@ module.exports = function upload(req, res) {
 
             for (index in json_file) {
                 var citation = new citationModel(json_file[index]);
+                citation.set({ "paper_id" : paper.id});
 
                 citation.save(function (err, citation){
                     if(err){
