@@ -31,7 +31,13 @@ function goBack(props){
 }
 
 function deleteAccount(props){
-	return "";
+	return(
+		<div class="popUp">
+			<h2> Are you sure you want to delete your account? </h2>
+			<p> After deleting the account nothing will be saved and all progress will be lost </p>
+			<button> Yes, I am sure. </button>
+			<button> No! Go Back! </button>
+		</div>);
 }
 
 //start our webpage
@@ -63,7 +69,7 @@ class AccountSettings extends Component{
 
 								<button class="back" onClick={goBack}>Cancel</button>
 								<button class="continue">Ok</button>
-								<button class="delete" color="danger" onClick={deleteAccount}>Delete Account </button>
+								<button class="delete" onClick={deleteAccount}>Delete Account </button>
 							</FormGroup>
 						</Form>
 					</div>
