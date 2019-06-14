@@ -24,12 +24,11 @@ const LoginForm = () => (
 	          Login button. Also has a remember me checkbox. Currently remember me is not
 	      	  functional and Login will just take you to our Demo page*/}
 	        {/* <label for="uname">Username</label> */}
-	        <input type="text" placeholder="Enter Username" class="uname" required/><br />
+	        <input id="myUname" type="text" placeholder="Enter Username" class="uname" required/><br />
 	        {/* <label for="psw">Password</label> */}
-	        <input type="password" placeholder="Enter Password" class="psw" required/>
+	        <input id="myPswd" type="password" placeholder="Enter Password" class="psw" required/>
 	        <br/>
 	        <button class="back" onClick={forgotInfo}>Forgot</button>
-	        <button class="continue">Login</button>
 	        <br /> <br />
 	        {/*href placeholder for now */}
 	        
@@ -56,10 +55,14 @@ class Login extends Component{
 	{
 		super(props);
 		this.state= {
-			haveAccount: true
+			haveAccount: true,
+			loggingIn: false,
+			successfulLogin: false
 		}
 		this.renderActions=this.renderActions.bind(this);
-		this.ToggleLogin= this.ToggleLogin.bind(this);
+		this.toggleLogin= this.toggleLogin.bind(this);
+		this.tryLogin=this.tryLogin.bind(this);
+		this.sendRequest=this.sendRequest.bind(this);
 	}
 
 	renderActions(){
@@ -71,13 +74,57 @@ class Login extends Component{
 		}
 	}
 
-	ToggleLogin()
+	toggleLogin()
 	{
 		this.setState({
 		haveAccount : !this.state.haveAccount
 		})
 	}
 
+	//Implement error catching for failed connection
+	sendRequest(username, password) {
+	 return new Promise((resolve, reject) => {
+		const req = new XMLHttpRequest();
+		const userData = new FormData();
+		userData.append(username, password);
+		req.open("POST", "http://localhost:5000/login");
+		req.send(userData);
+	 });
+	}
+
+	async tryLogin(){
+		let my_username = document.getElementById("myUname").value;
+		let my_password = document.getElementById("myPswd").value;
+
+		if(my_username == "" || my_password == "" )
+		{
+			alert("Please Enter Username and Password");
+			return;
+		}
+		//set state of attempting login to ture
+		this.setState({loggingIn:true});
+
+		//make request to server
+		const promise = [];
+		promise.push(this.sendRequest(my_username,my_password));
+
+		try{
+			console.log("Reached Try");
+			//if request suceeeds
+				//	create two states
+			await Promise.all(promise);
+			//if here we succeeded
+			this.setState({loggingIn:false, successfulLogin:true});
+			//Now naviagate to the homepage.....to be implemented later
+		}
+		catch(e){
+			// we failed...alert for now
+			alert("could not login");
+			this.setState({loggingIn:false});
+
+		}
+
+	}
 	render(){
 		return(
 		<div class="container">
@@ -91,7 +138,7 @@ class Login extends Component{
 					<Col xs="6">
 						<div class="beside_picture">					
 							{this.renderActions()}
-							{(this.state.haveAccount) ? <button onClick={this.ToggleLogin}> Sign Up </button>: <div ><button > Make me an Account</button> <button onClick={this.ToggleLogin}> Go Back</button> </div>}
+							{(this.state.haveAccount) ? <div> <button class="continue" onClick={this.tryLogin}>Login</button><button class="acnt_stuff" onClick={this.toggleLogin}> Sign Up </button> </div>: <div ><button class="back" onClick={this.toggleLogin}> Go Back</button><button class="continue">Confirm</button>  </div>}
 						</div>
 					</Col>
 				</Row>
