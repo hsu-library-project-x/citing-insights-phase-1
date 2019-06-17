@@ -2,9 +2,9 @@
 import React, {Component} from 'react';
 import './css/App.css';
 import './css/Analyze.css';
-import Annotate from './Annotate';
+import Annotate from './Annotate.jsx';
 //maybe rename the componet
-import Markup from './Markup';
+import Markup from './Markup.jsx';
 // This lets us use Jumbotron, Badge, and Progress in HTML from Reactstrap
 //    This is all we are using for now. May import more styling stuff later
 import { Label, ListGroup, ListGroupItem, Button, Input, Jumbotron, Badge, Progress } from 'reactstrap';

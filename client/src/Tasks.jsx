@@ -7,11 +7,11 @@ import './css/Tasks.css';
 
 //Import Routing
 import { Switch, Route, HashRouter, Link } from "react-router-dom";
-import Classes from "./Classes";
-import Assignments from "./Assignments";
-import Download from "./Download";
-import Analyze from "./Analyze";
-import RubricEditor from "./RubricEditor";
+import Classes from "./Classes.jsx";
+import Assignments from "./Assignments.jsx";
+import Download from "./Download.jsx";
+import Analyze from "./Analyze.jsx";
+import RubricEditor from "./RubricEditor.jsx";
 //Import Icons
 import addClass from './images/class.svg';
 import addAssignment from './images/assignment.svg';

@@ -4,8 +4,8 @@ import { Row, Col } from 'reactstrap';
 import './css/App.css';
 import './css/Assignment.css';
 
-import Dropzone from './Dropzone';
-import Progress from './Progress';
+import Dropzone from './Dropzone.jsx';
+import Progress from './Progress.jsx';
 
 // Class to render our homepage
 class Assignment extends Component{

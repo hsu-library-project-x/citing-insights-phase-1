@@ -10,11 +10,11 @@ import { Navbar, NavbarBrand, NavItem } from 'reactstrap';
 import { Switch, Route, NavLink, HashRouter } from "react-router-dom"; 
 
 // Analyze, Login, and Home are all pages for our website
-import Analyze from "./Analyze";
-import Login from "./Login";
-import Home from "./Home";
-import Tasks from "./Tasks";
-import AccountSettings from "./AccountSettings";
+import Analyze from "./Analyze.jsx";
+import Login from "./Login.jsx";
+import Home from "./Home.jsx";
+import Tasks from "./Tasks.jsx";
+import AccountSettings from "./AccountSettings.jsx";
 
 // App acts as the main page for intial rendering -- all pages and stages are called 
 // from App function

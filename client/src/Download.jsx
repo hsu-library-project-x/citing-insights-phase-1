@@ -6,10 +6,9 @@ import './css/App.css';
 class Download extends Component{
 	render(){
 		return(
-
 			/* So far our homepage is just a h1 tag with text */
 			<div class="download-container classes-container">
-				<h1>Hey you made a classes page!</h1>
+				<h1>Hey you made a download page!</h1>
 			</div>
 		);
 	}

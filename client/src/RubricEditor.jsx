@@ -85,7 +85,12 @@ class RubricEditor extends Component{
 	}
 
 	buildRubric(){
+		//Grab all the information from the Rubrics,
+			//If any of them are empty, run an error
 
+		//Compile this information into a JSON Folder
+
+		//Start the HTTP Requests with rpmisses
 	}
 
 	render(){

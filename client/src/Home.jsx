@@ -24,23 +24,21 @@ class Home extends Component{
 				<br />
 				<Row>
 					{/* Empty Col for formatting purposes */}
-					<Col xs="2"></Col>
+					<Col xs="1"></Col>
 
-					<Col xs="4">
+					<Col xs="5">
 						<HashRouter>
 							{/* div to hold the Tasks button/ option for user */}
-							
-								<Link to="/tasks">
-									<button class="hubButton">
-										<img alt="taskIcon" class="hubIcon" src={tasks} />
+							<Link to="/tasks">
+								<button class="hubButton">
+									<img alt="taskIcon" class="hubIcon" src={tasks} />
 									<p>Tasks</p>
 								</button> 
 							</Link>
-							
 						</HashRouter>
 					</Col>
 					
-					<Col xs="4"> 
+					<Col xs="5"> 
 						<HashRouter>
 							<Link to="/accountsettings">
 								<button class="hubButton">
@@ -51,7 +49,7 @@ class Home extends Component{
 						</HashRouter>
 					</Col>
 					{/* Empty Col for formatting purposes */} 
-					<Col xs="2">
+					<Col xs="1">
 					</Col>
 				</Row>
 			</div>
