@@ -210,7 +210,7 @@ class Analyze extends Component{
 			        	{!this.state.isHidden && <Rubric />}
 			        </Col>
 			    </Row>
-			 	{/* Row: Contains -- Student Paper Drop Down; Works Cited Bibliogrpahy; and Word Map Feature  */}
+			 	{/* Row: Contains -- Semantic Scholor, Block Text, Sources, Biblio Box, and Progress Bar */}
 			    <Row>
 			        <Col xs="3">
 			        	<h4>Discovery Tool</h4>
