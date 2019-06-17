@@ -3,10 +3,72 @@
 	width: 40%;
 }
 
-.rubricContainer .card{
+.rubricEdit-container{
+	padding-top: 5em;
+	background-color: #F7F6E7;
+	width: 100%;
+	color: black;
+	margin-top: -1.1em;
+	width: 95%;
+	margin-right: 2.5%;
+	margin-left: 2.5%;
+	border-radius: 15px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	padding-left: 2em;
+	padding-right: 2em;
+	padding-bottom: 2em;
+}
+
+.cardStorage > .btn{
+	display: block;
+	width: 50%;
+	margin-top: 2em;
+}
+
+.cardContainer{
+	display: inline-block;
+}
+
+.cardContainer .card{
 	width:auto;
 }
 
 .rubricContainer input{
 	border-radius: 25px;
 }
+
+#rubricChoice{
+	width: 40%;
+}
+
+.numCardsSelector{
+	text-align: left;
+	display: inline-block;
+	width: 70%;
+}
+
+.numCardsSelector p{
+	width: 50%;
+	display: inline-block;
+}
+
+#rubEditButton{
+	width: 10%;
+}
+
+.rubricButtonContainer{
+	margin-top: 1em;
+}
+
+.rubricButtonContainer .btn{
+	width: 45%;
+}
+
+.warnHighlight{
+	border: 2px solid red;
+}
+
+.safeHighlight{
+	border: 6px solid green;
+}
+
