@@ -1,0 +1,18 @@
+Citing Insights API Documentation
+
+
+/process_paper/:prof/:name
+
+	Takes 2 parameters, the professor name and the title of the paper, which will find all citations in the paper, and convert them to JSON.
+	Executes the Anystyle command within an if conditional, letting the developer know if it was a success or failure. 
+	
+
+/get_paper/:prof/:name
+	
+	Takes 2 parameters, the professor name and the title of the paper. 
+	Executes a GhostScript command that strips the given PDF into a raw text file, and displays it on the web page.
+
+/git_citations/:prof/:name
+
+	Takes 2 parameters, the professor name and the title of the paper.
+	This finds the JSON file that is requested, then displays the JSON data to the webpage.
