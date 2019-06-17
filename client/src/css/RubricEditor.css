@@ -1,7 +1,4 @@
-.cardStorage .rubricContainer{
-	display: inline-block;
-	width: 40%;
-}
+
 
 .rubricEdit-container{
 	padding-top: 5em;
@@ -19,26 +16,44 @@
 	padding-bottom: 2em;
 }
 
-.cardStorage > .btn{
+#cardStorage > .btn{
 	display: block;
 	width: 50%;
-	margin-top: 2em;
+	margin: auto;
+	margin-bottom: 1em;
 }
 
 .cardContainer{
 	display: inline-block;
+	margin-top: 1em;
+	margin-bottom: 1em;
 }
 
 .cardContainer .card{
 	width:auto;
+
 }
 
-.rubricContainer input{
-	border-radius: 25px;
+.cardContainer input{
+	width: 100%;
+}
+
+.cardContainer textarea{
+	width: 100%;
+	height: 6em;
+}
+
+.cardContainer p{
+	margin-bottom: 1em;
+	margin-top: 1em;
 }
 
 #rubricChoice{
 	width: 40%;
+}
+
+#cardStorage{
+	border-radius: 15px;
 }
 
 .numCardsSelector{
@@ -56,19 +71,33 @@
 	width: 10%;
 }
 
+#rubricTitle{
+	width: 90%;
+	margin-top: 1em;
+	display: block;
+	margin: auto;
+	margin-top: 1em;
+}
+
 .rubricButtonContainer{
 	margin-top: 1em;
 }
 
-.rubricButtonContainer .btn{
+.rubricButtonContainer button{
 	width: 45%;
 }
 
 .warnHighlight{
-	border: 2px solid red;
+	 box-shadow: inset 0 0 20px red;
+	 padding: 1em;
 }
 
 .safeHighlight{
-	border: 6px solid green;
+	box-shadow: inset 0 0 20px #28a745;
+	padding: 1em;
+}
+
+#backSelect{
+	background-color: red;
 }
 
