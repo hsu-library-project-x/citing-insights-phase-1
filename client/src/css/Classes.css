@@ -1,0 +1,52 @@
+.classes-container{
+	padding-top: 5em;
+	background-color: #F7F6E7;
+	width: 100%;
+	color: black;
+	margin-top: -1.1em;
+	width: 95%;
+	margin-right: 2.5%;
+	margin-left: 2.5%;
+	border-radius: 15px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	padding-left: 2em;
+	padding-right: 2em;
+	padding-bottom: 2em;
+}
+
+.classes-container form{
+	padding: .5em;
+	margin-bottom: 0;
+}
+
+.classes-container .form-group{
+	margin-left: 0;
+	margin-bottom: 0;
+	display: inline-block;
+	width: 100%;
+}
+
+.classes-container input{
+	width: 70%;
+	margin-bottom: 1em;
+}
+
+.classes-container label{
+	margin-right: 1%;
+	margin-bottom: 1em;
+	width: 29%;
+	text-align: left;
+}
+
+.classes-container textarea{
+	width: 100%;
+	margin-bottom: 0;
+	height: 10em;
+}
+
+.classes-container .btn{
+	display: inline-block;
+	width: 40%;
+	text-align: center;
+
+}

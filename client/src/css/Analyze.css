@@ -1,0 +1,100 @@
+.navbar{
+  background-color: #FFAC1D;
+}
+
+#finishButton{
+  margin-right: .5em;
+}
+
+li.nav-item{
+  list-style-type: none;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+li > a{
+  color: white;
+}
+
+#biblio-box{
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: 5px; 
+  margin-top: .5em;
+  margin-bottom: .5em;
+  padding: 1em;
+  transition: background-color .25s;
+}
+
+#biblio-box:hover{
+  background-color: rgba(73, 80, 87, .1);
+}
+
+#mainContent{
+  margin-bottom: 6%;
+}
+
+#DemoContents{
+  background-color: #F7F6E7;
+  margin-top: 2.5%;
+}
+
+
+.rubricContainer{
+  display: inline-block;
+  padding: 1em;
+  padding-top: 0em;
+}
+
+.card{
+  width: 33%;
+  display:inline-block;
+}
+
+.card-body{
+  padding: 1em;
+  text-align: left;
+}
+
+.card-body > label{
+  width: 100%;
+  text-align: left;
+}
+
+.analyze-container .btn{
+  margin-top: .75em;
+  margin-bottom: 1em;
+}
+
+.anno-contain > .btn{
+  margin: auto;
+  margin-top: .5em;
+  margin-bottom: .25em;
+  margin-left:.25em;
+  margin-right: .25em;
+  width: 45%;
+}
+
+.discoveryTool .card{
+  display: block;
+  width: 100%;
+}
+
+.analyze-container .jumbotron{
+  padding: 1em;
+  height: 400px;
+  overflow: scroll;
+}
+
+.analyze-container h4{
+  text-align: center;
+}
+
+#curAnno{
+  padding: 0;
+  width: 100%;
+  height: 6em;
+}
+
+.progressBox p{
+  margin: 0;
+}
