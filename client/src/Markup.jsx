@@ -15,7 +15,7 @@ function getSelectionText() {
         text = document.selection.createRange().text;
     }
     else{
-            alert('no')
+        alert('no')
     }
     return text;
 }
@@ -31,7 +31,7 @@ function testGetTextArea(props) {
 class Markup extends Component {
 	//initalized values
 	constructor(props){
-		super(props);
+		super();
 		this.state = {
 			curHighlight: "Put Highlighted Text Here!"
 		};
@@ -42,6 +42,7 @@ class Markup extends Component {
 
 	//function that changes the state of this to be what was highlighted
 	setHighlightedText(){
+		
 		let highlight = getSelectionText();
 		this.setState({
 			curHighlight: highlight
@@ -62,16 +63,16 @@ class Markup extends Component {
 		    	{/*user clicks this button to change the state of what was highlighted */}
 		    	<Button onMouseDown={this.setHighlightedText}>Get Highlighted Text</Button>
 		    	<Form>
-		    		{/* where highlighed text goes*/}
-		    		<textarea id="highlightText" value={this.state.curHighlight} ref="highlightArea"></textarea>
 		    		{/* Sources so we can pair intext citation with source.....will be dynamically populated with API*/}
-		    		<Input type="select" name="citation" id="citationSelect">
+		    		<Input type="select" name="source" id="sourceSelect">
 						<option>Source 1</option>
 						<option>Source 2</option>
 						<option>Source 3</option>
 						<option>Source 4</option>
 						<option>Source 5</option>
 					</Input>
+		    		{/* where highlighed text goes*/}
+		    		<textarea id="highlightText" value={this.state.curHighlight} ref="highlightArea"></textarea>
 					{/* Button to submit In-Text Citation */}
 		    		<Button onClick={this.clearCitation}>Clear Text</Button>
 		    	</Form>
