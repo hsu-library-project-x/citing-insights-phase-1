@@ -9,7 +9,7 @@
     "dev": "concurrently \"npm run backend\" \"npm run frontend\""
   },
   "nodemon": {
-    "ignore": "/tmp/*";
+    "ignore": "/tmp/*"
   },
   "dependencies": {
     "chance": "^1.0.18",
