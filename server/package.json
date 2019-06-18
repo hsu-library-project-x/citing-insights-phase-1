@@ -8,6 +8,9 @@
     "frontend": "npm run start --prefix ../client/",
     "dev": "concurrently \"npm run backend\" \"npm run frontend\""
   },
+  "nodemon": {
+    "ignore": "/tmp/*";
+  },
   "dependencies": {
     "chance": "^1.0.18",
     "concurrently": "^4.1.0",
