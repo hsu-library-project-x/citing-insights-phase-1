@@ -4,12 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "backend": "nodemon ./bin/www",
+    "backend": "nodemon --ignore tmp/ --ignore fileUpload/ ./bin/www",
     "frontend": "npm run start --prefix ../client/",
     "dev": "concurrently \"npm run backend\" \"npm run frontend\""
-  },
-  "nodemon": {
-    "ignore": "/tmp/*"
   },
   "dependencies": {
     "chance": "^1.0.18",
