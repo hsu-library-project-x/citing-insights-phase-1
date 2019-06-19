@@ -35,8 +35,10 @@ module.exports = function upload(req, res) {
             });
 
             //Ghostscript strips pdf into raw text
-            var txt_path = "./tmp/txt/" + file_name + ".txt"
-            shell.exec("gs -sDEVICE=txtwrite -o " + txt_path + " " + file.path);
+            var txt_path = __dirname + "/tmp/txt/" + file_name + ".txt"
+          console.log(txt_path);
+          
+          shell.exec("gs -sDEVICE=txtwrite -o " + txt_path + " " + file.path);
 
 
             //the replace functions just get rid of carriage returns
