@@ -26,7 +26,7 @@ var citationSchema = new Schema({
 	'title' : [
 		String
 	],
-	'annotation' : Array,
+	'annotation' : String,
 	'doi' : [
 		String
 	],

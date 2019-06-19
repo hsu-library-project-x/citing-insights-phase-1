@@ -9,6 +9,8 @@ var chance = new Chance();
 var paperModel = require("./models/paperModel.js");
 var citationModel = require("./models/citationModel.js");
 
+var check = true;
+
 module.exports = function upload(req, res) {
 
     console.log("goin into it");
@@ -38,6 +40,7 @@ module.exports = function upload(req, res) {
             var txt_path = "./tmp/txt/" + file_name + ".txt"
             shell.exec("gs -sDEVICE=txtwrite -o " + txt_path + " " + file.path);
 
+            console.log(txt_path);
 
             //the replace functions just get rid of carriage returns
             var raw_text = { 
@@ -46,7 +49,6 @@ module.exports = function upload(req, res) {
                 "name": null 
             };
             // we actually want to set a variable to see whether or not things happenned successfully
-            var check = true;
             
             // instantiate the paper and save to db
             var paper = new paperModel(raw_text);
@@ -100,14 +102,12 @@ module.exports = function upload(req, res) {
         .on("end", () => {
             //we want to check a bool set in paper.save to see if we cool
 
-            res.send("we cool");
-
-            /*if(check){
+            if(check){
                 res.send("we cool");
             }
             else{
                 res.send("we Not cool");
-            }*/
+            }
             console.log("ending");
             //shell.exec('rm ' + txt_path);
         })
