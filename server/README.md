@@ -40,7 +40,7 @@ Updates the document that :id references for the desired collection.
 
 #### Remove -- DELETE Request
 
-/<collection>/:id
+`/<collection>/:id`
 
 Deletes the document from the given collection that corresponds the 
 :id sent with the DELETE request
