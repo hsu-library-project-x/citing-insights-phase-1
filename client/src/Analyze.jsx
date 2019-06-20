@@ -7,7 +7,7 @@ import Annotate from './Annotate.jsx';
 import Markup from './Markup.jsx';
 // This lets us use Jumbotron, Badge, and Progress in HTML from Reactstrap
 //    This is all we are using for now. May import more styling stuff later
-import { Label, ListGroup, ListGroupItem, Button, Input, Jumbotron, Badge, Progress } from 'reactstrap';
+import { Label, ListGroup, ListGroupItem, Button, Input, Jumbotron, Progress } from 'reactstrap';
 import {Card, CardText, CardBody, CardTitle} from 'reactstrap';
 // Lets us use column / row and layout for our webpage using Reactstrap
 import {Row, Col } from 'reactstrap';
@@ -160,13 +160,13 @@ class Analyze extends Component{
 	//might not need this
 	resetButton(){
 		this.setState({successfullUpload: false});
-	}
+	} 
 
-	//adds highlighted text and the selected source to the intextcitation state array
+	//adds highlighted text and the  source to the intextcitation state array
 	saveIntextCitation(){
 		let citationId = document.getElementById("sourceSelect").value;
 		let text = document.getElementById("highlightText").value;
-		if(text == "" || text == "Put Highlighted Text Here!"){
+		if(text === "" || text === "Put Highlighted Text Here!"){
 			alert("please highlight an intext citation");
 			return;
 		}
@@ -175,22 +175,32 @@ class Analyze extends Component{
 			let inCiteObj = new IntextCitation(text, "");
 			for(let i = 0; i < data.length; i++){
 				let curData = data[i];
-				if(curData.id == citationId){
-					console.log("found source");
+				if(curData.id === citationId){
 					this.state.citationData[i].intextCites.push(inCiteObj);
-					console.log(this.state.citationData);
 					return;
 				}
 			}
+			//Add id of paper to the cite object
+
 			let citeObj = new Citation(citationId, inCiteObj); 
 			this.state.citationData.push(citeObj);
-			console.log(this.state.citationData);
+			
 		}	
 	}
 
-	//adds annotation and pairs it with appropriate in text citation in the intextCitation State Array.
+	//adds annotation and pairs it with appropriate in text citation in the citationData State Array.
 	addAnnotation(){
+		let citeSource = document.getElementById("inCitesForAnno").value;
 
+		if(citeSource === ""){
+			alert("please select a citation to link your annotation")
+			return;
+		}
+		else{
+			let annotation = document.getElementById("curAnno").value;
+			//attach an annotation to an intext citation
+			//need a way to grab the citation id, and the intext citation id to pair them appropriately
+		}
 	}
 
 	//Uploads state array of Citations and Annotations to the Database after compiling them into JSON format to do one Server Call
@@ -288,7 +298,13 @@ class Analyze extends Component{
 			          		<p id="student">Please select a student's paper</p>	
 			          	</Jumbotron>
 			          	<Button onClick={this.toggleMarkup.bind(this)}>Switch Markup/Annotate</Button>
-			        		{(!this.state.isMarkup) ? <Annotate /> : <div class="markup"><Markup /> <div className="Actions">{this.renderActions()}</div></div>}
+			        	{(!this.state.isMarkup) ? 
+			        		<div class="annotate">
+								<Annotate citedata={this.state.citationData} />
+								<Button color="success" id="addAnnotation">Add Annotation</Button>
+								<Button color="danger" id="clearSavedAnnotation">Erase Annotation</Button>
+							</div> : <div class="markup"><Markup /><div className="Actions">{this.renderActions()}</div></div>
+			        	}
 			        	
 			        </Col>
 			        <Col xs="3">

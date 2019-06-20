@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Form, Label, Input } from 'reactstrap';
 import { Row, Col } from 'reactstrap';
 import './css/App.css';
 import './css/Assignment.css';
@@ -61,7 +61,7 @@ class Assignment extends Component{
 
 	async uploadFiles() {
 		let unit = document.getElementById("selectClass");
-		if(unit.value == ""){
+		if(unit.value === ""){
 			alert('Select a Class Please');
 			return;
 		}
@@ -109,7 +109,7 @@ class Assignment extends Component{
 		    reject(req.response);
 		});
 
-		let unit = document.getElementById("selectClass");
+		//let unit = document.getElementById("selectClass");
 		//check if document is a pdf.. if not go to catch statement
 		
 
