@@ -1,14 +1,14 @@
-#Citing Insights API Documentation
+# Citing Insights API Documentation
 
 Each collection in the database has the same configuration of end points that can be reached.
 
 For the following, <collection> can be any of the following: 
 users, courses, assignments, papers, citations
   
-##EndPoints
+## EndPoints
 
 
-####List --  GET Request
+#### List --  GET Request
 
 
 `/<collection>/`
@@ -16,7 +16,7 @@ users, courses, assignments, papers, citations
 Queries the database for the entire collection, and returns JSON
 
 
-####Show -- GET Request
+#### Show -- GET Request
 
 `/<collection>/:id`
 
@@ -24,21 +24,21 @@ Queries the database for a specific document in a collection, where
 :id references the ObjectId for the given document. Returns document in JSON.
 
 
-####Create -- POST Request
+#### Create -- POST Request
 
 `/<collection>/`
 
 Creates a new document in the given collection. 
 
 
-####Update -- PUT Request
+#### Update -- PUT Request
 
 `/<collection>/:id`
 
 Updates the document that :id references for the desired collection. 
 
 
-####Remove -- DELETE Request
+#### Remove -- DELETE Request
 
 /<collection>/:id
 
@@ -46,7 +46,7 @@ Deletes the document from the given collection that corresponds the
 :id sent with the DELETE request
 
 
-##*Examples*
+## *Examples*
 
 * http://localhost:5000/papers/
 
