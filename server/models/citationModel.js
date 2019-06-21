@@ -29,7 +29,8 @@ var citationSchema = new Schema({
 	'annotation' : String,
 	'doi' : [
 		String
-	],
+  ],
+  'arxivid' : String,
 	'paper_id' : {
 	 	type: Schema.Types.ObjectId,
 	 	ref: 'paper'
