@@ -1,18 +1,55 @@
 Citing Insights API Documentation
 
+Each collection in the database has the same configuration of end points that can be reached.
 
-/process_paper/:prof/:name
+For the following, <collection> can be any of the following: 
+users, courses, assignments, papers, citations
 
-	Takes 2 parameters, the professor name and the title of the paper, which will find all citations in the paper, and convert them to JSON.
-	Executes the Anystyle command within an if conditional, letting the developer know if it was a success or failure. 
-	
+Example: 
+http://localhost:5000/papers/5d0aab0cf43d790f49ed2b6b
 
-/get_paper/:prof/:name
-	
-	Takes 2 parameters, the professor name and the title of the paper. 
-	Executes a GhostScript command that strips the given PDF into a raw text file, and displays it on the web page.
+If sent a GET request, this URL will show the contents of the paper with the corresponding 
+id: 5d0aab0cf43d790f49ed2b6b.
 
-/git_citations/:prof/:name
+                    EndPoints
+--------------------
+List --  GET Request
+--------------------
+/<collection>/
 
-	Takes 2 parameters, the professor name and the title of the paper.
-	This finds the JSON file that is requested, then displays the JSON data to the webpage.
+
+Queries the database for the entire collection, and returns JSON
+
+
+--------------------
+Show -- GET Request
+--------------------
+/<collection>/:id
+
+Queries the database for a specific document in a collection, where
+:id references the ObjectId for the given document. Returns document in JSON.
+
+
+---------------------
+Create -- POST Request
+----------------------
+/<collection>/
+
+Creates a new document in the given collection. 
+
+
+----------------------
+Update -- PUT Request
+----------------------
+/<collection>/:id
+
+Updates the document that :id references for the desired collection. 
+
+
+------------------------
+Remove -- DELETE Request
+------------------------
+/<collection>/:id
+
+Deletes the document from the given collection that corresponds the 
+:id sent with the DELETE request
