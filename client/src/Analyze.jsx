@@ -298,11 +298,12 @@ class Analyze extends Component{
             <h4> Student Paper Block Text </h4>
 
             <p> Pdf display </p>
+            <div className="overflow-auto">
 
-            <Document file={file} onLoadSuccess={this.onDocumentLoadSuccess} >
+            <Document file={file} onLoadSuccess={this.onDocumentLoadSuccess}>
               <Page pageNumber={1} />
             </Document>
-
+          </div>
 
 
             <Button onClick={this.toggleMarkup.bind(this)}>Switch Markup/Annotate</Button>
