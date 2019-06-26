@@ -184,7 +184,7 @@ class Analyze extends Component{
 
 			let citeObj = new Citation(citationId, inCiteObj); 
 			this.state.citationData.push(citeObj);
-			
+			document.getElementById("highlightText").value = "";
 		}	
 	}
 
@@ -200,6 +200,8 @@ class Analyze extends Component{
 			let annotation = document.getElementById("curAnno").value;
 			//attach an annotation to an intext citation
 			//need a way to grab the citation id, and the intext citation id to pair them appropriately
+			//START HERE
+
 		}
 	}
 
@@ -302,7 +304,6 @@ class Analyze extends Component{
 			        		<div class="annotate">
 								<Annotate citedata={this.state.citationData} />
 								<Button color="success" id="addAnnotation">Add Annotation</Button>
-								<Button color="danger" id="clearSavedAnnotation">Erase Annotation</Button>
 							</div> : <div class="markup"><Markup /><div className="Actions">{this.renderActions()}</div></div>
 			        	}
 			        	
