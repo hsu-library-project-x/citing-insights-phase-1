@@ -9,6 +9,7 @@
   background-color: #F7F6E7;
   height: 20em;
   padding: 2em;
+  padding-bottom: 4em;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   margin-top: 2.5em;
   border-radius: 25px;
@@ -43,7 +44,6 @@
 #MainContent{
   width: 80%;
 }
-
 
 #MainMenuDrop{
   text-align: left;
@@ -166,36 +166,34 @@
   }
 }
 
-
-
 @keyframes expand{
-  0% {height: 5.5em; padding: 0;}
-  60% {height: 20em; padding: 2em;}
-  100% {height: 20em; padding: 2em;}
+  0% {height: 5.5em; padding: 0; padding-bottom: 0}
+  60% {height: 20em; padding: 2em; padding-bottom: 4em;}
+  100% {height: 20em; padding: 2em; padding-bottom: 4em;}
 }
 
 @keyframes collapse{
-  0% {height: 20em; padding: 2em;}
-  60% {height: 5.5em; padding: 0;}
-  100% {height: 5.5em; padding: 0;}
+  0% {height: 20em; padding: 2em; padding-bottom: 4em;}
+  60% {height: 5.5em; padding: 0; padding-bottom: 0}
+  100% {height: 5.5em; padding: 0; padding-bottom: 0}
 }
 
 @keyframes expandMedium{
-  0% {height: 2.75em; padding: 0;}
-  60% {height: 16em; padding: 1em;}
-  100% {height: 16em; padding: 1em;}
+  0% {height: 2.75em; padding: 0; padding-bottom: 0}
+  60% {height: 16em; padding: 1em; padding-bottom: 4em;}
+  100% {height: 16em; padding: 1em; padding-bottom: 4em;}
 }
 
 @keyframes collapseMedium{
-  0% {height: 16em; padding: 1em;}
-  60% {height: 5.5em; padding: 0;}
-  100% {height: 5.5em; padding: 0;}
+  0% {height: 16em; padding: 1em; padding-bottom: 4em;}
+  60% {height: 5.5em; padding: 0; padding-bottom: 0}
+  100% {height: 5.5em; padding: 0; padding-bottom: 0}
 }
 
 @keyframes expandMini{
-  0% {height: 5em; padding: 0;}
-  60% {height: 12em; padding: 0.5em;}
-  100% {height: 12em; padding: 0.5em;}
+  0% {height: 5em; padding: 0; padding-bottom: 0}
+  60% {height: 12em; padding: 0.5em; padding-bottom: 4em;}
+  100% {height: 12em; padding: 0.5em; padding-bottom: 4em;}
 }
 
 @keyframes collapseMini{
