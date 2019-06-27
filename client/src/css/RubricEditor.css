@@ -1,0 +1,103 @@
+
+
+.rubricEdit-container{
+	padding-top: 5em;
+	background-color: #F7F6E7;
+	width: 100%;
+	color: black;
+	margin-top: -1.1em;
+	width: 95%;
+	margin-right: 2.5%;
+	margin-left: 2.5%;
+	border-radius: 15px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	padding-left: 2em;
+	padding-right: 2em;
+	padding-bottom: 2em;
+}
+
+#cardStorage > .btn{
+	display: block;
+	width: 50%;
+	margin: auto;
+	margin-bottom: 1em;
+}
+
+.cardContainer{
+	display: inline-block;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+.cardContainer .card{
+	width:auto;
+
+}
+
+.cardContainer input{
+	width: 100%;
+}
+
+.cardContainer textarea{
+	width: 100%;
+	height: 6em;
+}
+
+.cardContainer p{
+	margin-bottom: 1em;
+	margin-top: 1em;
+}
+
+#rubricChoice{
+	width: 40%;
+}
+
+#cardStorage{
+	border-radius: 15px;
+}
+
+.numCardsSelector{
+	text-align: left;
+	display: inline-block;
+	width: 70%;
+}
+
+.numCardsSelector p{
+	width: 50%;
+	display: inline-block;
+}
+
+#rubEditButton{
+	width: 10%;
+}
+
+#rubricTitle{
+	width: 90%;
+	margin-top: 1em;
+	display: block;
+	margin: auto;
+	margin-top: 1em;
+}
+
+.rubricButtonContainer{
+	margin-top: 1em;
+}
+
+.rubricButtonContainer button{
+	width: 45%;
+}
+
+.warnHighlight{
+	 box-shadow: inset 0 0 20px red;
+	 padding: 1em;
+}
+
+.safeHighlight{
+	box-shadow: inset 0 0 20px #28a745;
+	padding: 1em;
+}
+
+#backSelect{
+	background-color: red;
+}
+
