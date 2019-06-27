@@ -11,10 +11,7 @@ import { Label, ListGroup, ListGroupItem, Button, Input, Jumbotron, Progress } f
 import {Card, CardText, CardBody, CardTitle} from 'reactstrap';
 // Lets us use column / row and layout for our webpage using Reactstrap
 import {Row, Col } from 'reactstrap';
-import { Document, Page, pdfjs } from 'react-pdf'
-import file from './pdf/samplebibliography.pdf'
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-
+import PdfComponent from "./PdfComponent.jsx";
 
 //Function to dynamically call source material
 function displaySource(props){
@@ -299,11 +296,8 @@ class Analyze extends Component{
 
             <p> Pdf display </p>
             <div className="overflow-auto">
-
-            <Document file={file} onLoadSuccess={this.onDocumentLoadSuccess}>
-              <Page pageNumber={1} />
-            </Document>
-          </div>
+              <PdfComponent />
+            </div>
 
 
             <Button onClick={this.toggleMarkup.bind(this)}>Switch Markup/Annotate</Button>
