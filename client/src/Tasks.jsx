@@ -12,6 +12,7 @@ import Assignments from "./Assignments.jsx";
 import Download from "./Download.jsx";
 import Analyze from "./Analyze.jsx";
 import RubricEditor from "./RubricEditor.jsx";
+import AnalyzeSubMenu from "./AnalyzeSubMenu.jsx";
 //Import Icons
 import addClass from './images/class.svg';
 import addAssignment from './images/assignment.svg';
@@ -80,10 +81,10 @@ class Tasks extends Component{
 							</Link>
 						</div>
 						<div class="button-container">
-							<Link to="/tasks/continue">
+							<Link to="/tasks/analyzemenu">
 								<button class="menuButton" onClick={this.changeName}>
-								<img alt="continueIcon" id="Analyze" src={Continue} />
-									Continue
+								<img alt="analyzeIcon" id="Analyze" src={Continue} />
+									Analyze
 								</button>
 							</Link>
 						</div>
@@ -109,9 +110,10 @@ class Tasks extends Component{
 					<Switch>
 						<Route path="/tasks/courses" component={Classes}/>
 						<Route path="/tasks/assignments" component={Assignments}/>
-						<Route path="/tasks/continue" component={Analyze}/>
+						<Route path="/tasks/analyzemenu" component={AnalyzeSubMenu}/>
 						<Route path="/tasks/download" component={Download}/>
 						<Route path="/tasks/rubriceditor" component={RubricEditor}/>
+						<Route path="/tasks/analyze" component={Analyze}/>
 					</Switch>
 				</div>
 			</div>

@@ -26,10 +26,11 @@ var citationSchema = new Schema({
 	'title' : [
 		String
 	],
-	'annotation' : Array,
+	'annotation' : String,
 	'doi' : [
 		String
-	],
+  ],
+  'arxivid' : String,
 	'paper_id' : {
 	 	type: Schema.Types.ObjectId,
 	 	ref: 'paper'
