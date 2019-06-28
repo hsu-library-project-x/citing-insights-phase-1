@@ -12,7 +12,6 @@ import {Card, CardText, CardBody, CardTitle} from 'reactstrap';
 // Lets us use column / row and layout for our webpage using Reactstrap
 import {Row, Col } from 'reactstrap';
 import PdfComponent from "./PdfComponent.jsx";
-import Test from "./TestHighlightComponent.jsx";
 
 //Function to dynamically call source material
 function displaySource(props){
