@@ -12,6 +12,7 @@ import {Card, CardText, CardBody, CardTitle} from 'reactstrap';
 // Lets us use column / row and layout for our webpage using Reactstrap
 import {Row, Col } from 'reactstrap';
 import PdfComponent from "./PdfComponent.jsx";
+import Test from "./TestHighlightComponent.jsx";
 
 //Function to dynamically call source material
 function displaySource(props){
@@ -200,6 +201,8 @@ class Analyze extends Component{
       let annotation = document.getElementById("curAnno").value;
       //attach an annotation to an intext citation
       //need a way to grab the citation id, and the intext citation id to pair them appropriately
+
+      
     }
   }
 
