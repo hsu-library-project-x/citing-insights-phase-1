@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {Document, Page, pdfjs} from "react-pdf";
+import './css/PdfComponent.css';
 import paper from "./pdf/samplepaper2.pdf"; //Delete for production
 pdfjs.GlobalWorkerOptions.workerSrc = 
 `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
@@ -35,33 +36,20 @@ class PdfComponent extends Component {
     const { numPages, pageNumber } = this.state;
 
     return (
-      <React.Fragment>
-        <Document
-          file={paper}
-          onLoadSuccess={this.onDocumentLoadSuccess}
-        >
-          <Page pageNumber={pageNumber} />
-        </Document>
-        <div>
-          <p>
-            Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
-          </p>
-          <button
-            type="button"
-            disabled={pageNumber <= 1}
-            onClick={this.previousPage}
-          >
-            Previous
-          </button>
-          <button
-            type="button"
-            disabled={pageNumber >= numPages}
-            onClick={this.nextPage}
-          >
-            Next
-          </button>
-        </div>
-      </React.Fragment>
+      <div>
+        <React.Fragment>
+          <Document file={paper} onLoadSuccess={this.onDocumentLoadSuccess}>
+            <Page pageNumber={pageNumber} />
+          </Document>
+          <div>
+            <p>
+              Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
+            </p>
+          </div>
+        </React.Fragment>
+        <button class="pdfButtons" type="button" disabled={pageNumber <= 1} onClick={this.previousPage}>Previous</button>
+        <button class="pdfButtons" type="button" disabled={pageNumber >= numPages} onClick={this.nextPage}>Next</button>
+      </div>
     );
   }
 }
