@@ -94,7 +94,7 @@ class AccountSettings extends Component{
 								<input type="Password" placeholder="Enter old Password" class="change"/><br />
 
 								<button class="back" onClick={goBack}>Cancel</button>
-								<button class="continue">Ok</button>
+								<button class="confirm">Ok</button>
 								<button class="delete" onClick={this.changeisDeleting}>Delete Account </button>
 							</FormGroup>
 						</Form>

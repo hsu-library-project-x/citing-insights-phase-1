@@ -111,6 +111,19 @@ button:hover
   float: right;
 }
 
+.confirm
+{
+  width:15%;
+  border-radius: 2em;
+  line-height: 0.1em;
+  text-align: center;
+  background-color: #274259;
+  padding-left: 0.1em;
+  padding-right: 0.1em;
+  /* margin-top: -2%; */
+  
+}
+
 .back
 {
   padding-left: 0.1em;
@@ -124,6 +137,20 @@ button:hover
   border: solid #274259;
   color:#274259; 
   margin-left: 12%;
+}
+
+.back_to_login
+{
+  padding-left: 0.1em;
+  padding-right: 0.1em;
+  width:15%;
+  border-radius: 2em;
+  line-height: 0;
+  text-align: center;
+  background-color: #F7F6E7;
+  border: solid #274259;
+  color:#274259; 
+  margin-left: 23%;
 }
 
 .acnt_stuff
