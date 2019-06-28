@@ -13,6 +13,17 @@ import {Card, CardText, CardBody, CardTitle} from 'reactstrap';
 import {Row, Col } from 'reactstrap';
 import PdfComponent from "./PdfComponent.jsx";
 
+//global function for defining ID's
+function makeid(length) {
+   var result           = '';
+   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
+
 //Function to dynamically call source material
 function displaySource(props){
   //Dynamically get id
@@ -55,7 +66,6 @@ function displayPaper(props){
   var paper = document.getElementById("student");
   //var selectedStudent = document.getElementById("selectedStudent");
   //put dynamic call here
-  //eventually this meat ipsum will be replaced by a variable
 }
 
 //Test function to be removed
@@ -125,7 +135,8 @@ function Citation(id, inCiteObj){
   this.intextCites = [inCiteObj];
 }
 
-function IntextCitation(text, annotation){
+function IntextCitation(text, annotation, id){
+  this.id = id;
   this.text = text;
   this.annotation = annotation;
 }
@@ -172,7 +183,9 @@ class Analyze extends Component{
     }
     else{
       let data = this.state.citationData;
-      let inCiteObj = new IntextCitation(text, "");
+      //generate an id for the intext citation
+      let inTextId = makeid(8);
+      let inCiteObj = new IntextCitation(text, "", inTextId);
       for(let i = 0; i < data.length; i++){
         let curData = data[i];
         if(curData.id === citationId){
@@ -190,18 +203,35 @@ class Analyze extends Component{
 
   //adds annotation and pairs it with appropriate in text citation in the citationData State Array.
   addAnnotation(){
-    let citeSource = document.getElementById("inCitesForAnno").value;
+    let citeSource = document.getElementById("inCitesForAnno").label;
+    let citeIntext = document.getElementById("inCitesForAnno").value;
 
-    if(citeSource === ""){
+    if(citeSource === "" || citeIntext === ""){
       alert("please select a citation to link your annotation")
       return;
     }
     else{
       let annotation = document.getElementById("curAnno").value;
+      if(annotation === ""){
+        alert("Please don't submit an empty annotation");
+        return;
+      }
       //attach an annotation to an intext citation
       //need a way to grab the citation id, and the intext citation id to pair them appropriately
+      let data = this.state.citationData;
 
-      
+      //search space O(2n)
+      for(let i = 0; i < data.length; i++){
+        if(data[i].id = citeSource){
+          let curArray = data[i].intextCites;
+          for(let j = 0; j < curArray.length; j++){
+            if(curArray[i].id = citeIntext){
+              this.state.citationData[i].intextCites.annotation = annotation;
+              return;
+            }
+          }
+        }
+      }
     }
   }
 
@@ -294,9 +324,7 @@ class Analyze extends Component{
             </div>	
           </Col>
           <Col xs="6">
-            <h4> Student Paper Block Text </h4>
-
-            <p> Pdf display </p>
+            <h4> Student Paper PDF</h4>
             <div className="overflow-auto">
               <PdfComponent />
             </div>
@@ -306,7 +334,7 @@ class Analyze extends Component{
             {(!this.state.isMarkup) ? 
                 <div class="annotate">
                   <Annotate citedata={this.state.citationData} />
-                  <Button color="success" id="addAnnotation">Add Annotation</Button>
+                  <Button color="success" id="addAnnotation" onClick={this.addAnnotation}>Add Annotation</Button>
                   <Button color="danger" id="clearSavedAnnotation">Erase Annotation</Button>
                 </div> : <div class="markup"><Markup /><div className="Actions">{this.renderActions()}</div></div>
             }

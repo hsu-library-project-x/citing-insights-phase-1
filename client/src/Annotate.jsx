@@ -31,10 +31,11 @@ class Annotate extends Component {
 			for(let i = 0; i < data.length; i++){
 				let curInCiteArray =  data[i].intextCites;
 				for(let j = 0; j < curInCiteArray.length; j++){
-					let intvalue = "intext" + j;
+					let curIntextId = curInCiteArray[j].id
+					let inTextValue = "intext" + j;
 					let citeSource = "Intext Citation " + j + " from: " + data[i].id;
 					this.state.inTextOptions.push(
-						<option value={intvalue}>{citeSource}</option>
+						<option label={data[i].id} value={curIntextId}>{citeSource}</option>
 					)
 				}
 			}
