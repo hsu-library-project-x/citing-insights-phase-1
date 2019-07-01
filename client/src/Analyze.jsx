@@ -130,9 +130,11 @@ const Rubric = () => (
   </div>
 )
 
-function Citation(id, inCiteObj){
+function Citation(id, title, metadata){
   this.id = id;
-  this.intextCites = [inCiteObj];
+  this.title = title;
+  this.metadata = metadata;
+  this.intextCites = [];
 }
 
 function IntextCitation(text, annotation, id){
@@ -160,6 +162,22 @@ class Analyze extends Component{
     this.resetButton = this.resetButton.bind(this);
     this.saveIntextCitation = this.saveIntextCitation.bind(this);
     this.addAnnotation = this.addAnnotation.bind(this);
+  }
+
+
+  //Here we populate citation source information and meta data
+  //Do this call every time a new Paper is loaded into the component
+  componentWillMount(){
+    //Do call to get sources.. after sources aquired populate them into the on-client data, should have an array of them
+    //dummy data
+    let sources = ["Test Source 1", "Test Source 2", "Test Source 3", "Test Source 4"];
+    let metadata = "This is where the sources metadata goes";
+    //generate an id for each source
+    for(let i = 0; i < sources.length; i++){
+      let citeSourceId = makeid(10);
+      let citeObj = new Citation(citeSourceId, sources[i], metadata);
+      this.state.citationData.push(citeObj);
+    }
   }
 
   //Checks to see if there is appropriate text in the intext citation textarea, renders either disabled button or save button depending on context
@@ -193,20 +211,16 @@ class Analyze extends Component{
           return;
         }
       }
-      //Add id of paper to the cite object
-
-      let citeObj = new Citation(citationId, inCiteObj); 
-      this.state.citationData.push(citeObj);
-
     }	
+
+
   }
 
   //adds annotation and pairs it with appropriate in text citation in the citationData State Array.
   addAnnotation(){
-    let citeSource = document.getElementById("inCitesForAnno").label;
-    let citeIntext = document.getElementById("inCitesForAnno").value;
-
-    if(citeSource === "" || citeIntext === ""){
+    let value = document.getElementById("inCitesForAnno").value;
+    let citeIds = value.split('_');
+    if(citeIds[0] === "" || citeIds[1] === ""){
       alert("please select a citation to link your annotation")
       return;
     }
@@ -222,10 +236,10 @@ class Analyze extends Component{
 
       //search space O(2n)
       for(let i = 0; i < data.length; i++){
-        if(data[i].id = citeSource){
+        if(data[i].id = citeIds[1]){
           let curArray = data[i].intextCites;
           for(let j = 0; j < curArray.length; j++){
-            if(curArray[i].id = citeIntext){
+            if(curArray[i].id = citeIds[0]){
               this.state.citationData[i].intextCites.annotation = annotation;
               return;
             }
@@ -237,7 +251,7 @@ class Analyze extends Component{
 
   //Uploads state array of Citations and Annotations to the Database after compiling them into JSON format to do one Server Call
   async uploadCitations(){
-    let citationData = this.state.citationdata; 
+    let citationData = this.state.citationData; 
     this.setState.uploading = true;
     const promise = [];
     promise.push(this.sendRequest(citationData));
@@ -336,7 +350,7 @@ class Analyze extends Component{
                   <Annotate citedata={this.state.citationData} />
                   <Button color="success" id="addAnnotation" onClick={this.addAnnotation}>Add Annotation</Button>
                   <Button color="danger" id="clearSavedAnnotation">Erase Annotation</Button>
-                </div> : <div class="markup"><Markup /><div className="Actions">{this.renderActions()}</div></div>
+                </div> : <div class="markup"><Markup citesource={this.state.citationData}/><div className="Actions">{this.renderActions()}</div></div>
             }
 
           </Col>
@@ -357,8 +371,8 @@ class Analyze extends Component{
               <p id="assignProgressText">Total Assessed: 0%</p>
               <Progress id="assignmentProgress" value="0" />
             </div>
-            <Button color="success" id="paperDone" onClick={testProgress}> Save Paper </Button>
-            <Button id="nextPaper"> Next Paper > </Button>
+            <Button color="success" id="paperDone" onClick={this.uploadCitations}> Save Paper </Button>
+            <Button id="nextPaper" > Next Paper > </Button>
           </Col>
         </Row>
       </div>

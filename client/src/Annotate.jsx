@@ -14,6 +14,7 @@ class Annotate extends Component {
 		}
 
 		this.renderActions = this.renderActions.bind(this);
+		this.getText = this.getText.bind(this);
 	}
 
 	//set state to citeData from parent
@@ -30,37 +31,54 @@ class Annotate extends Component {
 			let data = this.state.citeData;
 			for(let i = 0; i < data.length; i++){
 				let curInCiteArray =  data[i].intextCites;
+
 				for(let j = 0; j < curInCiteArray.length; j++){
+					if(j === 0){
+						document.getElementById("selectedText").innerHTML = curInCiteArray[j].text;
+					}
 					let curIntextId = curInCiteArray[j].id
 					let inTextValue = "intext" + j;
 					let citeSource = "Intext Citation " + j + " from: " + data[i].id;
 					this.state.inTextOptions.push(
-						<option label={data[i].id} value={curIntextId}>{citeSource}</option>
+						<option value={curIntextId + "_" + data[i].id}>{citeSource}</option>
 					)
 				}
 			}
 
 			return(
-				<Input type="select" id="inCitesForAnno">
+				<Input type="select" id="inCitesForAnno" onChange={this.getText}>
 					{this.state.inTextOptions}
 				</Input>
 			);
 		}
-		
 	}
 
-	
+	getText(){
+		let data = this.state.citeData;
+		let text = "";
+		let curids = document.getElementById("inCitesForAnno").value.split("_");
 
+		for(let i = 0; i < data.length; i++){
+			if(data[i].id === curids[1]){
+				let curArray = data[i].intextCites;
+				for(let j = 0; j < curArray.length; j++){
+					if(curArray[j].id = curids[0]){
+						alert(curArray[j].text);
+						document.getElementById("selectedText").innerHTML = curArray[j].text;
+						return;
+					}
+				}
+			}
+		}
+	}
 
  	render() {
     	return(
 	    	<div class="anno-contain">
 		    	<p> Annotation Box </p>
 		    	<div id="sourceSelectContainer">{this.renderActions()}</div>
+		    	<p id="selectedText"></p>
 		    	<Input type="textarea" name="annotation" id="curAnno" />
-		    	
-		   		{/* Progress Bar -- Still need to make dynamic */}
-		   		
 		    </div>
     	);
     }

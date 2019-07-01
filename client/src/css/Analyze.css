@@ -105,3 +105,9 @@ li > a{
   margin-right: 2.5%;
   margin-top: .25em;
 }
+
+#selectedText{
+  padding: .5em;
+  background-color: white;
+  margin-top: 1em;
+}

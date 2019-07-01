@@ -27,16 +27,42 @@ class Markup extends Component {
 	constructor(props){
 		super();
 		this.state = {
-			curHighlight: "Put Highlighted Text Here!"
+			curHighlight: "Put Highlighted Text Here!",
+			citeSourceOptions: []
 		};
 
 		this.setHighlightedText = this.setHighlightedText.bind(this);
 		this.clearCitation = this.clearCitation.bind(this);
+		this.renderActions = this.renderActions.bind(this);
+	}
+
+	componentDidMount(){
+		let v = this.props.citesource;
+		this.setState({
+			citeData: v,
+			loaded: true
+		});
+		
+		for(let i = 0; i < v.length; i++){
+			this.state.citeSourceOptions.push(
+				<option value={v[i].id}>{v[i].title}</option>
+			)	
+		}
+	}
+
+	renderActions(){
+		if(this.state.loaded){
+			return(
+				<Input type="select" id="sourceSelect">
+					{this.state.citeSourceOptions}
+				</Input>
+			);
+		}
+		
 	}
 
 	//function that changes the state of this to be what was highlighted
 	setHighlightedText(){
-		
 		let highlight = getSelectionText();
 		this.setState({
 			curHighlight: highlight
@@ -52,14 +78,7 @@ class Markup extends Component {
 	    return(
 	    	<div class="markup-container">
 		    	{/*user clicks this button to change the state of what was highlighted */}
-	    		{/* Sources so we can pair intext citation with source.....will be dynamically populated with API*/}
-	    		<Input type="select" name="source" id="sourceSelect">
-					<option>Source 1</option>
-					<option>Source 2</option>
-					<option>Source 3</option>
-					<option>Source 4</option>
-					<option>Source 5</option>
-				</Input>
+	    		<div>{this.renderActions()}</div>
 	    		{/* where highlighed text goes*/}
 	    		<textarea id="highlightText" value={this.state.curHighlight} ref="highlightArea"></textarea>
 				{/* Button to submit In-Text Citation */}
