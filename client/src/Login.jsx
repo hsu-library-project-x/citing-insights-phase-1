@@ -96,7 +96,7 @@ class Login extends Component{
 		let my_username = document.getElementById("myUname").value;
 		let my_password = document.getElementById("myPswd").value;
 
-		if(my_username == "" || my_password == "" )
+		if(my_username === "" || my_password === "" )
 		{
 			alert("Please Enter Username and Password");
 			return;

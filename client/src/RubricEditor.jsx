@@ -1,10 +1,7 @@
 import React, {Component} from 'react';
-import {Label, Input, Card, CardText, CardBody, CardTitle, Button} from 'reactstrap';
+import {Input, Card, CardText, CardBody, CardTitle, Button} from 'reactstrap';
 import "./css/RubricEditor.css";
 import uniqueId from 'react-html-id';
-
-const IdNum = 0;
-
 
 const Editor = () => (
 	<div class="numCardsSelector">
