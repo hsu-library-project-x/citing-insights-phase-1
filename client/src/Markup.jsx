@@ -64,6 +64,7 @@ class Markup extends Component {
 	//function that changes the state of this to be what was highlighted
 	setHighlightedText(){
 		let highlight = getSelectionText();
+		document.getElementById("highlightText").classList.remove("savedAnimation");
 		this.setState({
 			curHighlight: highlight
 		})

@@ -194,6 +194,7 @@ class Analyze extends Component{
   //adds highlighted text and the  source to the intextcitation state array
   saveIntextCitation(){
     let citationId = document.getElementById("sourceSelect").value;
+    
     let text = document.getElementById("highlightText").value;
     if(text === "" || text === "Put Highlighted Text Here!"){
       alert("please highlight an intext citation");
@@ -209,6 +210,7 @@ class Analyze extends Component{
         if(curData.id === citationId){
           this.state.citationData[i].intextCites.push(inCiteObj);
           document.getElementById("highlightText").value = "";
+          document.getElementById("highlightText").classList.add("savedAnimation");
           return;
         }
       }
