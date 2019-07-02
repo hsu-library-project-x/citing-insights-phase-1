@@ -119,7 +119,6 @@ li > a{
   animation-timing-function: ease-out;
   border-color: green;
   border-style: solid;
-
 }
 
 @keyframes borderFlash{

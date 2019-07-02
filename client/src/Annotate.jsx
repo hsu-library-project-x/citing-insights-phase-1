@@ -34,6 +34,7 @@ class Annotate extends Component {
 				for(let j = 0; j < curInCiteArray.length; j++){
 					if(j === 0){
 						document.getElementById("selectedText").innerHTML = curInCiteArray[j].text;
+						document.getElementById("curAnno").value = curInCiteArray[j].annotation;
 					}
 					let curIntextId = curInCiteArray[j].id
 					let inTextValue = "intext" + j;
@@ -63,7 +64,9 @@ class Annotate extends Component {
 				for(let j = 0; j < curArray.length; j++){
 					if(curArray[j].id === curids[0]){
 						text = curArray[j].text;
+						let annotation = curArray[j].annotation;
 						document.getElementById("selectedText").innerHTML = text;
+						document.getElementById("curAnno").value = annotation;
 						return;
 					}
 				}

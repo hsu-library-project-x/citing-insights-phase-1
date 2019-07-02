@@ -239,11 +239,20 @@ class Analyze extends Component{
 
       //search space O(2n)
       for(let i = 0; i < data.length; i++){
-        if(data[i].id = citeIds[1]){
+        if(data[i].id === citeIds[1]){
           let curArray = data[i].intextCites;
           for(let j = 0; j < curArray.length; j++){
-            if(curArray[i].id === citeIds[0]){
-              this.state.citationData[i].intextCites.annotation = annotation;
+            if(curArray[j].id === citeIds[0]){
+              this.state.citationData[i].intextCites[j].annotation = annotation;
+              let box = document.getElementById("curAnno");
+              if( box.classList.contains("savedAnimation")){
+                document.getElementById("curAnno").classList.remove("savedAnimation");
+                document.getElementById("curAnno").classList.add("savedAnimation2");
+              }
+              else{
+                document.getElementById("curAnno").classList.add("savedAnimation");
+                document.getElementById("curAnno").classList.remove("savedAnimation2");
+              }
               return;
             }
           }
@@ -351,8 +360,7 @@ class Analyze extends Component{
             {(!this.state.isMarkup) ? 
                 <div class="annotate">
                   <Annotate citedata={this.state.citationData} />
-                  <Button color="success" id="addAnnotation" onClick={this.addAnnotation}>Add Annotation</Button>
-                  <Button color="danger" id="clearSavedAnnotation">Erase Annotation</Button>
+                  <Button color="success" id="addAnnotation" onClick={this.addAnnotation}>Save Annotation</Button>
                 </div> : <div class="markup"><Markup citesource={this.state.citationData}/><div className="Actions">{this.renderActions()}</div></div>
             }
 
