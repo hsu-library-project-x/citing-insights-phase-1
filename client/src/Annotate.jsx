@@ -31,7 +31,6 @@ class Annotate extends Component {
 			let data = this.state.citeData;
 			for(let i = 0; i < data.length; i++){
 				let curInCiteArray =  data[i].intextCites;
-
 				for(let j = 0; j < curInCiteArray.length; j++){
 					if(j === 0){
 						document.getElementById("selectedText").innerHTML = curInCiteArray[j].text;
@@ -62,9 +61,9 @@ class Annotate extends Component {
 			if(data[i].id === curids[1]){
 				let curArray = data[i].intextCites;
 				for(let j = 0; j < curArray.length; j++){
-					if(curArray[j].id = curids[0]){
-						alert(curArray[j].text);
-						document.getElementById("selectedText").innerHTML = curArray[j].text;
+					if(curArray[j].id === curids[0]){
+						text = curArray[j].text;
+						document.getElementById("selectedText").innerHTML = text;
 						return;
 					}
 				}

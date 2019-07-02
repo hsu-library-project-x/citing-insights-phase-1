@@ -208,6 +208,7 @@ class Analyze extends Component{
         let curData = data[i];
         if(curData.id === citationId){
           this.state.citationData[i].intextCites.push(inCiteObj);
+          document.getElementById("highlightText").value = "";
           return;
         }
       }
@@ -239,7 +240,7 @@ class Analyze extends Component{
         if(data[i].id = citeIds[1]){
           let curArray = data[i].intextCites;
           for(let j = 0; j < curArray.length; j++){
-            if(curArray[i].id = citeIds[0]){
+            if(curArray[i].id === citeIds[0]){
               this.state.citationData[i].intextCites.annotation = annotation;
               return;
             }
