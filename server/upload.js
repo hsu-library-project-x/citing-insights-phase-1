@@ -83,6 +83,9 @@ module.exports = function upload(req, res) {
 
             for (index in json_file) {
                 var citation = new citationModel(json_file[index]);
+
+
+                
                 citation.set({ "paper_id" : paper.id});
 
                 citation.save(function (err, citation){

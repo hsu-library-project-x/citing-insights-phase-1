@@ -6,6 +6,7 @@ var logger = require('morgan');
 const upload = require('./upload');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const passport = require("passport");
 
 mongoose.connect('mongodb://localhost:27017/test', {useNewUrlParser: true});
 
@@ -17,6 +18,7 @@ var papers = require('./routes/paperRoutes');
 var citations = require('./routes/citationRoutes');
 
 var app = express();
+
 
 //this line is just for the file uypload test
 app.engine('html', require('ejs').renderFile);
@@ -31,6 +33,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//passport middleware
+app.use(passport.initialize());
+
+//passport config
+require("./config/passport")(passport);
+
 
 app.use(cors(corsOptions));
 app.post('/upload', upload);

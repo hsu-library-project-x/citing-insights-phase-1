@@ -1,149 +1,219 @@
 // Our Login "Page" for Citing Insights
 
 // Import Libraries
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 // Button,Container, Row, Col are all Reactrap elements that we are 
 //     going to use for our login
-import {Row, Col, Form, FormGroup} from 'reactstrap';
+import { Row, Col, Form, FormGroup } from 'reactstrap';
 import './css/App.css';
 import './css/login.css';
 
 //import picture
 import login from './images/UniversityCenterXLg.jpg';
 
-function forgotInfo(props){
-	window.location.href="#/passrecov";
+function forgotInfo(props) {
+	window.location.href = "#/passrecov";
 }
 
 const LoginForm = () => (
-	<Form> 
+	<Form>
 		<h1> Welcome Back! </h1>
 		<FormGroup class="container">
-	      {/* div of class container holds the username, password, and 
+			{/* div of class container holds the username, password, and 
 	          Login button. Also has a remember me checkbox. Currently remember me is not
 	      	  functional and Login will just take you to our Demo page*/}
-	        {/* <label for="uname">Username</label> */}
-	        <input id="myUname" type="text" placeholder="Enter Username" class="uname" required/><br />
-	        {/* <label for="psw">Password</label> */}
-	        <input id="myPswd" type="password" placeholder="Enter Password" class="psw" required/>
-	        <br/>
-	        <button class="back" onClick={forgotInfo}>Forgot</button>
-	        <br /> <br />
-	        {/*href placeholder for now */}
-	        
-	    </FormGroup>
-     </Form>
-	)
+			{/* <label for="uname">Username</label> */}
+			<input id="myUname" type="text" placeholder="Enter Username" class="uname" required /><br />
+			{/* <label for="psw">Password</label> */}
+			<input id="myPswd" type="password" placeholder="Enter Password" class="psw" required />
+			<br />
+			<button class="back" onClick={forgotInfo}>Forgot</button>
+			<br /> <br />
+			{/*href placeholder for now */}
+
+		</FormGroup>
+	</Form>
+)
 
 const SignupForm = () => (
 	<Form>
 		<h1> Create an Account </h1>
 		<FormGroup class="container">
-			<input type="email" class="email" placeholder="Enter Email" /> <br />
-			<input type="text" class="uname" placeholder="Enter Username" /><br />
-			<input type="password" class="psw" placeholder="Enter Password" /><br />
-			<input type="password" class="psw" placeholder="Confirm Password" />
+			<input id="uname" type="email" class="email" placeholder="Enter Email" /> <br />
+			<input id="emailReg" type="text" class="uname" placeholder="Enter Username" /><br />
+			<input id="pwd1" type="password" class="psw" placeholder="Enter Password" /><br />
+			<input id="pwd2" type="password" class="psw" placeholder="Confirm Password" />
 			<br />
 		</FormGroup>
 	</Form>
 )
 
-class Login extends Component{
+class Login extends Component {
 
-	constructor(props)
-	{
+	constructor(props) {
 		super(props);
-		this.state= {
+		this.state = {
 			haveAccount: true,
 			loggingIn: false,
-			successfulLogin: false
+			successfulLogin: false,
+			registering: false,
+			successfulRegister: false
 		}
-		this.renderActions=this.renderActions.bind(this);
-		this.toggleLogin= this.toggleLogin.bind(this);
-		this.tryLogin=this.tryLogin.bind(this);
-		this.sendRequest=this.sendRequest.bind(this);
+
+		this.renderActions = this.renderActions.bind(this);
+		this.toggleLogin = this.toggleLogin.bind(this);
+		this.tryLogin = this.tryLogin.bind(this);
+		this.tryRegister = this.tryRegister.bind(this);
+		this.sendRequest = this.sendRequest.bind(this);
+		this.sendRequestRegister = this.sendRequestRegister.bind(this);
+
 	}
 
-	renderActions(){
-		if(!this.state.haveAccount){
+	renderActions() {
+		if (!this.state.haveAccount) {
 			return (<SignupForm />);
 		}
-		else{
+		else {
 			return (<LoginForm />);
 		}
 	}
 
-	toggleLogin()
-	{
+	toggleLogin() {
 		this.setState({
-		haveAccount : !this.state.haveAccount
+			haveAccount: !this.state.haveAccount
 		})
 	}
 
+	//Register
 	//Implement error catching for failed connection
-	sendRequest(username, password) {
-	 return new Promise((resolve, reject) => {
-		const req = new XMLHttpRequest();
-		const userData = new FormData();
-		userData.append(username, password);
-		req.open("POST", "http://localhost:5000/login");
-		req.send(userData);
-	 });
+	sendRequestRegister(username, email, password, password2) {
+		return new Promise((resolve, reject) => {
+			const req = new XMLHttpRequest();
+			const userData = new FormData();
+			userData.append(username, email, password, password2);
+			req.open("POST", "http://localhost:5000/users/register");
+			req.send(userData);
+		});
 	}
 
-	async tryLogin(){
-		let my_username = document.getElementById("myUname").value;
-		let my_password = document.getElementById("myPswd").value;
+	async tryRegister() {
+		let my_username = document.getElementById("uname").value;
+		let my_email = document.getElementById("emailReg").value;
+		let my_password = document.getElementById("pwd1").value;
+		let my_password2 = document.getElementById("pwd2").value;
 
-		if(my_username === "" || my_password === "" )
-		{
+		if (my_username === "" || my_password === "" 
+			|| my_password2 === "" || my_email === "") {
 			alert("Please Enter Username and Password");
 			return;
 		}
 		//set state of attempting login to ture
-		this.setState({loggingIn:true});
+		this.setState({ registering: true });
 
 		//make request to server
 		const promise = [];
-		promise.push(this.sendRequest(my_username,my_password));
+		promise.push(this.sendRequestRegister(my_username, my_email, my_password, my_password2));
 
-		try{
+		try {
 			console.log("Reached Try");
 			//if request suceeeds
-				//	create two states
+			//	create two states
 			await Promise.all(promise);
 			//if here we succeeded
-			this.setState({loggingIn:false, successfulLogin:true});
+			this.setState({ registering: false, successfulRegister: true });
 			//Now naviagate to the homepage.....to be implemented later
 		}
-		catch(e){
+		catch (e) {
+			// we failed...alert for now
+			alert("could not register");
+			this.setState({ registering: false });
+		}
+	}
+
+	//Login
+	//Implement error catching for failed connection
+	sendRequest(email, password) {
+		return new Promise((resolve, reject) => {
+			const req = new XMLHttpRequest();
+			const userData = new FormData();
+			userData.append(email, password);
+			req.open("POST", "http://localhost:5000/users/login");
+			req.send(userData);
+		});
+	}
+
+	async tryLogin() {
+		let my_username = document.getElementById("myUname").value;
+		let my_password = document.getElementById("myPswd").value;
+
+		if (my_username === "" || my_password === "") {
+			alert("Please Enter Username and Password");
+			return;
+		}
+		//set state of attempting login to ture
+		this.setState({ loggingIn: true });
+
+		//make request to server
+		const promise = [];
+		promise.push(this.sendRequest(my_username, my_password));
+
+		try {
+			console.log("Reached Try");
+			//if request suceeeds
+			//	create two states
+			await Promise.all(promise);
+			//if here we succeeded
+			this.setState({ loggingIn: false, successfulLogin: true });
+			//Now naviagate to the homepage.....to be implemented later
+		}
+		catch (e) {
 			// we failed...alert for now
 			alert("could not login");
-			this.setState({loggingIn:false});
-
+			this.setState({ loggingIn: false });
 		}
-
 	}
-	render(){
-		return(
-		<div class="container">
-			<div id="login_page">
-				<Row>
-					<Col xs="6">
-						<div id="image_container">
-							<img id="welcome_img" alt="" src={login} />
-						</div>
-					</Col>
-					<Col xs="6">
-						<div class="beside_picture">					
-							{this.renderActions()}
-							{(this.state.haveAccount) ? <div> <button class="continue" onClick={this.tryLogin}>Login</button><button class="acnt_stuff" onClick={this.toggleLogin}> Sign Up </button> </div>: <div ><button class="back" onClick={this.toggleLogin}> Go Back</button><button class="continue">Confirm</button>  </div>}
-						</div>
-					</Col>
-				</Row>
+	render() {
+		return (
+			<div class="container">
+				<div id="login_page">
+					<Row>
+						<Col xs="6">
+							<div id="image_container">
+								<img id="welcome_img" alt="" src={login} />
+							</div>
+						</Col>
+						<Col xs="6">
+							<div class="beside_picture">
+								{this.renderActions()}
+								{(this.state.haveAccount)
+									?
+									<div>
+										<button
+											class="continue"
+											onClick={this.tryLogin}
+										>Login</button>
+										<button
+											class="acnt_stuff"
+											onClick={this.toggleLogin}
+										>Sign Up</button>
+									</div>
+									:
+									<div >
+										<button
+											class="back"
+											onClick={this.toggleLogin}
+										>Go Back</button>
+										<button
+											class="continue"
+											onClick={this.tryRegister}
+										>Confirm</button>
+									</div>}
+							</div>
+						</Col>
+					</Row>
+				</div>
 			</div>
-		</div>
 		);
 	}
 }

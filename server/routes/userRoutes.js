@@ -13,9 +13,12 @@ router.get('/', userController.list);
 router.get('/:id', userController.show);
 
 /*
- * POST
+ * POST - create new user
  */
-router.post('/', userController.create);
+router.post('/register', userController.create);
+
+// POST - login
+router.post('/login', userController.login);
 
 /*
  * PUT
