@@ -2,16 +2,35 @@ var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
 
 var citationSchema = new Schema({
-	'author' : String,
-	'date' : String,
-	'editor' : String,
-	'edition' : String,
-	'volume' : String,
-	'pages' : String,
+	'author' : [{
+		'family': String,
+		'given' : String
+	}],
+	'date' : [
+		String
+	],
+	'editor' : [{
+		'family' : String,
+        'given' : String
+    }],
+	'edition' : [
+		String
+	],
+	'volume' : [
+		String
+	],
+	'pages' : [
+		String
+	],
 	'type' : String,
-	'title' : String,
-	'annotation' : Array,
-	'doi' : String,
+	'title' : [
+		String
+	],
+	'annotation' : String,
+	'doi' : [
+		String
+  ],
+  'arxivid' : String,
 	'paper_id' : {
 	 	type: Schema.Types.ObjectId,
 	 	ref: 'paper'

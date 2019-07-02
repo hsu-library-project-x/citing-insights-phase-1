@@ -91,10 +91,11 @@ class AccountSettings extends Component{
 								<input class="psw_change" type="Password" placeholder="Confirm New Password"  /><br />
 
 								<label for="check"> Enter old password </label>
-								<input type="Password" placeholder="Enter old Password" class="change"/><br />
+								<input type="Password" placeholder="Enter old Password" class="change"/><br /><br />
 
 								<button class="back" onClick={goBack}>Cancel</button>
-								<button class="continue">Ok</button>
+
+								<button class="confirm">Ok</button>
 								<button class="delete" onClick={this.changeisDeleting}>Delete Account </button>
 							</FormGroup>
 						</Form>
