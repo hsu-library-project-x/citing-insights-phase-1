@@ -1,4 +1,52 @@
-.react-pdf__Page__canvas{
-	margin: auto;
+.overflow-auto mark{
+	background-color: blue;
+	color: white;
 }
 
+.overflow-auto label{
+	text-align: left;
+	margin-right: 1em;
+	width: 10%;
+}
+
+.pdfButtons{
+	display: inline-block;
+	text-align: center;
+	width: 15%;
+	height: 2em;
+	padding: 0;
+}
+
+.pdfSearch{
+	display: inline;
+	width: 20%;
+	margin-right: 1em;
+}
+
+.react-pdf__Document{
+	display: block;
+}
+
+.pdfPage{
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.pdfInfo{
+	margin-top: .5em;
+}
+
+@media only screen and (max-width:870px){
+	.pdfButtons{
+		width: 45%;
+	}
+
+	.pdfSearch{
+		margin-left: 1em;
+		width: 65%;
+	}
+
+	.pdfPage{
+		display: none;
+	}
+}

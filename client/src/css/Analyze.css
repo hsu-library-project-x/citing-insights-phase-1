@@ -105,3 +105,24 @@ li > a{
   margin-right: 2.5%;
   margin-top: .25em;
 }
+
+#selectedText{
+  padding: .5em;
+  background-color: white;
+  margin-top: 1em;
+}
+
+.savedAnimation{
+  animation-name: borderFlash;
+  animation-duration: .35s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+  border-color: green;
+  border-style: solid;
+}
+
+@keyframes borderFlash{
+  0%{border-width: 0px; background-color: white;}
+  50%{border-width: 9px; background-color: green;}
+  100%{border-width: 0px; background-color: white;}
+}

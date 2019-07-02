@@ -34,9 +34,6 @@ class AnalyzeSubMenu extends Component{
 		});
 	}
 
-	
-
-
 	render(){
 		return(
 			<div class="analyze-container" >
