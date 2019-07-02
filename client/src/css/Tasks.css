@@ -110,6 +110,7 @@
   animation-fill-mode: forwards;
   animation-timing-function: ease-out;
 }
+
 @media only screen and (max-width:1054px){
   .menuButton{
     width:8em;
