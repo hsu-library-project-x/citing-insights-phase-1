@@ -42,6 +42,7 @@ require("./config/passport")(passport);
 
 
 app.use(cors(corsOptions));
+
 app.post('/upload', upload);
 
 app.use('/', routes);

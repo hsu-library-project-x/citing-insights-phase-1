@@ -17,7 +17,7 @@ function forgotInfo(props) {
 }
 
 const LoginForm = () => (
-	<Form>
+	<Form id="loginorm">
 		<h1> Welcome Back! </h1>
 		<FormGroup class="container">
 			{/* div of class container holds the username, password, and 
@@ -37,16 +37,14 @@ const LoginForm = () => (
 )
 
 const SignupForm = () => (
-	<Form>
+	<form id="register-form">
 		<h1> Create an Account </h1>
-		<FormGroup class="container">
-			<input id="uname" type="email" class="email" placeholder="Enter Email" /> <br />
-			<input id="emailReg" type="text" class="uname" placeholder="Enter Username" /><br />
-			<input id="pwd1" type="password" class="psw" placeholder="Enter Password" /><br />
-			<input id="pwd2" type="password" class="psw" placeholder="Confirm Password" />
+			<input id="uname" name="username" type="email" class="email" placeholder="Enter Email" /> <br />
+			<input id="emailReg" name="email" type="text" class="uname" placeholder="Enter Username" /><br />
+			<input id="pwd1" name="password" type="password" class="psw" placeholder="Enter Password" /><br />
+			<input id="pwd2" name="password2" type="password" class="psw" placeholder="Confirm Password" />
 			<br />
-		</FormGroup>
-	</Form>
+	</form>
 )
 
 class Login extends Component {
@@ -88,12 +86,22 @@ class Login extends Component {
 	//Register
 	//Implement error catching for failed connection
 	sendRequestRegister(username, email, password, password2) {
+
 		return new Promise((resolve, reject) => {
 			const req = new XMLHttpRequest();
-			const userData = new FormData();
-			userData.append(username, email, password, password2);
-			req.open("POST", "http://localhost:5000/users/register");
-			req.send(userData);
+			
+			let userData = new FormData();
+
+			userData.append('username', username);
+			userData.append('email', email);
+			userData.append('password', password);
+			userData.append('password2', password2);
+			console.log(userData);
+
+			req.open("POST", "http://localhost:5000/users/register", true);
+			req.setRequestHeader("Content-type", "application/json");
+			req.withCredentials = "true";
+			req.send({userData});
 		});
 	}
 
@@ -105,7 +113,7 @@ class Login extends Component {
 
 		if (my_username === "" || my_password === "" 
 			|| my_password2 === "" || my_email === "") {
-			alert("Please Enter Username and Password");
+			alert("Please fill in all fields");
 			return;
 		}
 		//set state of attempting login to ture
@@ -113,6 +121,8 @@ class Login extends Component {
 
 		//make request to server
 		const promise = [];
+		console.log("in a promise");
+
 		promise.push(this.sendRequestRegister(my_username, my_email, my_password, my_password2));
 
 		try {
@@ -126,7 +136,7 @@ class Login extends Component {
 		}
 		catch (e) {
 			// we failed...alert for now
-			alert("could not register");
+			alert("could not register" + e);
 			this.setState({ registering: false });
 		}
 	}
