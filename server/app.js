@@ -25,7 +25,7 @@ app.engine('html', require('ejs').renderFile);
 
 var corsOptions = {
   origin: '*',
-  optionsSuccessStatus: 200,
+  optionsSuccessStatus: 200
 }
 
 app.use(logger('dev'));

@@ -17,12 +17,16 @@ module.exports = function validateRegisterInput(data) {
         errors.username = "Name field is required";
     }
 
+
+    //BROKEN HERE, thinks email is wrong. probably the line above thats failing, testing for empty
+    /*
     // Email checks
     if (Validator.isEmpty(data.email)) {
         errors.email = "Email field is required";
     } else if (!Validator.isEmail(data.email)) {
+        console.log(data.email);
         errors.email = "Email is invalid";
-    }
+    }*/
 
     // Password checks
     if (Validator.isEmpty(data.password)) {

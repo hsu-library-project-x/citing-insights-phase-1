@@ -88,20 +88,25 @@ class Login extends Component {
 	sendRequestRegister(username, email, password, password2) {
 
 		return new Promise((resolve, reject) => {
-			const req = new XMLHttpRequest();
 			
-			let userData = new FormData();
-
-			userData.append('username', username);
-			userData.append('email', email);
-			userData.append('password', password);
-			userData.append('password2', password2);
-			console.log(userData);
-
+			const req = new XMLHttpRequest();
+			let data = {
+				"username": username, 
+				"email": email,
+				"password": password,
+				"password2": password2
+			};
 			req.open("POST", "http://localhost:5000/users/register", true);
+			
+
 			req.setRequestHeader("Content-type", "application/json");
-			req.withCredentials = "true";
-			req.send({userData});
+			
+			//req.withCredentials = "true";
+			
+			//req.setRequestHeader("Access-Control-Allow-Credentials", "true");
+			
+
+			req.send(JSON.stringify(data));
 		});
 	}
 
