@@ -3,8 +3,8 @@ var userModel = require('../models/userModel.js');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const validateRegisterInput = require("../validation/register");
-const validateLoginInput = require("../validation/login");
+const validateRegisterInput = require("../../client/src/validation/register");
+const validateLoginInput = require("../../client/src/validation/login");
 
 
 /**
@@ -56,12 +56,13 @@ module.exports = {
     create: function (req, res) {
 
         //Grab validation results
-        const { errors, isValid } = validateRegisterInput(req.body);
+        //const { errors, isValid } = validateRegisterInput(req.body);
 
         //Check those results
-        if (!isValid) {
-            return res.status(400).json(errors);
-        }
+        //if (!isValid) {
+          //  return res.status(400).json(errors);
+        //}
+
 
         //Check to see if user already exists
         userModel.findOne({ email: req.body.email })

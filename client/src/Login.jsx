@@ -11,6 +11,8 @@ import './css/login.css';
 
 //import picture
 import login from './images/UniversityCenterXLg.jpg';
+import validator from "validator";
+
 
 function forgotInfo(props) {
 	window.location.href = "#/passrecov";
@@ -115,12 +117,31 @@ class Login extends Component {
 		let my_email = document.getElementById("emailReg").value;
 		let my_password = document.getElementById("pwd1").value;
 		let my_password2 = document.getElementById("pwd2").value;
-
-		if (my_username === "" || my_password === "" 
-			|| my_password2 === "" || my_email === "") {
-			alert("Please fill in all fields");
-			return;
+		
+		
+		//make handling more robust
+		//validation
+		if(validator.isEmpty(my_username)){
+			alert("Please enter a username");
 		}
+
+		//Email validation is not going well
+
+		//if(!validator.isEmail(my_email)){
+		//	alert("Please enter a valid email");
+		//}
+
+		
+		if(!validator.isLength(my_password, { min: 1, max: 30 })){
+			alert("Please enter a valid password.");
+		}
+		if(!validator.equals(my_password, my_password2)){
+			alert("Please enter a username");
+		}
+
+
+
+
 		//set state of attempting login to ture
 		this.setState({ registering: true });
 
@@ -134,8 +155,11 @@ class Login extends Component {
 			console.log("Reached Try");
 			//if request suceeeds
 			//	create two states
+
 			await Promise.all(promise);
+			
 			//if here we succeeded
+			
 			this.setState({ registering: false, successfulRegister: true });
 			//Now naviagate to the homepage.....to be implemented later
 		}
