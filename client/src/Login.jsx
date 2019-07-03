@@ -2,6 +2,7 @@
 
 // Import Libraries
 import React, { Component } from 'react';
+import {Redirect} from 'react-router-dom';
 
 // Button,Container, Row, Col are all Reactrap elements that we are 
 //     going to use for our login
@@ -12,6 +13,7 @@ import './css/login.css';
 //import picture
 import login from './images/UniversityCenterXLg.jpg';
 import validator from "validator";
+import { O_TRUNC } from 'constants';
 
 
 function forgotInfo(props) {
@@ -41,8 +43,8 @@ const LoginForm = () => (
 const SignupForm = () => (
 	<form id="register-form">
 		<h1> Create an Account </h1>
-			<input id="uname" name="username" type="email" class="email" placeholder="Enter Email" /> <br />
-			<input id="emailReg" name="email" type="text" class="uname" placeholder="Enter Username" /><br />
+			<input id="emailReg" name="email" type="email" class="email" placeholder="Enter Email" /> <br />
+			<input id="uname" name="username" type="text" class="uname" placeholder="Enter Username" /><br />
 			<input id="pwd1" name="password" type="password" class="psw" placeholder="Enter Password" /><br />
 			<input id="pwd2" name="password2" type="password" class="psw" placeholder="Confirm Password" />
 			<br />
@@ -119,28 +121,27 @@ class Login extends Component {
 		let my_password2 = document.getElementById("pwd2").value;
 		
 		
-		//make handling more robust
-		//validation
+		//TODO: -make handling more robust
+		//		-get rid of alerts, add some jsx
+		
+		//      validation
 		if(validator.isEmpty(my_username)){
 			alert("Please enter a username");
 		}
 
-		//Email validation is not going well
+		if(validator.isEmpty(my_email)){
+			alert("Please enter an email")
+		}
 
-		//if(!validator.isEmail(my_email)){
-		//	alert("Please enter a valid email");
-		//}
-
-		
+		if(!validator.isEmail(my_email)){
+			alert("Please enter a valid email");
+		}
 		if(!validator.isLength(my_password, { min: 1, max: 30 })){
 			alert("Please enter a valid password.");
 		}
 		if(!validator.equals(my_password, my_password2)){
 			alert("Please enter a username");
 		}
-
-
-
 
 		//set state of attempting login to ture
 		this.setState({ registering: true });
@@ -162,6 +163,10 @@ class Login extends Component {
 			
 			this.setState({ registering: false, successfulRegister: true });
 			//Now naviagate to the homepage.....to be implemented later
+
+			//Redirect here
+			
+
 		}
 		catch (e) {
 			// we failed...alert for now
@@ -213,8 +218,11 @@ class Login extends Component {
 		}
 	}
 	render() {
+		if(this.state.successfulRegister === true){
+			return <Redirect to="/#/tasks"/>
+		}
 		return (
-			<div class="container">
+		<div class="container">
 				<div id="login_page">
 					<Row>
 						<Col xs="6">
@@ -228,24 +236,16 @@ class Login extends Component {
 								{(this.state.haveAccount)
 									?
 									<div>
-										<button
-											class="continue"
-											onClick={this.tryLogin}
+										<button class="continue" onClick={this.tryLogin}
 										>Login</button>
-										<button
-											class="acnt_stuff"
-											onClick={this.toggleLogin}
+										<button class="acnt_stuff" onClick={this.toggleLogin}
 										>Sign Up</button>
 									</div>
 									:
 									<div >
-										<button
-											class="back"
-											onClick={this.toggleLogin}
+										<button class="back" onClick={this.toggleLogin}
 										>Go Back</button>
-										<button
-											class="continue"
-											onClick={this.tryRegister}
+										<button class="continue" onClick={this.tryRegister}
 										>Confirm</button>
 									</div>}
 							</div>
