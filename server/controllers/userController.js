@@ -55,15 +55,6 @@ module.exports = {
      */
     create: function (req, res) {
 
-        //Grab validation results
-        //const { errors, isValid } = validateRegisterInput(req.body);
-
-        //Check those results
-        //if (!isValid) {
-          //  return res.status(400).json(errors);
-        //}
-
-
         //Check to see if user already exists
         userModel.findOne({ email: req.body.email })
             .then(user => {
@@ -93,13 +84,7 @@ module.exports = {
     },
 
     login: function (req, res) {
-        //run validation
-        const { errors, isValid } = validateLoginInput(req.body);
-        //check validation
-        if (!isValid) {
-            return res.status(400).json(errors);
-        }
-
+        
         const email = req.body.email;
         const password = req.body.password;
 

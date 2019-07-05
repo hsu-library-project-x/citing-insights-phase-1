@@ -19,7 +19,6 @@ import { O_TRUNC } from 'constants';
 function forgotInfo(props) {
 	window.location.href = "#/passrecov";
 }
-
 const LoginForm = () => (
 	<Form id="loginorm">
 		<h1> Welcome Back! </h1>
@@ -28,7 +27,7 @@ const LoginForm = () => (
 	          Login button. Also has a remember me checkbox. Currently remember me is not
 	      	  functional and Login will just take you to our Demo page*/}
 			{/* <label for="uname">Username</label> */}
-			<input id="myUname" type="text" placeholder="Enter Username" class="uname" required /><br />
+			<input id="email" type="email" placeholder="Enter Email" class="email" required /><br />
 			{/* <label for="psw">Password</label> */}
 			<input id="myPswd" type="password" placeholder="Enter Password" class="psw" required />
 			<br />
@@ -39,7 +38,6 @@ const LoginForm = () => (
 		</FormGroup>
 	</Form>
 )
-
 const SignupForm = () => (
 	<form id="register-form">
 		<h1> Create an Account </h1>
@@ -50,7 +48,6 @@ const SignupForm = () => (
 			<br />
 	</form>
 )
-
 class Login extends Component {
 
 	constructor(props) {
@@ -67,10 +64,10 @@ class Login extends Component {
 		this.toggleLogin = this.toggleLogin.bind(this);
 		this.tryLogin = this.tryLogin.bind(this);
 		this.tryRegister = this.tryRegister.bind(this);
-		this.sendRequest = this.sendRequest.bind(this);
+		this.sendRequestLogin = this.sendRequestLogin.bind(this);
 		this.sendRequestRegister = this.sendRequestRegister.bind(this);
-
 	}
+
 
 	renderActions() {
 		if (!this.state.haveAccount) {
@@ -94,21 +91,17 @@ class Login extends Component {
 		return new Promise((resolve, reject) => {
 			
 			const req = new XMLHttpRequest();
+
 			let data = {
 				"username": username, 
 				"email": email,
 				"password": password,
 				"password2": password2
 			};
+			
 			req.open("POST", "http://localhost:5000/users/register", true);
-			
 
-			req.setRequestHeader("Content-type", "application/json");
-			
-			//req.withCredentials = "true";
-			
-			//req.setRequestHeader("Access-Control-Allow-Credentials", "true");
-			
+			req.setRequestHeader("Content-type", "application/json");						
 
 			req.send(JSON.stringify(data));
 		});
@@ -175,20 +168,23 @@ class Login extends Component {
 		}
 	}
 
-	//Login
+    //Login
 	//Implement error catching for failed connection
-	sendRequest(email, password) {
+	sendRequestLogin(email, password) {
 		return new Promise((resolve, reject) => {
 			const req = new XMLHttpRequest();
-			const userData = new FormData();
-			userData.append(email, password);
-			req.open("POST", "http://localhost:5000/users/login");
-			req.send(userData);
+			const data = {
+				"email": email,
+				"password": password
+			}
+			req.open("POST", "http://localhost:5000/users/login", true);
+			req.setRequestHeader("Content-type", "application/json");						
+			req.send(data);
 		});
 	}
 
 	async tryLogin() {
-		let my_username = document.getElementById("myUname").value;
+		let my_username = document.getElementById("email").value;
 		let my_password = document.getElementById("myPswd").value;
 
 		if (my_username === "" || my_password === "") {
@@ -200,7 +196,7 @@ class Login extends Component {
 
 		//make request to server
 		const promise = [];
-		promise.push(this.sendRequest(my_username, my_password));
+		promise.push(this.sendRequestLogin(my_username, my_password));
 
 		try {
 			console.log("Reached Try");
@@ -215,8 +211,9 @@ class Login extends Component {
 			// we failed...alert for now
 			alert("could not login");
 			this.setState({ loggingIn: false });
-		}
-	}
+        }
+    }
+
 	render() {
 		if(this.state.successfulRegister === true){
 			return <Redirect to="/#/tasks"/>
