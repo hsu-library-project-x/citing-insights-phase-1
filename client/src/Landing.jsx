@@ -1,8 +1,7 @@
-// Our Login "Page" for Citing Insights
+// Our Landing "Page" for Citing Insights
 
 // Import Libraries
 import React, { Component } from 'react';
-import {Redirect} from 'react-router-dom';
 
 // Button,Container, Row, Col are all Reactrap elements that we are 
 //     going to use for our login
@@ -15,29 +14,13 @@ import login from './images/UniversityCenterXLg.jpg';
 import validator from "validator";
 import { O_TRUNC } from 'constants';
 
+import Login  from "./auth/Login.jsx";
+import Register  from "./auth/Login.jsx";
 
 function forgotInfo(props) {
 	window.location.href = "#/passrecov";
 }
-const LoginForm = () => (
-	<Form id="loginorm">
-		<h1> Welcome Back! </h1>
-		<FormGroup class="container">
-			{/* div of class container holds the username, password, and 
-	          Login button. Also has a remember me checkbox. Currently remember me is not
-	      	  functional and Login will just take you to our Demo page*/}
-			{/* <label for="uname">Username</label> */}
-			<input id="email" type="email" placeholder="Enter Email" class="email" required /><br />
-			{/* <label for="psw">Password</label> */}
-			<input id="myPswd" type="password" placeholder="Enter Password" class="psw" required />
-			<br />
-			<button class="back" onClick={forgotInfo}>Forgot</button>
-			<br /> <br />
-			{/*href placeholder for now */}
 
-		</FormGroup>
-	</Form>
-)
 const SignupForm = () => (
 	<form id="register-form">
 		<h1> Create an Account </h1>
@@ -48,7 +31,7 @@ const SignupForm = () => (
 			<br />
 	</form>
 )
-class Login extends Component {
+class Landing extends Component {
 
 	constructor(props) {
 		super(props);
@@ -68,15 +51,12 @@ class Login extends Component {
 		this.sendRequestRegister = this.sendRequestRegister.bind(this);
 	}
 
+	onLogoutClick = e => {
+		e.preventDefault();
+		this.props.logoutUser();
+	  };
 
-	renderActions() {
-		if (!this.state.haveAccount) {
-			return (<SignupForm />);
-		}
-		else {
-			return (<LoginForm />);
-		}
-	}
+
 
 	toggleLogin() {
 		this.setState({
@@ -168,6 +148,10 @@ class Login extends Component {
 		}
 	}
 
+	/*
+
+
+	
     //Login
 	//Implement error catching for failed connection
 	sendRequestLogin(email, password) {
@@ -212,11 +196,11 @@ class Login extends Component {
 			alert("could not login");
 			this.setState({ loggingIn: false });
         }
-    }
+	}   */
 
 	render() {
 		if(this.state.successfulRegister === true){
-			return <Redirect to="/#/tasks"/>
+			//return <Redirect to="/#/tasks"/>
 		}
 		return (
 		<div class="container">
@@ -229,21 +213,16 @@ class Login extends Component {
 						</Col>
 						<Col xs="6">
 							<div class="beside_picture">
-								{this.renderActions()}
 								{(this.state.haveAccount)
 									?
-									<div>
-										<button class="continue" onClick={this.tryLogin}
-										>Login</button>
-										<button class="acnt_stuff" onClick={this.toggleLogin}
-										>Sign Up</button>
+									<div class="container">
+										<Login />
 									</div>
 									:
 									<div >
-										<button class="back" onClick={this.toggleLogin}
-										>Go Back</button>
-										<button class="continue" onClick={this.tryRegister}
-										>Confirm</button>
+										<Register />
+										<button class="back" onClick={this.toggleLogin}>Go Back</button>
+										<button class="continue" onClick={this.tryRegister}>Confirm</button>
 									</div>}
 							</div>
 						</Col>
