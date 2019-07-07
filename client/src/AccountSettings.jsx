@@ -50,11 +50,18 @@ class AccountSettings extends Component{
 		if(this.state.isDeleting){
 			//run render for component
 			return (
+				<div>
 				<div class="popUp">
-					<h2> Are you sure you want to delete your account? </h2>
-					<p> After deleting the account nothing will be saved and all progress will be lost </p>
-					<button id="popUpDelete"> Yes, I am sure. </button>
-					<button onClick={this.changeisDeleting}> No! Go Back! </button>
+						<h2> DELETING AN ACCOUNT </h2><hr />
+						<strong><p> You have selected to delete this account.</p> </strong>
+						<p> Please note that doing so will erase all data and progress associated with the account.
+							It is not reversable. If you still wish to continue please confirm below. </p>
+						<hr />
+						<button onClick={this.changeisDeleting}> No! Go Back! </button>
+						<button id="popUpDelete"> Yes, I am sure. </button>
+					</div>
+				<div class="blackOut">
+				</div>
 				</div>
 	 		);
 		}
@@ -71,9 +78,7 @@ class AccountSettings extends Component{
 	render(){
 		return(
 		<div className="container">
-			<Row>
-				<Col xs="1"></Col>
-				<Col xs="10">
+
 					<div class="settings_form">
 						<Form>
 							<h1> <img class="icon" alt="pencil icon" src={tasks} /> Account Settings </h1>
@@ -93,16 +98,14 @@ class AccountSettings extends Component{
 								<label for="check"> Enter old password </label>
 								<input type="Password" placeholder="Enter old Password" class="change"/><br /><br />
 
-								<button class="back" onClick={goBack}>Cancel</button>
+								<button class="back_from_settings" onClick={goBack}>Cancel</button>
 
-								<button class="confirm">Ok</button>
+								<button class="confirm_settings">Ok</button>
 								<button class="delete" onClick={this.changeisDeleting}>Delete Account </button>
 							</FormGroup>
 						</Form>
 					</div>
-				</Col>
-				<Col xs="1"></Col>
-			</Row>
+		
 
 			<div id="deleteCheck">
 			{this.renderActions()}

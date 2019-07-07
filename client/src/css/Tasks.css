@@ -1,3 +1,11 @@
+#headTitle{
+  font-weight: bold;
+  font-family: "avenir", sans-serif;
+  color: #274259;
+  text-align: center;
+  margin-bottom:0;
+  margin-top:0;
+} 
 .sidemenu{
   color: black;
 }
@@ -76,22 +84,22 @@
 
 .mainCollapse{
   text-align: center;
-  height: 3em;
-  width: 3em;
-  border-radius: 50%;
-  background-color: #FFAC1D;
+  height: 4em;
+  width: 4em;
+  /*border-radius: 50%;
+  background-color: #FFAC1D; */
   z-index: 1000;
   position: absolute;
-  right: 5%;
+  right: 6%;
   padding-left: 2.5%;
-  top: 14.9em;
-  padding: .5em;
+  /* top: 1em; */
+  padding: 1em;
 }
 
 .miniCircle{
-  height: 2em;
-  width: 2em;
-  border-radius: 50%;
+  height: 0.15em;
+  width:1.5em;
+  /* border-radius: 50%; */
   z-index: 1001;
   background-color: #274259;
 }

@@ -1,0 +1,21 @@
+#error_page{
+    background-color:#F7F6E7;
+}
+
+#error_img{
+    z-index: -1000;
+    height:80%;
+    width:80%;
+}
+
+#error_page > p{
+    position:absolute;
+    padding-left:2em;
+    z-index: 100;
+    text-align:center;
+    top:5em;
+    color:#274259;
+    font-weight: bold;
+    font-family: "avenir", sans-serif;
+    font-size: 1.5em;
+}
