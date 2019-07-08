@@ -16,6 +16,23 @@
 	padding-bottom: 2em;
 }
 
+.addCardContainer{
+	width: 255px;
+	height: 267px;
+	margin: 0;
+	display: inline-block;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+.addCardContainer .card{
+	width: 255px;
+	height: 267px;
+	display: inline-block;
+}
+
+
+
 #cardStorage > .btn{
 	display: block;
 	width: 50%;
