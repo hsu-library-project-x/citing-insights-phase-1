@@ -70,13 +70,16 @@ module.exports = {
       }
 
       var author_name = "";
-      if (citation.author.length > 0 && "given" in citation.author[0]) {
-        author_name = citation.author[0]["given"];
+      if (citation.author.length > 0 && "given" in citation.author[0] && "family" in citation.author[0]) {
+        author_name = citation.author[0]["family"] + "+" + citation.author[0]["given"];
       }
       var title_name = "";
       if (citation.title.length > 0) {
         title_name = citation.title[0];
       }
+
+      console.log(author_name);
+      console.log(title_name);
 
       var json_obj = JSON.parse(Get("https://api.crossref.org/works?query.author=" + author_name + "&query.title=" + title_name ));
 
