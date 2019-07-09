@@ -33,7 +33,9 @@ class RubricEditor extends Component{
 	      	isSelecting: true,
 	      	needsSaving: true,
 	      	uploading: false,
-	      	idArray: []
+	      	idArray: [],
+	      	addCard: false,
+	      	cardAdded: false,
 	    }
 
 	    uniqueId.enableUniqueIds(this);
@@ -46,6 +48,7 @@ class RubricEditor extends Component{
 	    this.onInput = this.onInput.bind(this);
 	    this.fillButtonText = this.fillButtonText.bind(this);
 	    this.addCard = this.addCard.bind(this);
+	    this.setCards = this.setCards.bind(this);
 	}
 
 	fillButtonText(){
@@ -71,8 +74,10 @@ class RubricEditor extends Component{
 	}
 
 	renderActions(){
-		if(this.state.isEditing){
+		
+		if(this.state.isEditing && !this.state.addCard){
 			//loop the value of rubric Size building a card for each one
+			alert("entering Render Actions");
 			let loop = this.state.rubricSize;
 			for(let i = 0; i < loop; i++){
 				let newId = this.nextUniqueId();
@@ -86,6 +91,31 @@ class RubricEditor extends Component{
 			var array = this.state.rubricArray;
 			return(array);
 		}
+
+		if(this.state.addCard){
+			this.setCards();
+			let test = [];
+			return(this.state.rubricArray);
+		}
+	}
+
+	setCards(){
+
+		if(this.state.addCard && !this.state.cardAdded){
+			alert("entering set Cards");
+			let newId = this.nextUniqueId();
+			this.state.idArray.push(newId);
+			var card = <Cards id={newId} onChange={this.onChangeInput.bind(this)}/>;
+			this.setState({
+				needsSaving: true,
+				cardAdded: true
+			});
+			this.state.rubricArray.push(
+				<Cards id={newId} onChange={this.onChangeInput.bind(this)}/>
+			);
+			var newArray = this.state.rubricArray;
+			
+		}
 	}
 
 
@@ -97,10 +127,13 @@ class RubricEditor extends Component{
 	}
 
 	addCard(){
-		let newId = this.nextUniqueId();
-		this.state.idArray.push(newId);
-		let cardStorage = document.getElementById("cardStorage");
-
+		let newsize = this.state.rubricSize;
+		newsize = newsize++;
+		this.setState({
+			addCard: true,
+			cardAdded: false,
+			rubricSize: newsize,
+		});
 	}
 
 	reset(){
@@ -201,6 +234,7 @@ class RubricEditor extends Component{
 					<div className={`${this.state.needsSaving ? "warnHighlight" : "safeHighlight"}`} id="cardStorage">
 						<Input type="text" id="rubricTitle" placeholder="Type Rubric Title Here"/>
 						<button className={'cardAddButton'} onClick={this.addCard}>+</button>
+						<hr />
 						{this.renderActions()}
 					</div>
 
