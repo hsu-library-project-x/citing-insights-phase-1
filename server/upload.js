@@ -51,7 +51,6 @@ module.exports = function upload(req, res) {
                 "name": null 
             };
             // we actually want to set a variable to see whether or not things happenned successfully
-            
             // instantiate the paper and save to db
             var paper = new paperModel(raw_text);
 
@@ -103,7 +102,6 @@ module.exports = function upload(req, res) {
         })
         .on("end", () => {
             //we want to check a bool set in paper.save to see if we cool
-
             if(check){
                 res.send("we cool");
             }
