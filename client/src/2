@@ -31,10 +31,10 @@ class Classes extends Component{
 			"user_id": "5d26304f97d65677327b7e56"
 		};
 
-		let sendData = JSON.stringify(data);
+		let test = JSON.stringify(data);
 		fetch('http://localhost:5000/courses', {
 			method: 'POST',
-			body: sendData,
+			body: test,
 			headers:{
 				'Accept': 'application/json',
 			    'Content-Type': 'application/json'
@@ -45,6 +45,7 @@ class Classes extends Component{
 	async handleSubmitAssign(event){
 		
 		event.preventDefault();
+		
 		const data = {
 			"name": this.state.AssignName,
 			"class_id": "5d26304f97d65677327b7e56"
@@ -53,7 +54,8 @@ class Classes extends Component{
 		let test = JSON.stringify(data);
 		fetch('http://localhost:5000/assignments', {
 			method: 'POST',
-			body: test,
+			body: data,
+			
 			headers:{
 				'Accept': 'application/json',
 			    'Content-Type': 'application/json'
@@ -96,7 +98,7 @@ class Classes extends Component{
 							<option value="1">Class One</option>
 						</Input>
 						<Label for="assignName">Assignment:</Label>
-						<Input onChange={this.handleInputChange} type="text" id="assignName" name="AssignName" placeholder="Type assignment name here" required/>
+						<Input onChange={this.handleInputChange} type="text" id="assignName" name="AssignmentName" placeholder="Type assignment name here" required/>
 						<Input onChange={this.handleInputChange} type="textarea" id="assignNotes" name="AssignNote" placeholder="Optional Notes on the assignment" />
 						<Input type="submit" value="Submit"/>
 					</form>
