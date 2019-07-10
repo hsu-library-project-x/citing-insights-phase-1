@@ -54,7 +54,7 @@ class Classes extends Component{
 		let test = JSON.stringify(data);
 		fetch('http://localhost:5000/assignments', {
 			method: 'POST',
-			body: test,
+			body: data,
 			
 			headers:{
 				'Accept': 'application/json',
@@ -98,7 +98,7 @@ class Classes extends Component{
 							<option value="1">Class One</option>
 						</Input>
 						<Label for="assignName">Assignment:</Label>
-						<Input onChange={this.handleInputChange} type="text" id="assignName" name="AssignName" placeholder="Type assignment name here" required/>
+						<Input onChange={this.handleInputChange} type="text" id="assignName" name="AssignmentName" placeholder="Type assignment name here" required/>
 						<Input onChange={this.handleInputChange} type="textarea" id="assignNotes" name="AssignNote" placeholder="Optional Notes on the assignment" />
 						<Input type="submit" value="Submit"/>
 					</form>
