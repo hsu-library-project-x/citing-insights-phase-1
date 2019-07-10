@@ -22,18 +22,23 @@ class Classes extends Component{
 		this.handleInputChange = this.handleInputChange.bind(this);
 	}
 
-	handleSubmitClass(event){
+	async handleSubmitClass(event){
 		
 		event.preventDefault();
 		const data = {
 			"name": this.state.ClassName,
+			"note": this.state.ClassNote,
 			"user_id": "5d26304f97d65677327b7e56"
 		};
 
-		console.log(data);
+		let test = JSON.stringify(data);
 		fetch('http://localhost:5000/courses', {
 			method: 'POST',
-			body: data,
+			body: test,
+			headers:{
+				'Accept': 'application/json',
+			    'Content-Type': 'application/json'
+			},
 		});
 	}
 
@@ -45,9 +50,7 @@ class Classes extends Component{
 		fetch('http://localhost:5000/assignment', {
 			method: 'POST',
 			body: data,
-			headers:{
-			    'Content-Type': 'application/json'
-			} 
+			
 		});
 	}
 
