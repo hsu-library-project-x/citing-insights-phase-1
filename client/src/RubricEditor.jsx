@@ -33,9 +33,7 @@ class RubricEditor extends Component{
 	      	isSelecting: true,
 	      	needsSaving: true,
 	      	uploading: false,
-	      	idArray: [],
-	      	addCard: false,
-	      	cardAdded: false,
+	      	idArray: []
 	    }
 
 	    uniqueId.enableUniqueIds(this);
@@ -47,8 +45,6 @@ class RubricEditor extends Component{
 	    this.saveCard = this.saveCard.bind(this);
 	    this.onInput = this.onInput.bind(this);
 	    this.fillButtonText = this.fillButtonText.bind(this);
-	    this.addCard = this.addCard.bind(this);
-	    this.setCards = this.setCards.bind(this);
 	}
 
 	fillButtonText(){
@@ -75,46 +71,29 @@ class RubricEditor extends Component{
 
 	renderActions(){
 		
-		if(this.state.isEditing && !this.state.addCard){
+		if(this.state.isEditing){
 			//loop the value of rubric Size building a card for each one
-			alert("entering Render Actions");
 			let loop = this.state.rubricSize;
 			for(let i = 0; i < loop; i++){
 				let newId = this.nextUniqueId();
 				this.state.idArray[i] = newId;
 				this.state.rubricArray.push(
-					<Cards id={newId} onChange={this.onChangeInput.bind(this)}/>
+					<div className={`cardContainer `}>
+						<Card>
+							<CardBody>
+								<CardTitle for={"Title-"+newId}>Rubric Item Title</CardTitle>
+								<Input onInput={this.onInput} type="text" id={"Title-"+newId} class="rubricTitles"/>
+								<CardText for={"Text-"+newId}>Rubric Descriptions</CardText>
+								<Input onInput={this.onInput} type="textarea" id={"Text-"+newId} class="rubricDescriptions"/>
+							</CardBody>
+						</Card>
+					</div>
 				);		
 			}
 			//Create Add new Card clickable here... 
 			//think how we are implementing cards here
 			var array = this.state.rubricArray;
 			return(array);
-		}
-
-		if(this.state.addCard){
-			this.setCards();
-			let test = [];
-			return(this.state.rubricArray);
-		}
-	}
-
-	setCards(){
-
-		if(this.state.addCard && !this.state.cardAdded){
-			alert("entering set Cards");
-			let newId = this.nextUniqueId();
-			this.state.idArray.push(newId);
-			var card = <Cards id={newId} onChange={this.onChangeInput.bind(this)}/>;
-			this.setState({
-				needsSaving: true,
-				cardAdded: true
-			});
-			this.state.rubricArray.push(
-				<Cards id={newId} onChange={this.onChangeInput.bind(this)}/>
-			);
-			var newArray = this.state.rubricArray;
-			
 		}
 	}
 
@@ -124,16 +103,6 @@ class RubricEditor extends Component{
 		this.setState({rubricSize: numCards});
 		//this.state.
 		this.state.isEditing = !this.state.isEditing;
-	}
-
-	addCard(){
-		let newsize = this.state.rubricSize;
-		newsize = newsize++;
-		this.setState({
-			addCard: true,
-			cardAdded: false,
-			rubricSize: newsize,
-		});
 	}
 
 	reset(){
@@ -233,7 +202,6 @@ class RubricEditor extends Component{
 				{(!this.state.isEditing) ? <Editor /> : 
 					<div className={`${this.state.needsSaving ? "warnHighlight" : "safeHighlight"}`} id="cardStorage">
 						<Input type="text" id="rubricTitle" placeholder="Type Rubric Title Here"/>
-						<button className={'cardAddButton'} onClick={this.addCard}>+</button>
 						<hr />
 						{this.renderActions()}
 					</div>
