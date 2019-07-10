@@ -31,6 +31,10 @@
 	margin-bottom: 1em;
 }
 
+.classes-container select{
+	width: 70%;
+}
+
 .classes-container label{
 	margin-right: 1%;
 	margin-bottom: 1em;

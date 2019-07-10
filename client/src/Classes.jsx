@@ -7,29 +7,82 @@ import './css/Classes.css'
 
 // Class to render our homepage
 class Classes extends Component{
+
+	constructor(props){
+		super(props);
+		this.state = {
+			ClassName: '',
+			ClassNote: '',
+			classId: '',
+			AssignName: '',
+			AssignNote: ''
+		};
+		this.handleSubmitClass = this.handleSubmitClass.bind(this);
+		this.handleSubmitAssign = this.handleSubmitAssign.bind(this);
+		this.handleInputChange = this.handleInputChange.bind(this);
+	}
+
+	handleSubmitClass(event){
+		
+		event.preventDefault();
+		const data = new FormData(event.target)
+		console.log(event.target);
+		fetch('http://localhost:5000/courses', {
+			method: 'POST',
+			body: data,
+		});
+	}
+
+	handleSubmitAssign(event){
+		
+		event.preventDefault();
+		const data = new FormData(event.target)
+		console.log(event.target);
+		fetch('http://localhost:5000/assignment', {
+			method: 'POST',
+			body: data,
+		});
+	}
+
+	//call when input changes to update the state
+	handleInputChange(event){
+		const target = event.target;
+		const value = target.value;
+		const name = target.name;
+		//alert(name + ", " + value);
+		this.setState({
+			[name]: value
+		});
+		
+	}
+
 	render(){
 		return(
 			/* So far our homepage is just a h1 tag with text */
 			<div class="classes-container">
 			<Row>
-				
 				<Col xs="6">
-					<h2>New Class</h2>
-					<Form>
-						<FormGroup>
-							<Label for="className">Class Name</Label>
-							<Input type="text" id="className" name="ClassName" placeholder="Type class name here"/>
-							<Label for="classNotes">Notes: </Label>
-							<Input type="textarea" id="classNotes" name="ClassNotes" placeholder="Optional Notes on the class" />
-						</FormGroup> 
-						<FormGroup>
-							<Button>Ok</Button>
-							<Button>Cancel</Button>
-						</FormGroup>
-					</Form>
+					<h2>Add a Class: </h2>
+					<form id="addClassForm" onSubmit={this.handleSubmitClass}>
+						<Label for="className">Class Name</Label>
+						<Input onChange={this.handleInputChange} type="text" id="className" name="name" placeholder="Type class name here" required/>
+						<Input onChange={this.handleInputChange} type="textarea" id="classNotes" name="ClassNote" placeholder="Optional Notes on the class" />
+						<Input type="submit" value="Submit"/>
+					</form>
 				</Col>
-				<Col xs="6">
-					{/*Populate Element here with existing Classes through an API call*/}
+				<Col xs="6"> 
+					<h2>Add an Assignment</h2>
+					<form id="addAssignmentForm">
+						<Label for="classAssign">Class:</Label>
+						<Input onChange={this.handleInputChange} type="select" id="classAssign" name="classId" required>
+							<option value="" disabled selected hidden >Select a Class</option>
+							<option value="1">Class One</option>
+						</Input>
+						<Label for="assignName">Assignment:</Label>
+						<Input onChange={this.handleInputChange} type="text" id="assignName" name="name" placeholder="Type assignment name here" required/>
+						<Input onChange={this.handleInputChange} type="textarea" id="assignNotes" name="AssignNote" placeholder="Optional Notes on the assignment" />
+						<Input type="submit" value="Submit"/>
+					</form>
 				</Col>
 			</Row>
 			</div>
