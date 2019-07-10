@@ -31,10 +31,10 @@ class Classes extends Component{
 			"user_id": "5d26304f97d65677327b7e56"
 		};
 
-		let test = JSON.stringify(data);
+		let sendData = JSON.stringify(data);
 		fetch('http://localhost:5000/courses', {
 			method: 'POST',
-			body: test,
+			body: sendData,
 			headers:{
 				'Accept': 'application/json',
 			    'Content-Type': 'application/json'
@@ -47,10 +47,14 @@ class Classes extends Component{
 		event.preventDefault();
 		const data = new FormData();
 		
-		fetch('http://localhost:5000/assignment', {
+		let sendData = JSON.stringify(data);
+		fetch('http://localhost:5000/courses', {
 			method: 'POST',
-			body: data,
-			
+			body: sendData,
+			headers:{
+				'Accept': 'application/json',
+			    'Content-Type': 'application/json'
+			},
 		});
 	}
 
