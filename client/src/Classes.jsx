@@ -25,8 +25,12 @@ class Classes extends Component{
 	handleSubmitClass(event){
 		
 		event.preventDefault();
-		const data = new FormData(event.target)
-		console.log(event.target);
+		const data = {
+			"name": this.state.ClassName,
+			"user_id": "5d26304f97d65677327b7e56"
+		};
+
+		console.log(data);
 		fetch('http://localhost:5000/courses', {
 			method: 'POST',
 			body: data,
@@ -36,11 +40,14 @@ class Classes extends Component{
 	handleSubmitAssign(event){
 		
 		event.preventDefault();
-		const data = new FormData(event.target)
-		console.log(event.target);
+		const data = new FormData();
+		
 		fetch('http://localhost:5000/assignment', {
 			method: 'POST',
 			body: data,
+			headers:{
+			    'Content-Type': 'application/json'
+			} 
 		});
 	}
 
@@ -65,7 +72,7 @@ class Classes extends Component{
 					<h2>Add a Class: </h2>
 					<form id="addClassForm" onSubmit={this.handleSubmitClass}>
 						<Label for="className">Class Name</Label>
-						<Input onChange={this.handleInputChange} type="text" id="className" name="name" placeholder="Type class name here" required/>
+						<Input onChange={this.handleInputChange} type="text" id="className" name="ClassName" placeholder="Type class name here" required/>
 						<Input onChange={this.handleInputChange} type="textarea" id="classNotes" name="ClassNote" placeholder="Optional Notes on the class" />
 						<Input type="submit" value="Submit"/>
 					</form>
@@ -74,12 +81,12 @@ class Classes extends Component{
 					<h2>Add an Assignment</h2>
 					<form id="addAssignmentForm">
 						<Label for="classAssign">Class:</Label>
-						<Input onChange={this.handleInputChange} type="select" id="classAssign" name="classId" required>
+						<Input onChange={this.handleInputChange} type="select" id="classAssign" name="ClassId" required>
 							<option value="" disabled selected hidden >Select a Class</option>
 							<option value="1">Class One</option>
 						</Input>
 						<Label for="assignName">Assignment:</Label>
-						<Input onChange={this.handleInputChange} type="text" id="assignName" name="name" placeholder="Type assignment name here" required/>
+						<Input onChange={this.handleInputChange} type="text" id="assignName" name="AssignmentName" placeholder="Type assignment name here" required/>
 						<Input onChange={this.handleInputChange} type="textarea" id="assignNotes" name="AssignNote" placeholder="Optional Notes on the assignment" />
 						<Input type="submit" value="Submit"/>
 					</form>
