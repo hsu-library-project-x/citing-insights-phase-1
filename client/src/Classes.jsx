@@ -13,7 +13,7 @@ class Classes extends Component{
     this.state = {
       ClassName: '',
       ClassNote: '',
-      classId: '',
+      ClassId: '',
       AssignName: '',
       AssignNote: '',
 
@@ -66,9 +66,10 @@ class Classes extends Component{
 
     event.preventDefault();
 
+
     const data = {
       "name": this.state.AssignName,
-      "class_id": "5d26304f97d65677327b7e56"
+      "class_id": this.state.ClassId
     };
 
     let test = JSON.stringify(data);
@@ -99,7 +100,7 @@ class Classes extends Component{
     
     let courses = this.state.AvailableCourses;
         let optionItems = courses.map((course) =>
-                <option key={course.id}>{course.name}</option>
+                <option value={course._id}>{course.name}</option>
             );
 
 
