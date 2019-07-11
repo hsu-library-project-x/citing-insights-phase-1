@@ -2,6 +2,11 @@
   background-color: #FFAC1D;
 }
 
+.ana-subcontainer .form-control{
+  width: 100% ;
+  margin-bottom: 1em;
+}
+
 #finishButton{
   margin-right: .5em;
 }
