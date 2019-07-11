@@ -15,19 +15,34 @@ class Assignment extends Component{
 	        files: [],
 	        uploading: false,
 	        uploadProgress: {},
-	        successfullUploaded: false
+	        successfullUploaded: false,
+	        classId: '',
+	        assignmentId: ''
+
 	    };
 
 	    this.onFilesAdded = this.onFilesAdded.bind(this);
 	    this.uploadFiles = this.uploadFiles.bind(this);
 	    this.sendRequest = this.sendRequest.bind(this);
 	    this.renderActions = this.renderActions.bind(this);
+	    this.handleInputChange = this.handleInputChange.bind(this);
     }
 
     onFilesAdded(files){
 		this.setState(prevState => ({
 			files: prevState.files.concat(files)
 		}));
+	}
+
+	handleInputChange(event){
+		const target = event.target;
+		const value = target.value;
+		const name = target.name;
+		//alert(name + ", " + value);
+		this.setState({
+			[name]: value
+		});
+		
 	}
 
 	renderProgress(file) {
@@ -129,15 +144,16 @@ class Assignment extends Component{
 					</Col>
 					<Col xs="8">
 						<div class="assignment_form">
-							<Form>
-								<Label for="selectClass">Select Class</Label>
-								<Input type="select" id="selectClass" name="class" required>
-									<option></option>
-								    <option value="1">Class: 1</option>
-								    <option value="2">Class: 2</option>
-								    <option value="3">Class: 3</option>
-								    <option value="4">Class: 4</option>
-								    <option value="5">Class: 5</option>
+							<form>
+								<Label for="selectClass">Select Class:</Label>
+								<Input onChange={this.handleInputChange} type="select" id="selectClass" name="classId" required>
+									<option value="" disabled selected hidden >Select a Class</option>
+								  <option value="1">Class: 1</option>
+								</Input>
+								<Label for="selectClass">Select Assignment:</Label>
+								<Input onChange={this.handleInputChange} type="select" id="selectAssignment" name="assignmentId" required>
+									<option value="" disabled selected hidden >Select an Assignment</option>
+								  <option value="1">Assignment: 1</option>
 								</Input>
 
 								<div className="Upload">
@@ -150,8 +166,8 @@ class Assignment extends Component{
 	            							{this.state.files.map(file => {
 								              	return (
 									                <div key={file.name} className="Row">
-									                  	<span className="Filename">{file.name}</span>
-									                  	{this.renderProgress(file)}
+								                  	<span className="Filename">{file.name}</span>
+								                  	{this.renderProgress(file)}
 									                </div>
 								              	);
 								            })}
@@ -159,7 +175,7 @@ class Assignment extends Component{
 								    </div>
 								    <div className="Actions">{this.renderActions()}</div>
 								</div>
-							</Form>
+							</form>
 						</div>
 					</Col>
 					<Col xs="2">
