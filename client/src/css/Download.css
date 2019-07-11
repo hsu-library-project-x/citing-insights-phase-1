@@ -1,126 +1,184 @@
-.msts_theme_example {
-	border: 1px solid silver;
-
-	
-
-	.msts__control_select-all {
-		&:after {
-			content: '❯';
-		}
-	}
-
-	.msts__control_deselect-all {
-		&:after {
-			content: '❮';
-		}
-	}
-
-	.msts__filter {
-		position: relative;
-	}
-
-	.msts__filter-input {
-		width: 100%;
-		box-sizing: border-box;
-		padding: 5px;
-		border: 1px solid silver;
-	}
-
-	.msts__filter-clear {
-		cursor: pointer;
-		position: absolute;
-		top: 0;
-		right: 0;
-		height: 100%;
-		padding: 0 10px;
-		font-size: 1.25em;
-		color: silver;
-		transition: color ease 0.15s;
-
-		&:after {
-			content: '×';
-			vertical-align: middle;
-		}
-
-		&:hover {
-			color: #c0392b;
-		}
-	}
+.download-container{
+	background-color: #F7F6E7;
+	padding-top: 5em;
+	width: 100%;
+	color: black;
+	margin-top: -1.1em;
+	width: 95%;
+	margin-right: 2.5%;
+	margin-left: 2.5%;
+	border-radius: 15px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	padding-left: 2em;
+	padding-right: 2em;
+	padding-bottom: 2em;
 }
 
-.msts_theme_example .msts__heading .msts__side {
+.download-container select{
+	display: inline-block;
+	width: 48%;
+	margin: 1%;
+	margin-bottom: .25em;
+}
+
+.download-container input[type=submit]{
+	margin-top: 1em;
+}
+
+.multiselect {
+	border: 1px solid silver;
+	border-top-left-radius: 25px;
+	border-top-right-radius: 25px;
+	margin-top: 1em;
+}
+
+.multiselect .msts__heading .msts__side {
 		padding: 5px;
 		text-align: center;
 		color: #fff;
 		font-weight: bold;
+		display: inline-block;
+		width: 50%;
 }
 
-.msts_theme_example .msts__heading .msts__side_available {
+.multiselect .msts__heading .msts__side_available {
 	background-color: #9b59b6;
+	border-top-left-radius: 25px;
 }
 
-.msts_theme_example .msts__heading .msts__side_selected {
+.multiselect .msts__heading .msts__side_selected {
 	background-color: #2ecc71;
+	border-top-right-radius: 25px;
 }
 
-.msts_theme_example .msts__subheading .msts__side_filter {
+.multiselect .msts__subheading .msts__side_filter {
 	padding: 5px;
+	display: inline-block;
+	width:50%;
 }
 
-.msts_theme_example .msts__footer .msts__side {
+.multiselect .msts__footer .msts__side {
 	padding: 5px 15px;
 	background-color: #ecf0f1;
 	font-size: 0.75em;
 	color: #7f8c8d;
 	text-align: right;
+	display: inline-block;
+	width: 50%;
 }
 
-.msts_theme_example .msts__list {
-	height: 140px;
+.multiselect .msts__list {
+	height: 200px;
 	overflow-y: auto;
 	overflow-x: hidden;
+	width: 100%;
+	display: inline-block;
+	padding: 0;
 }
 
-.msts_theme_example .msts__list-item {
+.multiselect .msts__list-item {
 	padding: 5px 10px;
 	transition: background-color ease-in 0.1s, color ease-in 0.1s;
 }
 
-.msts_theme_example .msts__list-item &:hover {
+.multiselect .msts__list-item:hover {
 	background-color: #2980b9;
 	color: #fff;
 }
 
-.msts_theme_example .msts__list-item &_highlighted {
+.multiselect .msts__list-item &_highlighted {
 	background-color: rgba(41, 128, 185, 0.25);
 }
 
-.msts_theme_example .msts__list-item &_disabled {
+.multiselect .msts__list-item &_disabled {
 	background-color: #ecf0f1;
 	color: #7f8c8d;
 }
 
-.msts_theme_example .msts__list-item &_disabled	&:hover {
+.multiselect .msts__list-item &_disabled	&:hover {
 	background-color: #ecf0f1;
 	color: #7f8c8d;
 }
 
-.msts_theme_example .msts__control {
+.multiselect .msts__control {
 	border: none;
-	background: none;
+	background: #F7F6E7;
 	cursor: pointer;
 	padding: 10px 3px;
-	color: #bdc3c7;
+	color: black;
 	transition: color ease 0.15s;
+	display: inline-block;
+	width: 100%;
+	margin: 0;
+	display:block;
 }
 
-.msts_theme_example .msts__control &:hover {
+.multiselect .msts__control::hover {
 	color: #95a5a6;
 }
-.msts_theme_example .msts__control &[disabled] {
+.multiselect .msts__control::[disabled] {
 	color: #ecf0f1;
 }
 
-.msts_theme_example.msts_disabled {
+.multiselect	.msts__control_select-all::after {
+	content: '❯';
+}
+
+.multiselect .msts__control_deselect-all::after {
+	content: '❮';
+}
+
+.multiselect	.msts__filter {
+	position: relative;
+}
+
+.multiselect	.msts__filter-input {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 5px;
+	border: 1px solid silver;
+}
+
+.multiselect .msts__filter-clear {
+	cursor: pointer;
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 100%;
+	padding: 0 10px;
+	font-size: 1.25em;
+	color: silver;
+	transition: color ease 0.15s;
+}
+
+.multiselect .msts__filter-clear::after {
+	content: '×';
+	vertical-align: middle;
+}
+
+.multiselect .msts__filter-clear::hover {
+	color: #c0392b;
+}
+.multiselect .msts__body .msts__side{
+	display: inline-block;
+	width: 49%;
+	text-align: left;
+}
+
+.multiselect .msts__body .msts__side_controls {
+	width: 2%;
+	height: 50%;
+	margin: bottom;
+}
+
+.multiselect li{
+	background-color: white;
+	list-style: none;
+}
+.multiselect li:nth-child(odd){
+	background: lightgrey;
+}
+
+.multiselect.msts_disabled {
 	background-color: #ecf0f1;
 }

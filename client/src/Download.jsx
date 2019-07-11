@@ -13,7 +13,7 @@ class Download extends Component{
 			options: [
 				{label: 'Foo', value: 0},
 				{label: 'Bar', value: 1},
-				{label: 'Baz', value: 2, disabled: true},
+				{label: 'Baz', value: 2},
 				{label: 'Qux', value: 3},
 				{label: 'Quux', value: 4},
 				{label: 'Corge', value: 5},
@@ -25,8 +25,8 @@ class Download extends Component{
 				{label: 'Xyzzy', value: 11},
 				{label: 'Thud', value: 12}
 			],
-			value: [0, 3, 9],
-			highlight: [5, 8, 9],
+			value: [],
+			highlight: [],
 			settings: [
 				{
 					label: 'Show controls',
@@ -47,11 +47,6 @@ class Download extends Component{
 					label: 'Disabled',
 					name: 'disabled',
 					value: false
-				},
-				{
-					label: 'Limit',
-					name: 'limit',
-					value: 5
 				}
 			]
 		};
@@ -111,51 +106,31 @@ class Download extends Component{
 		}, {});
 
 		return (
-			<div>
-				<p>
-					{settings.map(setting => {
-
-						if (typeof setting.value === 'number') {
-							return (
-								<label
-									key={setting.name}
-								>
-									{` ${setting.label}: `}
-
-									<input
-										type="number"
-										min="0"
-										onChange={this.handleChangeSetting}
-										{...setting}
-									/>
-								</label>
-							);
-						}
-
-						return null;
-					})}
-				</p>
-				<Input name="class" type="select">
-					<option value="" disabled selected hidden >Select a Class</option>
-					<option value="1">Class One</option>	
-				</Input>
-				<Input name="assignment" type="select">
-					<option value="" disabled selected hidden >Select an Assignment</option>
-					<option value="1">Assignment One</option>	
-				</Input>
-				<MultiselectTwoSides
-					className="msts_theme_example"
-					availableHeader="Available"
-					availableFooter={`Available: ${availableCount}`}
-					selectedHeader="Selected"
-					selectedFooter={`Selected: ${selectedCount}`}
-					placeholder="Filter…"
-					options={options}
-					highlight={highlight}
-					value={value}
-					onChange={this.handleChange}
-					{...s}
-				/>
+			<div class="download-container">
+				<form id="downloadForm">
+					<Input name="class" type="select" required>
+						<option value="" disabled selected hidden >Select a Class</option>
+						<option value="1">Class One</option>	
+					</Input>
+					<Input name="assignment" type="select" required>
+						<option value="" disabled selected hidden >Select an Assignment</option>
+						<option value="1">Assignment One</option>	
+					</Input>
+					<MultiselectTwoSides
+						className="multiselect"
+						availableHeader="Available"
+						availableFooter={`Available: ${availableCount}`}
+						selectedHeader="Selected"
+						selectedFooter={`Selected: ${selectedCount}`}
+						placeholder="Filter..."
+						options={options}
+						highlight={highlight}
+						value={value}
+						onChange={this.handleChange}
+						{...s}
+					/>
+					<Input type="submit" value="Submit"/>
+				</form>
 			</div>
 		);
 	}
