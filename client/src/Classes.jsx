@@ -96,6 +96,13 @@ class Classes extends Component{
   }
 
   render(){
+    
+    let courses = this.state.AvailableCourses;
+        let optionItems = courses.map((course) =>
+                <option key={course.id}>{course.name}</option>
+            );
+
+
     return(
       /* So far our homepage is just a h1 tag with text */
       <div class="classes-container">
@@ -115,7 +122,7 @@ class Classes extends Component{
               <Label for="classAssign">Class:</Label>
               <Input onChange={this.handleInputChange} type="select" id="classAssign" name="ClassId" required>
                 <option value="" disabled selected hidden >Select a Class</option>
-                <option value="1">Class One</option>
+                {optionItems}
               </Input>
               <Label for="assignName">Assignment:</Label>
               <Input onChange={this.handleInputChange} type="text" id="assignName" name="AssignName" placeholder="Type assignment name here" required/>
