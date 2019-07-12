@@ -7,7 +7,7 @@ import Annotate from './Annotate.jsx';
 import Markup from './Markup.jsx';
 // This lets us use Jumbotron, Badge, and Progress in HTML from Reactstrap
 //    This is all we are using for now. May import more styling stuff later
-import { Label, ListGroup, ListGroupItem, Button, Input, Jumbotron, Progress } from 'reactstrap';
+import { Label, ListGroup, ListGroupItem, Button, Input, Progress } from 'reactstrap';
 import {Card, CardText, CardBody, CardTitle} from 'reactstrap';
 // Lets us use column / row and layout for our webpage using Reactstrap
 import {Row, Col } from 'reactstrap';
@@ -63,13 +63,13 @@ function displaySource(props){
 
 //This function will change the students paper
 function displayPaper(props){
-  var paper = document.getElementById("student");
+  //var paper = document.getElementById("student");
   //var selectedStudent = document.getElementById("selectedStudent");
   //put dynamic call here
 }
 
 //Test function to be removed
-function testProgress(props){
+/*function testProgress(props){
   //get id
   var bar = document.getElementById("assignmentProgress").getElementsByClassName("progress-bar");
   // Change the value in the progress bar --- 
@@ -79,7 +79,7 @@ function testProgress(props){
   bar[0].attributes["style"].nodeValue = ("width: " + nodeVal + "%");
   var text = document.getElementById("assignProgressText");
   text.innerHTML = ("Total Assessed: " + nodeVal + "%");
-}
+}*/
 
 
 //Rubric Const, to be replaced possibly with new component
