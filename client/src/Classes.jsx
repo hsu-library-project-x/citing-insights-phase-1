@@ -42,8 +42,6 @@ class Classes extends Component{
   }
 
   async handleSubmitClass(event){
-
-
     event.preventDefault();
     const data = {
       "name": this.state.ClassName,
@@ -60,13 +58,12 @@ class Classes extends Component{
         'Content-Type': 'application/json'
       },
     });
+    window.location.reload();
   }
 
   async handleSubmitAssign(event){
 
     event.preventDefault();
-
-
     const data = {
       "name": this.state.AssignName,
       "class_id": this.state.ClassId
@@ -82,6 +79,7 @@ class Classes extends Component{
         'Content-Type': 'application/json'
       },
     });
+    window.location.reload();
   }
 
   //call when input changes to update the state
@@ -99,9 +97,9 @@ class Classes extends Component{
   render(){
     
     let courses = this.state.AvailableCourses;
-        let optionItems = courses.map((course) =>
-                <option value={course._id}>{course.name}</option>
-            );
+    let optionItems = courses.map((course) =>
+      <option value={course._id}>{course.name}</option>
+    );
 
 
     return(
