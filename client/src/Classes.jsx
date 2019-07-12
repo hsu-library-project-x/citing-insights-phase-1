@@ -16,12 +16,13 @@ class Classes extends Component{
       ClassId: '',
       AssignName: '',
       AssignNote: '',
-
-      AvailableCourses: []
+      AvailableCourses: [],
+      AvailableAssignments: []
     };
     this.handleSubmitClass = this.handleSubmitClass.bind(this);
     this.handleSubmitAssign = this.handleSubmitAssign.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleGetAssignment = this.handleGetAssignment.bind(this);
     //this.componentWillMount = this.componentWillMount.bind(this);
   }
 
@@ -82,6 +83,21 @@ class Classes extends Component{
     window.location.reload();
   }
 
+  handleGetAssignment(event){
+    const target = event.target;
+    var that = this;
+    console.log(target.id);
+    fetch('http://localhost:5000/assignments/by_class_id/' + target.id)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(myJson) {
+        console.log(myJson);
+        that.setState({AvailableAssignments: myJson});
+      });
+
+  }
+
   //call when input changes to update the state
   handleInputChange(event){
     const target = event.target;
@@ -97,8 +113,15 @@ class Classes extends Component{
   render(){
     
     let courses = this.state.AvailableCourses;
+    let assignments = this.state.AvailableAssignments;
     let optionItems = courses.map((course) =>
       <option value={course._id}>{course.name}</option>
+    );
+    let classList = courses.map((course) => 
+      <li onClick={this.handleGetAssignment} class="classLi" id={course._id}>{course.name + ": " + course.course_note}</li>
+    );
+    let assignList = assignments.map((assignment) =>
+      <li id="assignment._id">{assignment.name}</li>
     );
 
 
@@ -114,6 +137,7 @@ class Classes extends Component{
               <Input onChange={this.handleInputChange} type="textarea" id="classNotes" name="ClassNote" placeholder="Optional Notes on the class" />
               <Input type="submit" value="Submit"/>
             </form>
+            
           </Col>
           <Col xs="6"> 
             <h2>Add an Assignment</h2>
@@ -127,7 +151,22 @@ class Classes extends Component{
               <Input onChange={this.handleInputChange} type="text" id="assignName" name="AssignName" placeholder="Type assignment name here" required/>
               <Input onChange={this.handleInputChange} type="textarea" id="assignNotes" name="AssignNote" placeholder="Optional Notes on the assignment" />
               <Input type="submit" value="Submit"/>
+
             </form>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs="6">
+            <h3>Your Classes:</h3>
+            <ul class="currentClasses">
+              {classList}
+            </ul>
+          </Col>
+          <Col xs="6">
+            <h3>Your Assignment:</h3>
+            <ul class="currentClasses">
+              {assignList}
+            </ul>
           </Col>
         </Row>
       </div>

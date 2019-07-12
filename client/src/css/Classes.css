@@ -52,5 +52,28 @@
 	display: inline-block;
 	width: 40%;
 	text-align: center;
-
 }
+
+.currentClasses{
+	border: 2px solid black;
+	padding-left: 0;
+	border-radius: 5px;
+}
+
+.currentClasses li{
+	list-style-type: none;
+	text-align: left;
+	background-color: white;
+	height: 2.5em;
+	padding: .5em;
+}
+
+.currentClasses li:nth-child(odd){
+	background-color: lightgrey;
+}
+
+.currentClasses .classLi:hover{
+	background-color: #2980b9;
+	color: #fff; 
+}
+
