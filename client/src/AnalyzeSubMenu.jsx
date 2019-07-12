@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import { Switch, Route, HashRouter, Link } from "react-router-dom";
-import { Button, Row, Col, Form, Input, Label, FormGroup } from "reactstrap";
-import Analyze from "./Analyze.jsx";
+import { HashRouter, Link } from "react-router-dom";
+import { Button, Row, Col, Input } from "reactstrap";
 
 class AnalyzeSubMenu extends Component{
 
@@ -26,7 +25,7 @@ class AnalyzeSubMenu extends Component{
 	}
 
 	newAssessment(){
-		let curAssign = document.getElementById("assignForAnalyze");
+		//let curAssign = document.getElementById("assignForAnalyze");
 
 	}
 
@@ -67,7 +66,7 @@ class AnalyzeSubMenu extends Component{
 
 		let sendData = JSON.stringify(data);
 
-		console.log(data);
+		console.log(sendData);
 
 		/*fetch('http://localhost:5000/courses', {
 			method: 'GET',
@@ -92,6 +91,7 @@ class AnalyzeSubMenu extends Component{
 		};
 
 		let sendData = JSON.stringify(data);
+		console.log(senData);
 
 		/*fetch('http://localhost:5000/courses', {
 			method: 'GET',
