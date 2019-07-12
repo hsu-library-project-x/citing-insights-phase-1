@@ -91,7 +91,7 @@ class AnalyzeSubMenu extends Component{
 		};
 
 		let sendData = JSON.stringify(data);
-		console.log(senData);
+		console.log(sendData);
 
 		/*fetch('http://localhost:5000/courses', {
 			method: 'GET',
