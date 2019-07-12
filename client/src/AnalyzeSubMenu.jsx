@@ -12,7 +12,9 @@ class AnalyzeSubMenu extends Component{
 	    	AssignNew: '',
 	    	AssignContinue: '',
 	    	ClassNew: '',
-	    	ClassContinue: ''
+	    	ClassContinue: '',
+        AvailableCourses: [],
+        AvailableAssignments: []
 	    }
 
 	    this.newAssessment = this.newAssessment.bind(this);
@@ -22,7 +24,52 @@ class AnalyzeSubMenu extends Component{
 	    this.populateAssignment = this.populateAssignment.bind(this);
 	    this.handleSubmitNew = this.handleSubmitNew.bind(this);
 	    this.handleSubmitContinue = this.handleSubmitContinue.bind(this);
+      this.handleClassSelection = this.handleClassSelection.bind(this);
 	}
+
+  componentWillMount() {
+    console.log('mounted');
+
+    var that = this;
+
+    fetch('http://localhost:5000/courses')
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(myJson) {
+        //console.log(JSON.stringify(myJson));
+        console.log(myJson);
+        that.setState({AvailableCourses: myJson});
+      });
+  }
+
+  handleClassSelection(event) {
+    var that = this;
+    var target = event.target;
+    //incorrect
+    console.log('we just clicked');
+    fetch('http://localhost:5000/assignments/by_class_id/' + target.value)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(myJson) {
+        //console.log(JSON.stringify(myJson));
+        console.log(myJson);
+        that.setState({AvailableAssignments: myJson});
+      });
+
+  }
+
+  handleInputChange(event){
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+    //alert(name + ", " + value);
+    this.setState({
+      [name]: value
+    });
+
+  }
 
 	newAssessment(){
 		//let curAssign = document.getElementById("assignForAnalyze");
@@ -106,20 +153,32 @@ class AnalyzeSubMenu extends Component{
 	}
 
 	render(){
+    let courses = this.state.AvailableCourses;
+    let optionItems = courses.map((course) =>
+      <option value={course._id}>{course.name}</option>
+    );
+
+    let assignments = this.state.AvailableAssignments;
+    let optionAssignments = assignments.map((assignment) =>
+      <option value={assignment._id}>{assignment.name}</option>
+    );
 		return(
 			<div class="analyze-container ana-subcontainer" >
+        <p> under construction </p>
 			<Row>
 				<Col xs="1"></Col>
 				<Col xs="5">
 					<form className={`${!this.state.selectedAssignment ? "warnHighlight" : "safeHighlight"}`} onSubmit={this.handleSubmitNew}>
 						<h4>Start Analyzing a new Assignment</h4>
-						<Input onChange={this.handleInputChange} onInput={this.populateAssignment} id="assignForAnalyze" type="select" name="ClassNew" required >
+						<Input onChange={this.handleClassSelection} onInput={this.populateAssignment} id="assignForAnalyze" type="select" name="ClassNew" required >
 							<option value="" disabled selected hidden >Select a Class</option>
 							<option value="1">Class One</option>
+              {optionItems}
 						</Input>
 						<Input onChange={this.handleInputChange} onInput={this.onInput} id="assignForAnalyze" type="select" name="AssignNew" required >
 							<option value="" disabled selected hidden >Select an Assignment</option>
 							<option value="1">Assigment One</option>
+              {optionAssignments}
 						</Input>
 						<Input type="submit" value="Submit" disabled={!this.state.selectedAssignment} />
 					</form>
