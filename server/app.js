@@ -25,8 +25,8 @@ const Strategy = require('passport-google-oauth20').Strategy;
 
 const user = require("./models/userModel");
 
-const GOOGLE_CLIENT_ID = "203897182687-719pq9jrvlgksp6ej5hvoiugf5ofjd6n.apps.googleusercontent.com";
-const GOOGLE_CLIENT_SECRET = "SrRjyLv81h4HtIJcbvgCZaPT";
+const GOOGLE_CLIENT_ID = "";
+const GOOGLE_CLIENT_SECRET = "";
 
 // OAuth 2.0-based strategies require a `verify` function which receives the
 // credential (`accessToken`) for accessing the Facebook API on the user's
