@@ -153,7 +153,8 @@ class Analyze extends Component{
       uploading: false,
       successfullUpload: false,
       citationData: [],
-      curHighlight: ""
+      curHighlight: "",
+      assignmentId: ""
     }
 
     this.renderActions = this.renderActions.bind(this);
@@ -162,6 +163,16 @@ class Analyze extends Component{
     this.resetButton = this.resetButton.bind(this);
     this.saveIntextCitation = this.saveIntextCitation.bind(this);
     this.addAnnotation = this.addAnnotation.bind(this);
+  }
+
+  componentDidMount() {
+
+    console.log('mounted');
+    if (this.props.location.state != undefined) {
+        this.setState({assignmentId: this.props.location.state.id});
+    } else {
+      this.setState({assignmentId: "no assignment selected"});
+    }
   }
 
 
@@ -304,6 +315,7 @@ class Analyze extends Component{
     return(
       /* Analyze Mode HTML Start */
       <div class="DemoContents analyze-container">
+        <p> {this.state.assignmentId} </p>
         {/* One Giant container that will let us use rows / columns */}
         {/* Row: Contains Rubric on display and student selector; */}
         <Row>
