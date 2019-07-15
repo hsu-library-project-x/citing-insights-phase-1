@@ -6,12 +6,13 @@
     "bootstrap": "^4.3.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-google-login": "^5.0.4",
     "react-html-id": "^0.1.5",
     "react-pdf": "^4.1.0",
     "react-pdf-highlighter": "^2.2.0",
-    "react-router-dom": "^5.0.0",
+    "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.0",
-    "reactstrap": "^8.0.0"
+    "reactstrap": "^8.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
