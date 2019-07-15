@@ -138,9 +138,7 @@ class Login extends Component{
 					<Col xs="6">
 						<div class="beside_picture">					
 							{this.renderActions()}
-
 							{(this.state.haveAccount) ? <div> <button class="continue" onClick={this.tryLogin}>Login</button><button class="acnt_stuff" onClick={this.toggleLogin}> Sign Up </button> </div>: <div ><button class="back_to_login" onClick={this.toggleLogin}> Go Back</button><button class="confirm">Confirm</button>  </div>}
-
 						</div>
 					</Col>
 				</Row>

@@ -10,9 +10,10 @@
 
 #error_page > p{
     position:absolute;
+    /* float: left; */
     padding-left:2em;
     z-index: 100;
-    text-align:center;
+    text-align:left;
     top:5em;
     color:#274259;
     font-weight: bold;

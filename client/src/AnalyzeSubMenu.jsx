@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import { HashRouter, Link } from "react-router-dom";
 import { Button, Row, Col, Input } from "reactstrap";
 
+import './css/AnalyseSubMenu.css'
+
 class AnalyzeSubMenu extends Component{
 
 	constructor () {
@@ -164,17 +166,17 @@ class AnalyzeSubMenu extends Component{
     );
 		return(
 			<div class="analyze-container ana-subcontainer" >
-        <p> under construction </p>
 			<Row>
-				<Col xs="1"></Col>
-				<Col xs="5">
+				<Col xs="6">
 					<form className={`${!this.state.selectedAssignment ? "warnHighlight" : "safeHighlight"}`} onSubmit={this.handleSubmitNew}>
-						<h4>Start Analyzing a new Assignment</h4>
+						<h4>Analyze New Assignment</h4>
+						<label for="assignForAnalyze">Class:</label>
 						<Input onChange={this.handleClassSelection} onInput={this.populateAssignment} id="assignForAnalyze" type="select" name="ClassNew" required >
 							<option value="" disabled selected hidden >Select a Class</option>
 							<option value="1">Class One</option>
               {optionItems}
 						</Input>
+						<label for="assignForAnalyze">Assignment:</label>
 						<Input onChange={this.handleInputChange} onInput={this.onInput} id="assignForAnalyze" type="select" name="AssignNew" required >
 							<option value="" disabled selected hidden >Select an Assignment</option>
 							<option value="1">Assigment One</option>
@@ -182,14 +184,17 @@ class AnalyzeSubMenu extends Component{
 						</Input>
 						<Input type="submit" value="Submit" disabled={!this.state.selectedAssignment} />
 					</form>
+
 				</Col>
-				<Col xs="5">
+				<Col xs="6">
 					<form className={`${!this.state.selectedAssignContinue ? "warnHighlight" : "safeHighlight"}`} onSubmit={this.handleSubmitContinue}>
-						<h4>Continue Analyzing an Assignment</h4>
+						<h4>Go to Existing Assignment</h4>
+						<label for="assignForAnalyze">Class:</label>
 						<Input onChange={this.handleInputChange} onInput={this.populateAssignment} id="assignForAnalyze" type="select" name="ClassContinue" required >
 							<option value="" disabled selected hidden >Select a Class</option>
 							<option value="1">Class One</option>
 						</Input>
+						<label for="assignForAnalyze">Assignment:</label>
 						<Input  onChange={this.handleInputChange} onInput={this.onInput2} id="assignForAnalyze" type="select" name="AssignContinue" required >
 							<option value="" disabled selected hidden >Select an Assignment</option>
 							<option value="assignmentIdHere">Assigment One</option>
@@ -197,7 +202,9 @@ class AnalyzeSubMenu extends Component{
 						<Input type="submit" value="Submit" onClick={this.newAssessment} disabled={!this.state.selectedAssignContinue} />
 					</form>
 				</Col>
-				<Col xs="1">
+			</Row>
+			<Row>
+				<Col xs="12">
 					<HashRouter>
 						<div class="button-container">
 							<Link to="/tasks/analyze">

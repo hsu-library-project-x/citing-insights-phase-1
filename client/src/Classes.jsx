@@ -130,25 +130,27 @@ class Classes extends Component{
       <div class="classes-container">
         <Row>
           <Col xs="6">
-            <h2>Add a Class: </h2>
+            <h2> New Class </h2>
             <form id="addClassForm" onSubmit={this.handleSubmitClass}>
-              <Label for="className">Class Name</Label>
+              <Label for="className">Name: </Label>
               <Input onChange={this.handleInputChange} type="text" id="className" name="ClassName" placeholder="Type class name here" required/>
+              <Label for="classNotes">Notes: </Label>
               <Input onChange={this.handleInputChange} type="textarea" id="classNotes" name="ClassNote" placeholder="Optional Notes on the class" />
               <Input type="submit" value="Submit"/>
             </form>
             
           </Col>
           <Col xs="6"> 
-            <h2>Add an Assignment</h2>
+            <h2> New Assignment </h2>
             <form id="addAssignmentForm" onSubmit={this.handleSubmitAssign}  >
               <Label for="classAssign">Class:</Label>
               <Input onChange={this.handleInputChange} type="select" id="classAssign" name="ClassId" required>
                 <option value="" disabled selected hidden >Select a Class</option>
                 {optionItems}
-              </Input>
-              <Label for="assignName">Assignment:</Label>
-              <Input onChange={this.handleInputChange} type="text" id="assignName" name="AssignName" placeholder="Type assignment name here" required/>
+              </Input><br /> <br />
+              <Label for="assignName">Name:</Label>
+              <Input onChange={this.handleInputChange} type="text" id="assignName" name="AssignName" placeholder="Type assignment name here" required/> <br />
+              <Label for="assignNotes">Notes:</Label>
               <Input onChange={this.handleInputChange} type="textarea" id="assignNotes" name="AssignNote" placeholder="Optional Notes on the assignment" />
               <Input type="submit" value="Submit"/>
 
@@ -157,13 +159,13 @@ class Classes extends Component{
         </Row>
         <Row>
           <Col xs="6">
-            <h3>Your Classes:</h3>
+            <h3>Your Classes</h3>
             <ul class="currentClasses">
               {classList}
             </ul>
           </Col>
           <Col xs="6">
-            <h3>Your Assignment:</h3>
+            <h3>Your Assignments</h3>
             <ul class="currentClasses">
               {assignList}
             </ul>

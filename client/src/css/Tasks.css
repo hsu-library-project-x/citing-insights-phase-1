@@ -5,24 +5,27 @@
   text-align: center;
   margin-bottom:16px;
   margin-top:8px;
+  /* height: 3em; */
 } 
 .sidemenu{
   color: black;
 }
 
 .sidebar{
-  width: 90%;
-  margin-left: 5%;
-  margin-right: 5%;
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
   background-color: #F7F6E7;
   height: 20em;
   padding: 2em;
-  padding-bottom: 4em;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  /* padding-bottom: 10em; */
+  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
+  box-shadow: -15px 15px 70px black;
   margin-top: 2.5em;
-  border-radius: 25px;
+  margin-bottom:1em;
+  border-radius: 10px;
   z-index: 100;
-  border: 2px solid #FFAC1D;
+  border: 5px solid #FFAC1D;
 }
 
 .sidebar img{
@@ -49,6 +52,7 @@
   vertical-align: top;
 }
 
+
 #MainContent{
   width: 80%;
 }
@@ -60,8 +64,8 @@
 
 
 .menuButton{
-  width: 10em;
-  height: 10em;
+  width: 9em;
+  height: 9em;
   border-radius: 144px;
   background-color: #274259;
   transition: height .25s, background-color .25s, color .25s;
@@ -75,7 +79,7 @@
 }
 
 .menuButton:hover{
-  height: 15em;
+  height: 13em;
   opacity: 1;
   z-index: 100;
   background-color: #FFAC1D;
@@ -90,10 +94,10 @@
   background-color: #FFAC1D; */
   z-index: 1000;
   position: absolute;
-  right: 6%;
+  right: 5%;
   padding-left: 2.5%;
   /* top: 1em; */
-  padding: 1em;
+  padding-top: 1.5em;
 }
 
 .miniCircle{

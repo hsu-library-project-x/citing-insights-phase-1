@@ -185,27 +185,26 @@ class Assignment extends Component{
     return(
       /* So far our homepage is just a h1 tag with text */
       <div class="classes-container assign-container" >
-        <h1>Upload Assignments</h1>
-        <p>Under construction </p>
+        <h1>Upload Files</h1>
         <Row>
           <Col xs="2">
           </Col>
           <Col xs="8">
             <div class="assignment_form">
               <form>
-                <Label for="selectClass">Select Class:</Label>
+                <Label for="selectClass">Class:</Label>
                 <Input onChange={this.handleClassSelection} type="select" id="selectClass" name="classId" required>
-                  <option value="" disabled selected hidden >Select a Class</option>
+                  <option value="" disabled selected hidden >select a class</option>
                   {optionItems}
                 </Input>
-                <Label for="selectAssignment">Select Assignment:</Label>
+                <Label for="selectAssignment">Assignment:</Label>
                 <Input onChange={this.handleInputChange} type="select" id="selectAssignment" name="assignmentId" required>
-                  <option value="" disabled selected hidden >Select an Assignment</option>
+                  <option value="" disabled selected hidden >select an assignment</option>
                   {optionAssignments}
                 </Input>
 
                 <div className="Upload">
-                  <span className="Title">Upload Files</span>
+                  <span className="Title">Upload:</span> 
                   <div className="Content">
                     <div>
                       <Dropzone onFilesAdded={this.onFilesAdded} disabled={this.state.uploading || this.state.successfullUploaded}/>

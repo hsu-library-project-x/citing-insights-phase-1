@@ -17,6 +17,9 @@ import Tasks from "./Tasks.jsx";
 import AccountSettings from "./AccountSettings.jsx";
 import Error from "./Error.jsx";
 
+//import logo
+import logo from './images/logoProtoSm.png';
+
 // App acts as the main page for intial rendering -- all pages and stages are called 
 // from App function
 class App extends Component {
@@ -30,7 +33,7 @@ class App extends Component {
           <HashRouter>
           {/* Navbar (Reactstrap) -- Defining a Navagation bar for our website*/}
             <Navbar primary expand="md">
-                <NavbarBrand>Citing Insights</NavbarBrand>
+                <NavbarBrand><img id="navIcon" src={logo} /></NavbarBrand>
                 {/* NavItem (Reactstrap) -- item in our navation bar*/}
                 <NavItem>
                   {/* This links our Login navagation item to our Login page*/}
