@@ -47,6 +47,7 @@ module.exports = {
      * paperController.create()
      */
     create: function (req, res) {
+        
         var paper = new paperModel({
 			title : req.body.title,
 			name : req.body.name,

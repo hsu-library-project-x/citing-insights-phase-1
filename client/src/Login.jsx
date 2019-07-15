@@ -2,7 +2,7 @@
 
 // Import Libraries
 import React, { Component } from 'react';
-
+import {Redirect } from 'react-router-dom';
 // Button,Container, Row, Col are all Reactrap elements that we are 
 //     going to use for our login
 import { Row, Col, Form, FormGroup } from 'reactstrap';
@@ -14,46 +14,112 @@ import login from './images/UniversityCenterXLg.jpg';
 
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 
+import config from "./config.json";
+
 function forgotInfo(props) {
 	window.location.href = "#/passrecov";
 }
 
-const responseGoogle = (response) => {
+// const responseGoogle = (response) => {
 
-	console.log(response);
+// 	//console.log(response);
+// 	var profile = response.getBasicProfile();
 
-};
+// 	this.name = profile.getName();
+// 	this.email = profile.getEmail();
+// 	this.token = response.getAuthResponse().id_token;
 
-const GOOGLE_CLIENT_ID = "203897182687-719pq9jrvlgksp6ej5hvoiugf5ofjd6n.apps.googleusercontent.com";
+// 	//other attributes we could consider
+// 	//console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+// 	//console.log('Given Name: ' + profile.getGivenName());
+// 	//console.log('Family Name: ' + profile.getFamilyName());
+// 	//console.log("Image URL: " + profile.getImageUrl());
+
+
+
+// };
 
 class Login extends Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			googleID: "",
-			name: ""
-		}
+			isAuthenticated: false,
+			user: null,
+			token: ""
+		};
 	}
 
-	onChange = e => {
-		this.setState({ [e.target.id]: e.target.value });
+	onFailure = (err) => {
+		alert(err);
 	};
 
-	onSubmit = e => {
-		e.preventDefault();
+	logout = () => {
+		this.setState({ isAuthenticated: false, token: '', user: null })
+	};
 
-		const newUser = {
-			googleID: this.state.googleID,
-			name: this.state.name
+	responseGoogle = (response) => {
+
+			//All this is good for the data we want
+		console.log(response);
+		// var profile = response.getBasicProfile();
+
+		// this.name = profile.getName();
+		// this.email = profile.getEmail();
+		// this.token = response.getAuthResponse().id_token;
+
+		//other attributes we could consider
+		//console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+		//console.log('Given Name: ' + profile.getGivenName());
+		//console.log('Family Name: ' + profile.getFamilyName());
+		//console.log("Image URL: " + profile.getImageUrl());
+
+
+
+
+		const tokenBlob = new Blob(
+			[JSON.stringify({ access_token: response.accessToken }, null, 2)],
+			{ type: 'application/json' }
+		);
+		const options = {
+			//origin: "*",
+			method: 'POST',
+			body: tokenBlob,
+			mode: 'cors',
+			cache: 'default',
+			headers: {
+				'Content-Type': 'application/json',
+				'Accept': 'application/json',
+				'Access-Control-Allow': true
+			}
 		};
 
-		//Make post request to Google oauth here
-
+		fetch('http://localhost:5000/users/auth', options).then(r => {
+			const token = r.headers.get('x-auth-token');
+			r.json().then(user => {
+				if (token) {
+					this.setState({ isAuthenticated: true, user, token })
+					//Redirect Here
+				}
+			});
+		})
 	};
 
-
 	render() {
+		let content = !!this.state.isAuthenticated ?
+			(
+				<Redirect to="/tasks"/>		
+			) :
+			(
+				<div>
+					<GoogleLogin
+						clientId={config.GOOGLE_CLIENT_ID}
+						buttonText="Login yo"
+						onSuccess={this.responseGoogle}
+						onFailure={this.onFailure}
+					/>
+				</div>
+			);
 		return (
 			<div class="container">
 				<div id="login_page">
@@ -66,28 +132,9 @@ class Login extends Component {
 						<Col xs="6">
 							<div class="beside_picture">
 								<div>
-									<GoogleLogin
-										clientId={GOOGLE_CLIENT_ID}
-										scope="https://www.googleapis.com/auth/analytics"
-										onSuccess={responseGoogle}
-										//onFailure={error} onLogoutS	
-										//onRequest={loading}
-										offline={false}
-										approvalPrompt="force"
-										responseType="id_token"
-										isSignedIn
-										theme="dark"
-									// disabled
-									// prompt="consent"
-									// className='button'
-									// style={{ color: 'red' }}                     
-									></GoogleLogin>								
-									<GoogleLogout buttonText="Logout" />
+									{content}
 								</div>
 							</div>
-
-							<a href="/login/google">Sign In with Google</a>
-
 						</Col>
 					</Row>
 				</div >
