@@ -95,11 +95,14 @@ class Login extends Component {
 		};
 
 		fetch('http://localhost:5000/users/auth', options).then(r => {
-			const token = r.headers.get('x-auth-token');
+			
+		//This is the token we'll use to authenticate each of the user's 
+		//actions (things that require auth: make class, remove assignment, etc.)
+		const token = r.headers.get('x-auth-token');
 			r.json().then(user => {
 				if (token) {
-					this.setState({ isAuthenticated: true, user, token })
-					//Redirect Here
+					this.setState({ isAuthenticated: true, user: user, token: token })
+					
 				}
 			});
 		})
