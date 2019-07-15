@@ -37,7 +37,7 @@ class Annotate extends Component {
 						document.getElementById("curAnno").value = curInCiteArray[j].annotation;
 					}
 					let curIntextId = curInCiteArray[j].id
-					let inTextValue = "intext" + j;
+					//let inTextValue = "intext" + j;
 					let citeSource = "Intext Citation " + j + " from: " + data[i].id;
 					this.state.inTextOptions.push(
 						<option value={curIntextId + "_" + data[i].id}>{citeSource}</option>

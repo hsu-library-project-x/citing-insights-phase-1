@@ -21,6 +21,7 @@ import download from './images/download.svg';
 import rubric from './images/rubric.svg';
 
 //---------------------WHAT DOES THIS DO?
+
 function CollapseMain(props){
 	let sidebar = document.getElementById("SideBar");
 	let buttons = document.getElementsByClassName("menuButton");
@@ -47,6 +48,19 @@ function CollapseMain(props){
 
 // Class to render our homepage
 class Tasks extends Component{
+	
+	constructor(props) {
+		super(props);
+		this.state = {
+			isAuthenticated: false,
+			user: null,
+			token: ""
+		};
+	}
+
+	componentDidMount(props){
+		
+	}
 
 	// This changes the page title to correspond to what was clicked
 	changeName(evt){
@@ -58,8 +72,8 @@ class Tasks extends Component{
 	render(){
 		return(
 			<div id="MainContainer">
-				<div class="mainCollapse">
-					<div class="miniCircle" onClick={CollapseMain}></div>
+				<div class="mainCollapse"onClick={CollapseMain}>
+					<div class="miniCircle" ></div>
 				</div>
 				<HashRouter>
 					<div class="sidebar" id="SideBar">
