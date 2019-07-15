@@ -67,14 +67,14 @@ class Classes extends Component{
     event.preventDefault();
     const data = {
       "name": this.state.AssignName,
+      "note": this.state.AssignNote,
       "class_id": this.state.ClassId
     };
 
-    let test = JSON.stringify(data);
+    let dataString = JSON.stringify(data);
     fetch('http://localhost:5000/assignments', {
       method: 'POST',
-      body: test,
-
+      body: dataString,
       headers:{
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -86,7 +86,12 @@ class Classes extends Component{
   handleGetAssignment(event){
     const target = event.target;
     var that = this;
-    console.log(target.id);
+    let listElements = document.getElementsByClassName("classLi");
+    
+    for(let i = 0; i < listElements.length; i++){
+      listElements[i].classList.remove("selected-class");
+    }
+
     fetch('http://localhost:5000/assignments/by_class_id/' + target.id)
       .then(function(response) {
         return response.json();
@@ -95,7 +100,23 @@ class Classes extends Component{
         console.log(myJson);
         that.setState({AvailableAssignments: myJson});
       });
+      target.classList.add("selected-class");
+  }
 
+  handleDeleteAssignment(event){
+
+    if(window.confirm("Are you sure you wish to delete this?")){
+      const target = event.target;
+      console.log(target.id);
+       fetch('http://localhost:5000/assignments/'+ target.id, {
+        method: 'Delete',
+        headers:{
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      });
+      window.location.reload();
+    }
   }
 
   //call when input changes to update the state
@@ -107,7 +128,6 @@ class Classes extends Component{
     this.setState({
       [name]: value
     });
-
   }
 
   render(){
@@ -121,9 +141,12 @@ class Classes extends Component{
       <li onClick={this.handleGetAssignment} class="classLi" id={course._id}>{course.name + ": " + course.course_note}</li>
     );
     let assignList = assignments.map((assignment) =>
-      <li id="assignment._id">{assignment.name}</li>
+      <li >{assignment.name + ": " + assignment.note}<button id={assignment._id} onClick={this.handleDeleteAssignment}>Test Delete</button></li>
     );
 
+    if (assignList.length === 0){
+      assignList = <li>Please Select a Class that has Assignments</li>;
+    }
 
     return(
       /* So far our homepage is just a h1 tag with text */

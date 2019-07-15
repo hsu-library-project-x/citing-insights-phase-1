@@ -67,12 +67,14 @@
 	list-style-type: none;
 	text-align: left;
 	background-color: white;
-	height: 2.5em;
+	min-height: 2.5em;
 	padding: .5em;
+	color: black;
 }
 
 .currentClasses li:nth-child(odd){
-	background-color: pink;
+
+	opacity: .9;
 }
 
 .currentClasses .classLi:hover{
@@ -107,18 +109,17 @@
 
 #addClassForm input[type="submit"]{
 	border: 2px solid #274259;
-	width:15%;
 	border-radius: 2em;
 	line-height: 0;
 	text-align: center;
 	background-color: #274259;
-	padding-left: 0.1em;
-	padding-right: 0.1em;
+	padding-left: 1em;
+	padding-right: 1em;
 	color:white;
-	margin-left:70%;
 	margin-top: 1em;
-
+	height: 3em;
 }
+
 /* #addAssignmentForm{
 	border-left: solid 0.1em #274259;
 } */
@@ -155,17 +156,15 @@
 
 #addAssignmentForm input[type="submit"]{
 	border: 2px solid #274259;
-	width:15%;
 	border-radius: 2em;
 	line-height: 0;
 	text-align: center;
 	background-color: #274259;
-	padding-left: 0.1em;
-	padding-right: 0.1em;
+	padding-left: 1em;
+	padding-right: 1em;
 	color:white;
-	margin-left:70%;
 	margin-top: 1em;
-
+	height: 3em;
 }
 
 
@@ -181,5 +180,14 @@
 	color: #274259;
 	font-size:1.05em;
 	margin-top: 1.2em;
+}
 
+.currentClasses .selected-class{
+	background-color: green;
+}
+
+.currentClasses{
+	border: 2.5px solid #274259;
+	border-top: 10px solid #274259;
+	border-bottom: 10px solid #274259;
 }
