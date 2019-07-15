@@ -63,7 +63,6 @@ class Login extends Component {
 			//All this is good for the data we want
 		console.log(response);
 		// var profile = response.getBasicProfile();
-
 		// this.name = profile.getName();
 		// this.email = profile.getEmail();
 		// this.token = response.getAuthResponse().id_token;

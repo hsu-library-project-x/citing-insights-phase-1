@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Input, Card, CardText, CardBody, CardTitle, Button} from 'reactstrap';
 import "./css/RubricEditor.css";
 import uniqueId from 'react-html-id';
+//import Cards from './Cards.jsx';
 
 const Editor = () => (
 	<div class="numCardsSelector">
@@ -20,8 +21,6 @@ const Editor = () => (
 	</div>
 )
 
-
-
 class RubricEditor extends Component{
 
 	constructor(props){
@@ -33,8 +32,10 @@ class RubricEditor extends Component{
 	      	isEditing: false,
 	      	isSelecting: true,
 	      	needsSaving: true,
-	      	uploading: false
+	      	uploading: false,
+	      	idArray: []
 	    }
+
 	    uniqueId.enableUniqueIds(this);
 	    this.buildEditor = this.buildEditor.bind(this);
 	    this.buildRubric = this.buildRubric.bind(this);
@@ -61,31 +62,41 @@ class RubricEditor extends Component{
 		});
 	}
 
+	onChangeInput(info){
+		alert(info);
+		this.setState({
+			needsSaving: true
+		});
+	}
+
 	renderActions(){
+		
 		if(this.state.isEditing){
 			//loop the value of rubric Size building a card for each one
-			const idArray = [];
 			let loop = this.state.rubricSize;
 			for(let i = 0; i < loop; i++){
-				idArray[i] = this.nextUniqueId();
+				let newId = this.nextUniqueId();
+				this.state.idArray[i] = newId;
 				this.state.rubricArray.push(
 					<div className={`cardContainer `}>
 						<Card>
 							<CardBody>
-								<CardTitle for={"Title-"+idArray[i]}>Rubric Item Title</CardTitle>
-								<Input onInput={this.onInput} type="text" id={"Title-"+idArray[i]} class="rubricTitles"/>
-								<CardText for={"Text-"+idArray[i]}>Rubric Descriptions</CardText>
-								<Input onInput={this.onInput} type="textarea" id={"Text-"+idArray[i]} class="rubricDescriptions"/>
+								<CardTitle for={"Title-"+newId}>Rubric Item Title</CardTitle>
+								<Input onInput={this.onInput} type="text" id={"Title-"+newId} class="rubricTitles"/>
+								<CardText for={"Text-"+newId}>Rubric Descriptions</CardText>
+								<Input onInput={this.onInput} type="textarea" id={"Text-"+newId} class="rubricDescriptions"/>
 							</CardBody>
 						</Card>
 					</div>
 				);		
 			}
-			this.state.rubricArray.push(<Button color="success" onClick={ () => this.saveCard(idArray)}>Save Cards</Button>)
+			//Create Add new Card clickable here... 
+			//think how we are implementing cards here
 			var array = this.state.rubricArray;
 			return(array);
 		}
 	}
+
 
 	buildEditor(){
 		let numCards = document.getElementById("rubricChoice").value;
@@ -105,7 +116,7 @@ class RubricEditor extends Component{
 	}
 
 	//Saves the Current Information in the Card
-	saveCard(idArray){	
+	saveCard(){	
 		//grabs information in the card and stores it in the Rubric Array state
 		let rubricTitle = document.getElementById("rubricTitle");
 		if(rubricTitle.value === ""){
@@ -113,8 +124,8 @@ class RubricEditor extends Component{
 			return;
 		}
 
-		for(let i = 0; i < idArray.length; i++){
-			let id = idArray[i];
+		for(let i = 0; i < this.state.idArray.length; i++){
+			let id = this.state.idArray[i];
 			let cardNum = i;
 			let titleid = "Title-"+id;
 			let textid="Text-"+id;
@@ -184,17 +195,21 @@ class RubricEditor extends Component{
 		 });
 	}
 
+
 	render(){
 		return(
 			<div className={`rubricEdit-container`}>
 				{(!this.state.isEditing) ? <Editor /> : 
 					<div className={`${this.state.needsSaving ? "warnHighlight" : "safeHighlight"}`} id="cardStorage">
 						<Input type="text" id="rubricTitle" placeholder="Type Rubric Title Here"/>
+						<hr />
 						{this.renderActions()}
 					</div>
+
 				}
 				{(!this.state.isEditing) ? <Button id="rubEditButton" onClick={this.buildEditor}>Submit</Button> : 
 					<div class="rubricButtonContainer">
+						<Button color="success" onClick={ () => this.saveCard()}>Save Cards</Button>
 						<button disabled={this.state.needsSaving} id="rubBuildButton" onClick={this.buildRubric}>{this.fillButtonText()}</button>
 						<button id="backSelect" onClick={this.reset}>Back</button>
 					</div>

@@ -9,23 +9,19 @@ body{
   color: white;
 }
 
-h2{
-
-}
-
 a.active{
   color: black;
 }
 
 .head{
-  margin-top: 1em;
+  /* margin-top: 1em; */
   text-align: center;
 }
 
 
 .head-1{
-  margin-bottom: 2em;
-  padding: .5em;
+  /* margin-bottom: 2em; */
+  /* padding: .5em; */
   color:black;
   
 }
@@ -52,73 +48,6 @@ a.active{
   background-color: #f44336;
 }
 
-/*
-
-img.avatar
-{
-  width: 65%;
-  border-radius: 65%;
-}
-
-span.psw
-{
-  float: right;
-  padding-top: .5em;
-}
-
-
-
-.close
-{
-  position: absolute;
-  right: 0.01em;
-  color: black;
-  font-size: 3em;
-  font-weight: bold;
-}
-
-
-.close:hover, .close:focus
-{
-  color:red;
-  cursor:pointer;
-}
-
-.animate
-{
-  -webkit-animation: animatezoom 0.6s ;
-  animation: animatezoom 0.6s; 
-}
-
-
-@-webkit-keyframes animatezoom
-{
-  from {-webkit-transform: scale(0)} 
-  to {-webkit-transform: scale(1)}
-}
-
-@keyframes animatezoom 
-{
-  from {transform: scale(0)} 
-  to {transform: scale(1)}
-}
-
-@media screen and (max-width: .300em)
-{
-  span.psw
-  {
-    display:block;
-    float:none;
-  }
-
-  .cancelbtn
-  {
-    width: 100%;
-  }
-}
-*/
-
-
 .analyze-container{
   padding-top: 6em;
   background-color: #F7F6E7;
@@ -136,4 +65,16 @@ span.psw
   text-align: left;
 }
 
+.navbar{
+  height: 90%;
+}
+a.navbar-brand{
+  padding:0;
+  margin:0;
+  display:inline-flex;
+}
+#navIcon{
+  width: 30%;
+  height:30%;
+}
 

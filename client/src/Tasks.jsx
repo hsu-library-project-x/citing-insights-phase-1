@@ -72,8 +72,8 @@ class Tasks extends Component{
 	render(){
 		return(
 			<div id="MainContainer">
-				<div class="mainCollapse">
-					<div class="miniCircle" onClick={CollapseMain}></div>
+				<div class="mainCollapse"onClick={CollapseMain}>
+					<div class="miniCircle" ></div>
 				</div>
 				<HashRouter>
 					<div class="sidebar" id="SideBar">
