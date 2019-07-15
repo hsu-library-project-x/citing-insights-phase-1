@@ -20,6 +20,7 @@
     "formidable": "^1.2.1",
     "mongoose": "^5.5.13",
     "morgan": "~1.9.1",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "shelljs": "^0.8.3"
   }
 }

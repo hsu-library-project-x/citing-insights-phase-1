@@ -47,8 +47,11 @@ module.exports = {
      * courseController.create()
      */
     create: function (req, res) {
+        console.log("test output");
+        console.log(req.body);
         var course = new courseModel({
 			name : req.body.name,
+            course_note: req.body.note,
 			user_id : req.body.user_id
 
         });

@@ -16,6 +16,23 @@
 	padding-bottom: 2em;
 }
 
+.addCardContainer{
+	width: 255px;
+	height: 267px;
+	margin: 0;
+	display: inline-block;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+.addCardContainer .card{
+	width: 255px;
+	height: 267px;
+	display: inline-block;
+}
+
+
+
 #cardStorage > .btn{
 	display: block;
 	width: 50%;
@@ -48,8 +65,29 @@
 	margin-top: 1em;
 }
 
+#rubricTitle{
+	width: 70%;
+	margin-top: 1em;
+	display: block;
+	margin: auto;
+	margin-top: 1em;
+}
+
+.cardAddButton{
+	display: inline-block;
+	width: 20%;
+	margin-left: 2.5%;
+	margin-right: 2.5%;
+	border-radius: 25px;
+	padding: .5em;
+}
+
 #rubricChoice{
 	width: 40%;
+}
+
+#rubricTitle{
+	display: inline-block;
 }
 
 #cardStorage{
@@ -71,20 +109,16 @@
 	width: 10%;
 }
 
-#rubricTitle{
-	width: 90%;
-	margin-top: 1em;
-	display: block;
-	margin: auto;
-	margin-top: 1em;
-}
+
 
 .rubricButtonContainer{
 	margin-top: 1em;
 }
 
 .rubricButtonContainer button{
-	width: 45%;
+	width: 30%;
+	display: inline-block;
+	height: 5em;
 }
 
 .warnHighlight{

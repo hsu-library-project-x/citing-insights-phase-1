@@ -7,11 +7,22 @@ import Annotate from './Annotate.jsx';
 import Markup from './Markup.jsx';
 // This lets us use Jumbotron, Badge, and Progress in HTML from Reactstrap
 //    This is all we are using for now. May import more styling stuff later
-import { Label, ListGroup, ListGroupItem, Button, Input, Jumbotron, Progress } from 'reactstrap';
+import { Label, ListGroup, ListGroupItem, Button, Input, Progress } from 'reactstrap';
 import {Card, CardText, CardBody, CardTitle} from 'reactstrap';
 // Lets us use column / row and layout for our webpage using Reactstrap
 import {Row, Col } from 'reactstrap';
 import PdfComponent from "./PdfComponent.jsx";
+
+//global function for defining ID's
+function makeid(length) {
+   var result           = '';
+   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
 
 //Function to dynamically call source material
 function displaySource(props){
@@ -52,14 +63,13 @@ function displaySource(props){
 
 //This function will change the students paper
 function displayPaper(props){
-  var paper = document.getElementById("student");
+  //var paper = document.getElementById("student");
   //var selectedStudent = document.getElementById("selectedStudent");
   //put dynamic call here
-  //eventually this meat ipsum will be replaced by a variable
 }
 
 //Test function to be removed
-function testProgress(props){
+/*function testProgress(props){
   //get id
   var bar = document.getElementById("assignmentProgress").getElementsByClassName("progress-bar");
   // Change the value in the progress bar --- 
@@ -69,7 +79,7 @@ function testProgress(props){
   bar[0].attributes["style"].nodeValue = ("width: " + nodeVal + "%");
   var text = document.getElementById("assignProgressText");
   text.innerHTML = ("Total Assessed: " + nodeVal + "%");
-}
+}*/
 
 
 //Rubric Const, to be replaced possibly with new component
@@ -120,12 +130,15 @@ const Rubric = () => (
   </div>
 )
 
-function Citation(id, inCiteObj){
+function Citation(id, title, metadata){
   this.id = id;
-  this.intextCites = [inCiteObj];
+  this.title = title;
+  this.metadata = metadata;
+  this.intextCites = [];
 }
 
-function IntextCitation(text, annotation){
+function IntextCitation(text, annotation, id){
+  this.id = id;
   this.text = text;
   this.annotation = annotation;
 }
@@ -140,7 +153,8 @@ class Analyze extends Component{
       uploading: false,
       successfullUpload: false,
       citationData: [],
-      curHighlight: ""
+      curHighlight: "",
+      assignmentId: ""
     }
 
     this.renderActions = this.renderActions.bind(this);
@@ -149,6 +163,32 @@ class Analyze extends Component{
     this.resetButton = this.resetButton.bind(this);
     this.saveIntextCitation = this.saveIntextCitation.bind(this);
     this.addAnnotation = this.addAnnotation.bind(this);
+  }
+
+  componentDidMount() {
+
+    console.log('mounted');
+    if (this.props.location.state != undefined) {
+        this.setState({assignmentId: this.props.location.state.id});
+    } else {
+      this.setState({assignmentId: "no assignment selected"});
+    }
+  }
+
+
+  //Here we populate citation source information and meta data
+  //Do this call every time a new Paper is loaded into the component
+  componentWillMount(){
+    //Do call to get sources.. after sources aquired populate them into the on-client data, should have an array of them
+    //dummy data
+    let sources = ["Test Source 1", "Test Source 2", "Test Source 3", "Test Source 4"];
+    let metadata = "This is where the sources metadata goes";
+    //generate an id for each source
+    for(let i = 0; i < sources.length; i++){
+      let citeSourceId = makeid(10);
+      let citeObj = new Citation(citeSourceId, sources[i], metadata);
+      this.state.citationData.push(citeObj);
+    }
   }
 
   //Checks to see if there is appropriate text in the intext citation textarea, renders either disabled button or save button depending on context
@@ -165,6 +205,7 @@ class Analyze extends Component{
   //adds highlighted text and the  source to the intextcitation state array
   saveIntextCitation(){
     let citationId = document.getElementById("sourceSelect").value;
+    
     let text = document.getElementById("highlightText").value;
     if(text === "" || text === "Put Highlighted Text Here!"){
       alert("please highlight an intext citation");
@@ -172,40 +213,68 @@ class Analyze extends Component{
     }
     else{
       let data = this.state.citationData;
-      let inCiteObj = new IntextCitation(text, "");
+      //generate an id for the intext citation
+      let inTextId = makeid(8);
+      let inCiteObj = new IntextCitation(text, "", inTextId);
       for(let i = 0; i < data.length; i++){
         let curData = data[i];
         if(curData.id === citationId){
           this.state.citationData[i].intextCites.push(inCiteObj);
+          document.getElementById("highlightText").value = "";
+          document.getElementById("highlightText").classList.add("savedAnimation");
           return;
         }
       }
-      //Add id of paper to the cite object
-
-      let citeObj = new Citation(citationId, inCiteObj); 
-      this.state.citationData.push(citeObj);
-
     }	
+
+
   }
 
   //adds annotation and pairs it with appropriate in text citation in the citationData State Array.
   addAnnotation(){
-    let citeSource = document.getElementById("inCitesForAnno").value;
-
-    if(citeSource === ""){
+    let value = document.getElementById("inCitesForAnno").value;
+    let citeIds = value.split('_');
+    if(citeIds[0] === "" || citeIds[1] === ""){
       alert("please select a citation to link your annotation")
       return;
     }
     else{
       let annotation = document.getElementById("curAnno").value;
+      if(annotation === ""){
+        alert("Please don't submit an empty annotation");
+        return;
+      }
       //attach an annotation to an intext citation
       //need a way to grab the citation id, and the intext citation id to pair them appropriately
+      let data = this.state.citationData;
+
+      //search space O(2n)
+      for(let i = 0; i < data.length; i++){
+        if(data[i].id === citeIds[1]){
+          let curArray = data[i].intextCites;
+          for(let j = 0; j < curArray.length; j++){
+            if(curArray[j].id === citeIds[0]){
+              this.state.citationData[i].intextCites[j].annotation = annotation;
+              let box = document.getElementById("curAnno");
+              if( box.classList.contains("savedAnimation")){
+                document.getElementById("curAnno").classList.remove("savedAnimation");
+                document.getElementById("curAnno").classList.add("savedAnimation2");
+              }
+              else{
+                document.getElementById("curAnno").classList.add("savedAnimation");
+                document.getElementById("curAnno").classList.remove("savedAnimation2");
+              }
+              return;
+            }
+          }
+        }
+      }
     }
   }
 
   //Uploads state array of Citations and Annotations to the Database after compiling them into JSON format to do one Server Call
   async uploadCitations(){
-    let citationData = this.state.citationdata; 
+    let citationData = this.state.citationData; 
     this.setState.uploading = true;
     const promise = [];
     promise.push(this.sendRequest(citationData));
@@ -246,6 +315,7 @@ class Analyze extends Component{
     return(
       /* Analyze Mode HTML Start */
       <div class="DemoContents analyze-container">
+        <p> {this.state.assignmentId} </p>
         {/* One Giant container that will let us use rows / columns */}
         {/* Row: Contains Rubric on display and student selector; */}
         <Row>
@@ -292,9 +362,7 @@ class Analyze extends Component{
             </div>	
           </Col>
           <Col xs="6">
-            <h4> Student Paper Block Text </h4>
-
-            <p> Pdf display </p>
+            <h4> Student Paper PDF</h4>
             <div className="overflow-auto">
               <PdfComponent />
             </div>
@@ -304,9 +372,8 @@ class Analyze extends Component{
             {(!this.state.isMarkup) ? 
                 <div class="annotate">
                   <Annotate citedata={this.state.citationData} />
-                  <Button color="success" id="addAnnotation">Add Annotation</Button>
-                  <Button color="danger" id="clearSavedAnnotation">Erase Annotation</Button>
-                </div> : <div class="markup"><Markup /><div className="Actions">{this.renderActions()}</div></div>
+                  <Button color="success" id="addAnnotation" onClick={this.addAnnotation}>Save Annotation</Button>
+                </div> : <div class="markup"><Markup citesource={this.state.citationData}/><div className="Actions">{this.renderActions()}</div></div>
             }
 
           </Col>
@@ -327,8 +394,8 @@ class Analyze extends Component{
               <p id="assignProgressText">Total Assessed: 0%</p>
               <Progress id="assignmentProgress" value="0" />
             </div>
-            <Button color="success" id="paperDone" onClick={testProgress}> Save Paper </Button>
-            <Button id="nextPaper"> Next Paper > </Button>
+            <Button color="success" id="paperDone" onClick={this.uploadCitations}> Save Paper </Button>
+            <Button id="nextPaper" > Next Paper > </Button>
           </Col>
         </Row>
       </div>

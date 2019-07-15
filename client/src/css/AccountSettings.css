@@ -1,11 +1,26 @@
 .settings_form > form 
 {
 	color: #274259;
-	margin-top: 3em;
-	padding: 1em;
+}
+
+.back_from_settings, .confirm_settings{
+  width:10%;
+  border-radius: 2em;
+  line-height: 0.1em;
+  text-align: center;
+  padding-left: 0.1em;
+  padding-right: 0.1em;
+}
+
+.back_from_settings{
 	background-color: #F7F6E7;
-	border-radius: 2em;
-	text-align: center;
+	border: solid #274259;
+	color:#274259; 
+	margin-left: 35%;
+}
+
+.confirm_settings{
+	background-color: #274259;
 }
 
 .settings_form > form > h1
@@ -13,6 +28,9 @@
 	padding-bottom: 0.5em;
 	padding-top: 0.5em;
 	font-size:2em;
+	margin-top:.5em;
+	padding-top:0;
+	font-weight: bold;
 }
 
 .icon
@@ -23,7 +41,7 @@
 
 .uname_change, .psw_change, .email_change, .change
 {
-	width: 47%;
+	width: 35%;
 	padding-left: 1em;
 }
 
@@ -37,14 +55,14 @@ label
 .delete
 {
 	background-color: #E41B17;
-  	width:25%;
-  	margin-left: 80%;
+  	width:20%;
+  	margin-left: 70%;
   	margin-top: 3em;
   	text-align: center;
   	padding:0.2em;
 
 }
-.popUp
+.blackOut
 {
 	position: absolute;
 	width: 100%;
@@ -52,18 +70,36 @@ label
 	top:0;
 	left:0;
 	background-color: black;
-	opacity: .95;
+	opacity: .50;
 	padding-top: 10em;
 }
 
-.popUp > button
+.popUp
 {
-	margin-top: 2em;
-	width:70%;
-	height: 5em;
+	position: relative;
+	width:60%;
+	z-index: 1000;
+	background-color: #F7F6E7;
+	box-shadow: -15px 15px 70px black;
+	border-radius: .5em;
+	color:#383D3B;
+	text-align: left;
+	padding:1em;
+	margin-left:auto;
+	margin-right:auto;
+	top:-25em;
+}
+
+.popUp> button{
+	width:25%;
+	text-align: center;
+	padding:0;
+	margin-left:45%;
 }
 
 #popUpDelete
 {
 	background-color: #E41B17;
+	margin-left:0;
+
 }
