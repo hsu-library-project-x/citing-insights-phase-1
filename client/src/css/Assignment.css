@@ -100,17 +100,18 @@ button:disabled {
 }
 
 label[for="selectClass"], label[for="selectAssignment"], .Title{
-  width:15%;
   text-align: left;
 	color: #274259;
 	font-size:1.05em;
+  margin-bottom: .5em;
 }
 
 #selectClass, #selectAssignment{
-  width:80%;
+  width:100%;
 	text-align: center;
 	margin-right:0.5em;
-	margin-top: 1em;
+  margin-top:0;
+  margin-bottom:0.5em;
 	border: 2.5px solid #274259;
 	border-top: 5px solid #274259;
 }
@@ -120,7 +121,6 @@ label[for="selectClass"], label[for="selectAssignment"], .Title{
 	color: #274259;
 	font-size:1.5em;
   text-align: center;
-  margin-left: 3em;
 }
 
 .Content{

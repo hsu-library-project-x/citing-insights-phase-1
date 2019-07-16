@@ -107,7 +107,6 @@ class Classes extends Component{
 
     if(window.confirm("Are you sure you wish to delete this?")){
       const target = event.target;
-      console.log(target.id);
        fetch('http://localhost:5000/assignments/'+ target.id, {
         method: 'Delete',
         headers:{
@@ -116,6 +115,22 @@ class Classes extends Component{
         },
       });
       window.location.reload();
+    }
+  }
+
+  handleDeleteCourse(event){
+    if(window.confirm("Are you sure you wish to delete this course?")){
+      if(window.confirm("WARNING!! You are about to delete this course, please click OK to proceed")){
+        const target = event.target;
+        fetch('http://localhost:5000/courses/'+ target.id, {
+        method: 'Delete',
+        headers:{
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      });
+      window.location.reload();
+      }
     }
   }
 
@@ -138,18 +153,28 @@ class Classes extends Component{
       <option value={course._id}>{course.name}</option>
     );
     let classList = courses.map((course) => 
+      <div>
       <li onClick={this.handleGetAssignment} class="classLi" id={course._id}>{course.name + ": " + course.course_note}</li>
+      <button class="deleteButton"  onClick={this.handleDeleteCourse}>
+        <svg  id={course._id} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path id={course._id} d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z"/></svg>
+      </button>
+      </div>
     );
     let assignList = assignments.map((assignment) =>
-      <li>{assignment.name + ": " + assignment.note}
-        <button class="deleteButton"  onClick={this.handleDeleteAssignment}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path id={assignment._id} d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z"/></svg>
-        </button>
-      </li>
+      <div>
+      <li>{assignment.name + ": " + assignment.note}</li>
+      <button class="deleteButton"  onClick={this.handleDeleteAssignment}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path id={assignment._id} d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z"/></svg>
+      </button>
+      </div>
     );
 
     if (assignList.length === 0){
       assignList = <li>Please Select a Class that has Assignments</li>;
+    }
+
+    if (classList.length === 0){
+      classList = <li>Please Create a Class to get Started</li>;
     }
 
     return(
