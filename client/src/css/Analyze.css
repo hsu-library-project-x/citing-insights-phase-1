@@ -122,7 +122,7 @@ li > a{
   animation-duration: .35s;
   animation-fill-mode: forwards;
   animation-timing-function: ease-out;
-  border-color: pink;
+  border-color: green;
   border-style: solid;
 }
 
