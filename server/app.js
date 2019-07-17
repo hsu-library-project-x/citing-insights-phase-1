@@ -16,6 +16,7 @@ var courses = require('./routes/courseRoutes');
 var assignments = require('./routes/assignmentRoutes');
 var papers = require('./routes/paperRoutes');
 var citations = require('./routes/citationRoutes');
+var rubrics = require('./routes/rubricRoutes');
 
 var app = express();
 var router = express.Router();
@@ -50,6 +51,7 @@ app.use('/courses', courses);
 app.use('/assignments', assignments);
 app.use('/papers', papers);
 app.use('/citations', citations);
+app.use('/rubrics', rubrics);
 
 
 // this delivers a test uploader page
