@@ -113,10 +113,10 @@ class Login extends Component {
 				<Redirect to="/tasks"/>		
 			) :
 			(
-				<div>
+				<div class="googleLoginContainer">
 					<GoogleLogin
 						clientId={config.GOOGLE_CLIENT_ID}
-						buttonText="Login yo"
+						buttonText="Please Login"
 						onSuccess={this.responseGoogle}
 						onFailure={this.onFailure}
 					/>

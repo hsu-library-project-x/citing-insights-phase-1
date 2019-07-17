@@ -141,17 +141,32 @@ class RubricEditor extends Component{
 			else{
 				let dummyArray = this.state.rubricData;
 				if(dummyArray.length === 0 || dummyArray[cardNum] === null){
-					const cardData = '{ "card'+ cardNum +'" : [' +
-						'{ "cardTitle": '+ title +' },' +
-						'{ "cardText": '+ text +' }' + 
-					']}';
+
+					const cardInfo = {
+						"cardTitle": title,
+						"cardText": text
+					};
+
+					let cardIdentifier = "card" + cardNum;
+
+					const cardData = {};
+					cardData[cardIdentifier] = cardInfo;
+					console.log(cardData);
+
 					this.state.rubricData.push(cardData);
 				}
 				else{
-					const cardData = '{ "card'+ cardNum +'" : [' +
-						'{ "cardTitle": '+ title +' },' +
-						'{ "cardText": '+ text +' }' + 
-					']}';
+					const cardInfo = {
+						"cardTitle": title,
+						"cardText": text
+					};
+
+					let cardIdentifier = "card" + cardNum;
+
+					const cardData = {};
+					cardData[cardIdentifier] = cardInfo;
+					console.log(cardData);
+
 					this.state.rubricData[cardNum] = cardData;
 				}
 			}
