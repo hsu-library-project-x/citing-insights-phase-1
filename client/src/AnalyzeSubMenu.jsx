@@ -182,13 +182,11 @@ class AnalyzeSubMenu extends Component{
               <label for="assignForAnalyze">Class:</label>
               <Input onChange={this.handleClassSelection} onInput={this.populateAssignment} id="assignForAnalyze" type="select" name="ClassNew" required >
                 <option value="" disabled selected hidden >Select a Class</option>
-                <option value="1">Class One</option>
                 {optionItems}
               </Input>
               <label for="assignForAnalyze">Assignment:</label>
               <Input onChange={this.handleInputChange} onInput={this.onInput} id="assignForAnalyze" type="select" name="AssignNew" required >
                 <option value="" disabled selected hidden >Select an Assignment</option>
-                <option value="1">Assigment One</option>
                 {optionAssignments}
               </Input>
               <Input type="submit" value="Submit" disabled={!this.state.selectedAssignment} />

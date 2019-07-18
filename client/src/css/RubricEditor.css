@@ -106,10 +106,13 @@
 }
 
 #rubEditButton{
-	width: 10%;
+	width:20%
 }
 
-
+#rubricChoice{
+	width: 20%;
+	margin-right: .5em;
+}
 
 .rubricButtonContainer{
 	margin-top: 1em;
@@ -135,3 +138,47 @@
 	background-color: red;
 }
 
+.currentRubrics{
+	/* border: 2px solid black; */
+	padding-left: 0;
+	border-radius: 5px;
+	width: 90%;
+	background-color: white;
+	border: 2.5px solid #274259;
+	border-top: 10px solid #274259;
+	border-bottom: 10px solid #274259;
+}
+
+.currentRubrics li{
+	list-style-type: none;
+	text-align: left;
+	background-color: white;
+	min-height: 2.5em;
+	padding: .5em;
+	color: black;
+	width: 89.5%;
+	display: inline-block;
+}
+
+.currentRubrics li:nth-child(odd){
+	opacity: .9;
+}
+
+.currentRubrics .classLi:hover{
+	background-color: #2980b9;
+	color: #fff; 
+}
+
+.currentRubrics .selected-class{
+	background-color: green;
+}
+
+.currentRubrics .deleteButton{
+	width: 10%;
+	height: 2em;
+	padding: 0;
+	margin: 0;
+	background-color: white;
+	display: inline-block;
+	padding-bottom: 1em;
+}

@@ -23,7 +23,6 @@ class Classes extends Component{
     this.handleSubmitAssign = this.handleSubmitAssign.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleGetAssignment = this.handleGetAssignment.bind(this);
-    //this.componentWillMount = this.componentWillMount.bind(this);
   }
 
   componentWillMount() {
