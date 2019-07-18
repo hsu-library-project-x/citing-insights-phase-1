@@ -7,7 +7,7 @@ import Annotate from './Annotate.jsx';
 import Markup from './Markup.jsx';
 // This lets us use Jumbotron, Badge, and Progress in HTML from Reactstrap
 //    This is all we are using for now. May import more styling stuff later
-import { Label, ListGroup, ListGroupItem, Button, Input, Progress } from 'reactstrap';
+import { Label, Button, Input, Progress } from 'reactstrap';
 import {Card, CardText, CardBody, CardTitle} from 'reactstrap';
 // Lets us use column / row and layout for our webpage using Reactstrap
 import {Row, Col } from 'reactstrap';
@@ -99,7 +99,9 @@ class Analyze extends Component{
       assignmentId: "",
       AvailableRubrics: [],
       foundCitationsElements: [],
-      gotSources: false
+      gotSources: false,
+      rubricSelected: true,
+      rubricId: ""
     }
 
     this.renderActions = this.renderActions.bind(this);
@@ -109,12 +111,13 @@ class Analyze extends Component{
     this.saveIntextCitation = this.saveIntextCitation.bind(this);
     this.addAnnotation = this.addAnnotation.bind(this);
     this.displayPaper = this.displayPaper.bind(this);
-    this.renderCitations = this.renderCitations.bind(this);
+    this.renderAnnotate = this.renderAnnotate.bind(this);
+    this.handleGetRubric = this.handleGetRubric.bind(this);
   }
 
   componentDidMount() {
     console.log('mounted');
-    if (this.props.location.state != undefined) {
+    if (this.props.location.state !== undefined) {
       this.setState({assignmentId: this.props.location.state.id});
     } else {
       this.setState({assignmentId: "no assignment selected"});
@@ -124,10 +127,6 @@ class Analyze extends Component{
   //Here we populate citation source information and meta data
   //Do this call every time a new Paper is loaded into the component
   componentWillMount(){
-    //Do call to get sources.. after sources aquired populate them into the on-client data, should have an array of them
-    //dummy data
-    let sources = ["Test Source 1", "Test Source 2", "Test Source 3", "Test Source 4"];
-    let metadata = "This is where the sources metadata goes";
     //generate an id for each source
     var that = this;
     //get the rubrics
@@ -138,6 +137,14 @@ class Analyze extends Component{
       })
       .then(function(myJson) {
         that.setState({AvailableRubrics: myJson});
+    });
+  }
+
+  handleGetRubric(event){
+    const target = event.target;
+    alert('fired');
+    this.setState({
+      rubricSelected: false
     });
   }
 
@@ -166,7 +173,21 @@ class Analyze extends Component{
     //Grab Semantic Scholar Information for the site
   }
   //add citations to page
-  renderCitations(){
+  renderAnnotate(){
+    if(this.state.citationData.length !== 0){
+      return((!this.state.isMarkup) ? 
+        <div class="annotate">
+          <Annotate citedata={this.state.citationData} />
+          <Button color="success" id="addAnnotation" onClick={this.addAnnotation}>Save Annotation</Button>
+        </div> : 
+        <div class="markup">
+          <Markup citesource={this.state.citationData}/>
+          <div className="Actions">
+            {this.renderActions()}
+          </div>
+        </div>
+      );
+    }
   }
   //Checks to see if there is appropriate text in the intext citation textarea, renders either disabled button or save button depending on context
   renderActions() {
@@ -297,11 +318,11 @@ class Analyze extends Component{
         {/* One Giant container that will let us use rows / columns */}
         {/* Row: Contains rubric and student selectors */}
         <Row>
-          <Col xs="4">
+          <Col xs="3">
             <h2>Assignment:</h2>
             <p id="assignmentInfo"> {this.state.assignmentId} </p>
           </Col>
-          <Col xs="4">
+          <Col xs="6">
             <h2>Select a Paper</h2>
             <Input type="select" id="selectedPaper" name="paper" onInput={this.displayPaper}>
               {/* These should be automatically generated with AJAX and API */}
@@ -314,9 +335,9 @@ class Analyze extends Component{
               <option value="5">Paper 5</option>
             </Input> 
           </Col>
-          <Col xs="4">
+          <Col xs="3">
             <h2>Select a Rubric</h2>
-            <Input type="select" id="rubricAssign" name="AssignRubric" required>
+            <Input type="select" id="rubricAssign" name="AssignRubric" onInput={this.handleGetRubric}>
               <option value="" disabled selected hidden >Select a Rubric</option>
               {rubricList}
             </Input>
@@ -353,18 +374,13 @@ class Analyze extends Component{
               <PdfComponent />
             </div>
             <Button onClick={this.toggleMarkup.bind(this)}>Switch Markup/Annotate</Button>
-            {(!this.state.isMarkup) ? 
-              <div class="annotate">
-                <Annotate citedata={this.state.citationData} />
-                <Button color="success" id="addAnnotation" onClick={this.addAnnotation}>Save Annotation</Button>
-              </div> : <div class="markup"><Markup citesource={this.state.citationData}/><div className="Actions">{this.renderActions()}</div></div>
-            }
+            {this.renderAnnotate()}
           </Col>
           <Col xs="3">
             <h4>Found Citations</h4>
             <ul id="ResearchList">
               {this.state.citationData.map(citation => (
-                <li key={citation.id}>{citation.title}<button onClick={this.handleRubricAssesment}>Rubric</button></li>
+                <li id={citation.id}>{citation.title}<button onClick={this.handleRubricAssesment} disabled={this.state.rubricSelected}>Rubric</button></li>
               ))}
             </ul>
             <p id="biblio-box">Bibliography Goes Here</p>

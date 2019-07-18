@@ -140,6 +140,31 @@ li > a{
   border-color: green;
   border-style: solid;
 }
+.analyze-container ul{
+  padding: 0;
+}
+
+.analyze-container li{
+  list-style-type: none;
+  text-align: left;
+  background-color: white;
+  min-height: 2.5em;
+  padding: .5em;
+  color: black;
+  width: 100%;
+  display: inline-block;
+}
+
+.analyze-container li:nth-child(odd){
+  background-color: lightgrey;
+}
+
+.analyze-container li button{
+  width: 30%;
+  height: 2em;
+  padding: 0;
+  margin-left: 1em;
+}
 
 @keyframes borderFlash{
   0%{border-width: 0px; background-color: white;}
