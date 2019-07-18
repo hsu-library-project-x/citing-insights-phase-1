@@ -11,7 +11,8 @@ module.exports = {
      * rubricController.list()
      */
     list: function (req, res) {
-        rubricModel.find(function (err, rubrics) {
+        var user_id = req.params.user_id;
+        rubricModel.find({user_id: user_id},function (err, rubrics) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when getting rubric.',

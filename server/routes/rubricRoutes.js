@@ -5,7 +5,7 @@ var rubricController = require('../controllers/rubricController.js');
 /*
  * GET
  */
-router.get('/', rubricController.list);
+router.get('/:user_id', rubricController.list);
 
 /*
  * GET

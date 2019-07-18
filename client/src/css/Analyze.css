@@ -90,8 +90,23 @@ li > a{
   overflow: scroll;
 }
 
+.analyze-container #assignmentInfo{
+  display: inline-block;
+}
+
 .analyze-container h4{
   text-align: center;
+}
+
+.analyze-container select{
+  width: 100%;
+  text-align: center;
+  margin-right:0.5em;
+  margin-top: 1em;
+  border: 2.5px solid #274259;
+  border-top: 5px solid #274259;
+  margin-bottom: 2em;
+  margin-top: 0;
 }
 
 #curAnno{

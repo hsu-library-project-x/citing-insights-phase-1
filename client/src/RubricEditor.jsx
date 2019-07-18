@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {Input, Card, CardText, CardBody, CardTitle, Button} from 'reactstrap';
 import "./css/RubricEditor.css";
 import uniqueId from 'react-html-id';
-//import Cards from './Cards.jsx';
 
 const Editor = () => (
 	<div class="numCardsSelector">
@@ -26,38 +25,38 @@ class RubricEditor extends Component{
 	constructor(props){
 		super(props);
 		this.state = {
-	      	rubricSize: 0,
-	      	rubricArray: [],
-	      	rubricData: [],
-	      	isEditing: false,
-	      	isSelecting: true,
-	      	needsSaving: true,
-	      	uploading: false,
-	      	idArray: [],
-	      	AvailableRubrics: [],
-	      	rubricExists: false,
-					currentRubric: "",
-					editingTitle: "",
-					cards: [],
-					currentlyEditing: false,
-					editPopulated: false
-	    }
+    	rubricSize: 0,
+    	rubricArray: [],
+    	rubricData: [],
+    	isEditing: false,
+    	isSelecting: true,
+    	needsSaving: true,
+    	uploading: false,
+    	idArray: [],
+    	AvailableRubrics: [],
+    	rubricExists: false,
+			currentRubric: "",
+			editingTitle: "",
+			cards: [],
+			currentlyEditing: false,
+			editPopulated: false
+	  }
 
-	    uniqueId.enableUniqueIds(this);
-	    this.buildEditor = this.buildEditor.bind(this);
-	    this.buildRubric = this.buildRubric.bind(this);
-	    this.renderActions = this.renderActions.bind(this);
-	    this.reset = this.reset.bind(this);
-	    this.sendRequest = this.sendRequest.bind(this);
-	    this.updateRequest = this.updateRequest.bind(this);
-	    this.saveCard = this.saveCard.bind(this);
-	    this.onInput = this.onInput.bind(this);
-	    this.fillButtonText = this.fillButtonText.bind(this);
-			this.handleEditRubric = this.handleEditRubric.bind(this);
-			this.handleDeleteRubric = this.handleDeleteRubric.bind(this);
-			this.handleFieldChange = this.handleFieldChange.bind(this);
+    uniqueId.enableUniqueIds(this);
+    this.buildEditor = this.buildEditor.bind(this);
+    this.buildRubric = this.buildRubric.bind(this);
+    this.renderActions = this.renderActions.bind(this);
+    this.reset = this.reset.bind(this);
+    this.sendRequest = this.sendRequest.bind(this);
+    this.updateRequest = this.updateRequest.bind(this);
+    this.saveCard = this.saveCard.bind(this);
+    this.onInput = this.onInput.bind(this);
+    this.fillButtonText = this.fillButtonText.bind(this);
+		this.handleEditRubric = this.handleEditRubric.bind(this);
+		this.handleDeleteRubric = this.handleDeleteRubric.bind(this);
 	}
 
+	//handles change of button text
 	fillButtonText(){
 		if(this.state.needsSaving){
 			return("Please Save Data before Building");
@@ -67,19 +66,21 @@ class RubricEditor extends Component{
 		}
 	}
 
+	//ensures that the rubric is saved before submitting
 	onInput(){
 		this.setState({
 			needsSaving: true
 		});
 	}
 
+	//ensures that the rubric is saved before submitting
 	onChangeInput(info){
-		alert(info);
 		this.setState({
 			needsSaving: true
 		});
 	}
 
+	//called when clicking on the rubric list
 	handleEditRubric(event){
 		const curRubrics = this.state.AvailableRubrics;
 		const target = event.target;
@@ -96,6 +97,7 @@ class RubricEditor extends Component{
 		}
 	}
 
+	//handles deleting a rubric
 	handleDeleteRubric(event){
 		const curRubrics = this.state.AvailableRubrics;
 		const target = event.target;
@@ -114,13 +116,7 @@ class RubricEditor extends Component{
 		window.location.reload();
 	}
 
-	handleFieldChange(event){
-		const target = event.target;
-		this.state.cards[target.name].cardText = target.value;
-
-		console.log(this.state.cards[target.name].cardText);
-	}
-
+	//calls when the isEditing state is changed
 	renderActions(){
 		if(this.state.isEditing){
 			if(this.state.rubricExists && !this.state.currentlyEditing){
@@ -186,6 +182,7 @@ class RubricEditor extends Component{
 		}
 	}
 
+	//after cards are built, if editing, will populate the values with the selected rubric's values
 	populateEdit(){
 		if(this.state.currentlyEditing && !this.state.editPopulated){
 			document.getElementById("rubricTitle").value = this.state.editingTitle;
@@ -202,9 +199,11 @@ class RubricEditor extends Component{
 		}	
 	}
 
+	//checks before the component mounts
 	componentWillMount() {
     var that = this;
-    fetch('http://localhost:5000/rubrics')
+    //replace hardcoded number with userID from login
+    fetch('http://localhost:5000/rubrics/5d26304f97d65677327b7e56')
       .then(function(response) {
         return response.json();
       })
@@ -213,26 +212,16 @@ class RubricEditor extends Component{
     });
   }
 
+  //toggles editor enabling editing or adding new rubrics
 	buildEditor(){
 		let numCards = document.getElementById("rubricChoice").value;
 		this.setState({rubricSize: numCards});
-		//this.state.
 		this.state.isEditing = !this.state.isEditing;
 	}
 
+	//called when user wants to back out without saving
 	reset(){
-		this.setState({
-			isEditing: false,
-			rubricSize: 0,
-			rubricArray: [],
-			rubricData: [],
-			needsSaving: true,
-			rubricExists: false,
-			currentlyEditing: false,
-			currentRubric: "",
-			editingTitle: "",
-			cards: []
-		});
+		window.location.reload();
 	}
 
 	//Saves the Current Information in the Card
@@ -321,6 +310,7 @@ class RubricEditor extends Component{
 		}
 	}
 
+	//adding a new rubric
 	sendRequest(rubricTitle, data){
 		return new Promise((resolve, reject) => {
 			const newdata = {
@@ -341,6 +331,7 @@ class RubricEditor extends Component{
 		});
 	}
 
+	//updating an existing rubric
 	updateRequest(rubricTitle, data){
 		return new Promise((resolve, reject) => {
 			const newdata = {
@@ -360,6 +351,7 @@ class RubricEditor extends Component{
 		});
 	}
 
+	//renders the page
 	render(){
 		let rubrics = this.state.AvailableRubrics;
 		let rubricList = rubrics.map((rubric) => 
@@ -395,8 +387,8 @@ class RubricEditor extends Component{
 				}
 				{(!this.state.isEditing) ? <h4>Please select a rubric from the list or create a new one to get started.</h4> : 
 					<div class="rubricButtonContainer">
-						<Button color="success" onClick={ () => this.saveCard()}>Save Cards</Button>
-						<button disabled={this.state.needsSaving} id="rubBuildButton" onClick={this.buildRubric}>{this.fillButtonText()}</button>
+						<button onClick={ () => this.saveCard()}>Save Cards</button>
+						<button id="rubBuildButton" disabled={this.state.needsSaving} onClick={this.buildRubric}>{this.fillButtonText()}</button>
 						<button id="backSelect" onClick={this.reset}>Back</button>
 					</div>
 				}
