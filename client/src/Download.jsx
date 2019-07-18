@@ -113,7 +113,7 @@ class Download extends Component{
 						<option value="" disabled selected hidden >Select a Class</option>
 						<option value="1">Class One</option>	
 					</Input>
-					
+					<br />
 					<label for='assignment'>Assignment:</label>
 					<Input name="assignment" type="select" required>
 						<option value="" disabled selected hidden >Select an Assignment</option>

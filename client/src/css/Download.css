@@ -31,6 +31,8 @@
 
 .download-container input[type=submit]{
 	margin-top: 1em;
+	width: 15%;
+	margin-left: 80%;
 }
 
 .multiselect {
@@ -53,11 +55,21 @@
 .multiselect .msts__heading .msts__side_selected {
 
 }
-
+.multiselect .msts__subheading{
+	width:70%;
+	margin-left:4em;
+	margin-right:4em;
+}
 .multiselect .msts__subheading .msts__side_filter {
 	padding: 5px;
 	display: inline-block;
 	width:50%;
+}
+
+.msts__footer{
+	margin-top:1em;
+	width:95%;
+	margin-left:3.5%;
 }
 
 .multiselect .msts__footer .msts__side {
@@ -65,15 +77,14 @@
 	font-size: 0.75em;
 	color: #274259;
 	text-align: left;
-	display: inline-block;
-	/* position: relative; */
-	padding-left: 1.5em;
-	/* margin-right: 1em; */
+	/* display: inline-block; */
+	float: left;
+	padding-left: 4em;
 	width: 50%;
 }
 
 .multiselect .msts__list {
-	height: 200px;
+	height: 70%;
 	overflow-y: auto;
 	overflow-x: hidden;
 	width: 100%;
@@ -113,7 +124,8 @@
 	padding: 10px 3px;
 	transition: color ease 0.15s;
 	width: 100%;
-	display:block;
+	/* position: relative; */
+	/* display:inlineblock; */
 }
 
 .multiselect .msts__control::hover {
@@ -127,20 +139,25 @@
 	content: '❯';
 	color: #FFAC1D;
 	font-size: 2em;
+	padding-top:0;
+	padding-bottom:0;
 }
 
 .multiselect .msts__control_deselect-all::after {
 	content: '❮';
 	color: #FFAC1D;
 	font-size: 2em;
+	padding-top:0;
+	padding-bottom:0;
 }
 
 .multiselect	.msts__filter {
-	position: relative;
+	display:none;
 }
 
 .multiselect	.msts__filter-input {
-	width: 80%;
+	width: 100%;
+	line-height: 0;
 	margin-left:0;
 	padding-left:3%;
 	box-sizing: border-box;
@@ -167,6 +184,10 @@
 .multiselect .msts__filter-clear::hover {
 	color: #c0392b;
 }
+
+.msts__body{
+	
+}
 .multiselect .msts__body .msts__side{
 	border-radius: 5px;
 	background:white;
@@ -174,17 +195,20 @@
 	border-top: 10px solid #274259;
 	border-bottom: 10px solid #274259;
 	display: inline-block;
-	width: 45%;
+	vertical-align: top;
+	width: 40%;
 	text-align: left;
 	margin:0;
 }
 
 .multiselect .msts__body .msts__side_controls {
 	border: none;
+	display: inline-block;
 	width: 2%;
 	height: 50%;
-	margin: 2em;
-
+	vertical-align: top;
+	margin-top: 2em;
+	margin:1em;
 }
 
 .multiselect li{
