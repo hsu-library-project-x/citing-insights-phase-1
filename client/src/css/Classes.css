@@ -190,6 +190,12 @@
 	margin-top: 1.2em;
 }
 
+.col-3 h2{
+  font-weight: bold;
+  color: #274259;
+  font-size: 1.5em;
+}
+
 .currentClasses .selected-class{
 	background-color: green;
 }

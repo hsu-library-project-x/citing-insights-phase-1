@@ -106,7 +106,9 @@ class Download extends Component{
 		}, {});
 
 		return (
+
 			<div class="download-container">
+				<h2>Download:</h2>
 				<form id="downloadForm">
 					<label for='class'>Class:</label>
 					<Input name="class" type="select" required>
