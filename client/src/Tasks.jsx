@@ -90,7 +90,7 @@ class Tasks extends Component{
 							<Link to="/tasks/assignments">
 								<button class="menuButton" onClick={this.changeName}>
 								<img alt="assignmentIcon" id="Assignments" src={addAssignment} />
-									Manage Assignments
+									Upload Papers
 								</button>
 							</Link>
 						</div>

@@ -106,12 +106,17 @@ class Download extends Component{
 		}, {});
 
 		return (
+
 			<div class="download-container">
+				<h2>Download:</h2>
 				<form id="downloadForm">
+					<label for='class'>Class:</label>
 					<Input name="class" type="select" required>
 						<option value="" disabled selected hidden >Select a Class</option>
 						<option value="1">Class One</option>	
 					</Input>
+					<br />
+					<label for='assignment'>Assignment:</label>
 					<Input name="assignment" type="select" required>
 						<option value="" disabled selected hidden >Select an Assignment</option>
 						<option value="1">Assignment One</option>	
@@ -122,14 +127,14 @@ class Download extends Component{
 						availableFooter={`Available: ${availableCount}`}
 						selectedHeader="Selected"
 						selectedFooter={`Selected: ${selectedCount}`}
-						placeholder="Filter..."
+						placeholder="search"
 						options={options}
 						highlight={highlight}
 						value={value}
 						onChange={this.handleChange}
 						{...s}
-					/>
-					<Input type="submit" value="Submit"/>
+					/>					
+					<Input type="submit" value="Download"/>
 				</form>
 			</div>
 		);
