@@ -17,7 +17,7 @@
 	width: 30%;
 	text-align: center;
 	border: 2.5px solid #274259;
-	border-top: 5px solid #274259;
+	line-height: 0;
 }
 
 #downloadForm label{
@@ -77,7 +77,6 @@
 	font-size: 0.75em;
 	color: #274259;
 	text-align: left;
-	/* display: inline-block; */
 	float: left;
 	padding-left: 4em;
 	width: 50%;
@@ -124,8 +123,6 @@
 	padding: 10px 3px;
 	transition: color ease 0.15s;
 	width: 100%;
-	/* position: relative; */
-	/* display:inlineblock; */
 }
 
 .multiselect .msts__control::hover {
@@ -151,8 +148,12 @@
 	padding-bottom:0;
 }
 
-.multiselect	.msts__filter {
+#no_search {
 	display:none;
+}
+
+#search{
+	display: inline;
 }
 
 .multiselect	.msts__filter-input {
