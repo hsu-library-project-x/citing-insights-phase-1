@@ -168,7 +168,7 @@ class AnalyzeSubMenu extends Component{
     );
     if (this.state.redirect) {
       return <Redirect to={{
-        pathname: '/analyze',
+        pathname: '/tasks/analyze',
         state: { id: this.state.AssignNew }
       }}
     />
@@ -176,7 +176,7 @@ class AnalyzeSubMenu extends Component{
     return(
       <div class="analyze-container ana-subcontainer" >
         <Row>
-          <Col xs="6">
+          <Col xs="12">
             <form className={`${!this.state.selectedAssignment ? "warnHighlight" : "safeHighlight"}`} onSubmit={this.handleSubmitNew}>
               <h4>Analyze New Assignment</h4>
               <label for="assignForAnalyze">Class:</label>
@@ -192,22 +192,6 @@ class AnalyzeSubMenu extends Component{
               <Input type="submit" value="Submit" disabled={!this.state.selectedAssignment} />
             </form>
 
-          </Col>
-          <Col xs="6">
-            <form className={`${!this.state.selectedAssignContinue ? "warnHighlight" : "safeHighlight"}`} onSubmit={this.handleSubmitContinue}>
-              <h4>Go to Existing Assignment</h4>
-              <label for="assignForAnalyze">Class:</label>
-              <Input onChange={this.handleInputChange} onInput={this.populateAssignment} id="assignForAnalyze" type="select" name="ClassContinue" required >
-                <option value="" disabled selected hidden >Select a Class</option>
-                <option value="1">Class One</option>
-              </Input>
-              <label for="assignForAnalyze">Assignment:</label>
-              <Input  onChange={this.handleInputChange} onInput={this.onInput2} id="assignForAnalyze" type="select" name="AssignContinue" required >
-                <option value="" disabled selected hidden >Select an Assignment</option>
-                <option value="assignmentIdHere">Assigment One</option>
-              </Input>
-              <Input type="submit" value="Submit" onClick={this.newAssessment} disabled={!this.state.selectedAssignContinue} />
-            </form>
           </Col>
         </Row>
         <Row>

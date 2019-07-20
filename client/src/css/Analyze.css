@@ -166,6 +166,12 @@ li > a{
   margin-left: 1em;
 }
 
+.col-3 h2{
+  font-weight: bold;
+  color: #274259;
+  font-size: 1.5em;
+}
+
 @keyframes borderFlash{
   0%{border-width: 0px; background-color: white;}
   50%{border-width: 9px; background-color: green;}

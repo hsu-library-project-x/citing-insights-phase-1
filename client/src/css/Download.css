@@ -56,14 +56,15 @@
 
 }
 .multiselect .msts__subheading{
-	width:70%;
-	margin-left:4em;
-	margin-right:4em;
+	width:86%;
+	margin-right: 7%;
+	margin-left: 7%;
 }
 .multiselect .msts__subheading .msts__side_filter {
-	padding: 5px;
 	display: inline-block;
-	width:50%;
+	width:45%;
+	text-align: left;
+	margin-right: 5%;
 }
 
 .msts__footer{
@@ -83,8 +84,8 @@
 }
 
 .multiselect .msts__list {
-	height: 70%;
-	overflow-y: auto;
+	height: 300px;
+	overflow-y: scroll;
 	overflow-x: hidden;
 	width: 100%;
 	display: inline-block;
@@ -148,13 +149,6 @@
 	padding-bottom:0;
 }
 
-#no_search {
-	display:none;
-}
-
-#search{
-	display: inline;
-}
 
 .multiselect	.msts__filter-input {
 	width: 100%;
@@ -163,17 +157,16 @@
 	padding-left:3%;
 	box-sizing: border-box;
 	border: 2.5px solid #274259;
+	height: 2em;
+	margin-bottom: 1em;
 }
 
 .multiselect .msts__filter-clear {
 	cursor: pointer;
-	position: absolute;
-	top: 0;
-	right: 0;
 	height: 100%;
 	padding: 0 10px;
 	font-size: 1.25em;
-	color: silver;
+	color: black;
 	transition: color ease 0.15s;
 }
 
