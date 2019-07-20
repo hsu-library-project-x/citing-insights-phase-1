@@ -115,22 +115,21 @@ class Download extends Component{
 		}, {});
 
 		return (
-
 			<div class="download-container">
-				<h2>Download:</h2>
+				<h1>Download</h1>
 				<form id="downloadForm">
-					<label for='class'>Class:</label>
+					{/* <label for='class'>Class:</label> */}
 					<Input name="class" type="select" required>
 						<option value="" disabled selected hidden >Select a Class</option>
 						<option value="1">Class One</option>	
 					</Input>
 					<br />
-					<label for='assignment'>Assignment:</label>
+					{/* <label for='assignment'>Assignment:</label> */}
 					<Input name="assignment" type="select" required>
 						<option value="" disabled selected hidden >Select an Assignment</option>
 						<option value="1">Assignment One</option>	
 					</Input>
-					<button onClick={this.showSearch(this.state.search)} ><img src="./images/magnifying-glass.svg" alt="magnifying-glass" /></button>
+					{/* <button onClick={this.showSearch(this.state.search)} ><img src="./images/magnifying-glass.svg" alt="magnifying-glass" /></button> */}
 					
 					<MultiselectTwoSides
 						className="multiselect"
