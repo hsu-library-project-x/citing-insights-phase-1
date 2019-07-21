@@ -4,7 +4,7 @@
 //import ReactDOM from 'react-dom';
 import React, {Component} from 'react';
 import './css/App.css';
-import { Navbar, NavbarBrand, NavItem } from 'reactstrap';
+import { Navbar, NavbarBrand, NavItem, NavbarToggler } from 'reactstrap';
 
 // Hashrouter allows us to do routing for website
 import { Switch, Route, NavLink, HashRouter } from "react-router-dom"; 
@@ -23,6 +23,16 @@ import logo from './images/logoProtoSm.png';
 // App acts as the main page for intial rendering -- all pages and stages are called 
 // from App function
 class App extends Component {
+  constructor(props){
+    super(props);
+    this.toggleNavbar = this.toggleNavbar.bind(this);
+    this.state={collapsed:true};
+  }
+  toggleNavbar(){
+    this.setState({
+      collapsed:!this.state.collapsed
+    });
+  }
   render(){
       return (
       <div>
@@ -35,6 +45,7 @@ class App extends Component {
             <Navbar primary expand="md">
                 <NavbarBrand><img id="navIcon" src={logo} /></NavbarBrand>
                 {/* NavItem (Reactstrap) -- item in our navation bar*/}
+                <NavbarToggler onClick={this.toggleNavbar} className='toggleBar' />
                 <NavItem>
                   {/* This links our Login navagation item to our Login page*/}
                   <NavLink to="/login">Login</NavLink>

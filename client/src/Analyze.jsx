@@ -120,7 +120,7 @@ class Analyze extends Component{
     if (this.props.location.state !== undefined) {
       this.setState({assignmentId: this.props.location.state.id});
     } else {
-      this.setState({assignmentId: "no assignment selected"});
+      this.setState({assignmentId: "No Assignment Selected"});
     }
   }
 
@@ -319,11 +319,11 @@ class Analyze extends Component{
         {/* Row: Contains rubric and student selectors */}
         <Row>
           <Col xs="3">
-            <h2>Assignment:</h2>
+            <h2 className='analyzeHeader'>Assignment</h2>
             <p id="assignmentInfo"> {this.state.assignmentId} </p>
           </Col>
-          <Col xs="6">
-            <h2>Select a Paper</h2>
+          <Col xs="7">
+            <h2 className='analyzeHeader'>Papers</h2>
             <Input type="select" id="selectedPaper" name="paper" onInput={this.displayPaper}>
               {/* These should be automatically generated with AJAX and API */}
               {/* Replace with a state that that stores based on papers gotten from associated assignment*/}
@@ -335,8 +335,8 @@ class Analyze extends Component{
               <option value="5">Paper 5</option>
             </Input> 
           </Col>
-          <Col xs="3">
-            <h2>Select a Rubric</h2>
+          <Col xs="2">
+            <h2 className='analyzeHeader' >Rubric</h2>
             <Input type="select" id="rubricAssign" name="AssignRubric" onInput={this.handleGetRubric}>
               <option value="" disabled selected hidden >Select a Rubric</option>
               {rubricList}
@@ -368,15 +368,15 @@ class Analyze extends Component{
               </Card>
             </div>	
           </Col>
-          <Col xs="6">
-            <h4> Student Paper PDF</h4>
+          <Col xs="7">
+            <h4> Paper PDF </h4>
             <div className="overflow-auto">
               <PdfComponent />
             </div>
-            <Button onClick={this.toggleMarkup.bind(this)}>Switch Markup/Annotate</Button>
+            <Button id='markBtn' onClick={this.toggleMarkup.bind(this)}>Switch Markup/Annotate</Button>
             {this.renderAnnotate()}
           </Col>
-          <Col xs="3">
+          <Col xs="2">
             <h4>Found Citations</h4>
             <ul id="ResearchList">
               {this.state.citationData.map(citation => (
@@ -392,7 +392,7 @@ class Analyze extends Component{
               <Progress id="assignmentProgress" value="0" />
             </div>
             <Button color="success" id="paperDone" onClick={this.uploadCitations}> Save Paper </Button>
-            <Button id="nextPaper" > Next Paper > </Button>
+            <Button id="nextPaper" > Next Paper </Button>
           </Col>
         </Row>
       </div>

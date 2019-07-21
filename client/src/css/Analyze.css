@@ -2,6 +2,7 @@
   background-color: #FFAC1D;
 }
 
+
 .ana-subcontainer .form-control{
   width: 100% ;
   margin-bottom: 1em;
@@ -22,8 +23,8 @@ li > a{
 }
 
 #biblio-box{
-  border: 1px solid rgba(0,0,0,.125);
-  border-radius: 5px; 
+  border: 1px solid #274259;
+  border-radius: .25em; 
   margin-top: .5em;
   margin-bottom: .5em;
   padding: 1em;
@@ -68,6 +69,7 @@ li > a{
 .analyze-container .btn{
   margin-top: .75em;
   margin-bottom: 1em;
+  border-radius: 2em;
 }
 
 .anno-contain > .btn{
@@ -92,10 +94,21 @@ li > a{
 
 .analyze-container #assignmentInfo{
   display: inline-block;
+  border: 2.5px solid #274259;
+  border-top: 5px solid #274259;
+  background-color:white;
+  text-align: center;
+  padding-left:1em;
+  padding-right:1em;
+  border-radius: 5px;
+  margin-top:.25em;
 }
 
 .analyze-container h4{
-  text-align: center;
+  text-align: left;
+  color:#274259;
+  font-size:1em;
+  font-weight: bold;
 }
 
 .analyze-container select{
@@ -117,6 +130,9 @@ li > a{
 
 .progressBox p{
   margin: 0;
+  color: #274259;
+	font-size:.95em;
+	margin-top: 1.2em;
 }
 
 .annotate .btn{
@@ -166,11 +182,51 @@ li > a{
   margin-left: 1em;
 }
 
-.col-3 h2{
+
+h2.analyzeHeader{
   font-weight: bold;
   color: #274259;
   font-size: 1.5em;
+  text-align: left;
 }
+
+.discoveryTool > .card > .card-body{
+  border: 2.5px solid #274259;
+  border-left: 5px solid #FFAC1D;
+  padding: 0.5em;
+}
+
+.discoveryTool > .card > .card-body > .card-title{
+  margin-bottom:0.25em;
+  /* border-bottom: 1px dashed #FFAC1D; */
+  margin-left:0;
+}
+
+.discoveryTool > .card > .card-body > .card-text{
+  padding-left:1em;
+  margin-right:0;
+}
+
+#paperDone{
+  margin-top:1em;
+}
+
+#nextPaper{
+  background-color: #274259;
+}
+
+#markBtn{
+  background-color: #FFAC1D;
+  color:#274259;
+  width: 80%;
+  margin-left: 3em;
+  margin-right:auto;
+  border:none;
+}
+
+/* .col-6 > div.overflow-auto{
+  box-shadow: -15px 15px 70px black;
+} */
 
 @keyframes borderFlash{
   0%{border-width: 0px; background-color: white;}

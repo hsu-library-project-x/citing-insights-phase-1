@@ -133,6 +133,7 @@ class Login extends Component {
 						</Col>
 						<Col xs="6">
 							<div class="beside_picture">
+								<h1> Welcome Back! </h1>
 								<div>
 									{content}
 								</div>
