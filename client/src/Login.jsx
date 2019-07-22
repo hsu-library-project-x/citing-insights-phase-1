@@ -1,7 +1,7 @@
 // Our Login "Page" for Citing Insights
 
 // Import Libraries
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Redirect } from 'react-router-dom';
 // Button,Container, Row, Col are all Reactrap elements that we are 
 //     going to use for our login
@@ -30,7 +30,8 @@ class Login extends Component {
 			user: null,
 			token: ""
 		};
-  }
+		this.getInfo = this.getInfo.bind(this);
+	}
 
 
 	onFailure = (err) => {
@@ -41,21 +42,14 @@ class Login extends Component {
 		this.setState({ isAuthenticated: false, token: '', user: null })
 	};
 
+	getInfo() {
+		this.props.passInfo(this.state.isAuthenticated, this.state.token, this.state.user);
+
+	}
+
+
 	responseGoogle = (response) => {
 
-		//All this is good for the data we want
-		console.log(response);
-		// var profile = response.getBasicProfile();
-
-		// this.name = profile.getName();
-		// this.email = profile.getEmail();
-		// this.token = response.getAuthResponse().id_token;
-
-		//other attributes we could consider
-		//console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-		//console.log('Given Name: ' + profile.getGivenName());
-		//console.log('Family Name: ' + profile.getFamilyName());
-		//console.log("Image URL: " + profile.getImageUrl());
 
 		const tokenBlob = new Blob(
 			[JSON.stringify({ access_token: response.accessToken }, null, 2)],
@@ -81,16 +75,18 @@ class Login extends Component {
 			const token = r.headers.get('x-auth-token');
 			r.json().then(user => {
 				if (token) {
-					this.setState({ isAuthenticated: true, token: token, user: user})
-
-					console.log(token);
+					this.setState({
+						isAuthenticated: true,
+						user: user,
+						token: token
+					});
+					this.getInfo();
 				}
 			});
 		})
 	};
 
 	render() {
-		console.log(!!this.state.isAuthenticated);
 		let content = !!this.state.isAuthenticated ?
 			(
 				<Redirect to={{
