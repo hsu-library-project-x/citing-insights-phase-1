@@ -3,10 +3,8 @@ import React, {Component} from 'react';
 import './css/App.css';
 import './css/Analyze.css';
 import Annotate from './Annotate.jsx';
-//maybe rename the componet
 import Markup from './Markup.jsx';
-// This lets us use Jumbotron, Badge, and Progress in HTML from Reactstrap
-//    This is all we are using for now. May import more styling stuff later
+import RubricSubmit from './RubricSubmit.jsx';
 import { Label, Button, Input, Progress } from 'reactstrap';
 import {Card, CardText, CardBody, CardTitle} from 'reactstrap';
 // Lets us use column / row and layout for our webpage using Reactstrap
@@ -25,52 +23,7 @@ function makeid(length) {
 }
 
 //Rubric Const, to be replaced possibly with new component
-const Rubric = () => (
-  <div class="rubricContainer">
-    <Card>
-      <CardBody>
-        <CardTitle>Rubric Component</CardTitle>
-        <CardText>Text about what this Rubric Component is goes here</CardText>
-        <Label for="rubricValue">Score</Label>
-        <Input type="select" name="select" id="rubricValue">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </Input>
-      </CardBody>
-    </Card>
-    <Card>
-      <CardBody>
-        <CardTitle>Rubric Component</CardTitle>
-        <CardText>Text about what this Rubric Component is goes here</CardText>
-        <Label for="rubricValue">Score</Label>
-        <Input type="select" name="select" id="rubricValue">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </Input>
-      </CardBody>
-    </Card>
-    <Card>
-      <CardBody>
-        <CardTitle>Rubric Component</CardTitle>
-        <CardText>Text about what this Rubric Component is goes here</CardText>
-        <Label for="rubricValue">Score</Label>
-        <Input type="select" name="select" id="rubricValue">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </Input>
-      </CardBody>
-    </Card>
-  </div>
-)
+
 
 function Citation(id, title, metadata){
   this.id = id;
@@ -88,7 +41,7 @@ function IntextCitation(text, annotation, id){
 // Demo is (for now) is our Analyze page
 class Analyze extends Component{
   constructor () {
-    super()
+    super();
     this.state = {
       isHidden: true,
       isMarkup: true,
@@ -101,7 +54,9 @@ class Analyze extends Component{
       foundCitationsElements: [],
       gotSources: false,
       rubricSelected: true,
-      rubricId: ""
+      assessingRubric: false,
+      rubricId: "",
+      curPaperId: ""
     }
 
     this.renderActions = this.renderActions.bind(this);
@@ -113,6 +68,8 @@ class Analyze extends Component{
     this.displayPaper = this.displayPaper.bind(this);
     this.renderAnnotate = this.renderAnnotate.bind(this);
     this.handleGetRubric = this.handleGetRubric.bind(this);
+    this.handleRubricAssessment = this.handleRubricAssessment.bind(this);
+    this.handleChildUnmount = this.handleChildUnmount.bind(this);
   }
 
   componentDidMount() {
@@ -142,14 +99,24 @@ class Analyze extends Component{
 
   handleGetRubric(event){
     const target = event.target;
-    alert('fired');
+    const id = target.value;
     this.setState({
-      rubricSelected: false
+      rubricSelected: false,
+      rubricId: id
     });
   }
 
-  handleRubricAssesment(event){
+  handleRubricAssessment(event){
+    let x = this.state.rubricId;
+    this.setState({
+      assessingRubric: true
+    });
+  }
 
+  handleChildUnmount(){
+    this.setState({
+      assessingRubric: false
+    });
   }
   //This function will change the students paper
   displayPaper(){
@@ -172,7 +139,14 @@ class Analyze extends Component{
 
     //Grab Semantic Scholar Information for the site
   }
+
+  handleDelete(){
+    this.setState({
+      assessingRubric: false
+    });
+  }
   //add citations to page
+
   renderAnnotate(){
     if(this.state.citationData.length !== 0){
       return((!this.state.isMarkup) ? 
@@ -380,11 +354,10 @@ class Analyze extends Component{
             <h4>Found Citations</h4>
             <ul id="ResearchList">
               {this.state.citationData.map(citation => (
-                <li id={citation.id}>{citation.title}<button onClick={this.handleRubricAssesment} disabled={this.state.rubricSelected}>Rubric</button></li>
+                <li id={citation.id}>{citation.title}<button id={this.state.rubricId} onClick={this.handleRubricAssessment} disabled={this.state.rubricSelected}>Rubric</button></li>
               ))}
             </ul>
             <p id="biblio-box">Bibliography Goes Here</p>
-
             <div class="progressBox">
               <p>Citations Assessed: </p>
               <Progress id="citeProgress" value="30" />
@@ -395,6 +368,8 @@ class Analyze extends Component{
             <Button id="nextPaper" > Next Paper </Button>
           </Col>
         </Row>
+        {/*prop passing the rubric information*/}
+        {this.state.assessingRubric ? <RubricSubmit unmountMe={this.handleChildUnmount} curRubric={this.state.rubricId} curPaper={this.state.curPaperId}/> : null}
       </div>
     );
   }
