@@ -19,6 +19,16 @@ import AccountSettings from "./AccountSettings.jsx";
 // App acts as the main page for intial rendering -- all pages and stages are called 
 // from App function
 class App extends Component {
+  
+  constructor(props) {
+		super(props);
+		this.state = {
+			isAuthenticated: false,
+			user: null,
+			token: ""
+		};
+  }
+  
   render(){
       return (
       <div>
@@ -51,7 +61,7 @@ class App extends Component {
             {/*This tells us what compenent to load after going to login, home, demo etc.*/}
             <div id="id01" class="pop content">
               <Switch>
-                <Route exact path="/" component={Login}/>
+                <Route exact path="/" component={Tasks}/>
                 <Route exact path="/login" component={Login}/>
                 <Route exact path="/home" component={Home}/>
                 <Route path="/analyze" component={Analyze}/>
