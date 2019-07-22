@@ -43,10 +43,17 @@ module.exports = function upload(req, res) {
           shell.exec("gs -sDEVICE=txtwrite -o " + txt_path + " " + file.path);
 
             console.log(txt_path);
+            console.log('LOOK HERE');
 
             //the replace functions just get rid of carriage returns
+          
+            console.log(file.path);
+            var textByLine = fs.readFileSync(file.path);
+            console.log('AND HERE');
+
             var raw_text = { 
                 "body": fs.readFileSync(txt_path).toString().replace(/\r+/g, "").replace(/\n+/g, ""), 
+                "pdf" : textByLine,
                 "title": null, 
                 "name": null 
             };
