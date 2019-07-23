@@ -10,7 +10,8 @@ class RubricSubmit extends Component{
 			currentRubric: [],
 			paperId: "",
 			rubricCards: [],
-			rubricLoaded: false
+			rubricLoaded: false,
+			curCard: []
 		}
 
 		this.handleClick = this.handleClick.bind(this);
@@ -35,6 +36,7 @@ class RubricSubmit extends Component{
 			for(let i = 0; i < rubrics.length; i++){
 				let item = rubrics[i];
 				let curCard = item["card" + i];
+				this.state.cardData.push(curCard);
 				this.state.rubricCards.push(
 					<Card>
 			      <CardBody>
@@ -58,7 +60,9 @@ class RubricSubmit extends Component{
 			<div class="rubricSubmit">
 				<button onClick={this.handleClick}>x</button>
 				<h2 class="rubricTitle">{this.state.currentRubric.name}</h2>
-				<div class="cardContainer">{this.renderActions()}</div>
+				<form>
+					<div class="cardContainer">{this.renderActions()}</div>
+				</form>
 			</div>
 		);
 	}
