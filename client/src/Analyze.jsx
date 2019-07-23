@@ -56,7 +56,8 @@ class Analyze extends Component{
       rubricSelected: true,
       assessingRubric: false,
       rubricId: "",
-      curPaperId: ""
+      curPaperId: "",
+      currentRubric: []
     }
 
     this.renderActions = this.renderActions.bind(this);
@@ -100,6 +101,14 @@ class Analyze extends Component{
   handleGetRubric(event){
     const target = event.target;
     const id = target.value;
+    const rubricArray = this.state.AvailableRubrics;
+    for(let i = 0; i < rubricArray.length; i++){
+      if(rubricArray[i]._id === id){
+        this.setState({
+          currentRubric: rubricArray[i]
+        });
+      }
+    }
     this.setState({
       rubricSelected: false,
       rubricId: id
@@ -107,7 +116,6 @@ class Analyze extends Component{
   }
 
   handleRubricAssessment(event){
-    let x = this.state.rubricId;
     this.setState({
       assessingRubric: true
     });
@@ -369,7 +377,7 @@ class Analyze extends Component{
           </Col>
         </Row>
         {/*prop passing the rubric information*/}
-        {this.state.assessingRubric ? <RubricSubmit unmountMe={this.handleChildUnmount} curRubric={this.state.rubricId} curPaper={this.state.curPaperId}/> : null}
+        {this.state.assessingRubric ? <RubricSubmit unmountMe={this.handleChildUnmount} curRubric={this.state.currentRubric} curPaper={this.state.curPaperId}/> : null}
       </div>
     );
   }
