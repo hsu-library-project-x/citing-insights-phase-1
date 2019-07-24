@@ -1,24 +1,7 @@
 import React, {Component} from 'react';
-import {Input, Card, CardText, CardBody, CardTitle, Button} from 'reactstrap';
+import {Input, Card, CardBody, Button} from 'reactstrap';
 import "./css/RubricEditor.css";
 import uniqueId from 'react-html-id';
-
-const Editor = () => (
-	<div class="numCardsSelector">
-		<p>Choose the number of Rubric Elements</p>
-		<Input type="select" name="rubricElements" id="rubricChoice">
-			<option value="1">1 card</option>
-			<option value="2">2 cards</option>
-			<option value="3">3 cards</option>
-			<option value="4">4 cards</option>
-			<option value="5">5 cards</option>
-			<option value="6">6 cards</option>
-			<option value="7">7 cards</option>
-			<option value="8">8 cards</option>
-			<option value="9">9 cards</option>
-		</Input>
-	</div>
-)
 
 class RubricEditor extends Component{
 
@@ -122,7 +105,6 @@ class RubricEditor extends Component{
 			if(this.state.rubricExists && !this.state.currentlyEditing){
 				const getRubric = this.state.AvailableRubrics;
 				let curCards = [];
-				let curTitle = [];
 				for(let j = 0; j < getRubric.length; j++){
 					if(getRubric[j]._id === this.state.currentRubric){
 						this.setState({

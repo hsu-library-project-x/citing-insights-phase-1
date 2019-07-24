@@ -11,7 +11,8 @@ class RubricSubmit extends Component{
 			paperId: "",
 			rubricCards: [],
 			rubricLoaded: false,
-			curCard: []
+			curCard: [],
+			cardData: []
 		}
 
 		this.handleClick = this.handleClick.bind(this);
@@ -43,7 +44,7 @@ class RubricSubmit extends Component{
 			        <CardTitle>{curCard.cardTitle}</CardTitle>
 			        <CardText>{curCard.cardText}</CardText>
 			        <Label for="rubricValue">Score</Label>
-			        <Input type="number" placeholder="0-10" min="0" max="10" name="select" id="rubricValue" />
+			        <Input type="number" placeholder="0-10" min="0" max="10" name={"score" + i} id={"rubricValue" + i} />
 			      </CardBody>
 			    </Card>
 		    );
@@ -55,13 +56,16 @@ class RubricSubmit extends Component{
 	handleClick(){
 		this.props.unmountMe();
 	}
+
 	render(){
 		return(
 			<div class="rubricSubmit">
 				<button onClick={this.handleClick}>x</button>
 				<h2 class="rubricTitle">{this.state.currentRubric.name}</h2>
+				<p class="citationInfo">Information of Selected Source goes here</p>
 				<form>
 					<div class="cardContainer">{this.renderActions()}</div>
+					<input type="submit" value="Submit Scores" />
 				</form>
 			</div>
 		);
