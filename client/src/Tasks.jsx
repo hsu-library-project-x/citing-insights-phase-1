@@ -6,7 +6,7 @@ import './css/App.css';
 import './css/Tasks.css';
 
 //Import Routing
-import { Switch, Route, HashRouter, Link } from "react-router-dom";
+import { Switch, Route, HashRouter, Link, withRouter } from "react-router-dom";
 import Classes from "./Classes.jsx";
 import Assignments from "./Assignments.jsx";
 import Download from "./Download.jsx";
@@ -49,10 +49,9 @@ function CollapseMain(props){
 // Class to render our homepage
 class Tasks extends Component{
 	
-	constructor(props) {
-		super(props);
-	
-	}
+	// constructor(props) {
+	// 	super(props);
+	// }
 
 	// This changes the page title to correspond to what was clicked
 	changeName(evt){
@@ -62,7 +61,9 @@ class Tasks extends Component{
 	}
 
 	render(){
-		console.log(this.props.isAuthenticated);
+		console.log(this.props);
+		
+	
 		return(
 			<div id="MainContainer">
 				<div class="mainCollapse">
@@ -128,4 +129,4 @@ class Tasks extends Component{
 	}
 }
 
-export default Tasks;
+export default withRouter(Tasks);

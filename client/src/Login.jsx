@@ -82,7 +82,6 @@ class Login extends Component {
 					});
 					this.getInfo();
 					this.props.history.push("/");
-
 				}
 			});
 		})

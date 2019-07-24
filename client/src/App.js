@@ -15,29 +15,8 @@ import Login from "./Login.jsx";
 import Home from "./Home.jsx";
 import Tasks from "./Tasks.jsx";
 import AccountSettings from "./AccountSettings.jsx";
+import { ProtectedRoute } from "./ProtectedRoute.jsx";
 
-
-class ProtectedRoute extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isAuthenticated: this.props.auth
-    }
-  }
-  render() {
-    const { component: Component, ...props } = this.props;
-    return (
-      <Route
-        {...props}
-        render={props => (
-          this.state.isAuthenticated ?
-            <Component {...props} /> :
-            <Redirect to='/login' />
-        )}
-      />
-    )
-  }
-}
 
 // App acts as the main page for intial rendering -- all pages and stages are called 
 // from App function
@@ -90,40 +69,40 @@ class App extends Component {
                 <NavLink to="/analyze">Analyze</NavLink>
               </NavItem>
             </Navbar>
-            {/*This tells us what compenent to load after going to login, home, demo etc.*/}
+            {/*This tells us what compenent to loaauthd after going to login, home, demo etc.*/}
             <div id="id01" class="pop content">
               <Switch>
-                <ProtectedRoute
-                  exact path="/"
-                  component={Tasks}
-                  auth={this.state.isAuthenticated}
-                  {...this.props}
-                />
                 <Route
                   exact path="/login"
                   render={
                     (props) => <Login passInfo={this.passInfo}
-                    />}
+                    />
+                  }
                 />
                 <ProtectedRoute
-                  exact path="/home"
-                  component={Home}
-                  auth={this.state.isAuthenticated}
-                />
-                <ProtectedRoute
-                  path="/analyze"
-                  component={Analyze}
-                  auth={this.state.isAuthenticated}
+                  exact path="/"
+                  component={Tasks}
+                  {...this.state}
                 />
                 <ProtectedRoute
                   path="/tasks"
                   component={Tasks}
-                  auth={this.state.isAuthenticated}
+                  {...this.state}
+                />
+                <ProtectedRoute
+                  exact path="/home"
+                  component={Home}
+                  {...this.state}
+                />
+                <ProtectedRoute
+                  path="/analyze"
+                  component={Analyze}
+                  {...this.state}
                 />
                 <ProtectedRoute
                   path="/accountSettings"
                   component={AccountSettings}
-                  auth={this.state.isAuthenticated}
+                  {...this.state}
                 />
               </Switch>
             </div>
