@@ -23,7 +23,7 @@ class RubricEditor extends Component{
 			cards: [],
 			currentlyEditing: false,
 			editPopulated: false
-	  }
+		};
 
     uniqueId.enableUniqueIds(this);
     this.buildEditor = this.buildEditor.bind(this);

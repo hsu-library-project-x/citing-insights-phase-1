@@ -57,6 +57,7 @@ class Analyze extends Component{
       assessingRubric: false,
       rubricId: "",
       curPaperId: "",
+      sourceText: "",
       currentRubric: []
     }
 
@@ -117,6 +118,7 @@ class Analyze extends Component{
 
   handleRubricAssessment(event){
     this.setState({
+      sourceText: event.target.innerText,
       assessingRubric: true
     });
   }
@@ -137,8 +139,8 @@ class Analyze extends Component{
 
     //TODO: grab citations array from paper object /// REPLACE DUMMY CITATIONS
     
-    const dummycitations = ["Citation 1", "Citation 2", "Citation 3", "Citation 4"];
-    const metadata = "MetaData!"
+    const dummycitations = ["Bracco, M., Lia, V. V., Gottlieb, A. M., Cámara Hernández, J., & Poggio, L. (2009). Genetic diversity in maize landraces from indigenous settlements of Northeastern Argentina. Genetica, 135(1), 39–49. https://doi.org/10.1007/s10709-008-9252-z", "Citation 2", "Citation 3", "Citation 4"];
+    const metadata = "MetaData!";
     for(let i = 0; i < dummycitations.length; i++){
       let citeSourceId = makeid(10);
       let citeObj = new Citation(citeSourceId, dummycitations[i], metadata);
@@ -304,7 +306,7 @@ class Analyze extends Component{
             <h2 className='analyzeHeader'>Assignment</h2>
             <p id="assignmentInfo"> {this.state.assignmentId} </p>
           </Col>
-          <Col xs="7">
+          <Col xs="6">
             <h2 className='analyzeHeader'>Papers</h2>
             <Input type="select" id="selectedPaper" name="paper" onInput={this.displayPaper}>
               {/* These should be automatically generated with AJAX and API */}
@@ -317,7 +319,7 @@ class Analyze extends Component{
               <option value="5">Paper 5</option>
             </Input> 
           </Col>
-          <Col xs="2">
+          <Col xs="3">
             <h2 className='analyzeHeader' >Rubric</h2>
             <Input type="select" id="rubricAssign" name="AssignRubric" onInput={this.handleGetRubric}>
               <option value="" disabled selected hidden >Select a Rubric</option>
@@ -350,7 +352,7 @@ class Analyze extends Component{
               </Card>
             </div>	
           </Col>
-          <Col xs="7">
+          <Col xs="6">
             <h4> Paper PDF </h4>
             <div className="overflow-auto">
               <PdfComponent />
@@ -358,11 +360,11 @@ class Analyze extends Component{
             <Button id='markBtn' onClick={this.toggleMarkup.bind(this)}>Switch Markup/Annotate</Button>
             {this.renderAnnotate()}
           </Col>
-          <Col xs="2">
+          <Col xs="3">
             <h4>Found Citations</h4>
             <ul id="ResearchList">
               {this.state.citationData.map(citation => (
-                <li id={citation.id}>{citation.title}<button id={this.state.rubricId} onClick={this.handleRubricAssessment} disabled={this.state.rubricSelected}>Rubric</button></li>
+                <li id={citation.id}><button id={this.state.rubricId} onClick={this.handleRubricAssessment} disabled={this.state.rubricSelected}>{citation.title}</button></li>
               ))}
             </ul>
             <p id="biblio-box">Bibliography Goes Here</p>
@@ -377,7 +379,7 @@ class Analyze extends Component{
           </Col>
         </Row>
         {/*prop passing the rubric information*/}
-        {this.state.assessingRubric ? <RubricSubmit unmountMe={this.handleChildUnmount} curRubric={this.state.currentRubric} curPaper={this.state.curPaperId}/> : null}
+        {this.state.assessingRubric ? <RubricSubmit sourceText={this.state.sourceText} unmountMe={this.handleChildUnmount} curRubric={this.state.currentRubric} curPaper={this.state.curPaperId}/> : null}
       </div>
     );
   }

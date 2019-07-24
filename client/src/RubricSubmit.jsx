@@ -15,8 +15,9 @@ class RubricSubmit extends Component{
 			cardData: []
 		}
 
-		this.handleClick = this.handleClick.bind(this);
+		this.handleExitClick = this.handleExitClick.bind(this);
 		this.renderActions = this.renderActions.bind(this);
+		this.handleSubmitRubric = this.handleSubmitRubric.bind(this);
 	}
 
 	componentDidMount(){
@@ -53,17 +54,43 @@ class RubricSubmit extends Component{
 		}
 	}
 
-	handleClick(){
+	handleExitClick(){
 		this.props.unmountMe();
 	}
+
+	async handleSubmitRubric(event){
+    event.preventDefault();
+    var form = event.currentTarget;
+    //compile an array of rubric information and scores for cards
+    let data = [];
+    for(let i =0; i < form.length - 1; i++){
+    	let dataSet = {
+    		"name": this.state.cardData[i].cardTitle,
+    		"info": this.state.cardData[i].cardText,
+    		"score": form[i].value
+    	}
+    	data.push(dataSet);
+    }
+
+    //do a fetch statement using the citation ID to add scores
+    //citation ID at the end of this url
+    fetch('http://localhost:5000/citation/addrubricscore/', {
+      method: 'POST',
+      body: data,
+      headers:{
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    });
+  }
 
 	render(){
 		return(
 			<div class="rubricSubmit">
-				<button onClick={this.handleClick}>x</button>
+				<button onClick={this.handleExitClick}>x</button>
 				<h2 class="rubricTitle">{this.state.currentRubric.name}</h2>
-				<p class="citationInfo">Information of Selected Source goes here</p>
-				<form>
+				<p class="citationInfo">{this.props.sourceText}</p>
+				<form onSubmit={this.handleSubmitRubric}>
 					<div class="cardContainer">{this.renderActions()}</div>
 					<input type="submit" value="Submit Scores" />
 				</form>

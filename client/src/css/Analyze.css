@@ -176,9 +176,8 @@ li > a{
 }
 
 .analyze-container li button{
-  height: 2em;
-  padding: 0;
-  margin-left: 1em;
+  width: 100%;
+  word-wrap: break-word;
 }
 
 
