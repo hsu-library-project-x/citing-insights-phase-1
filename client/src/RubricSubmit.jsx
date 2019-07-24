@@ -74,6 +74,7 @@ class RubricSubmit extends Component{
 
     //do a fetch statement using the citation ID to add scores
     //citation ID at the end of this url
+    //add this route in the routes and models
     fetch('http://localhost:5000/citation/addrubricscore/', {
       method: 'POST',
       body: data,
