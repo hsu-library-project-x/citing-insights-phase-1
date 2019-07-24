@@ -2,7 +2,7 @@
 
 // Import Libraries
 import React, { Component, PropTypes } from 'react';
-import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 // Button,Container, Row, Col are all Reactrap elements that we are 
 //     going to use for our login
 import { Row, Col, Form, FormGroup } from 'reactstrap';
@@ -12,7 +12,7 @@ import './css/login.css';
 //import picture
 import login from './images/UniversityCenterXLg.jpg';
 
-import { GoogleLogin, GoogleLogout } from "react-google-login";
+import { GoogleLogin } from "react-google-login";
 
 import config from "./config.json";
 import { runInThisContext } from 'vm';
@@ -34,6 +34,7 @@ class Login extends Component {
 	}
 
 
+
 	onFailure = (err) => {
 		alert(err);
 	};
@@ -44,7 +45,6 @@ class Login extends Component {
 
 	getInfo() {
 		this.props.passInfo(this.state.isAuthenticated, this.state.token, this.state.user);
-
 	}
 
 
@@ -81,28 +81,15 @@ class Login extends Component {
 						token: token
 					});
 					this.getInfo();
+					this.props.history.push("/");
+
 				}
 			});
 		})
 	};
 
+
 	render() {
-		let content = !!this.state.isAuthenticated ?
-			(
-				<Redirect to={{
-					pathname: "/tasks",
-				}} />
-			) :
-			(
-				<div>
-					<GoogleLogin
-						clientId={config.GOOGLE_CLIENT_ID}
-						buttonText="Login yo"
-						onSuccess={this.responseGoogle}
-						onFailure={this.onFailure}
-					/>
-				</div>
-			);
 		return (
 			<div class="container">
 				<div id="login_page">
@@ -115,7 +102,12 @@ class Login extends Component {
 						<Col xs="6">
 							<div class="beside_picture">
 								<div>
-									{content}
+									<GoogleLogin
+										clientId={config.GOOGLE_CLIENT_ID}
+										buttonText="Login yo"
+										onSuccess={this.responseGoogle}
+										onFailure={this.onFailure}
+									/>
 								</div>
 							</div>
 						</Col>
@@ -126,4 +118,4 @@ class Login extends Component {
 	}
 }
 
-export default Login;
+export default withRouter(Login);

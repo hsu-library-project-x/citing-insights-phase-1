@@ -7,7 +7,7 @@ import './css/App.css';
 import { Navbar, NavbarBrand, NavItem } from 'reactstrap';
 
 // Hashrouter allows us to do routing for website
-import { Switch, Route, NavLink, HashRouter, Redirect} from "react-router-dom";
+import { Switch, Route, NavLink, HashRouter, Redirect } from "react-router-dom";
 
 // Analyze, Login, and Home are all pages for our website
 import Analyze from "./Analyze.jsx";
@@ -18,26 +18,22 @@ import AccountSettings from "./AccountSettings.jsx";
 
 
 class ProtectedRoute extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state= {
+    this.state = {
       isAuthenticated: this.props.auth
     }
   }
-
-
-
   render() {
-    const { component: Component, ...props } = this.props
-
+    const { component: Component, ...props } = this.props;
     return (
-      <Route 
-        {...props} 
+      <Route
+        {...props}
         render={props => (
           this.state.isAuthenticated ?
             <Component {...props} /> :
             <Redirect to='/login' />
-        )} 
+        )}
       />
     )
   }
@@ -63,7 +59,6 @@ class App extends Component {
       user: user,
       token: token
     });
-    console.log(this.state.isAuthenticated);
   };
 
   render() {
@@ -98,15 +93,38 @@ class App extends Component {
             {/*This tells us what compenent to load after going to login, home, demo etc.*/}
             <div id="id01" class="pop content">
               <Switch>
-                <ProtectedRoute exact path="/" component={Tasks} auth={this.state.isAuthenticated}/>
+                <ProtectedRoute
+                  exact path="/"
+                  component={Tasks}
+                  auth={this.state.isAuthenticated}
+                  {...this.props}
+                />
                 <Route
                   exact path="/login"
-                  render={(props) => <Login passInfo={this.passInfo}/>}
+                  render={
+                    (props) => <Login passInfo={this.passInfo}
+                    />}
                 />
-                <ProtectedRoute exact path="/home" component={Home} auth={this.state.isAuthenticated} />
-                <ProtectedRoute path="/analyze" component={Analyze} auth={this.state.isAuthenticated}/>
-                <ProtectedRoute path="/tasks" component={Tasks} auth={this.state.isAuthenticated}/>
-                <ProtectedRoute path="/accountSettings" component={AccountSettings} auth={this.state.isAuthenticated}/>
+                <ProtectedRoute
+                  exact path="/home"
+                  component={Home}
+                  auth={this.state.isAuthenticated}
+                />
+                <ProtectedRoute
+                  path="/analyze"
+                  component={Analyze}
+                  auth={this.state.isAuthenticated}
+                />
+                <ProtectedRoute
+                  path="/tasks"
+                  component={Tasks}
+                  auth={this.state.isAuthenticated}
+                />
+                <ProtectedRoute
+                  path="/accountSettings"
+                  component={AccountSettings}
+                  auth={this.state.isAuthenticated}
+                />
               </Switch>
             </div>
             {/*End our router*/}
@@ -115,7 +133,6 @@ class App extends Component {
       </div>
     );
   }
-
 }
 
 

@@ -51,15 +51,7 @@ class Tasks extends Component{
 	
 	constructor(props) {
 		super(props);
-		this.state = {
-			isAuthenticated: false,
-			user: null,
-			token: ""
-		};
-	}
-
-	componentDidMount(props){
-		
+	
 	}
 
 	// This changes the page title to correspond to what was clicked
@@ -70,6 +62,7 @@ class Tasks extends Component{
 	}
 
 	render(){
+		console.log(this.props.isAuthenticated);
 		return(
 			<div id="MainContainer">
 				<div class="mainCollapse">
