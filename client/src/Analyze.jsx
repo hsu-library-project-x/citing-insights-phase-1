@@ -5,6 +5,7 @@ import './css/Analyze.css';
 import Annotate from './Annotate.jsx';
 //maybe rename the componet
 import Markup from './Markup.jsx';
+import paper from "./pdf/samplepaper2.pdf";
 // This lets us use Jumbotron, Badge, and Progress in HTML from Reactstrap
 //    This is all we are using for now. May import more styling stuff later
 import { Label, ListGroup, ListGroupItem, Button, Input, Progress } from 'reactstrap';
@@ -154,7 +155,8 @@ class Analyze extends Component{
       successfullUpload: false,
       citationData: [],
       curHighlight: "",
-      assignmentId: ""
+      assignmentId: "",
+      current_pdf_data: "this must get set"
     }
 
     this.renderActions = this.renderActions.bind(this);
@@ -163,16 +165,29 @@ class Analyze extends Component{
     this.resetButton = this.resetButton.bind(this);
     this.saveIntextCitation = this.saveIntextCitation.bind(this);
     this.addAnnotation = this.addAnnotation.bind(this);
+    this.componentWillMount = this.componentWillMount.bind(this);
   }
 
-  componentDidMount() {
 
-    console.log('mounted');
-    if (this.props.location.state != undefined) {
-        this.setState({assignmentId: this.props.location.state.id});
-    } else {
-      this.setState({assignmentId: "no assignment selected"});
-    }
+  get_paper_info(assignment_id) {
+
+      var answer = "a";
+      fetch('http://localhost:5000/papers/' + assignment_id)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(myJson) {
+        //console.log(JSON.stringify(myJson));
+        //console.log(myJson);
+        console.log('success');
+        console.log(myJson);
+        answer = myJson;
+        console.log(answer);
+        return(myJson);
+        //that.setState({AvailableAssignments: myJson});
+      }).then((result) => answer = result);
+    console.log(answer);
+    return(answer);
   }
 
 
@@ -189,6 +204,56 @@ class Analyze extends Component{
       let citeObj = new Citation(citeSourceId, sources[i], metadata);
       this.state.citationData.push(citeObj);
     }
+
+    console.log('mounted');
+
+    var that = this;
+    if (this.props.location.state != undefined) {
+        this.setState({assignmentId: this.props.location.state.id});
+
+       fetch('http://localhost:5000/papers/by_assignment_id/' + this.props.location.state.id)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(myJson) {
+        //console.log(JSON.stringify(myJson));
+        //console.log(myJson);
+        //console.log('success');
+        //console.log(myJson[0]["_id"]);
+
+      fetch('http://localhost:5000/papers/' + myJson[0]["_id"])
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(myJson) {
+        //console.log(JSON.stringify(myJson));
+        //console.log(myJson);
+        console.log('success');
+        console.log(myJson);
+        that.setState({current_pdf_data: myJson["pdf"]["data"]});
+        console.log(that.state.current_pdf_data);
+        //return(myJson);
+        //that.setState({AvailableAssignments: myJson});
+      });
+
+        //var new_json = that.get_paper_info(myJson[0]["_id"]);
+        //console.log('new');
+        //console.log(new_json);
+        //that.setState({current_pdf_data: new_json["pdf"]["data"]});
+
+        //console.log('setting state');
+        //console.log(that.state.current_pdf_data);
+
+
+
+        //that.setState({AvailableAssignments: myJson});
+      });
+
+    } else {
+      this.setState({assignmentId: "no assignment selected"});
+    }
+
+
   }
 
   //Checks to see if there is appropriate text in the intext citation textarea, renders either disabled button or save button depending on context
@@ -312,6 +377,15 @@ class Analyze extends Component{
   }
 
   render() {
+    
+    var pdf;
+    if (this.state.current_pdf_data == "this must get set") {
+      pdf = <p> we dont have data yet </p>;
+    } else {
+      pdf = <PdfComponent data={this.state.current_pdf_data} />;
+    }
+
+
     return(
       /* Analyze Mode HTML Start */
       <div class="DemoContents analyze-container">
@@ -363,8 +437,9 @@ class Analyze extends Component{
           </Col>
           <Col xs="6">
             <h4> Student Paper PDF</h4>
+            <p> {this.state.current_pdf_data} </p>
             <div className="overflow-auto">
-              <PdfComponent />
+              {pdf}
             </div>
 
 
