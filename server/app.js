@@ -8,7 +8,7 @@ const upload = require('./upload');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
-//mongoose.connect('mongodb://localhost:27017/test', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/test', { useNewUrlParser: true });
 
 var routes = require('./routes/index');
 var users = require('./routes/userRoutes');
