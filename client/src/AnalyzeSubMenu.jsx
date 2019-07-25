@@ -194,17 +194,6 @@ class AnalyzeSubMenu extends Component{
 
           </Col>
         </Row>
-        <Row>
-          <Col xs="12">
-            <HashRouter>
-              <div class="button-container">
-                <Link to="/tasks/analyze">
-                  <Button>Test Button</Button>
-                </Link>
-              </div>
-            </HashRouter>
-          </Col>
-        </Row>
       </div>
     );
   }
