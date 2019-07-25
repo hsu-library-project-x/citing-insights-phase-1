@@ -76,10 +76,10 @@ class RubricSubmit extends Component{
     //citation ID at the end of this url
     //add this route in the routes and models
 
-    let stringData = JSON.stringify(data);
+    let rubricScore = JSON.stringify(data);
     fetch('http://localhost:5000/citation/add_rubric_score/' + "id", {
       method: 'POST',
-      body: stringData,
+      body: rubricScore,
       headers:{
         'Accept': 'application/json',
         'Content-Type': 'application/json'

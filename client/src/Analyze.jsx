@@ -30,6 +30,7 @@ function Citation(id, title, metadata){
   this.title = title;
   this.metadata = metadata;
   this.intextCites = [];
+  this.annotation = "";
 }
 
 function IntextCitation(text, annotation, id){
@@ -47,11 +48,11 @@ class Analyze extends Component{
       isMarkup: true,
       uploading: false,
       successfullUpload: false,
+      citations: [],
       citationData: [],
       curHighlight: "",
       assignmentId: "",
       AvailableRubrics: [],
-      foundCitationsElements: [],
       gotSources: false,
       rubricSelected: true,
       assessingRubric: false,
@@ -62,7 +63,6 @@ class Analyze extends Component{
     }
 
     this.renderActions = this.renderActions.bind(this);
-    this.uploadCitations = this.uploadCitations.bind(this);
     this.sendRequest = this.sendRequest.bind(this);
     this.resetButton = this.resetButton.bind(this);
     this.saveIntextCitation = this.saveIntextCitation.bind(this);
@@ -72,6 +72,7 @@ class Analyze extends Component{
     this.handleGetRubric = this.handleGetRubric.bind(this);
     this.handleRubricAssessment = this.handleRubricAssessment.bind(this);
     this.handleChildUnmount = this.handleChildUnmount.bind(this);
+    this.handleSaveCitations = this.handleSaveCitations.bind(this);
   }
 
   componentDidMount() {
@@ -140,14 +141,18 @@ class Analyze extends Component{
     //TODO: grab citations array from paper object /// REPLACE DUMMY CITATIONS
     
     const dummycitations = ["Bracco, M., Lia, V. V., Gottlieb, A. M., Cámara Hernández, J., & Poggio, L. (2009). Genetic diversity in maize landraces from indigenous settlements of Northeastern Argentina. Genetica, 135(1), 39–49. https://doi.org/10.1007/s10709-008-9252-z", "Citation 2", "Citation 3", "Citation 4"];
+    this.setState({
+      citaitons: dummycitations
+    });
+
     const metadata = "MetaData!";
     for(let i = 0; i < dummycitations.length; i++){
+      //TODO: REPLACE THIS WITH GETTING THE ID FOR THE CITATION FROM THE DATABASE
       let citeSourceId = makeid(10);
       let citeObj = new Citation(citeSourceId, dummycitations[i], metadata);
       this.state.citationData.push(citeObj);
     }
-
-    //Grab Semantic Scholar Information for the site
+    //TODO: Grab Semantic Scholar Information for the site
   }
 
   handleDelete(){
@@ -155,7 +160,39 @@ class Analyze extends Component{
       assessingRubric: false
     });
   }
-  //add citations to page
+
+  //this saves annotations and intext citations associated with them
+  handleSaveCitations(){
+    let citationData = this.state.citationData; 
+    this.setState.uploading = true;
+    const promise = [];
+    promise.push(this.sendRequest(citationData));
+    try {
+      this.setState({ successfullUpload: true, uploading: false });
+    } catch (e) {
+      // Not Production ready! Do some error handling here instead...
+      this.setState({ successfullUpload: true, uploading: false });
+    }
+  }
+
+  sendRequest(data) {
+    return new Promise((resolve, reject) => {
+      //Call for each citation
+      for(var citation in data){
+        if(data[citation].intextCites.length !== 0){
+          let intextCitations = JSON.stringify(data[citation].intextCites);
+          fetch('http://localhost:5000/citation/add_intext_citations/' + data[citation].id, {
+            method: 'POST',
+            body: intextCitations,
+            headers:{
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+          });
+        }
+      }
+    });
+  }
 
   renderAnnotate(){
     if(this.state.citationData.length !== 0){
@@ -196,6 +233,7 @@ class Analyze extends Component{
     else{
       let data = this.state.citationData;
       //generate an id for the intext citation
+      //TODO: Replace this with getting the ID for the appropriate ID of the citations for a paper
       let inTextId = makeid(8);
       let inCiteObj = new IntextCitation(text, "", inTextId);
       for(let i = 0; i < data.length; i++){
@@ -227,24 +265,40 @@ class Analyze extends Component{
       //attach an annotation to an intext citation
       //need a way to grab the citation id, and the intext citation id to pair them appropriately
       let data = this.state.citationData;
-
+      let box = document.getElementById("curAnno");
+      //if its an annotation of the source, add that annotation to overall citaion
       //search space O(2n)
       for(let i = 0; i < data.length; i++){
         if(data[i].id === citeIds[1]){
-          let curArray = data[i].intextCites;
-          for(let j = 0; j < curArray.length; j++){
-            if(curArray[j].id === citeIds[0]){
-              this.state.citationData[i].intextCites[j].annotation = annotation;
-              let box = document.getElementById("curAnno");
-              if( box.classList.contains("savedAnimation")){
-                document.getElementById("curAnno").classList.remove("savedAnimation");
-                document.getElementById("curAnno").classList.add("savedAnimation2");
+          if(citeIds[0] === "source"){
+            let currentCitation = data[i];
+            this.state.citationData[i].annotation = annotation;
+            if( box.classList.contains("savedAnimation")){
+              document.getElementById("curAnno").classList.remove("savedAnimation");
+              document.getElementById("curAnno").classList.add("savedAnimation2");
+            }
+            else{
+              document.getElementById("curAnno").classList.add("savedAnimation");
+              document.getElementById("curAnno").classList.remove("savedAnimation2");
+            }
+            return;
+          }
+          else{
+            let curArray = data[i].intextCites;
+            for(let j = 0; j < curArray.length; j++){
+              if(curArray[j].id === citeIds[0]){
+                this.state.citationData[i].intextCites[j].annotation = annotation;
+                
+                if( box.classList.contains("savedAnimation")){
+                  document.getElementById("curAnno").classList.remove("savedAnimation");
+                  document.getElementById("curAnno").classList.add("savedAnimation2");
+                }
+                else{
+                  document.getElementById("curAnno").classList.add("savedAnimation");
+                  document.getElementById("curAnno").classList.remove("savedAnimation2");
+                }
+                return;
               }
-              else{
-                document.getElementById("curAnno").classList.add("savedAnimation");
-                document.getElementById("curAnno").classList.remove("savedAnimation2");
-              }
-              return;
             }
           }
         }
@@ -252,33 +306,7 @@ class Analyze extends Component{
     }
   }
 
-  //Uploads state array of Citations and Annotations to the Database after compiling them into JSON format to do one Server Call
-  async uploadCitations(){
-    let citationData = this.state.citationData; 
-    this.setState.uploading = true;
-    const promise = [];
-    promise.push(this.sendRequest(citationData));
-    try {
-      this.setState({ successfullUpload: true, uploading: false });
-    } catch (e) {
-      // Not Production ready! Do some error handling here instead...
-      this.setState({ successfullUpload: true, uploading: false });
-    }
-
-  }
-
-  sendRequest(data) {
-    return new Promise((resolve, reject) => {
-      const req = new XMLHttpRequest();
-      const formPackage = [];
-      formPackage.push(data);
-      const formData = new FormData();
-      formData.append("Paper ID", formPackage);
-      req.open("POST", "http://localhost:5000/savepaper");
-      req.send(formData);
-    });
-  }
-
+  
   toggleHidden(){
     this.setState({
       isHidden: !this.state.isHidden
@@ -311,6 +339,7 @@ class Analyze extends Component{
             <Input type="select" id="selectedPaper" name="paper" onInput={this.displayPaper}>
               {/* These should be automatically generated with AJAX and API */}
               {/* Replace with a state that that stores based on papers gotten from associated assignment*/}
+              {/* TODO:: Replace these static options with dynamic options generated from a call to the database for paper ID's*/}
               <option disabled selected hidden>Please Select a Paper</option>
               <option value="1">Paper 1</option>
               <option value="2">Paper 2</option>
@@ -374,7 +403,7 @@ class Analyze extends Component{
               <p id="assignProgressText">Total Assessed: 0%</p>
               <Progress id="assignmentProgress" value="0" />
             </div>
-            <Button color="success" id="paperDone" onClick={this.uploadCitations}> Save Paper </Button>
+            <Button color="success" id="paperDone" onClick={this.handleSaveCitations}> Save Paper </Button>
             <Button id="nextPaper" > Next Paper </Button>
           </Col>
         </Row>
