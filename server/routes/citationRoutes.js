@@ -22,6 +22,12 @@ router.post('/', citationController.create);
  */
 router.put('/:id', citationController.update);
 
+//Route for adding rubric scores to a specific citation
+router.put('/add_rubric_score/:id', citationController.update);
+
+//Route for adding intext citations to an existing citation
+router.put('/add_intext_citations/:id', citationController.update);
+
 /*
  * DELETE
  */
