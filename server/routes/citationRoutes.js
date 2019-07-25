@@ -28,6 +28,9 @@ router.put('/add_rubric_score/:id', citationController.update);
 //Route for adding intext citations to an existing citation
 router.put('/add_intext_citations/:id', citationController.update);
 
+//Route for adding annotations to a citation
+router.put('/add_annotation/:id', citationController.update);
+
 /*
  * DELETE
  */

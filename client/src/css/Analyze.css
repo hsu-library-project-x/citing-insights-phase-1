@@ -222,6 +222,14 @@ h2.analyzeHeader{
   border:none;
 }
 
+.analyze-container .pdfSearch{
+  width: 30%;
+}
+
+.analyze-container .pdfInfo>label{
+  margin-left: 1em;
+}
+
 /* .col-6 > div.overflow-auto{
   box-shadow: -15px 15px 70px black;
 } */

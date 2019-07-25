@@ -179,10 +179,21 @@ class Analyze extends Component{
     return new Promise((resolve, reject) => {
       //Call for each citation
       for(var citation in data){
+        if(data[citation].annotation !== ""){
+          let annotation = JSON.stringify(data[citation].annotation);
+          fetch('http://localhost:5000/citation/add_annotation/' + data[citation].id, {
+            method: 'PUT',
+            body: annotation,
+            headers:{
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+          });
+        }
         if(data[citation].intextCites.length !== 0){
           let intextCitations = JSON.stringify(data[citation].intextCites);
           fetch('http://localhost:5000/citation/add_intext_citations/' + data[citation].id, {
-            method: 'POST',
+            method: 'PUT',
             body: intextCitations,
             headers:{
               'Accept': 'application/json',

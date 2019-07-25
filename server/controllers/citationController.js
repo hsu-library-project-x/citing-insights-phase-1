@@ -179,6 +179,36 @@ module.exports = {
       });
     },
 
+    add_annotation: function(req, res){
+      console.log(req.body);
+      var id = req.params.id;
+      citationModel.findOne({_id: id}, function (err, citation) {
+          if (err) {
+              return res.status(500).json({
+                  message: 'Error when getting citation',
+                  error: err
+              });
+          }
+          if (!citation) {
+              return res.status(404).json({
+                  message: 'No such citation'
+              });
+          }
+
+          citation.annotation = req.body.annotation ? req.body.annotation : citation.annotation;
+    
+          citation.save(function (err, citation) {
+              if (err) {
+                  return res.status(500).json({
+                      message: 'Error when updating citation.',
+                      error: err
+                  });
+              }
+
+              return res.json(citation);
+          });
+      });
+    },
     /**
      * citationController.remove()
      */
