@@ -43,12 +43,24 @@ module.exports = function upload(req, res) {
           shell.exec("gs -sDEVICE=txtwrite -o " + txt_path + " " + file.path);
 
             console.log(txt_path);
+            console.log('LOOK HERE');
 
             //the replace functions just get rid of carriage returns
+          
+            console.log(file.path);
+            var textByLine = fs.readFileSync(file.path);
+
+            var my_blob = new Blob(textByLine, {type: 'application/pdf'});
+        
+            console.log('AND HERE');
+            console.log(form);
+
             var raw_text = { 
                 "body": fs.readFileSync(txt_path).toString().replace(/\r+/g, "").replace(/\n+/g, ""), 
+                "pdf" : my_blob,
                 "title": null, 
-                "name": null 
+                "name": null, 
+                "assignment_id": "5d35f2c95574476695517711"
             };
             // we actually want to set a variable to see whether or not things happenned successfully
             // instantiate the paper and save to db
