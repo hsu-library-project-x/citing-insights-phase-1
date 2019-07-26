@@ -53,6 +53,8 @@ userSchema.statics.upsertGoogleUser = function (accessToken, refreshToken, profi
 	});
 };
 
+
 module.exports = mongoose.model('user', userSchema);
+
 
 //return db
