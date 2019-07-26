@@ -90,8 +90,23 @@ li > a{
   overflow: scroll;
 }
 
+.analyze-container #assignmentInfo{
+  display: inline-block;
+}
+
 .analyze-container h4{
   text-align: center;
+}
+
+.analyze-container select{
+  width: 100%;
+  text-align: center;
+  margin-right:0.5em;
+  margin-top: 1em;
+  border: 2.5px solid #274259;
+  border-top: 5px solid #274259;
+  margin-bottom: 2em;
+  margin-top: 0;
 }
 
 #curAnno{
@@ -122,8 +137,39 @@ li > a{
   animation-duration: .35s;
   animation-fill-mode: forwards;
   animation-timing-function: ease-out;
-  border-color: pink;
+  border-color: green;
   border-style: solid;
+}
+.analyze-container ul{
+  padding: 0;
+}
+
+.analyze-container li{
+  list-style-type: none;
+  text-align: left;
+  background-color: white;
+  min-height: 2.5em;
+  padding: .5em;
+  color: black;
+  width: 100%;
+  display: inline-block;
+}
+
+.analyze-container li:nth-child(odd){
+  background-color: lightgrey;
+}
+
+.analyze-container li button{
+  width: 30%;
+  height: 2em;
+  padding: 0;
+  margin-left: 1em;
+}
+
+.col-3 h2{
+  font-weight: bold;
+  color: #274259;
+  font-size: 1.5em;
 }
 
 @keyframes borderFlash{
