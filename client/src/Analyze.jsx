@@ -171,6 +171,9 @@ class Analyze extends Component{
 
   get_paper_info(assignment_id) {
 
+    // this is broken right now but it should just return the JSON it retreives 
+    // i had weird javascript errors but it shouldnt be too hard to get working
+    // this whole block is ccopied into componentdidmount 
       var answer = "a";
       fetch('http://localhost:5000/papers/' + assignment_id)
       .then(function(response) {
