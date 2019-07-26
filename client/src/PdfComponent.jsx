@@ -108,7 +108,7 @@ class PdfComponent extends Component {
               Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
             </p>
             <label htmlFor="search">Search:</label>
-            <input class="pdfSearch" type="search" id="search" value={searchText} onChange={this.onChange} />
+            <input placeholder="pg #" class="pdfSearch" type="search" id="search" value={searchText} onChange={this.onChange} />
             <button class="pdfButtons" type="button" disabled={pageNumber <= 1} onClick={this.previousPage}>Previous</button>
             <button class="pdfButtons" type="button" disabled={pageNumber >= numPages} onClick={this.nextPage}>Next</button>
           </div>

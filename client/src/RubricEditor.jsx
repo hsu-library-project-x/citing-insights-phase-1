@@ -1,24 +1,7 @@
 import React, {Component} from 'react';
-import {Input, Card, CardText, CardBody, CardTitle, Button} from 'reactstrap';
+import {Input, Card, CardBody, Button} from 'reactstrap';
 import "./css/RubricEditor.css";
 import uniqueId from 'react-html-id';
-
-const Editor = () => (
-	<div class="numCardsSelector">
-		<p>Choose the number of Rubric Elements</p>
-		<Input type="select" name="rubricElements" id="rubricChoice">
-			<option value="1">1 card</option>
-			<option value="2">2 cards</option>
-			<option value="3">3 cards</option>
-			<option value="4">4 cards</option>
-			<option value="5">5 cards</option>
-			<option value="6">6 cards</option>
-			<option value="7">7 cards</option>
-			<option value="8">8 cards</option>
-			<option value="9">9 cards</option>
-		</Input>
-	</div>
-)
 
 class RubricEditor extends Component{
 
@@ -40,7 +23,7 @@ class RubricEditor extends Component{
 			cards: [],
 			currentlyEditing: false,
 			editPopulated: false
-	  }
+		};
 
     uniqueId.enableUniqueIds(this);
     this.buildEditor = this.buildEditor.bind(this);
@@ -122,7 +105,6 @@ class RubricEditor extends Component{
 			if(this.state.rubricExists && !this.state.currentlyEditing){
 				const getRubric = this.state.AvailableRubrics;
 				let curCards = [];
-				let curTitle = [];
 				for(let j = 0; j < getRubric.length; j++){
 					if(getRubric[j]._id === this.state.currentRubric){
 						this.setState({
@@ -140,9 +122,9 @@ class RubricEditor extends Component{
 								<div className={`cardContainer`}>
 									<Card>
 										<CardBody>
-											<CardTitle for={"Title-"+newId}>Rubric Item Title</CardTitle>
-											<Input name={i} onInput={this.onInput} type="text" id={"Title-"+newId} class="rubricTitles"/>
-											<CardText for={"Text-"+newId}>Rubric Descriptions</CardText>
+											{/* <CardTitle for={"Title-"+newId}>Rubric Item Title</CardTitle> */}
+											<Input  name={i} onInput={this.onInput} type="text" id={"Title-"+newId} class="rubricTitles"/>
+											{/* <CardText for={"Text-"+newId}>Rubric Descriptions</CardText> */}
 											<Input name={i} onInput={this.onInput} type="textarea" id={"Text-"+newId} class="rubricDescriptions"/>
 										</CardBody>
 									</Card>
@@ -165,10 +147,10 @@ class RubricEditor extends Component{
 						<div className={`cardContainer `}>
 							<Card>
 								<CardBody>
-									<CardTitle for={"Title-"+newId}>Rubric Item Title</CardTitle>
-									<Input onInput={this.onInput} type="text" id={"Title-"+newId} class="rubricTitles"/>
-									<CardText for={"Text-"+newId}>Rubric Descriptions</CardText>
-									<Input onInput={this.onInput} type="textarea" id={"Text-"+newId} class="rubricDescriptions"/>
+									{/* <CardTitle for={"Title-"+newId}>Rubric Item Title</CardTitle> */}
+									<Input placeholder="Enter Rubric Item Name ...." onInput={this.onInput} type="text" id={"Title-"+newId} class="rubricTitles"/>
+									{/* <CardText for={"Text-"+newId}>Rubric Descriptions</CardText> */}
+									<Input placeholder="Enter Rubric Item Description ...." onInput={this.onInput} type="textarea" id={"Text-"+newId} class="rubricDescriptions"/>
 								</CardBody>
 							</Card>
 						</div>
@@ -365,14 +347,15 @@ class RubricEditor extends Component{
 
 		return(
 			<div className={`rubricEdit-container`}>
-				<h2>Rubric Editor</h2>
+				<h1>Rubric Editor</h1>
 				{(!this.state.isEditing) ? 
 					<div class="numCardsSelector">
 						<h3 class="rubricEditHeader">Create New:</h3>
-						<p>Choose the number of Rubric Elements</p>
-						<Input type="number" placeholder="1-10" name="rubricElements" id="rubricChoice" min="1" max="10">
+						{/* <p> Number of Rubric Elements</p> */}
+						<Input type="number" placeholder="Number of Rubric Elements from 1-10" name="rubricElements" id="rubricChoice" min="1" max="10">
 						</Input>
 						<Button id="rubEditButton" onClick={this.buildEditor}>Submit</Button>
+						<h3> -OR- </h3>
 						<h3 class="rubricEditHeader">Edit Existing:</h3>
 						<ul class="currentRubrics">
 							{rubricList}
@@ -387,9 +370,9 @@ class RubricEditor extends Component{
 				}
 				{(!this.state.isEditing) ? <h4>Please select a rubric from the list or create a new one to get started.</h4> : 
 					<div class="rubricButtonContainer">
-						<button onClick={ () => this.saveCard()}>Save Cards</button>
-						<button id="rubBuildButton" disabled={this.state.needsSaving} onClick={this.buildRubric}>{this.fillButtonText()}</button>
 						<button id="backSelect" onClick={this.reset}>Back</button>
+						<button id="rubBuildButton" disabled={this.state.needsSaving} onClick={this.buildRubric}>{this.fillButtonText()}</button>
+						<button id="saveCards" onClick={ () => this.saveCard()}>Save Cards</button>
 					</div>
 				}
 			</div>

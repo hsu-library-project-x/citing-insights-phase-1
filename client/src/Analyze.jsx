@@ -3,11 +3,8 @@ import React, {Component} from 'react';
 import './css/App.css';
 import './css/Analyze.css';
 import Annotate from './Annotate.jsx';
-//maybe rename the componet
 import Markup from './Markup.jsx';
-import paper from "./pdf/samplepaper2.pdf";
-// This lets us use Jumbotron, Badge, and Progress in HTML from Reactstrap
-//    This is all we are using for now. May import more styling stuff later
+import RubricSubmit from './RubricSubmit.jsx';
 import { Label, Button, Input, Progress } from 'reactstrap';
 import {Card, CardText, CardBody, CardTitle} from 'reactstrap';
 // Lets us use column / row and layout for our webpage using Reactstrap
@@ -26,58 +23,14 @@ function makeid(length) {
 }
 
 //Rubric Const, to be replaced possibly with new component
-const Rubric = () => (
-  <div class="rubricContainer">
-    <Card>
-      <CardBody>
-        <CardTitle>Rubric Component</CardTitle>
-        <CardText>Text about what this Rubric Component is goes here</CardText>
-        <Label for="rubricValue">Score</Label>
-        <Input type="select" name="select" id="rubricValue">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </Input>
-      </CardBody>
-    </Card>
-    <Card>
-      <CardBody>
-        <CardTitle>Rubric Component</CardTitle>
-        <CardText>Text about what this Rubric Component is goes here</CardText>
-        <Label for="rubricValue">Score</Label>
-        <Input type="select" name="select" id="rubricValue">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </Input>
-      </CardBody>
-    </Card>
-    <Card>
-      <CardBody>
-        <CardTitle>Rubric Component</CardTitle>
-        <CardText>Text about what this Rubric Component is goes here</CardText>
-        <Label for="rubricValue">Score</Label>
-        <Input type="select" name="select" id="rubricValue">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </Input>
-      </CardBody>
-    </Card>
-  </div>
-)
+
 
 function Citation(id, title, metadata){
   this.id = id;
   this.title = title;
   this.metadata = metadata;
   this.intextCites = [];
+  this.annotation = "";
 }
 
 function IntextCitation(text, annotation, id){
@@ -89,26 +42,28 @@ function IntextCitation(text, annotation, id){
 // Demo is (for now) is our Analyze page
 class Analyze extends Component{
   constructor () {
-    super()
+    super();
     this.state = {
       isHidden: true,
       isMarkup: true,
       uploading: false,
       successfullUpload: false,
+      citations: [],
       citationData: [],
       curHighlight: "",
       assignmentId: "",
       current_pdf_data: "this must get set",
       AvailableRubrics: [],
-      foundCitationsElements: [],
       gotSources: false,
       rubricSelected: true,
-      rubricId: ""
-
+      assessingRubric: false,
+      rubricId: "",
+      curPaperId: "",
+      sourceText: "",
+      currentRubric: []
     }
 
     this.renderActions = this.renderActions.bind(this);
-    this.uploadCitations = this.uploadCitations.bind(this);
     this.sendRequest = this.sendRequest.bind(this);
     this.resetButton = this.resetButton.bind(this);
     this.saveIntextCitation = this.saveIntextCitation.bind(this);
@@ -117,6 +72,9 @@ class Analyze extends Component{
     this.displayPaper = this.displayPaper.bind(this);
     this.renderAnnotate = this.renderAnnotate.bind(this);
     this.handleGetRubric = this.handleGetRubric.bind(this);
+    this.handleRubricAssessment = this.handleRubricAssessment.bind(this);
+    this.handleChildUnmount = this.handleChildUnmount.bind(this);
+    this.handleSaveCitations = this.handleSaveCitations.bind(this);
   }
 
 
@@ -150,7 +108,7 @@ class Analyze extends Component{
     if (this.props.location.state !== undefined) {
       this.setState({assignmentId: this.props.location.state.id});
     } else {
-      this.setState({assignmentId: "no assignment selected"});
+      this.setState({assignmentId: "No Assignment Selected"});
     }
   }
 
@@ -193,14 +151,32 @@ class Analyze extends Component{
 
   handleGetRubric(event){
     const target = event.target;
-    alert('fired');
+    const id = target.value;
+    const rubricArray = this.state.AvailableRubrics;
+    for(let i = 0; i < rubricArray.length; i++){
+      if(rubricArray[i]._id === id){
+        this.setState({
+          currentRubric: rubricArray[i]
+        });
+      }
+    }
     this.setState({
-      rubricSelected: false
+      rubricSelected: false,
+      rubricId: id
     });
   }
 
-  handleRubricAssesment(event){
+  handleRubricAssessment(event){
+    this.setState({
+      sourceText: event.target.innerText,
+      assessingRubric: true
+    });
+  }
 
+  handleChildUnmount(){
+    this.setState({
+      assessingRubric: false
+    });
   }
   //This function will change the students paper
   displayPaper(){
@@ -213,16 +189,71 @@ class Analyze extends Component{
 
     //TODO: grab citations array from paper object /// REPLACE DUMMY CITATIONS
     
-    const dummycitations = ["Citation 1", "Citation 2", "Citation 3", "Citation 4"];
-    const metadata = "MetaData!"
+    const dummycitations = ["Bracco, M., Lia, V. V., Gottlieb, A. M., Cámara Hernández, J., & Poggio, L. (2009). Genetic diversity in maize landraces from indigenous settlements of Northeastern Argentina. Genetica, 135(1), 39–49. https://doi.org/10.1007/s10709-008-9252-z", "Citation 2", "Citation 3", "Citation 4"];
+    this.setState({
+      citaitons: dummycitations
+    });
+
+    const metadata = "MetaData!";
     for(let i = 0; i < dummycitations.length; i++){
+      //TODO: REPLACE THIS WITH GETTING THE ID FOR THE CITATION FROM THE DATABASE
       let citeSourceId = makeid(10);
       let citeObj = new Citation(citeSourceId, dummycitations[i], metadata);
       this.state.citationData.push(citeObj);
     }
-    //Grab Semantic Scholar Information for the site
+    //TODO: Grab Semantic Scholar Information for the site
   }
-  //add citations to page
+
+  handleDelete(){
+    this.setState({
+      assessingRubric: false
+    });
+  }
+
+  //this saves annotations and intext citations associated with them
+  handleSaveCitations(){
+    let citationData = this.state.citationData; 
+    this.setState.uploading = true;
+    const promise = [];
+    promise.push(this.sendRequest(citationData));
+    try {
+      this.setState({ successfullUpload: true, uploading: false });
+    } catch (e) {
+      // Not Production ready! Do some error handling here instead...
+      this.setState({ successfullUpload: true, uploading: false });
+    }
+  }
+
+  sendRequest(data) {
+    return new Promise((resolve, reject) => {
+      //Call for each citation
+      for(var citation in data){
+        if(data[citation].annotation !== ""){
+          let annotation = JSON.stringify(data[citation].annotation);
+          fetch('http://localhost:5000/citation/add_annotation/' + data[citation].id, {
+            method: 'PUT',
+            body: annotation,
+            headers:{
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+          });
+        }
+        if(data[citation].intextCites.length !== 0){
+          let intextCitations = JSON.stringify(data[citation].intextCites);
+          fetch('http://localhost:5000/citation/add_intext_citations/' + data[citation].id, {
+            method: 'PUT',
+            body: intextCitations,
+            headers:{
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+          });
+        }
+      }
+    });
+  }
+
   renderAnnotate(){
     if(this.state.citationData.length !== 0){
       return((!this.state.isMarkup) ? 
@@ -262,6 +293,7 @@ class Analyze extends Component{
     else{
       let data = this.state.citationData;
       //generate an id for the intext citation
+      //TODO: Replace this with getting the ID for the appropriate ID of the citations for a paper
       let inTextId = makeid(8);
       let inCiteObj = new IntextCitation(text, "", inTextId);
       for(let i = 0; i < data.length; i++){
@@ -293,24 +325,40 @@ class Analyze extends Component{
       //attach an annotation to an intext citation
       //need a way to grab the citation id, and the intext citation id to pair them appropriately
       let data = this.state.citationData;
-
+      let box = document.getElementById("curAnno");
+      //if its an annotation of the source, add that annotation to overall citaion
       //search space O(2n)
       for(let i = 0; i < data.length; i++){
         if(data[i].id === citeIds[1]){
-          let curArray = data[i].intextCites;
-          for(let j = 0; j < curArray.length; j++){
-            if(curArray[j].id === citeIds[0]){
-              this.state.citationData[i].intextCites[j].annotation = annotation;
-              let box = document.getElementById("curAnno");
-              if( box.classList.contains("savedAnimation")){
-                document.getElementById("curAnno").classList.remove("savedAnimation");
-                document.getElementById("curAnno").classList.add("savedAnimation2");
+          if(citeIds[0] === "source"){
+            let currentCitation = data[i];
+            this.state.citationData[i].annotation = annotation;
+            if( box.classList.contains("savedAnimation")){
+              document.getElementById("curAnno").classList.remove("savedAnimation");
+              document.getElementById("curAnno").classList.add("savedAnimation2");
+            }
+            else{
+              document.getElementById("curAnno").classList.add("savedAnimation");
+              document.getElementById("curAnno").classList.remove("savedAnimation2");
+            }
+            return;
+          }
+          else{
+            let curArray = data[i].intextCites;
+            for(let j = 0; j < curArray.length; j++){
+              if(curArray[j].id === citeIds[0]){
+                this.state.citationData[i].intextCites[j].annotation = annotation;
+                
+                if( box.classList.contains("savedAnimation")){
+                  document.getElementById("curAnno").classList.remove("savedAnimation");
+                  document.getElementById("curAnno").classList.add("savedAnimation2");
+                }
+                else{
+                  document.getElementById("curAnno").classList.add("savedAnimation");
+                  document.getElementById("curAnno").classList.remove("savedAnimation2");
+                }
+                return;
               }
-              else{
-                document.getElementById("curAnno").classList.add("savedAnimation");
-                document.getElementById("curAnno").classList.remove("savedAnimation2");
-              }
-              return;
             }
           }
         }
@@ -318,33 +366,7 @@ class Analyze extends Component{
     }
   }
 
-  //Uploads state array of Citations and Annotations to the Database after compiling them into JSON format to do one Server Call
-  async uploadCitations(){
-    let citationData = this.state.citationData; 
-    this.setState.uploading = true;
-    const promise = [];
-    promise.push(this.sendRequest(citationData));
-    try {
-      this.setState({ successfullUpload: true, uploading: false });
-    } catch (e) {
-      // Not Production ready! Do some error handling here instead...
-      this.setState({ successfullUpload: true, uploading: false });
-    }
-
-  }
-
-  sendRequest(data) {
-    return new Promise((resolve, reject) => {
-      const req = new XMLHttpRequest();
-      const formPackage = [];
-      formPackage.push(data);
-      const formData = new FormData();
-      formData.append("Paper ID", formPackage);
-      req.open("POST", "http://localhost:5000/savepaper");
-      req.send(formData);
-    });
-  }
-
+  
   toggleHidden(){
     this.setState({
       isHidden: !this.state.isHidden
@@ -376,14 +398,15 @@ class Analyze extends Component{
         {/* Row: Contains rubric and student selectors */}
         <Row>
           <Col xs="3">
-            <h2>Assignment:</h2>
+            <h2 className='analyzeHeader'>Assignment</h2>
             <p id="assignmentInfo"> {this.state.assignmentId} </p>
           </Col>
           <Col xs="6">
-            <h2>Select a Paper</h2>
+            <h2 className='analyzeHeader'>Papers</h2>
             <Input type="select" id="selectedPaper" name="paper" onInput={this.displayPaper}>
               {/* These should be automatically generated with AJAX and API */}
               {/* Replace with a state that that stores based on papers gotten from associated assignment*/}
+              {/* TODO:: Replace these static options with dynamic options generated from a call to the database for paper ID's*/}
               <option disabled selected hidden>Please Select a Paper</option>
               <option value="1">Paper 1</option>
               <option value="2">Paper 2</option>
@@ -393,7 +416,7 @@ class Analyze extends Component{
             </Input> 
           </Col>
           <Col xs="3">
-            <h2>Select a Rubric</h2>
+            <h2 className='analyzeHeader' >Rubric</h2>
             <Input type="select" id="rubricAssign" name="AssignRubric" onInput={this.handleGetRubric}>
               <option value="" disabled selected hidden >Select a Rubric</option>
               {rubricList}
@@ -427,32 +450,32 @@ class Analyze extends Component{
           </Col>
           <Col xs="6">
             <h4> Student Paper PDF</h4>
-            <p> {this.state.current_pdf_data} </p>
             <div className="overflow-auto">
               {pdf}
             </div>
-            <Button onClick={this.toggleMarkup.bind(this)}>Switch Markup/Annotate</Button>
+            <Button id='markBtn' onClick={this.toggleMarkup.bind(this)}>Switch Markup/Annotate</Button>
             {this.renderAnnotate()}
           </Col>
           <Col xs="3">
             <h4>Found Citations</h4>
             <ul id="ResearchList">
               {this.state.citationData.map(citation => (
-                <li id={citation.id}>{citation.title}<button onClick={this.handleRubricAssesment} disabled={this.state.rubricSelected}>Rubric</button></li>
+                <li id={citation.id}><button id={this.state.rubricId} onClick={this.handleRubricAssessment} disabled={this.state.rubricSelected}>{citation.title}</button></li>
               ))}
             </ul>
             <p id="biblio-box">Bibliography Goes Here</p>
-
             <div class="progressBox">
               <p>Citations Assessed: </p>
               <Progress id="citeProgress" value="30" />
               <p id="assignProgressText">Total Assessed: 0%</p>
               <Progress id="assignmentProgress" value="0" />
             </div>
-            <Button color="success" id="paperDone" onClick={this.uploadCitations}> Save Paper </Button>
-            <Button id="nextPaper" > Next Paper > </Button>
+            <Button color="success" id="paperDone" onClick={this.handleSaveCitations}> Save Paper </Button>
+            <Button id="nextPaper" > Next Paper </Button>
           </Col>
         </Row>
+        {/*prop passing the rubric information*/}
+        {this.state.assessingRubric ? <RubricSubmit sourceText={this.state.sourceText} unmountMe={this.handleChildUnmount} curRubric={this.state.currentRubric} curPaper={this.state.curPaperId}/> : null}
       </div>
     );
   }
