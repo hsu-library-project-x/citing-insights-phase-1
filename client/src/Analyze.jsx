@@ -5,6 +5,7 @@ import './css/Analyze.css';
 import Annotate from './Annotate.jsx';
 //maybe rename the componet
 import Markup from './Markup.jsx';
+import paper from "./pdf/samplepaper2.pdf";
 // This lets us use Jumbotron, Badge, and Progress in HTML from Reactstrap
 //    This is all we are using for now. May import more styling stuff later
 import { Label, Button, Input, Progress } from 'reactstrap';
@@ -97,11 +98,13 @@ class Analyze extends Component{
       citationData: [],
       curHighlight: "",
       assignmentId: "",
+      current_pdf_data: "this must get set",
       AvailableRubrics: [],
       foundCitationsElements: [],
       gotSources: false,
       rubricSelected: true,
       rubricId: ""
+
     }
 
     this.renderActions = this.renderActions.bind(this);
@@ -110,10 +113,37 @@ class Analyze extends Component{
     this.resetButton = this.resetButton.bind(this);
     this.saveIntextCitation = this.saveIntextCitation.bind(this);
     this.addAnnotation = this.addAnnotation.bind(this);
+    this.componentWillMount = this.componentWillMount.bind(this);
     this.displayPaper = this.displayPaper.bind(this);
     this.renderAnnotate = this.renderAnnotate.bind(this);
     this.handleGetRubric = this.handleGetRubric.bind(this);
   }
+
+
+  get_paper_info(assignment_id) {
+
+    // this is broken right now but it should just return the JSON it retreives 
+    // i had weird javascript errors but it shouldnt be too hard to get working
+    // this whole block is ccopied into componentdidmount 
+      var answer = "a";
+      fetch('http://localhost:5000/papers/' + assignment_id)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(myJson) {
+        //console.log(JSON.stringify(myJson));
+        //console.log(myJson);
+        console.log('success');
+        console.log(myJson);
+        answer = myJson;
+        console.log(answer);
+        return(myJson);
+        //that.setState({AvailableAssignments: myJson});
+      }).then((result) => answer = result);
+    console.log(answer);
+    return(answer);
+  }
+    
 
   componentDidMount() {
     console.log('mounted');
@@ -129,6 +159,27 @@ class Analyze extends Component{
   componentWillMount(){
     //generate an id for each source
     var that = this;
+    if (this.props.location.state != undefined) {
+        this.setState({assignmentId: this.props.location.state.id});
+
+       fetch('http://localhost:5000/papers/by_assignment_id/' + this.props.location.state.id)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(myJson) {
+      fetch('http://localhost:5000/papers/' + myJson[0]["_id"])
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(myJson) {
+        console.log('success');
+        console.log(myJson);
+        that.setState({current_pdf_data: myJson["pdf"]["data"]});
+        console.log(that.state.current_pdf_data);
+      });
+    } else {
+      this.setState({assignmentId: "no assignment selected"});
+    }
     //get the rubrics
     //replace hardcoded number with userID from login
     fetch('http://localhost:5000/rubrics/5d26304f97d65677327b7e56')
@@ -169,7 +220,6 @@ class Analyze extends Component{
       let citeObj = new Citation(citeSourceId, dummycitations[i], metadata);
       this.state.citationData.push(citeObj);
     }
-
     //Grab Semantic Scholar Information for the site
   }
   //add citations to page
@@ -308,10 +358,17 @@ class Analyze extends Component{
   }
 
   render() {
+    var pdf;
+    if (this.state.current_pdf_data == "this must get set") {
+      pdf = <p> we dont have data yet </p>;
+    } else {
+      pdf = <PdfComponent data={this.state.current_pdf_data} />;
+    }
     let rubrics = this.state.AvailableRubrics;
     let rubricList = rubrics.map((rubric) => 
       <option value={rubric._id}>{rubric.name}</option>
     );
+
     return(
       /* Analyze Mode HTML Start */
       <div class="DemoContents analyze-container">
@@ -370,8 +427,9 @@ class Analyze extends Component{
           </Col>
           <Col xs="6">
             <h4> Student Paper PDF</h4>
+            <p> {this.state.current_pdf_data} </p>
             <div className="overflow-auto">
-              <PdfComponent />
+              {pdf}
             </div>
             <Button onClick={this.toggleMarkup.bind(this)}>Switch Markup/Annotate</Button>
             {this.renderAnnotate()}
