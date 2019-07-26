@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
-import {Row, Col, Input, Label } from 'reactstrap'
+import {Row, Col, Form, FormGroup, Input, Label, Button} from 'reactstrap'
+import { withRouter} from 'react-router-dom';
 import './css/App.css';
 import './css/Classes.css'
 
 
-
 // Class to render our homepage
 class Classes extends Component{
-
   constructor(props){
     super(props);
     this.state = {

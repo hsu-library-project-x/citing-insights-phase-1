@@ -6,7 +6,7 @@ import './css/App.css';
 import './css/Tasks.css';
 
 //Import Routing
-import { Switch, Route, HashRouter, Link } from "react-router-dom";
+import { Switch, Route, HashRouter, Link, withRouter } from "react-router-dom";
 import Classes from "./Classes.jsx";
 import Assignments from "./Assignments.jsx";
 import Download from "./Download.jsx";
@@ -20,8 +20,9 @@ import Continue from './images/continue.svg';
 import download from './images/download.svg';
 import rubric from './images/rubric.svg';
 
-//---------------------WHAT DOES THIS DO?
+import {ProtectedRoute} from "./ProtectedRoute";
 
+// Collapses the big drop down of all sub components
 function CollapseMain(props){
 	let sidebar = document.getElementById("SideBar");
 	let buttons = document.getElementsByClassName("menuButton");
@@ -49,18 +50,9 @@ function CollapseMain(props){
 // Class to render our homepage
 class Tasks extends Component{
 	
-	constructor(props) {
-		super(props);
-		this.state = {
-			isAuthenticated: false,
-			user: null,
-			token: ""
-		};
-	}
-
-	componentDidMount(props){
-		
-	}
+	 constructor(props) {
+		 super(props);
+	 }
 
 	// This changes the page title to correspond to what was clicked
 	changeName(evt){
@@ -70,6 +62,7 @@ class Tasks extends Component{
 	}
 
 	render(){
+		console.log(this.props);
 		return(
 			<div id="MainContainer">
 				<div class="mainCollapse"onClick={CollapseMain}>
@@ -79,7 +72,7 @@ class Tasks extends Component{
 					<div class="sidebar" id="SideBar">
 						<h1 class="head-1 head-2" id="headTitle">Tasks</h1>
 						<div class="button-container">
-							<Link to="/tasks/courses">
+							<Link to='/tasks/courses' >
 								<button class="menuButton" onClick={this.changeName}>
 								<img alt="classesIcon" id="Class" src={addClass} />
 									Manage Courses
@@ -122,7 +115,7 @@ class Tasks extends Component{
 				</HashRouter> 
 				<div id="mainContent">
 					<Switch>
-						<Route path="/tasks/courses" component={Classes}/>
+						<Route path="/tasks/courses" component={Classes} user={this.props.user}  />
 						<Route path="/tasks/assignments" component={Assignments}/>
 						<Route path="/tasks/analyzemenu" component={AnalyzeSubMenu}/>
 						<Route path="/tasks/download" component={Download}/>
@@ -135,4 +128,4 @@ class Tasks extends Component{
 	}
 }
 
-export default Tasks;
+export default withRouter(Tasks);

@@ -1,7 +1,7 @@
-var userModel = require('../models/userModel.js');
+//var userModel = require('../models/userModel.js');
 var passport = require("passport");
-
-
+require('../models/userModel')();
+var userModel = require("mongoose").model("user");
 /**
  * userController.js
  *
@@ -46,7 +46,7 @@ module.exports = {
     },
 
 
-    
+     
     
 
     /**
