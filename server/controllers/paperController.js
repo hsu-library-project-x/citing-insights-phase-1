@@ -45,8 +45,7 @@ module.exports = {
 
     by_assignment_id: function (req, res) {
         var id = req.params.id;
-        console.log(id);
-        paperModel.find({assignment_id: id}, function (err, paper) {
+        paperModel.find({assignment_id: id}, "_id",  function (err, paper) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when getting paper.',
@@ -58,7 +57,6 @@ module.exports = {
                     message: 'No such paper'
                 });
             }
-            console.log(paper);
             return res.json(paper);
         });
     },
