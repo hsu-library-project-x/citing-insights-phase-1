@@ -1,5 +1,5 @@
 var courseModel = require('../models/courseModel.js');
-
+var assignmentModel = require('../models/assignmentModel.js');
 /**
  * courseController.js
  *
@@ -47,8 +47,11 @@ module.exports = {
      * courseController.create()
      */
     create: function (req, res) {
+        console.log("test output");
+        console.log(req.body);
         var course = new courseModel({
 			name : req.body.name,
+            course_note: req.body.note,
 			user_id : req.body.user_id
 
         });
@@ -103,6 +106,15 @@ module.exports = {
      */
     remove: function (req, res) {
         var id = req.params.id;
+        assignmentModel.deleteMany({"class_id": id}, function(err, assignments){
+            if(err){
+                return res.status(500).json({
+                    message: 'Error when deleting the assignments of the course.',
+                    error: err
+                });
+            }
+        });
+
         courseModel.findByIdAndRemove(id, function (err, course) {
             if (err) {
                 return res.status(500).json({

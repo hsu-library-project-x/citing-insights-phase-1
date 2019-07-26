@@ -5,7 +5,7 @@ import React, { Component, PropTypes } from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
 // Button,Container, Row, Col are all Reactrap elements that we are 
 //     going to use for our login
-import { Row, Col, Form, FormGroup } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 import './css/App.css';
 import './css/login.css';
 
@@ -42,15 +42,11 @@ class Login extends Component {
 	logout = () => {
 		this.setState({ isAuthenticated: false, token: '', user: null })
 	};
-
 	getInfo() {
 		this.props.passInfoLogin(this.state.isAuthenticated, this.state.token, this.state.user);
 	}
 
-
 	responseGoogle = (response) => {
-
-
 		const tokenBlob = new Blob(
 			[JSON.stringify({ access_token: response.accessToken }, null, 2)],
 			{ type: 'application/json' }
@@ -107,6 +103,7 @@ class Login extends Component {
 						</Col>
 						<Col xs="6">
 							<div class="beside_picture">
+								<h1> Welcome Back! </h1>
 								<div>
 									<GoogleLogin
 										clientId={config.GOOGLE_CLIENT_ID}

@@ -15,8 +15,10 @@ import Home from "./Home.jsx";
 import Tasks from "./Tasks.jsx";
 import AccountSettings from "./AccountSettings.jsx";
 import { ProtectedRoute } from "./ProtectedRoute.jsx";
-
 import Navibar from './Navibar.jsx';
+import Error from "./Error.jsx";
+import logo from './images/logoProtoSm.png';
+
 
 // App acts as the main page for intial rendering -- all pages and stages are called 
 // from App function
@@ -54,11 +56,10 @@ class App extends Component {
     return (
       <div>
         <div class="head">
-          <h2 class="alt-text">Citing Insights</h2>
-          <p class="alt-text">Welcome to Citing Insights Portal</p>
+          {/* <h2 class="alt-text">Citing Insights</h2>
+          <p class="alt-text">Welcome to Citing Insights Portal</p> */}
           {/*Hashrouter! Defining our Router (React-Dom)*/}
           <HashRouter>
-            
             <Navibar 
             isAuthenticated={this.state.isAuthenticated}
             passInfoLogout={this.passInfoLogout} />

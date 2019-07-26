@@ -12,6 +12,8 @@ router.get('/', paperController.list);
  */
 router.get('/:id', paperController.show);
 
+router.get('/by_assignment_id/:id', paperController.by_assignment_id);
+
 /*
  * POST
  */

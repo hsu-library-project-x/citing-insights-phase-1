@@ -4,6 +4,8 @@ import './css/PdfComponent.css';
 import paper from "./pdf/samplepaper2.pdf"; //Delete for production
 pdfjs.GlobalWorkerOptions.workerSrc = 
 `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
+var reader = new FileReader();
+
 
 const highlightPattern = (text, pattern) => {
   const splitText = text.split(pattern);
@@ -25,16 +27,14 @@ const highlightPattern = (text, pattern) => {
 
 function removeTextLayerOffset() {
   const textLayers = document.querySelectorAll(".react-pdf__Page__textContent");
-    textLayers.forEach(layer => {
-      const { style } = layer;
-      style.top = "0";
-      style.left = "0";
-      style.transform = "";
-      style.margin = "auto";
+  textLayers.forEach(layer => {
+    const { style } = layer;
+    style.top = "0";
+    style.left = "0";
+    style.transform = "";
+    style.margin = "auto";
   });
 }
-
-
 class PdfComponent extends Component {
   constructor(props){
     super(props);
@@ -42,10 +42,24 @@ class PdfComponent extends Component {
       numPages: null,
       pageNumber: 1,
       searchText: '',
+      pdf: new Blob([this.props.data], {type: "application/pdf;base64"})
       //will put paper here, passed in as prop
       //paper: this.props.paper (or something)
     }
+    console.log('in pdfcomp');
+    console.log(props.data);
   }
+
+
+  componentWillMount() {  
+    
+    var bytes = new Uint8Array(this.props.data);
+    var blob=new Blob([bytes], {type: "application/pdf;base64"});
+
+    this.setState({pdf: blob})
+  }
+
+
 
   makeTextRenderer = searchText => textItem => highlightPattern(textItem.str, searchText);
 
@@ -69,11 +83,24 @@ class PdfComponent extends Component {
 
   render() {
     const { numPages, pageNumber, searchText } = this.state;
+    //var pdfAsArray = convertDataURIToBinary(fileURL);
+
+
+    //var bytes = new Uint8Array(this.props.data);
+    //var blob=new Blob([bytes], {type: "application/pdf;base64"});
+    //var link=document.createElement('a');
+    //link.href=window.URL.createObjectURL(blob);
+    //link.download="myFileName.pdf";
+    //link.click();
+
 
     return (
       <div>
         <React.Fragment>
-          <Document file={paper} onLoadSuccess={this.onDocumentLoadSuccess}>
+
+          {console.log(this.state.pdf)}
+
+          <Document file={this.state.pdf} onLoadSuccess={this.onDocumentLoadSuccess}  >
             <Page onLoadSuccess={() => removeTextLayerOffset()} pageNumber={pageNumber} customTextRenderer={this.makeTextRenderer(searchText)} />
           </Document>
           <div class="pdfInfo">
@@ -81,13 +108,13 @@ class PdfComponent extends Component {
               Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
             </p>
             <label htmlFor="search">Search:</label>
-            <input class="pdfSearch" type="search" id="search" value={searchText} onChange={this.onChange} />
+            <input placeholder="pg #" class="pdfSearch" type="search" id="search" value={searchText} onChange={this.onChange} />
             <button class="pdfButtons" type="button" disabled={pageNumber <= 1} onClick={this.previousPage}>Previous</button>
             <button class="pdfButtons" type="button" disabled={pageNumber >= numPages} onClick={this.nextPage}>Next</button>
           </div>
         </React.Fragment>
-        
-        
+
+
       </div>
     );
   }

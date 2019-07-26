@@ -74,7 +74,7 @@ class Dropzone extends Component {
 	      		style={{ cursor: this.props.disabled ? "default" : "pointer" }}>
 
 	        	<input ref={this.fileInputRef} className="FileInput" type="file" multiple onChange={this.onFilesAdded}/>
-	        	<span>Upload Files</span>
+	        	<span>Drag and Drop Files Here</span>
 	      	</div>
 	    );
     }

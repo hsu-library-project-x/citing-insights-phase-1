@@ -5,22 +5,21 @@
 }
 
 .assign-container{
-	background-color: #F7F6E7;
-	color: black;
-	border-radius: 15px;
+	background-color: #DFDDC5;
+	color: #274259;
+	border-radius: 10px;
 	z-index: 0;
-	margin-top: -1.1em;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
+  margin-top: -1.1em;
+  box-shadow: -15px 15px 70px black;
+	/* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) */
 }
 
-#selectClass{
-	
-}
 
 #UploadDoc{
 	background-color: white;
 	border: 1px solid #ced4da;
-    border-radius: .25rem;
+  border-radius: .25rem;
+  
 }
 
 label{
@@ -76,13 +75,9 @@ form{
 }
 
 .Upload button {
-  font-family: 'Roboto medium', sans-serif;
-  font-size: 16px;
-  display: inline-block;
-  height: 36px;
-  width: 80%;
-  padding: 6px 16px;
-  line-height: 1.42857143;
+  width: 15%;
+  padding:0.2em;
+  line-height: 0;
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
@@ -93,16 +88,43 @@ form{
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  border: 0;
-  border-radius: 2px;
-  background: rgba(103, 58, 183, 1);
+  border-radius: 2em;
+  background-color: #274259;
   color: #fff;
-  outline: 0;
-  margin-left: 10%;
-  margin-right: 10%;
+  margin-left: 80%;
 }
 
 button:disabled {
   background: rgb(189, 189, 189);
   cursor: default;
+}
+
+label[for="selectClass"], label[for="selectAssignment"], .Title{
+  text-align: left;
+	color: #274259;
+	font-size:1.05em;
+  margin-bottom: .5em;
+}
+
+#selectClass, #selectAssignment{
+  width:100%;
+	text-align: center;
+	margin-right:0.5em;
+  margin-top:0;
+  margin-bottom:0.5em;
+	border: 2.5px solid #274259;
+	border-top: 5px solid #274259;
+}
+
+.assign-container h1{
+  font-weight: bold;
+	color: #274259;
+	font-size:1.5em;
+  text-align: center;
+}
+
+.Content{
+  width: 80%;
+  margin: 0;
+  float:right;
 }
