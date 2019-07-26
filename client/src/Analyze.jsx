@@ -116,6 +116,10 @@ class Analyze extends Component{
   //Do this call every time a new Paper is loaded into the component
   componentWillMount(){
     //generate an id for each source
+    //
+
+    console.log('mounted');
+
     var that = this;
     if (this.props.location.state != undefined) {
         this.setState({assignmentId: this.props.location.state.id});
@@ -125,16 +129,21 @@ class Analyze extends Component{
         return response.json();
       })
       .then(function(myJson) {
+
       fetch('http://localhost:5000/papers/' + myJson[0]["_id"])
       .then(function(response) {
         return response.json();
       })
       .then(function(myJson) {
-        console.log('success');
         console.log(myJson);
         that.setState({current_pdf_data: myJson["pdf"]["data"]});
         console.log(that.state.current_pdf_data);
+        //return(myJson);
+        //that.setState({AvailableAssignments: myJson});
       });
+        //that.setState({AvailableAssignments: myJson});
+      });
+
     } else {
       this.setState({assignmentId: "no assignment selected"});
     }
