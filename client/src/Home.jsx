@@ -1,8 +1,8 @@
-// Our Homepage for CitingInsights.net 
+//Our Homepage for CitingInsights.net 
 
 //Imprort Libraries
 import React, {Component} from 'react';
-import { HashRouter, Link } from "react-router-dom";
+import { HashRouter, Link, withRouter } from "react-router-dom";
 import './css/App.css';
 import './css/Home.css';
 
@@ -13,12 +13,20 @@ import {Row, Col} from 'reactstrap';
 //import pictures!
 import settings from './images/gears.svg';
 import tasks from './images/pencil.svg';
- 
+
 
 // Class to render our homepage
 class Home extends Component{
-	render(){
-		return(
+
+constructor(props){
+	super(props);
+}
+
+render(){
+	console.log("Home:");
+	console.log(this.props);
+	console.log(this.props.token);
+	return(
 			/* div to hold the hub */
 			<div id="hub">
 				<br />
@@ -62,4 +70,4 @@ class Home extends Component{
 	}
 }
 
-export default Home;
+export default withRouter(Home);

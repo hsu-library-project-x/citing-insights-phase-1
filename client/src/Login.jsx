@@ -2,7 +2,7 @@
 
 // Import Libraries
 import React, { Component, PropTypes } from 'react';
-import { withRouter } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 // Button,Container, Row, Col are all Reactrap elements that we are 
 //     going to use for our login
 import { Row, Col, Form, FormGroup } from 'reactstrap';
@@ -44,7 +44,7 @@ class Login extends Component {
 	};
 
 	getInfo() {
-		this.props.passInfo(this.state.isAuthenticated, this.state.token, this.state.user);
+		this.props.passInfoLogin(this.state.isAuthenticated, this.state.token, this.state.user);
 	}
 
 
@@ -81,7 +81,14 @@ class Login extends Component {
 						token: token
 					});
 					this.getInfo();
-					this.props.history.push("/");
+					this.props.history.push({
+						pathname: "/",
+						props: {
+							isAuthenticated: true,
+							user: user,
+							token: token
+						}
+					});
 				}
 			});
 		})

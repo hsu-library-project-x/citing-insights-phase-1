@@ -1,18 +1,21 @@
 import React, {Component} from 'react';
 import {Row, Col, Form, FormGroup, Input, Label, Button} from 'reactstrap'
+import { withRouter} from 'react-router-dom';
 import './css/App.css';
 import './css/Classes.css'
 
 
-
 // Class to render our homepage
 class Classes extends Component{
+	constructor(props){
+		super(props);
+	}
 	render(){
+		console.log("classes")
+		console.log(this.props);
 		return(
-			/* So far our homepage is just a h1 tag with text */
 			<div class="classes-container">
 			<Row>
-				
 				<Col xs="6">
 					<h2>New Class</h2>
 					<Form>
@@ -38,4 +41,4 @@ class Classes extends Component{
 	}
 }
 
-export default Classes;
+export default withRouter(Classes);

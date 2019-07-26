@@ -2,9 +2,8 @@
 
 // Libraries that we imported
 //import ReactDOM from 'react-dom';
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import './css/App.css';
-import { Navbar, NavbarBrand, NavItem } from 'reactstrap';
 
 // Hashrouter allows us to do routing for website
 import { Switch, Route, NavLink, HashRouter, Redirect } from "react-router-dom";
@@ -17,9 +16,11 @@ import Tasks from "./Tasks.jsx";
 import AccountSettings from "./AccountSettings.jsx";
 import { ProtectedRoute } from "./ProtectedRoute.jsx";
 
+import Navibar from './Navibar.jsx';
 
 // App acts as the main page for intial rendering -- all pages and stages are called 
 // from App function
+
 class App extends Component {
 
   constructor(props) {
@@ -29,14 +30,23 @@ class App extends Component {
       user: null,
       token: ""
     };
-    this.passInfo = this.passInfo.bind(this);
+    this.passInfoLogin = this.passInfoLogin.bind(this);
+    this.passInfoLogout = this.passInfoLogout.bind(this);
   }
 
-  passInfo(isAuthenticated, token, user) {
+  passInfoLogin(isAuthenticated, token, user) {
     this.setState({
       isAuthenticated: isAuthenticated,
       user: user,
       token: token
+    });
+  };
+
+  passInfoLogout() {
+    this.setState({
+      isAuthenticated: false,
+      user: null,
+      token: ""
     });
   };
 
@@ -48,34 +58,18 @@ class App extends Component {
           <p class="alt-text">Welcome to Citing Insights Portal</p>
           {/*Hashrouter! Defining our Router (React-Dom)*/}
           <HashRouter>
-            {/* Navbar (Reactstrap) -- Defining a Navagation bar for our website*/}
-            <Navbar primary expand="md">
-              <NavbarBrand>Citing Insights</NavbarBrand>
-              {/* NavItem (Reactstrap) -- item in our navation bar*/}
-              <NavItem>
-                {/* This links our Login navagation item to our Login page*/}
-                <NavLink to="/login">Login</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to="/home">Home</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to="/tasks">Tasks</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to="/accountsettings">Settings</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to="/analyze">Analyze</NavLink>
-              </NavItem>
-            </Navbar>
+            
+            <Navibar 
+            isAuthenticated={this.state.isAuthenticated}
+            passInfoLogout={this.passInfoLogout} />
+
             {/*This tells us what compenent to loaauthd after going to login, home, demo etc.*/}
             <div id="id01" class="pop content">
               <Switch>
                 <Route
                   exact path="/login"
                   render={
-                    (props) => <Login passInfo={this.passInfo}
+                    (props) => <Login passInfoLogin={this.passInfoLogin}
                     />
                   }
                 />
