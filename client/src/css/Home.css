@@ -1,21 +1,33 @@
 .hubButton 
 {
   background-color: #274259;
-  width: 8em;
-  height: 8em;
+  width: 7em;
+  height: 7em;
   border-radius: 144px;
+  margin-top: 3em;
+  display: inline-table;
   box-shadow: -15px 15px 70px black;
-  display: inline-block;
+
   margin:5%;
-  margin-bottom:10%;
+  margin-bottom:15%;
 }
 
+#hub > div.row > .col-3{
+  background-image: url('../images/home.jpg');
+  background-repeat: no-repeat;
+}
 
 #HomeLogo{
   margin-top:20%;
+  width: 45%;
 }
 
-.hubButton > p, .quest
+a > p{
+  text-align: center;
+  color: #FFAC1D;
+  margin: 0;
+}
+.hubButton > p
 {
   text-align: center;
   color: #FFAC1D;
