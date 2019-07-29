@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import {withRouter} from 'react-router-dom';
+
 import { HashRouter, Link, Redirect } from "react-router-dom";
 import { Button, Row, Col, Input } from "reactstrap";
 
@@ -199,4 +201,4 @@ class AnalyzeSubMenu extends Component{
   }
 }
 
-export default AnalyzeSubMenu;
+export default withRouter(AnalyzeSubMenu);

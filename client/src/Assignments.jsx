@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {withRouter} from 'react-router-dom';
 import { Label, Input } from 'reactstrap';
 import { Row, Col } from 'reactstrap';
 import './css/App.css';
@@ -233,4 +234,4 @@ class Assignment extends Component{
   }
 }
 
-export default Assignment;
+export default withRouter(Assignment);

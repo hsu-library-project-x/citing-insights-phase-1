@@ -1,5 +1,6 @@
 // Importing Libraries
 import React, {Component} from 'react';
+import { withRouter} from 'react-router-dom';
 import './css/App.css';
 import './css/Analyze.css';
 import Annotate from './Annotate.jsx';
@@ -41,8 +42,8 @@ function IntextCitation(text, annotation, id){
 
 // Demo is (for now) is our Analyze page
 class Analyze extends Component{
-  constructor () {
-    super();
+  constructor (props) {
+    super(props);
     this.state = {
       isHidden: true,
       isMarkup: true,
@@ -490,4 +491,4 @@ class Analyze extends Component{
   }
 }
 
-export default Analyze;
+export default withRouter(Analyze);

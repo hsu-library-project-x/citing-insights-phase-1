@@ -3,6 +3,9 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+
+//Right now most of this info is being passed through as props. 
+//TODO: only pass what we need
 var userSchema = new Schema({
 	'name': String,
 	'email': {
