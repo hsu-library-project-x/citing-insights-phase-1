@@ -8,8 +8,8 @@ import './css/AnalyseSubMenu.css'
 
 class AnalyzeSubMenu extends Component{
 
-  constructor () {
-    super()
+  constructor (props) {
+    super(props)
     this.state = {
       selectedAssignment: false,
       selectedAssignContinue: false,
@@ -171,7 +171,8 @@ class AnalyzeSubMenu extends Component{
     if (this.state.redirect) {
       return <Redirect to={{
         pathname: '/tasks/analyze',
-        state: { id: this.state.AssignNew }
+        state: { id: this.state.AssignNew },
+        props: {...this.props}
       }}
     />
     }
