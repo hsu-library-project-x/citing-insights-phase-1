@@ -1,24 +1,29 @@
 .hubButton 
 {
   background-color: #274259;
-  border-radius: .5em;
-  border: solid #ffffff .15em; 
-  width:60%;
-  height: 100%;
-  margin-top: 50px;
-  margin-bottom: 50px;
+  width: 8em;
+  height: 8em;
+  border-radius: 144px;
   box-shadow: -15px 15px 70px black;
-
+  display: inline-block;
+  margin:5%;
+  margin-bottom:10%;
 }
 
-.hubButton > p
+
+#HomeLogo{
+  margin-top:20%;
+}
+
+.hubButton > p, .quest
 {
-  margin-top: 2em;
   text-align: center;
-  font-size: 1.50em;
+  color: #FFAC1D;
 }
 
-
+.quest{
+  margin:0;
+}
 #hub{
   /* margin-top: 3em; */
   margin-right: 6em;

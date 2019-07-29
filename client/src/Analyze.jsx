@@ -129,12 +129,12 @@ class Analyze extends Component{
         return response.json();
       })
       .then(function(myJson) {
-
-      fetch('http://localhost:5000/papers/' + myJson[0]["_id"])
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(myJson) {
+       fetch('http://localhost:5000/papers/' + myJson[0]["_id"])
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(myJson) {
+        console.log('success');
         console.log(myJson);
         that.setState({current_pdf_data: myJson["pdf"]["data"]});
         console.log(that.state.current_pdf_data);
@@ -143,10 +143,10 @@ class Analyze extends Component{
       });
         //that.setState({AvailableAssignments: myJson});
       });
-
-    } else {
+    }   
+    else {
       this.setState({assignmentId: "no assignment selected"});
-    }
+    
     //get the rubrics
     //replace hardcoded number with userID from login
     fetch('http://localhost:5000/rubrics/5d26304f97d65677327b7e56')
@@ -156,7 +156,7 @@ class Analyze extends Component{
       .then(function(myJson) {
         that.setState({AvailableRubrics: myJson});
     });
-  }
+  }}
 
   handleGetRubric(event){
     const target = event.target;

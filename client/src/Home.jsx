@@ -10,9 +10,10 @@ import './css/Home.css';
 //import container, row, anc col for formatting
 import {Row, Col} from 'reactstrap';
 
-//import pictures!
-import settings from './images/gears.svg';
-import tasks from './images/pencil.svg';
+import left from './images/HomeLeft.jpg';
+import right from './images/HomeRight.jpg';
+import pic from './images/HomePic.jpg';
+import logo from './images/CILogo.svg';
 
 
 // Class to render our homepage
@@ -32,33 +33,34 @@ render(){
 				<br />
 				<Row>
 					{/* Empty Col for formatting purposes */}
-					<Col xs="1"></Col>
+					<Col class="TEST" xs="2"></Col>
 
-					<Col xs="5">
+					<Col xs="8">
+						<img id="HomeLogo" src={logo} alt="citing insights logo"></img>
 						<HashRouter>
 							{/* div to hold the Tasks button/ option for user */}
 							<Link to="/tasks">
 								<button class="hubButton">
-									<img alt="taskIcon" class="hubIcon" src={tasks} />
 									<p>Tasks</p>
 								</button> 
 							</Link>
-						</HashRouter>
-					</Col>
-					
-					<Col xs="5"> 
-						<HashRouter>
-							<Link to="/accountsettings">
+							<Link to="/download">
 								<button class="hubButton">
-										<img alt="settingsIcon" class="hubIcon" src={settings} /> 
-										<p>Account Settings</p>
+									<p>Downloads</p>
 								</button>
 							</Link>
+							<Link to="">
+								<button class="hubButton">
+									<p>To be Continued</p>
+								</button>
+							</Link>
+
+							<Link to=""><p className="quest"> About Us</p></Link>
+							<Link to=""><p className="quest"> Contact Us</p></Link>
 						</HashRouter>
 					</Col>
 					{/* Empty Col for formatting purposes */} 
-					<Col xs="1">
-					</Col>
+					<Col xs="2" class="TEST"></Col>
 				</Row>
 			</div>
 			
