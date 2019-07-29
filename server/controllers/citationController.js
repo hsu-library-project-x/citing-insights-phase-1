@@ -43,6 +43,23 @@ module.exports = {
         });
     },
 
+    by_paper_id: function (req, res) {
+        var id = req.params.id;
+        citationModel.find({paper_id: id}, function (err, citation) {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Error when getting citation.',
+                    error: err
+                });
+            }
+            if (!citation) {
+                return res.status(404).json({
+                    message: 'No such citation'
+                });
+            }
+            return res.json(citation);
+        });
+    },
     /**
      * citationController.create()
      */
