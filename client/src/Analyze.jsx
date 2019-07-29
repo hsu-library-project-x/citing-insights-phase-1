@@ -422,7 +422,7 @@ class Analyze extends Component{
     var citationItems = <p> nothing found yet </p>
     if (citations != []) {
       var citationItems = citations.map((citation) =>
-        <p id="biblio-box">{ citation.author[0].family + ', '  + citation.author[0].given }</p>
+        <p id="biblio-box">{ citation.author[0].family + ', '  + citation.author[0].given  + ': '  + citation.title}</p>
         //console.log(citation.author[0].family)
 
       );
