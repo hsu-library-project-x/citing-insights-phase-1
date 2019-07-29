@@ -52,7 +52,12 @@ class Analyze extends Component {
       citations: [],
       citationData: [],
       curHighlight: "",
-      assignmentId: "",
+      assignment: {
+        _id: "",
+        name: "",
+        note: "",
+        class_id: ""
+      },
       current_pdf_data: "this must get set",
       AvailableRubrics: [],
       gotSources: false,
@@ -135,13 +140,23 @@ class Analyze extends Component {
               return response.json();
             })
             .then(function (myJson) {
-              console.log(myJson);
               that.setState({ current_pdf_data: myJson["pdf"]["data"] });
               console.log(that.state.current_pdf_data);
               //return(myJson);
               //that.setState({AvailableAssignments: myJson});
             });
           //that.setState({AvailableAssignments: myJson});
+        });
+
+      //get Assignment info (name)
+      fetch('http://localhost:5000/assignments/5d3f215a0bec792a46eb120e')
+        .then((response) => {
+          return response.json();
+        })
+        .then((myJson) => {
+          this.setState({
+            assignment: myJson
+          })
         });
 
     } else {
@@ -158,6 +173,8 @@ class Analyze extends Component {
       .then(function (myJson) {
         that.setState({ AvailableRubrics: myJson });
       });
+
+
   }
 
   handleGetRubric(event) {
@@ -224,7 +241,7 @@ class Analyze extends Component {
       assessingRubric: false
     });
   }
-
+  
   //this saves annotations and intext citations associated with them
   handleSaveCitations() {
     let citationData = this.state.citationData;
@@ -285,7 +302,7 @@ class Analyze extends Component {
       );
     }
   }
-  
+
   //Checks to see if there is appropriate text in the intext citation textarea, renders either disabled button or save button depending on context
   renderActions() {
     return (
@@ -407,6 +424,7 @@ class Analyze extends Component {
       <option value={rubric._id}>{rubric.name}</option>
     );
 
+    console.log(this.state);
     return (
       /* Analyze Mode HTML Start */
       <div class="DemoContents analyze-container">
@@ -415,7 +433,7 @@ class Analyze extends Component {
         <Row>
           <Col xs="3">
             <h2 className='analyzeHeader'>Assignment</h2>
-            <p id="assignmentInfo"> {this.state.assignmentId} </p>
+            <p id="assignmentInfo"> {this.state.assignment.name} </p>
           </Col>
           <Col xs="6">
             <h2 className='analyzeHeader'>Papers</h2>
