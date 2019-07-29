@@ -48,7 +48,6 @@ class Classes extends Component {
           AvailableCourses: myJson
         });
       });
-
   }
 
   async handleSubmitClass(event) {
@@ -69,8 +68,6 @@ class Classes extends Component {
         'Content-Type': 'application/json'
       },
     }).then((response) => {
-      console.log("posted");
-      console.log(response.json());
       self.getClasses()
     });
 
@@ -93,6 +90,7 @@ class Classes extends Component {
     };
 
     let dataString = JSON.stringify(data);
+
     fetch('http://localhost:5000/assignments', {
       method: 'POST',
       body: dataString,
@@ -106,16 +104,11 @@ class Classes extends Component {
       self.getClasses()
     });
 
-
     this.setState({
       AssignName: "",
       AssignNote: "",
       ClassId: ""
     }, event.target.reset());
-
-
-
-
   }
 
   handleGetAssignment(event) {
@@ -153,8 +146,6 @@ class Classes extends Component {
         },
       });
 
-
-      //window.location.reload();
     }
   }
 
@@ -173,10 +164,7 @@ class Classes extends Component {
           },
         }).then((response) => {
           self.getClasses();
-
         });
-
-      
       }
     }
   }

@@ -97,9 +97,7 @@ class RubricEditor extends Component{
 		      },
 		  	});
 		  }
-		}
-		window.location.reload();
-	}
+		}	}
 
 	//calls when the isEditing state is changed
 	renderActions(){
@@ -187,7 +185,7 @@ class RubricEditor extends Component{
 	componentWillMount() {
     var that = this;
     //replace hardcoded number with userID from login
-    fetch('http://localhost:5000/rubrics/5d26304f97d65677327b7e56')
+    fetch('http://localhost:5000/rubrics/' + this.props.user.id)
       .then(function(response) {
         return response.json();
       })
@@ -205,7 +203,7 @@ class RubricEditor extends Component{
 
 	//called when user wants to back out without saving
 	reset(){
-		window.location.reload();
+//		window.location.reload();
 	}
 
 	//Saves the Current Information in the Card
@@ -284,7 +282,7 @@ class RubricEditor extends Component{
 			promise.push(this.sendRequest(rubricTitle.value, this.state.rubricData));
 		}
 		try{
-			window.location.reload();
+			//window.location.reload();
 		}
 		catch (e){
 			//errorcatching here
@@ -300,7 +298,7 @@ class RubricEditor extends Component{
 			const newdata = {
 				"name": rubricTitle,
 				"cards": data,
-				"user_id": "5d26304f97d65677327b7e56"
+				"user_id": this.props.user.id
 			}
 			let dataString = JSON.stringify(newdata);
 			fetch('http://localhost:5000/rubrics', {
@@ -321,7 +319,7 @@ class RubricEditor extends Component{
 			const newdata = {
 				"name": rubricTitle,
 				"cards": data,
-				"user_id": "5d26304f97d65677327b7e56"
+				"user_id": this.props.user.id
 			}
 			let dataString = JSON.stringify(newdata);
 			fetch('http://localhost:5000/rubrics/' + this.state.curId, {

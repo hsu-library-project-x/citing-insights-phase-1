@@ -50,7 +50,6 @@ module.exports = function upload(req, res) {
             console.log(file.path);
             var textByLine = fs.readFileSync(file.path);
 
-            //var my_blob = new Blob(textByLine, { type: 'application/pdf' });
 
             console.log('AND HERE');
             console.log(form);
