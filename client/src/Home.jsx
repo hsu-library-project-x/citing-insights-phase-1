@@ -13,7 +13,7 @@ import {Row, Col} from 'reactstrap';
 //import pictures!
 import settings from './images/gears.svg';
 import tasks from './images/pencil.svg';
-import logo from "./images/CILogo.png";
+import logo from "./images/CIHome.png";
  
 
 // Class to render our homepage
