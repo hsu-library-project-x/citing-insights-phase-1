@@ -13,13 +13,13 @@ import PdfComponent from "./PdfComponent.jsx";
 
 //global function for defining ID's
 function makeid(length) {
-   var result           = '';
-   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-   var charactersLength = characters.length;
-   for ( var i = 0; i < length; i++ ) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-   }
-   return result;
+  var result           = '';
+  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for ( var i = 0; i < length; i++ ) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
 }
 
 //Rubric Const, to be replaced possibly with new component
@@ -63,6 +63,7 @@ class Analyze extends Component{
       currentRubric: []
     }
 
+
     this.renderActions = this.renderActions.bind(this);
     this.sendRequest = this.sendRequest.bind(this);
     this.resetButton = this.resetButton.bind(this);
@@ -75,6 +76,7 @@ class Analyze extends Component{
     this.handleRubricAssessment = this.handleRubricAssessment.bind(this);
     this.handleChildUnmount = this.handleChildUnmount.bind(this);
     this.handleSaveCitations = this.handleSaveCitations.bind(this);
+    this.get_citation_info = this.get_citation_info.bind(this);
   }
 
 
@@ -83,8 +85,8 @@ class Analyze extends Component{
     // this is broken right now but it should just return the JSON it retreives 
     // i had weird javascript errors but it shouldnt be too hard to get working
     // this whole block is ccopied into componentdidmount 
-      var answer = "a";
-      fetch('http://localhost:5000/papers/' + assignment_id)
+    var answer = "a";
+    fetch('http://localhost:5000/papers/' + assignment_id)
       .then(function(response) {
         return response.json();
       })
@@ -101,7 +103,7 @@ class Analyze extends Component{
     console.log(answer);
     return(answer);
   }
-    
+
 
   componentDidMount() {
     console.log('mounted');
@@ -112,6 +114,19 @@ class Analyze extends Component{
     }
   }
 
+  get_citation_info(paper_id) {
+
+    var that = this;
+    fetch('http://localhost:5000/citations/by_paper_id/' + paper_id)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(myJson) {
+        that.setState({citations: myJson});
+        console.log(that.state.citations);
+      });
+
+  }
   //Here we populate citation source information and meta data
   //Do this call every time a new Paper is loaded into the component
   componentWillMount(){
@@ -122,27 +137,27 @@ class Analyze extends Component{
 
     var that = this;
     if (this.props.location.state != undefined) {
-        this.setState({assignmentId: this.props.location.state.id});
+      this.setState({assignmentId: this.props.location.state.id});
 
-       fetch('http://localhost:5000/papers/by_assignment_id/' + this.props.location.state.id)
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(myJson) {
+      fetch('http://localhost:5000/papers/by_assignment_id/' + this.props.location.state.id)
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(myJson) {
 
-      fetch('http://localhost:5000/papers/' + myJson[0]["_id"])
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(myJson) {
-        console.log(myJson);
-        that.setState({current_pdf_data: myJson["pdf"]["data"]});
-        console.log(that.state.current_pdf_data);
-        //return(myJson);
-        //that.setState({AvailableAssignments: myJson});
-      });
-        //that.setState({AvailableAssignments: myJson});
-      });
+          fetch('http://localhost:5000/papers/' + myJson[0]["_id"])
+            .then(function(response) {
+              return response.json();
+            })
+            .then(function(myJson) {
+              that.setState({current_pdf_data: myJson["pdf"]["data"]});
+
+              that.get_citation_info(myJson["_id"]);
+              //return(myJson);
+              //that.setState({AvailableAssignments: myJson});
+            });
+          //that.setState({AvailableAssignments: myJson});
+        });
 
     } else {
       this.setState({assignmentId: "no assignment selected"});
@@ -155,8 +170,9 @@ class Analyze extends Component{
       })
       .then(function(myJson) {
         that.setState({AvailableRubrics: myJson});
-    });
+      });
   }
+
 
   handleGetRubric(event){
     const target = event.target;
@@ -197,7 +213,7 @@ class Analyze extends Component{
     //TODO: display paper in the UI
 
     //TODO: grab citations array from paper object /// REPLACE DUMMY CITATIONS
-    
+
     const dummycitations = ["Bracco, M., Lia, V. V., Gottlieb, A. M., Cámara Hernández, J., & Poggio, L. (2009). Genetic diversity in maize landraces from indigenous settlements of Northeastern Argentina. Genetica, 135(1), 39–49. https://doi.org/10.1007/s10709-008-9252-z", "Citation 2", "Citation 3", "Citation 4"];
     this.setState({
       citaitons: dummycitations
@@ -293,7 +309,7 @@ class Analyze extends Component{
   //adds highlighted text and the  source to the intextcitation state array
   saveIntextCitation(){
     let citationId = document.getElementById("sourceSelect").value;
-    
+
     let text = document.getElementById("highlightText").value;
     if(text === "" || text === "Put Highlighted Text Here!"){
       alert("please highlight an intext citation");
@@ -357,7 +373,7 @@ class Analyze extends Component{
             for(let j = 0; j < curArray.length; j++){
               if(curArray[j].id === citeIds[0]){
                 this.state.citationData[i].intextCites[j].annotation = annotation;
-                
+
                 if( box.classList.contains("savedAnimation")){
                   document.getElementById("curAnno").classList.remove("savedAnimation");
                   document.getElementById("curAnno").classList.add("savedAnimation2");
@@ -375,7 +391,7 @@ class Analyze extends Component{
     }
   }
 
-  
+
   toggleHidden(){
     this.setState({
       isHidden: !this.state.isHidden
@@ -399,6 +415,20 @@ class Analyze extends Component{
     let rubricList = rubrics.map((rubric) => 
       <option value={rubric._id}>{rubric.name}</option>
     );
+
+
+    let citations = this.state.citations;
+
+    var citationItems = <p> nothing found yet </p>
+    if (citations != []) {
+      var citationItems = citations.map((citation) =>
+        <p id="biblio-box">{ citation.author[0].family + ', '  + citation.author[0].given }</p>
+        //console.log(citation.author[0].family)
+
+      );
+    } else {
+      var citationItems = <p> nothing found yet </p>
+    }
 
     return(
       /* Analyze Mode HTML Start */
@@ -472,7 +502,11 @@ class Analyze extends Component{
                 <li id={citation.id}><button id={this.state.rubricId} onClick={this.handleRubricAssessment} disabled={this.state.rubricSelected}>{citation.title}</button></li>
               ))}
             </ul>
-            <p id="biblio-box">Bibliography Goes Here</p>
+            <p id="biblio-box">Bibliography Goes Here
+
+
+            </p>
+            {citationItems}
             <div class="progressBox">
               <p>Citations Assessed: </p>
               <Progress id="citeProgress" value="30" />
