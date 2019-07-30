@@ -15,6 +15,13 @@ button
   margin-left:7em;
 
 }
+
+#google > button{
+  width: 55%;
+  margin-top: 1.5em;
+  margin-left: 10%;
+  display: block;
+}
 button:hover
 {
   opacity: 0.8;
@@ -24,7 +31,7 @@ button:hover
 {
   background-color: #F7F6E7;
   margin-top: 3em;
-  border: solid #FFAC1D 0.24em;
+  border: solid #FFAC1D 0.15em;
   border-radius: 1em;
   box-shadow: -15px 15px 70px black;
 }

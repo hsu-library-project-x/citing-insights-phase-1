@@ -17,7 +17,7 @@ import AccountSettings from "./AccountSettings.jsx";
 import { ProtectedRoute } from "./ProtectedRoute.jsx";
 import Navibar from './Navibar.jsx';
 import Error from "./Error.jsx";
-import logo from './images/logoProtoSm.png';
+
 
 
 // App acts as the main page for intial rendering -- all pages and stages are called 

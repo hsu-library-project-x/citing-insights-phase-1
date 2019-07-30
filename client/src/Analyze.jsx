@@ -151,6 +151,7 @@ class Analyze extends Component {
         })
         .then(function(myJson) {
 
+
           fetch('http://localhost:5000/papers/' + myJson[0]["_id"])
             .then(function(response) {
               return response.json();
@@ -168,8 +169,6 @@ class Analyze extends Component {
     } else {
       this.setState({ assignmentId: "no assignment selected" });
     }
-
-
     //get the rubrics
     //replace hardcoded number with userID from login
     fetch('http://localhost:5000/rubrics/' + this.props.user.id)
@@ -178,6 +177,7 @@ class Analyze extends Component {
       })
       .then(function(myJson) {
         that.setState({AvailableRubrics: myJson});
+
       });
   }
 

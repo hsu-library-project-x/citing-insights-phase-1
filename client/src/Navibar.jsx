@@ -3,6 +3,7 @@ import { Navbar, NavbarBrand, NavItem } from 'reactstrap';
 import { NavLink, withRouter } from 'react-router-dom';
 import config from './config';
 import {GoogleLogout} from 'react-google-login';
+import logo from './images/CIHome.png';
 
 class Navibar extends Component {
     constructor(props) {
@@ -32,7 +33,7 @@ class Navibar extends Component {
     render() {
         let content = !!this.props.isAuthenticated ? (
             <Navbar primary expand="md">
-                <NavbarBrand>Citing Insights</NavbarBrand>
+                <NavbarBrand><img className="navBarLogo" src={logo} alt="logo" ></img></NavbarBrand>
                 {/* NavItem (Reactstrap) -- item in our navation bar*/}
                 <NavItem>
                     <NavLink to="/home">Home</NavLink>
@@ -57,7 +58,7 @@ class Navibar extends Component {
             </Navbar>
         ) : (
                 <Navbar primary expand="md">
-                    <NavbarBrand>Citing Insights</NavbarBrand>
+                    <NavbarBrand><img className="navBarLogo"  src={logo} alt="logo" ></img></NavbarBrand>
                     {/* NavItem (Reactstrap) -- item in our navation bar*/}
                     <NavItem>
                         <NavLink to="/login">Login</NavLink>

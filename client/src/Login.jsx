@@ -104,10 +104,10 @@ class Login extends Component {
 						<Col xs="6">
 							<div class="beside_picture">
 								<h1> Welcome Back! </h1>
-								<div>
+								<div id="google">
 									<GoogleLogin
 										clientId={config.GOOGLE_CLIENT_ID}
-										buttonText="Login yo"
+										buttonText="Sign in with Google"
 										onSuccess={this.responseGoogle}
 										onFailure={this.onFailure}
 									/>
