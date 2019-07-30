@@ -12,6 +12,8 @@ router.get('/', citationController.list);
  */
 router.get('/:id', citationController.show);
 
+router.get('/by_paper_id/:id', citationController.by_paper_id);
+
 /*
  * POST
  */
