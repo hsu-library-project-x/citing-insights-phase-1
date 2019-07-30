@@ -35,6 +35,7 @@ function removeTextLayerOffset() {
     style.margin = "auto";
   });
 }
+
 class PdfComponent extends Component {
   constructor(props){
     super(props);
