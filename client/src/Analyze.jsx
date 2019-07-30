@@ -14,10 +14,10 @@ import PdfComponent from "./PdfComponent.jsx";
 
 //global function for defining ID's
 function makeid(length) {
-  var result = '';
-  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var result           = '';
+  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   var charactersLength = characters.length;
-  for (var i = 0; i < length; i++) {
+  for ( var i = 0; i < length; i++ ) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   return result;
@@ -69,6 +69,7 @@ class Analyze extends Component {
       currentRubric: []
     }
 
+
     this.renderActions = this.renderActions.bind(this);
     this.sendRequest = this.sendRequest.bind(this);
     this.resetButton = this.resetButton.bind(this);
@@ -81,6 +82,7 @@ class Analyze extends Component {
     this.handleRubricAssessment = this.handleRubricAssessment.bind(this);
     this.handleChildUnmount = this.handleChildUnmount.bind(this);
     this.handleSaveCitations = this.handleSaveCitations.bind(this);
+    this.get_citation_info = this.get_citation_info.bind(this);
   }
 
 
@@ -91,7 +93,7 @@ class Analyze extends Component {
     // this whole block is ccopied into componentdidmount 
     var answer = "a";
     fetch('http://localhost:5000/papers/' + assignment_id)
-      .then(function (response) {
+      .then(function(response) {
         return response.json();
       })
       .then(function (myJson) {
@@ -118,6 +120,19 @@ class Analyze extends Component {
     }
   }
 
+  get_citation_info(paper_id) {
+
+    var that = this;
+    fetch('http://localhost:5000/citations/by_paper_id/' + paper_id)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(myJson) {
+        that.setState({citations: myJson});
+        console.log(that.state.citations);
+      });
+
+  }
   //Here we populate citation source information and meta data
   //Do this call every time a new Paper is loaded into the component
   componentWillMount() {
@@ -128,35 +143,26 @@ class Analyze extends Component {
     console.log(this.props.user.id);
     var that = this;
     if (this.props.location.state != undefined) {
-      this.setState({ assignmentId: this.props.location.state.id });
+      this.setState({assignmentId: this.props.location.state.id});
 
       fetch('http://localhost:5000/papers/by_assignment_id/' + this.props.location.state.id)
-        .then(function (response) {
+        .then(function(response) {
           return response.json();
         })
-        .then(function (myJson) {
+        .then(function(myJson) {
+
           fetch('http://localhost:5000/papers/' + myJson[0]["_id"])
-            .then(function (response) {
+            .then(function(response) {
               return response.json();
             })
-            .then(function (myJson) {
-              that.setState({ current_pdf_data: myJson["pdf"]["data"] });
-              console.log(that.state.current_pdf_data);
+            .then(function(myJson) {
+              that.setState({current_pdf_data: myJson["pdf"]["data"]});
+
+              that.get_citation_info(myJson["_id"]);
               //return(myJson);
               //that.setState({AvailableAssignments: myJson});
             });
-          //that.setState({AvailableAssignments: myJson});
-        });
-
-      //get Assignment info (name)
-      fetch('http://localhost:5000/assignments/5d3f215a0bec792a46eb120e')
-        .then((response) => {
-          return response.json();
-        })
-        .then((myJson) => {
-          this.setState({
-            assignment: myJson
-          })
+          //that.setState({AvailableAssignments: myJson})
         });
 
     } else {
@@ -170,14 +176,14 @@ class Analyze extends Component {
       .then(function (response) {
         return response.json();
       })
-      .then(function (myJson) {
-        that.setState({ AvailableRubrics: myJson });
+      .then(function(myJson) {
+        that.setState({AvailableRubrics: myJson});
       });
-
-
   }
 
-  handleGetRubric(event) {
+
+  handleGetRubric(event){
+
     const target = event.target;
     const id = target.value;
     const rubricArray = this.state.AvailableRubrics;
@@ -382,7 +388,8 @@ class Analyze extends Component {
               if (curArray[j].id === citeIds[0]) {
                 this.state.citationData[i].intextCites[j].annotation = annotation;
 
-                if (box.classList.contains("savedAnimation")) {
+                if( box.classList.contains("savedAnimation")){
+
                   document.getElementById("curAnno").classList.remove("savedAnimation");
                   document.getElementById("curAnno").classList.add("savedAnimation2");
                 }
@@ -398,6 +405,7 @@ class Analyze extends Component {
       }
     }
   }
+
 
 
   toggleHidden() {
@@ -424,8 +432,22 @@ class Analyze extends Component {
       <option value={rubric._id}>{rubric.name}</option>
     );
 
-    console.log(this.state);
-    return (
+                                 
+              let citations = this.state.citations;
+
+    var citationItems = <p> nothing found yet </p>
+    if (citations != []) {
+      var citationItems = citations.map((citation) =>
+        <p id="biblio-box">{ citation.author[0].family + ', '  + citation.author[0].given  + ': '  + citation.title}</p>
+        //console.log(citation.author[0].family)
+
+      );
+    } else {
+      var citationItems = <p> nothing found yet </p>
+    }
+
+    return(
+
       /* Analyze Mode HTML Start */
       <div class="DemoContents analyze-container">
         {/* One Giant container that will let us use rows / columns */}
@@ -497,7 +519,11 @@ class Analyze extends Component {
                 <li id={citation.id}><button id={this.state.rubricId} onClick={this.handleRubricAssessment} disabled={this.state.rubricSelected}>{citation.title}</button></li>
               ))}
             </ul>
-            <p id="biblio-box">Bibliography Goes Here</p>
+            <p id="biblio-box">Bibliography Goes Here
+
+
+            </p>
+            {citationItems}
             <div class="progressBox">
               <p>Citations Assessed: </p>
               <Progress id="citeProgress" value="30" />
