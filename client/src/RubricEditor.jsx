@@ -203,6 +203,7 @@ class RubricEditor extends Component{
 
 	//called when user wants to back out without saving
 	reset(){
+		
 //		window.location.reload();
 	}
 
@@ -282,6 +283,9 @@ class RubricEditor extends Component{
 			promise.push(this.sendRequest(rubricTitle.value, this.state.rubricData));
 		}
 		try{
+
+
+
 			//window.location.reload();
 		}
 		catch (e){
