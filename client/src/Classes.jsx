@@ -52,9 +52,9 @@ class Classes extends Component {
   }
 
   async getAssignments(class_id) {
-
     var self = this;
-
+    console.log("class id:")
+    console.log(class_id);
     fetch('http://localhost:5000/assignments/by_class_id/' + class_id)
       .then(function (response) {
         return response.json();
@@ -67,6 +67,7 @@ class Classes extends Component {
   }
 
   handleGetAssignment(event) {
+
     const target = event.target;
     const id = target.id;
     var self = this;
@@ -146,12 +147,10 @@ class Classes extends Component {
 
   handleDeleteAssignment(event) {
 
-    event.preventDefault();
 
     var self = this;
     if (window.confirm("Are you sure you wish to delete this?")) {
       const target = event.target;
-      const id = target.id;
 
       fetch('http://localhost:5000/assignments/' + target.id, {
         method: 'Delete',
@@ -161,7 +160,8 @@ class Classes extends Component {
         },
       })
       .then((response) => {
-        self.getAssignments(id);
+        console.log(this.state);
+        self.getAssignments(this.state.ClassId);
       });
     }
   }
@@ -180,6 +180,7 @@ class Classes extends Component {
             'Content-Type': 'application/json'
           },
         }).then((response) => {
+
           self.getClasses();
         });
       }
@@ -195,6 +196,8 @@ class Classes extends Component {
     this.setState({
       [name]: event.target.value
     });
+    console.log("in handle input change");
+    console.log(this.state);
   }
 
   render() {
