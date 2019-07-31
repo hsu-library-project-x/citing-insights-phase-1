@@ -26,15 +26,19 @@ module.exports = function upload(req, res) {
     //Either multipart or urlencoded
     form.type = "multipart";
 
+    console.log('attempting to print params');
+  //console.log(req.headers);
+
     form
         .on("file", (field, file) => {
-            console.log("received");
 
             // this length be increased if there are collisions
             var file_name = chance.string({
                 pool: "abcdefghijklmnopqrstuvwxyz",
                 length: 10
             });
+            console.log('attempting to print field');
+            console.log(field);
 
             //Ghostscript strips pdf into raw text
             var txt_path = __dirname + "/tmp/txt/" + file_name + ".txt"
@@ -42,24 +46,19 @@ module.exports = function upload(req, res) {
 
             shell.exec("gs -sDEVICE=txtwrite -o " + txt_path + " " + file.path);
 
-            console.log(txt_path);
-            console.log('LOOK HERE');
 
             //the replace functions just get rid of carriage returns
 
-            console.log(file.path);
             var textByLine = fs.readFileSync(file.path);
 
 
-            console.log('AND HERE');
-            console.log(form);
 
             var raw_text = {
                 "body": fs.readFileSync(txt_path).toString().replace(/\r+/g, "").replace(/\n+/g, ""),
                 "pdf": textByLine,
                 "title": null,
                 "name": null,
-                "assignment_id": "5d3e5cc0bdfda914088ee578"
+                "assignment_id": field
             };
             // we actually want to set a variable to see whether or not things happenned successfully
             // instantiate the paper and save to db
