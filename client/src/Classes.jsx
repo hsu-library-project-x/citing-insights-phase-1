@@ -25,6 +25,7 @@ class Classes extends Component {
     this.handleDeleteAssignment = this.handleDeleteAssignment.bind(this);
     this.handleDeleteCourse = this.handleDeleteCourse.bind(this);
     this.getClasses = this.getClasses.bind(this);
+    this.getAssignments = this.getAssignments.bind(this);
   }
 
   componentWillMount() {
@@ -48,6 +49,36 @@ class Classes extends Component {
           AvailableCourses: myJson
         });
       });
+  }
+
+  async getAssignments(class_id) {
+    var self = this;
+    console.log("class id:")
+    console.log(class_id);
+    fetch('http://localhost:5000/assignments/by_class_id/' + class_id)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (myJson) {
+          self.setState({
+          AvailableAssignments: myJson
+        });
+      });
+  }
+
+  handleGetAssignment(event) {
+
+    const target = event.target;
+    const id = target.id;
+    var self = this;
+    let listElements = document.getElementsByClassName("classLi");
+
+    for (let i = 0; i < listElements.length; i++) {
+      listElements[i].classList.remove("selected-class");
+    }
+
+    self.getAssignments(id);
+    target.classList.add("selected-class");
   }
 
   async handleSubmitClass(event) {
@@ -101,7 +132,8 @@ class Classes extends Component {
     }).then((response) => {
       console.log("posted");
       console.log(response.json());
-      self.getClasses()
+      self.getClasses();
+      self.getAssignments(data.class_id);
     });
 
     this.setState({
@@ -111,41 +143,26 @@ class Classes extends Component {
     }, event.target.reset());
   }
 
-  handleGetAssignment(event) {
-    const target = event.target;
-    var that = this;
-    let listElements = document.getElementsByClassName("classLi");
 
-    for (let i = 0; i < listElements.length; i++) {
-      listElements[i].classList.remove("selected-class");
-    }
-
-    fetch('http://localhost:5000/assignments/by_class_id/' + target.id)
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (myJson) {
-        console.log(myJson);
-        that.setState({ AvailableAssignments: myJson });
-      });
-    target.classList.add("selected-class");
-  }
 
   handleDeleteAssignment(event) {
 
-    event.preventDefault();
 
     var self = this;
     if (window.confirm("Are you sure you wish to delete this?")) {
       const target = event.target;
+
       fetch('http://localhost:5000/assignments/' + target.id, {
         method: 'Delete',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
+      })
+      .then((response) => {
+        console.log(this.state);
+        self.getAssignments(this.state.ClassId);
       });
-
     }
   }
 
@@ -163,6 +180,7 @@ class Classes extends Component {
             'Content-Type': 'application/json'
           },
         }).then((response) => {
+
           self.getClasses();
         });
       }
@@ -178,6 +196,8 @@ class Classes extends Component {
     this.setState({
       [name]: event.target.value
     });
+    console.log("in handle input change");
+    console.log(this.state);
   }
 
   render() {
@@ -237,7 +257,7 @@ class Classes extends Component {
               <Label for="assignName">Name:</Label>
               <Input onChange={this.handleInputChange} type="text" id="assignName" name="AssignName" placeholder="Type assignment name here" required /> <br />
               <Label for="assignNotes">Notes:</Label>
-              <Input onChange={this.handleInputChange}type="textarea" id="assignNotes" name="AssignNote" placeholder="Optional Notes on the assignment" />
+              <Input onChange={this.handleInputChange} type="textarea" id="assignNotes" name="AssignNote" placeholder="Optional Notes on the assignment" />
               <Input type="submit" value="Submit" />
 
             </form>
