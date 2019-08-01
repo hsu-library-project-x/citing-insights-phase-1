@@ -66,7 +66,8 @@ class Analyze extends Component {
       rubricId: "",
       curPaperId: "",
       sourceText: "",
-      currentRubric: []
+      currentRubric: [],
+      current_s2_data: {"influential_citation_count": 20, "citation_velocity": 20}
     }
 
 
@@ -83,6 +84,8 @@ class Analyze extends Component {
     this.handleChildUnmount = this.handleChildUnmount.bind(this);
     this.handleSaveCitations = this.handleSaveCitations.bind(this);
     this.get_citation_info = this.get_citation_info.bind(this);
+    this.get_s2_info = this.get_s2_info.bind(this);
+    this.handleCitationChange = this.handleCitationChange.bind(this);
   }
 
 
@@ -123,13 +126,29 @@ class Analyze extends Component {
   get_citation_info(paper_id) {
 
     var that = this;
-    fetch('http://localhost:5000/citations/by_paper_id/' + paper_id)
+    var answer = fetch('http://localhost:5000/citations/by_paper_id/' + paper_id)
       .then(function(response) {
         return response.json();
       })
       .then(function(myJson) {
         that.setState({citations: myJson});
         console.log(that.state.citations);
+      });
+
+    return(answer);
+
+  }
+  get_s2_info(citation_id) {
+
+    var that = this;
+    fetch('http://localhost:5000/citations/s2/' + citation_id)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(myJson) {
+        that.setState({current_s2_data: myJson});
+        console.log("printing s2 informstion");
+        console.log(that.state.current_s2_data);
       });
 
   }
@@ -159,12 +178,19 @@ class Analyze extends Component {
             .then(function(myJson) {
               that.setState({current_pdf_data: myJson["pdf"]["data"]});
 
-              that.get_citation_info(myJson["_id"]);
+              that.get_citation_info(myJson["_id"]).then(function(value) {
+
+                console.log('printing value');
+                console.log(value);
+                that.get_s2_info(that.state.citations[1]["_id"]);
+              
+              });
               //return(myJson);
               //that.setState({AvailableAssignments: myJson});
             });
           //that.setState({AvailableAssignments: myJson})
         });
+
 
     } else {
       this.setState({ assignmentId: "no assignment selected" });
@@ -181,6 +207,20 @@ class Analyze extends Component {
       });
   }
 
+  handleCitationChange(event){
+    //const target = event.target;
+    //const value = target.value;
+    //const name = target.name;
+    //alert(name + ", " + value);
+    //this.setState({
+    //[name]: value
+    //});
+
+    console.log('we just selected citation');
+    console.log(event.target.value);
+    this.get_s2_info(event.target.value);
+
+  }
 
   handleGetRubric(event){
 
@@ -446,6 +486,18 @@ class Analyze extends Component {
       var citationItems = <p> nothing found yet </p>
     }
 
+    var citationDropdownItems = <option> nothing found yet </option>
+    if (citations != []) {
+      var citationDropdownItems = citations.map((citation) =>
+        //<p id="biblio-box">{ citation.author[0].family + ', '  + citation.author[0].given  + ': '  + citation.title}</p>
+        <option value={citation._id}> {citation.author[0].family} </option>
+        //console.log(citation.author[0].family)
+
+      );
+    } else {
+      var citationItems = <p> nothing found yet </p>
+    }
+
     return(
 
       /* Analyze Mode HTML Start */
@@ -482,12 +534,18 @@ class Analyze extends Component {
         {/* Row: Contains -- Semantic Scholor, Block Text, Sources, Biblio Box, and Progress Bar */}
         <Row>
           <Col xs="3">
+            <label for="assignForAnalyze">Citations:</label>
+              <Input onChange={this.handleCitationChange} onInput={this.onInput} id="assignForAnalyze" type="select" name="AssignNew" required >
+                <option value="" disabled selected hidden >Select a Citation</option>
+                {citationDropdownItems}
+              </Input>
             <h4>Discovery Tool</h4>
             <div class="discoveryTool">
               <Card>
                 <CardBody>
                   <CardTitle>Semantic Scholar</CardTitle>
-                  <CardText>Information from Semantic Scholar about source goes here</CardText>
+                  <CardText>Citation Velcoity: {this.state.current_s2_data["citation_velocity"]}</CardText>
+                  <CardText>Influential Citations: {this.state.current_s2_data["influential_citation_count"]}</CardText>
                 </CardBody>
               </Card>
               <Card>
