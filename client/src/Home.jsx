@@ -11,8 +11,6 @@ import './css/Home.css';
 import {Row, Col} from 'reactstrap';
 
 //import pictures!
-import settings from './images/gears.svg';
-import tasks from './images/pencil.svg';
 import logo from "./images/CIHome.png";
  
 

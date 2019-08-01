@@ -1,8 +1,8 @@
 // Our Login "Page" for Citing Insights
 
 // Import Libraries
-import React, { Component, PropTypes } from 'react';
-import { Redirect, withRouter } from 'react-router-dom';
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 // Button,Container, Row, Col are all Reactrap elements that we are 
 //     going to use for our login
 import { Row, Col } from 'reactstrap';
@@ -15,11 +15,6 @@ import login from './images/UniversityCenterXLg.jpg';
 import { GoogleLogin } from "react-google-login";
 
 import config from "./config.json";
-import { runInThisContext } from 'vm';
-
-function forgotInfo(props) {
-	window.location.href = "#/passrecov";
-}
 
 
 class Login extends Component {
