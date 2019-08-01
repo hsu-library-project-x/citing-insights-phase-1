@@ -5,7 +5,7 @@ import {Input} from 'reactstrap';
 import MultiselectTwoSides from 'react-multiselect-two-sides';
 import './css/Download.css';
 
-import searchIcon from './images/magnifying-glass.svg';
+//import searchIcon from './images/magnifying-glass.svg';
 
 
 // Class to render our homepage
@@ -62,7 +62,11 @@ class Download extends Component{
 	}
 
 	showSearch(state){
-		this.state.search = !this.state.search;
+
+		this.setState({
+		search: !this.state.search
+		});
+		
 		document.getElementsByClassName('.msts__side_filter').style.display= {  display: this.state.search ? 'none': 'inline'};
 	}
 
@@ -153,7 +157,10 @@ class Download extends Component{
 	}
 }
 
-{/* <div>Icons made by <a href="https://www.flaticon.com/authors/gregor-cresnar" title="Gregor Cresnar">Gregor Cresnar</a> from <a href="https://www.flaticon.com/"                 title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/"                 title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div> */}
+// <div>Icons made by <a href="https://www.flaticon.com/authors/gregor-cresnar" 
+// title="Gregor Cresnar">Gregor Cresnar</a> from <a href="https://www.flaticon.com/"                
+// title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/"                 
+// title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div> */}
 
 
 export default withRouter(Download);

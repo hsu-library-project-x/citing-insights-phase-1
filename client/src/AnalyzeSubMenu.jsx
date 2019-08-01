@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 
-import { HashRouter, Link, Redirect } from "react-router-dom";
-import { Button, Row, Col, Input } from "reactstrap";
+import { Redirect } from "react-router-dom";
+import { Row, Col, Input } from "reactstrap";
 
 import './css/AnalyseSubMenu.css'
 
@@ -96,17 +96,6 @@ class AnalyzeSubMenu extends Component{
     });
   }
 
-  handleInputChange(event){
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
-    //alert(name + ", " + value);
-    this.setState({
-      [name]: value
-    });
-
-  }
-
   async handleSubmitNew(event){
     //alert("handling New Submit");
     event.preventDefault();
@@ -170,7 +159,7 @@ class AnalyzeSubMenu extends Component{
     );
     if (this.state.redirect) {
       return <Redirect to={{
-        pathname: '/tasks/analyze',
+        pathname: '/analyze',
         state: { id: this.state.AssignNew },
         props: {...this.props}
       }}
