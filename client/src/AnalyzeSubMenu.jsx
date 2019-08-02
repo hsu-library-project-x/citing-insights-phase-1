@@ -105,6 +105,9 @@ class AnalyzeSubMenu extends Component{
       [name]: value
     });
 
+    console.log(event);
+    console.log(this.state);
+
   }
 
   async handleSubmitNew(event){
@@ -169,11 +172,13 @@ class AnalyzeSubMenu extends Component{
       <option value={assignment._id}>{assignment.name}</option>
     );
     if (this.state.redirect) {
+      console.log(this.state);
       return <Redirect to={{
         pathname: '/tasks/analyze',
         state: { id: this.state.AssignNew },
         props: {...this.props}
       }}
+      
     />
     }
     return(

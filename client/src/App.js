@@ -42,6 +42,8 @@ class App extends Component {
       user: user,
       token: token
     });
+    //Persist our user into localStorage(right now its the whole object, for production just need token)
+    localStorage.setItem("user", JSON.stringify(this.state))
   };
 
   passInfoLogout() {
@@ -52,6 +54,16 @@ class App extends Component {
     });
   };
 
+  componentDidMount() {
+    const persistedState = localStorage.getItem("user");
+    //Test to see if user object is valid
+    if (persistedState) {
+      this.setState(JSON.parse(persistedState));
+    }
+  }
+
+
+
   render() {
     return (
       <div>
@@ -60,9 +72,9 @@ class App extends Component {
           <p class="alt-text">Welcome to Citing Insights Portal</p> */}
           {/*Hashrouter! Defining our Router (React-Dom)*/}
           <HashRouter>
-            <Navibar 
-            isAuthenticated={this.state.isAuthenticated}
-            passInfoLogout={this.passInfoLogout} />
+            <Navibar
+              isAuthenticated={this.state.isAuthenticated}
+              passInfoLogout={this.passInfoLogout} />
 
             {/*This tells us what compenent to loaauthd after going to login, home, demo etc.*/}
             <div id="id01" class="pop content">
@@ -70,8 +82,11 @@ class App extends Component {
                 <Route
                   exact path="/login"
                   render={
-                    (props) => <Login passInfoLogin={this.passInfoLogin}
-                    />
+                    (props) =>
+                      <Login
+                        passInfoLogin={this.passInfoLogin}
+                        isAuthenticated={this.state.isAuthenticated}
+                      />
                   }
                 />
                 <ProtectedRoute

@@ -33,7 +33,14 @@ class Login extends Component {
 		this.getInfo = this.getInfo.bind(this);
 	}
 
-
+	componentDidMount(){
+		if(this.props.isAuthenticated === true){
+			this.props.history.push({
+				pathname: "/",
+				props: { ...this.state}
+			});
+		}
+	}
 
 	onFailure = (err) => {
 		alert(err);
