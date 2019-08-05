@@ -43,7 +43,7 @@ class RubricEditor extends Component {
 	}
 
 	//checks before the component mounts
-	componentWillMount() {
+	componentDidMount() {
 		this.getRubrics();
 	}
 
