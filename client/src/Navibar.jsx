@@ -30,6 +30,10 @@ class Navibar extends Component {
         });
     }
 
+    //Removed this for time being; we really only get to analyze by going through tasks
+//     <NavItem>
+//     <NavLink to="/analyze">Analyze</NavLink>
+//     </NavItem>
     render() {
         let content = !!this.props.isAuthenticated ? (
             <Navbar primary expand="md">
@@ -41,9 +45,7 @@ class Navibar extends Component {
                 <NavItem>
                     <NavLink to="/tasks">Tasks</NavLink>
                 </NavItem>
-                <NavItem>
-                    <NavLink to="/analyze">Analyze</NavLink>
-                </NavItem>
+
                 <NavItem>
                     <NavLink to="/accountsettings">Settings</NavLink>
                 </NavItem>

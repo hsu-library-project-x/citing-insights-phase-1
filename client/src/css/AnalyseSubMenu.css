@@ -56,9 +56,7 @@ input[type="submit"]{
 
 #assignForAnalyze{
     width: 70%;
-    margin-left: 1em;
-
-
+	margin-left: 1em;
 }
 
 .col-12 > form > label{

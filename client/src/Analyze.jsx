@@ -1,6 +1,6 @@
 // Importing Libraries
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import './css/App.css';
 import './css/Analyze.css';
 import Annotate from './Annotate.jsx';
@@ -24,19 +24,6 @@ function makeid(length) {
   return result;
 }
 
-function Citation(id, title, metadata) {
-  this.id = id;
-  this.title = title;
-  this.metadata = metadata;
-  this.intextCites = [];
-  this.annotation = "";
-}
-
-function IntextCitation(text, annotation, id) {
-  this.id = id;
-  this.text = text;
-  this.annotation = annotation;
-}
 
 class Analyze extends Component {
   constructor(props) {
@@ -69,8 +56,7 @@ class Analyze extends Component {
 
     this.renderActions = this.renderActions.bind(this);
     this.sendRequest = this.sendRequest.bind(this);
-    this.resetButton = this.resetButton.bind(this);
-    this.saveIntextCitation = this.saveIntextCitation.bind(this);
+    //this.saveIntextCitation = this.saveIntextCitation.bind(this);
     this.addAnnotation = this.addAnnotation.bind(this);
     this.componentWillMount = this.componentWillMount.bind(this);
     this.displayPaper = this.displayPaper.bind(this);
@@ -97,10 +83,7 @@ class Analyze extends Component {
       .then(function (myJson) {
         answer = myJson;
 
-        console.log(answer);
-
         return (myJson);
-        //that.setState({AvailableAssignments: myJson});
       })
       .then((result) => { answer = result });
     return (answer);
@@ -108,12 +91,26 @@ class Analyze extends Component {
 
 
   componentDidMount() {
-    console.log('mounted');
     if (this.props.location.state !== undefined) {
       this.setState({ assignmentId: this.props.location.state.id });
     } else {
       this.setState({ assignmentId: "No Assignment Selected" });
     }
+
+    var that = this;
+    
+    //Grab info about the assignment
+    fetch('http://localhost:5000/assignments/' + this.props.location.state.id)
+    .then(function(response){
+
+      return response.json();
+    })
+    .then(function(myJson){
+      console.log(that.state);
+      that.setState({
+        assignment: myJson
+      }, console.log(that.state));
+    });
   }
 
   get_citation_info(paper_id) {
@@ -125,24 +122,19 @@ class Analyze extends Component {
       })
       .then(function (myJson) {
         that.setState({ citations: myJson });
-        console.log(that.state.citations);
       });
 
   }
 
   //Here we populate citation source information and meta data
   //Do this call every time a new Paper is loaded into the  component
+
   componentWillMount() {
-    //generate an id for each source
-    //
 
-    console.log('mounted');
-    console.log(this.props);
     var that = this;
-    if (this.props.location.state != undefined) {
-      this.setState({ assignmentId: this.props.location.state.id });
 
-      console.log(this.props.location.state.id);
+    if (this.props.location.state !== undefined) {
+      this.setState({ assignmentId: this.props.location.state.id });
 
       fetch('http://localhost:5000/papers/by_assignment_id/' + this.props.location.state.id)
         .then(function (response) {
@@ -150,20 +142,26 @@ class Analyze extends Component {
         })
         .then(function (myJson) {
 
-          console.log("HERRRRRRREEE");
-          console.log(myJson);
-          fetch('http://localhost:5000/papers/' + myJson[0]["_id"])
-            .then(function (response) {
-              return response.json();
-            })
-            .then(function (myJson) {
-              that.setState({ current_pdf_data: myJson["pdf"]["data"] });
+          try {
+            fetch('http://localhost:5000/papers/' + myJson[0]["_id"])
+              .then(function (response) {
+                return response.json();
+              })
+              .then(function (myJson) {
+                that.setState({ current_pdf_data: myJson["pdf"]["data"] });
 
-              that.get_citation_info(myJson["_id"]);
-              //return(myJson);
-              //that.setState({AvailableAssignments: myJson});
+                that.get_citation_info(myJson["_id"]);
+                //return(myJson);
+                //that.setState({AvailableAssignments: myJson});
+              });
+          }
+          catch{
+            alert("No paper found for this assignment! (...How did you get this far?)");
+            that.props.history.push({
+              pathname: "/",
+              props: { ...that.state}
             });
-          //that.setState({AvailableAssigntments: myJson})
+          }
         });
 
     } else {
@@ -218,26 +216,6 @@ class Analyze extends Component {
     this.setState({
       gotSources: false
     });
-
-
-    //TODO: need a fetch for paper using specific paper id
-
-    //TODO: grab citations array from paper object /// REPLACE DUMMY CITATIONS
-
-    const dummycitations = ["Bracco, M., Lia, V. V., Gottlieb, A. M., Cámara Hernández, J., & Poggio, L. (2009). Genetic diversity in maize landraces from indigenous settlements of Northeastern Argentina. Genetica, 135(1), 39–49. https://doi.org/10.1007/s10709-008-9252-z", "Citation 2", "Citation 3", "Citation 4"];
-
-    this.setState({
-      citaitons: dummycitations
-    });
-
-    const metadata = "MetaData!";
-    for (let i = 0; i < dummycitations.length; i++) {
-      //TODO: REPLACE THIS WITH GETTING THE ID FOR THE CITATION FROM THE DATABASE
-      let citeSourceId = makeid(10);
-      let citeObj = new Citation(citeSourceId, dummycitations[i], metadata);
-      this.state.citationData.push(citeObj);
-    }
-    //TODO: Grab Semantic Scholar Information for the site
   }
 
   handleDelete() {
@@ -315,39 +293,33 @@ class Analyze extends Component {
   }
 
 
-  //might not need this
-  resetButton() {
-    this.setState({ successfullUpload: false });
-  }
 
-  
-  
-  //adds highlighted text and the  source to the intextcitation state array
-  saveIntextCitation() {
-    let citationId = document.getElementById("sourceSelect").value;
+  // //adds highlighted text and the  source to the intextcitation state array
+  // saveIntextCitation() {
+  //   let citationId = document.getElementById("sourceSelect").value;
 
-    let text = document.getElementById("highlightText").value;
-    if (text === "" || text === "Put Highlighted Text Here!") {
-      alert("please highlight an intext citation");
-      return;
-    }
-    else {
-      let data = this.state.citationData;
-      //generate an id for the intext citation
-      //TODO: Replace this with getting the ID for the appropriate ID of the citations for a paper
-      let inTextId = makeid(8);
-      let inCiteObj = new IntextCitation(text, "", inTextId);
-      for (let i = 0; i < data.length; i++) {
-        let curData = data[i];
-        if (curData.id === citationId) {
-          this.state.citationData[i].intextCites.push(inCiteObj);
-          document.getElementById("highlightText").value = "";
-          document.getElementById("highlightText").classList.add("savedAnimation");
-          return;
-        }
-      }
-    }
-  }
+  //   let text = document.getElementById("highlightText").value;
+  //   if (text === "" || text === "Put Highlighted Text Here!") {
+  //     alert("please highlight an intext citation");
+  //     return;
+  //   }
+  //   else {
+  //     let data = this.state.citationData;
+  //     //generate an id for the intext citation
+  //     //TODO: Replace this with getting the ID for the appropriate ID of the citations for a paper
+  //     let inTextId = makeid(8);
+  //     let inCiteObj = new IntextCitation(text, "", inTextId);
+  //     for (let i = 0; i < data.length; i++) {
+  //       let curData = data[i];
+  //       if (curData.id === citationId) {
+  //         this.state.citationData[i].intextCites.push(inCiteObj);
+  //         document.getElementById("highlightText").value = "";
+  //         document.getElementById("highlightText").classList.add("savedAnimation");
+  //         return;
+  //       }
+  //     }
+  //   }
+  // }
 
   //adds annotation and pairs it with appropriate in text citation in the citationData State Array.
   addAnnotation() {
@@ -449,7 +421,6 @@ class Analyze extends Component {
       var citationItems = <p> nothing found yet </p>
     }
 
-    console.log(this.state);
     return (
 
       /* Analyze Mode HTML Start */
@@ -459,7 +430,7 @@ class Analyze extends Component {
         <Row>
           <Col xs="3">
             <h2 className='analyzeHeader'>Assignment</h2>
-            <p id="assignmentInfo"> {} </p>
+            <p id="assignmentInfo"> {this.state.assignment.name} </p>
           </Col>
           <Col xs="6">
             <h2 className='analyzeHeader'>Papers</h2>
@@ -524,7 +495,7 @@ class Analyze extends Component {
               ))}
             </ul>
             <p id="biblio-box">Bibliography Goes Here
-            
+
             </p>
             {citationItems}
             <div class="progressBox">
