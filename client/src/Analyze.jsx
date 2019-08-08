@@ -107,7 +107,6 @@ class Analyze extends Component {
         //console.log(JSON.stringify(myJson));
         //console.log(myJson);
 
-        console.log('SETTING PDF DATA')
         that.setState({current_pdf_data: myJson["pdf"]["data"]});
         //return (myJson);
         //that.setState({AvailableAssignments: myJson});
@@ -117,7 +116,7 @@ class Analyze extends Component {
 
 
   componentDidMount() {
-    console.log('mounted');
+    
     if (this.props.location.state !== undefined) {
       this.setState({ assignmentId: this.props.location.state.id });
     } else {
@@ -134,7 +133,7 @@ class Analyze extends Component {
       })
       .then(function(myJson) {
         that.setState({citations: myJson});
-        console.log(that.state.citations);
+        
       });
 
     return(answer);
@@ -149,8 +148,7 @@ class Analyze extends Component {
       })
       .then(function(myJson) {
         that.setState({current_s2_data: myJson});
-        console.log("printing s2 informstion");
-        console.log(that.state.current_s2_data);
+        
       });
 
   }
@@ -160,8 +158,7 @@ class Analyze extends Component {
     //generate an id for each source
     //
 
-    console.log('mounted');
-    console.log(this.props.user.id);
+    
     var that = this;
     if (this.props.location.state != undefined) {
       this.setState({assignmentId: this.props.location.state.id});
@@ -183,8 +180,7 @@ class Analyze extends Component {
 
               that.get_citation_info(myJson["_id"]).then(function(value) {
 
-                console.log('printing value');
-                console.log(value);
+                
                 that.get_s2_info(that.state.citations[1]["_id"]);
               
               });
@@ -220,8 +216,7 @@ class Analyze extends Component {
     //[name]: value
     //});
 
-    console.log('we just selected citation');
-    console.log(event.target.value);
+    
     this.get_s2_info(event.target.value);
 
   }
@@ -339,24 +334,32 @@ class Analyze extends Component {
   refresh(index) {
 
     //console.log(this.state.paper_ids[index]);
+
+
+    if (index < this.state.paper_ids.length) {
     this.get_citation_info(this.state.paper_ids[index]["_id"]);
     this.get_paper_info(this.state.paper_ids[index]["_id"]);
+    } else {
+    
+      console.log('refreshing out of range');
+
+    }
   }
 
 
 
   next_paper() {
 
-    console.log('next paper');
-    console.log(this.state.paper_ids);
-
     this.refresh(1);
-    this.setState({current_paper_id_index: this.state.current_paper_id_index + 1 });
+    //this.setState({current_paper_id_index: this.state.current_paper_id_index + 1 });
+    
+    this.setState((prevState, props) => ({
+      current_paper_id_index: prevState.current_paper_id_index + 1
+    } 
+    ), () => this.refresh(this.state.current_paper_id_index));
+
+
     console.log(this.state.current_paper_id_index);
-
-
-
-
 
   }
 
