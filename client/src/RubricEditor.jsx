@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
+
 import { withRouter } from 'react-router-dom';
 
 import { Input, Card, CardBody, Button } from 'reactstrap';
 import "./css/RubricEditor.css";
 import uniqueId from 'react-html-id';
 import update from 'immutability-helper';
-
 
 class RubricEditor extends Component {
 
@@ -26,7 +26,8 @@ class RubricEditor extends Component {
 			editingTitle: "",
 			cards: [],
 			currentlyEditing: false,
-			editPopulated: false
+			editPopulated: false,
+			curId: ""
 		};
 
 		uniqueId.enableUniqueIds(this);
@@ -89,6 +90,8 @@ class RubricEditor extends Component {
 		const curRubrics = this.state.AvailableRubrics;
 		const target = event.target;
 		const curId = target.id;
+		var that = this;
+
 		for (let i = 0; i < curRubrics.length; i++) {
 			if (curRubrics[i]._id === curId) {
 				fetch('http://localhost:5000/rubrics/' + curId, {
@@ -97,7 +100,10 @@ class RubricEditor extends Component {
 						'Accept': 'application/json',
 						'Content-Type': 'application/json'
 					},
-				});
+				})
+					.then(function (response) {
+						that.getRubrics()
+					});
 			}
 		}
 	}
@@ -202,11 +208,10 @@ class RubricEditor extends Component {
 		}
 	}
 
-	//checks before the component mounts
-	componentWillMount() {
+	async getRubrics() {
 		var that = this;
 		//replace hardcoded number with userID from login
-		fetch('http://localhost:5000/rubrics/' + this.props.user.id)
+		fetch('http://localhost:5000/rubrics/5d26304f97d65677327b7e56')
 			.then(function (response) {
 				return response.json();
 			})
@@ -215,19 +220,32 @@ class RubricEditor extends Component {
 			});
 	}
 
+	//checks before the component mounts
+	componentDidMount() {
+		this.getRubrics();
+	}
+
 	//toggles editor enabling editing or adding new rubrics
 	buildEditor() {
 		let numCards = document.getElementById("rubricChoice").value;
 		this.setState({ rubricSize: numCards });
-
 		//CHANGE THIS ************************************************************************************
 		this.state.isEditing = !this.state.isEditing;
 	}
 
 	//called when user wants to back out without saving
 	reset() {
-
-		//		window.location.reload();
+		this.setState({
+			isEditing: false,
+			rubricExists: false,
+			currentlyEditing: false,
+			editPopulated: false,
+			currentRubric: "",
+			editingTitle: "",
+			curId: "",
+			cards: [],
+			rubricArray: []
+		})
 	}
 
 	//Saves the Current Information in the Card
@@ -313,10 +331,11 @@ class RubricEditor extends Component {
 			promise.push(this.sendRequest(rubricTitle.value, this.state.rubricData));
 		}
 		try {
-
-
-
-			//window.location.reload();
+			this.props.history.push({
+				pathname: "/tasks/",
+				props: { ...this.state }
+			});
+			alert("Rubric Successfuly Built");
 		}
 		catch (e) {
 			//errorcatching here
@@ -332,7 +351,7 @@ class RubricEditor extends Component {
 			const newdata = {
 				"name": rubricTitle,
 				"cards": data,
-				"user_id": this.props.user.id
+				"user_id": "5d26304f97d65677327b7e56"
 			}
 			let dataString = JSON.stringify(newdata);
 			fetch('http://localhost:5000/rubrics', {
@@ -353,7 +372,7 @@ class RubricEditor extends Component {
 			const newdata = {
 				"name": rubricTitle,
 				"cards": data,
-				"user_id": this.props.user.id
+				"user_id": "5d26304f97d65677327b7e56"
 			}
 			let dataString = JSON.stringify(newdata);
 			fetch('http://localhost:5000/rubrics/' + this.state.curId, {

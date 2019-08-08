@@ -10,7 +10,7 @@ import './css/App.css';
 import './css/login.css';
 
 //import picture
-import login from './images/UniversityCenterXLg.jpg';
+import picture from './images/library-image.jpg';
 
 import { GoogleLogin } from "react-google-login";
 
@@ -28,7 +28,14 @@ class Login extends Component {
 		this.getInfo = this.getInfo.bind(this);
 	}
 
-
+	componentDidMount(){
+		if(this.props.isAuthenticated === true){
+			this.props.history.push({
+				pathname: "/",
+				props: { ...this.state}
+			});
+		}
+	}
 
 	onFailure = (err) => {
 		alert(err);
@@ -93,7 +100,7 @@ class Login extends Component {
 					<Row>
 						<Col xs="6">
 							<div id="image_container">
-								<img id="welcome_img" alt="" src={login} />
+								<img id="welcome_img" alt="" src={picture} />
 							</div>
 						</Col>
 						<Col xs="6">
