@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import './css/App.css';
 
 // Hashrouter allows us to do routing for website
-import { Switch, Route, NavLink, HashRouter, Redirect } from "react-router-dom";
+import { Switch, Route, HashRouter} from "react-router-dom";
 
 // Analyze, Login, and Home are all pages for our website
 import Analyze from "./Analyze.jsx";
@@ -16,7 +16,7 @@ import Tasks from "./Tasks.jsx";
 import AccountSettings from "./AccountSettings.jsx";
 import { ProtectedRoute } from "./ProtectedRoute.jsx";
 import Navibar from './Navibar.jsx';
-import Error from "./Error.jsx";
+//import Error from "./Error.jsx";
 
 
 

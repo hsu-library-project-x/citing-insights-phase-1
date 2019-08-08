@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
+
+import { withRouter } from 'react-router-dom';
+
 import { Input, Card, CardBody, Button } from 'reactstrap';
 import "./css/RubricEditor.css";
 import uniqueId from 'react-html-id';
+import update from 'immutability-helper';
 
 class RubricEditor extends Component {
 
@@ -87,6 +91,7 @@ class RubricEditor extends Component {
 		const target = event.target;
 		const curId = target.id;
 		var that = this;
+
 		for (let i = 0; i < curRubrics.length; i++) {
 			if (curRubrics[i]._id === curId) {
 				fetch('http://localhost:5000/rubrics/' + curId, {
@@ -117,7 +122,16 @@ class RubricEditor extends Component {
 						curCards = getRubric[j].cards;
 						for (let i = 0; i < curCards.length; i++) {
 							let newId = this.nextUniqueId();
-							this.state.idArray[i] = newId;
+
+							//CHANGE THIS ************************************************************************************
+							//this.state.idArray[i] = newId;
+
+							this.setState({
+								idArray: update(this.state.idArray, {
+									[i]: { $set: newId }
+								})
+							});
+
 							let curCard = curCards[i];
 							this.state.cards.push(curCard["card" + i]);
 							console.log(this.state.cards[i]);
@@ -146,7 +160,16 @@ class RubricEditor extends Component {
 				let loop = this.state.rubricSize;
 				for (let i = 0; i < loop; i++) {
 					let newId = this.nextUniqueId();
-					this.state.idArray[i] = newId;
+
+					//CHANGE THIS ************************************************************************************
+					//this.state.idArray[i] = newId;
+
+					this.setState({
+						idArray: update(this.state.idArray, {
+							[i]: { $set: newId }
+						})
+					});
+
 					this.state.rubricArray.push(
 						<div className={`cardContainer `}>
 							<Card>
@@ -206,6 +229,7 @@ class RubricEditor extends Component {
 	buildEditor() {
 		let numCards = document.getElementById("rubricChoice").value;
 		this.setState({ rubricSize: numCards });
+		//CHANGE THIS ************************************************************************************
 		this.state.isEditing = !this.state.isEditing;
 	}
 
@@ -222,7 +246,6 @@ class RubricEditor extends Component {
 			cards: [],
 			rubricArray: []
 		})
-
 	}
 
 	//Saves the Current Information in the Card
@@ -277,7 +300,14 @@ class RubricEditor extends Component {
 					cardData[cardIdentifier] = cardInfo;
 					console.log(cardData);
 
-					this.state.rubricData[cardNum] = cardData;
+					//CHANGE THIS ************************************************************************************
+					//this.state.rubricData[cardNum] = cardData;
+					this.setState({
+						rubricData: update(this.state.rubricData, {
+							[cardNum]: { $set: cardData }
+						})
+					});
+
 				}
 			}
 		}
@@ -403,4 +433,4 @@ class RubricEditor extends Component {
 	}
 }
 
-export default RubricEditor
+export default withRouter(RubricEditor);

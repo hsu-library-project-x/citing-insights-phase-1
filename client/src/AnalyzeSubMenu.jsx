@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
-import { HashRouter, Link, Redirect } from "react-router-dom";
-import { Button, Row, Col, Input } from "reactstrap";
+import { Redirect } from "react-router-dom";
+import { Row, Col, Input } from "reactstrap";
 
 import './css/AnalyseSubMenu.css'
 
@@ -64,7 +64,6 @@ class AnalyzeSubMenu extends Component {
 
   }
 
-
   async handleSubmit(event) {
 
     event.preventDefault();
@@ -91,6 +90,7 @@ class AnalyzeSubMenu extends Component {
         state: {id: this.state.selectedAssignmentId},
         props: { ...this.props }
       }} />
+
     }
     
     return (

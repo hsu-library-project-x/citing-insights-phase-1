@@ -1,10 +1,8 @@
 import React, {Component} from "react";
 import {Document, Page, pdfjs} from "react-pdf";
 import './css/PdfComponent.css';
-import paper from "./pdf/samplepaper2.pdf"; //Delete for production
 pdfjs.GlobalWorkerOptions.workerSrc = 
-`//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
-var reader = new FileReader();
+ `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
 
 
 const highlightPattern = (text, pattern) => {
@@ -47,20 +45,26 @@ class PdfComponent extends Component {
       //will put paper here, passed in as prop
       //paper: this.props.paper (or something)
     }
-    console.log('in pdfcomp');
-    console.log(props.data);
+    
   }
 
+  componentWillReceiveProps(nextProps) {
+    
+    var bytes = new Uint8Array(nextProps.data);
+    var blob=new Blob([bytes], {type: "application/pdf;base64"});
+
+    this.setState({pdf: blob})
+}
 
   componentWillMount() {  
+
+    
     
     var bytes = new Uint8Array(this.props.data);
     var blob=new Blob([bytes], {type: "application/pdf;base64"});
 
     this.setState({pdf: blob})
   }
-
-
 
   makeTextRenderer = searchText => textItem => highlightPattern(textItem.str, searchText);
 
@@ -99,7 +103,7 @@ class PdfComponent extends Component {
       <div>
         <React.Fragment>
 
-          {console.log(this.state.pdf)}
+          
 
           <Document file={this.state.pdf} onLoadSuccess={this.onDocumentLoadSuccess}  >
             <Page onLoadSuccess={() => removeTextLayerOffset()} pageNumber={pageNumber} customTextRenderer={this.makeTextRenderer(searchText)} />

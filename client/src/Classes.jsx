@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Form, FormGroup, Input, Label, Button } from 'reactstrap'
+import { Row, Col,  Input, Label} from 'reactstrap'
 import { withRouter } from 'react-router-dom';
 import './css/App.css';
 import './css/Classes.css'
@@ -192,9 +192,8 @@ class Classes extends Component {
     const target = event.target;
     const value = target.value;
     const name = target.name;
-    //alert(name + ", " + value);
     this.setState({
-      [name]: event.target.value
+      [name]: value
     });
     console.log("in handle input change");
     console.log(this.state);

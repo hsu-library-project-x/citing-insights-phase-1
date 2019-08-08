@@ -13,6 +13,8 @@ import { Card, CardText, CardBody, CardTitle } from 'reactstrap';
 import { Row, Col } from 'reactstrap';
 import PdfComponent from "./PdfComponent.jsx";
 
+import update from 'immutability-helper';
+
 //global function for defining ID's
 function makeid(length) {
   var result = '';
@@ -50,7 +52,11 @@ class Analyze extends Component {
       rubricId: "",
       curPaperId: "",
       sourceText: "",
-      currentRubric: []
+      currentRubric: [],
+      current_s2_data: {"influential_citation_count": 20, "citation_velocity": 20},
+      paper_ids: [],
+      current_paper_id_index: 0
+
     }
 
 
@@ -66,27 +72,28 @@ class Analyze extends Component {
     this.handleChildUnmount = this.handleChildUnmount.bind(this);
     this.handleSaveCitations = this.handleSaveCitations.bind(this);
     this.get_citation_info = this.get_citation_info.bind(this);
+    this.get_s2_info = this.get_s2_info.bind(this);
+    this.handleCitationChange = this.handleCitationChange.bind(this);
+    this.next_paper = this.next_paper.bind(this);
+    this.refresh = this.refresh.bind(this);
+    this.get_paper_info = this.get_paper_info.bind(this);
   }
 
 
-  get_paper_info(assignment_id) {
-
-    // this is broken right now but it should just return the JSON it retreives 
-    // i had weird javascript errors but it shouldnt be too hard to get working
-    // this whole block is ccopied into componentdidmount 
-
-    var answer = "a";
-    fetch('http://localhost:5000/papers/' + assignment_id)
-      .then(function (response) {
+  get_paper_info(paper_id) {
+    var that = this;
+    fetch('http://localhost:5000/papers/' + paper_id)
+      .then(function(response) {
         return response.json();
       })
       .then(function (myJson) {
-        answer = myJson;
+        //console.log(JSON.stringify(myJson));
+        //console.log(myJson);
 
-        return (myJson);
-      })
-      .then((result) => { answer = result });
-    return (answer);
+        that.setState({current_pdf_data: myJson["pdf"]["data"]});
+        //return (myJson);
+        //that.setState({AvailableAssignments: myJson});
+      });
   }
 
 
@@ -97,8 +104,6 @@ class Analyze extends Component {
         props: { ...this.state }
       });
     } else {
-
-
       var that = this;
 
       //Grab info about the assignment
@@ -119,13 +124,29 @@ class Analyze extends Component {
   get_citation_info(paper_id) {
 
     var that = this;
-    fetch('http://localhost:5000/citations/by_paper_id/' + paper_id)
-      .then(function (response) {
+
+    var answer = fetch('http://localhost:5000/citations/by_paper_id/' + paper_id)
+      .then(function(response) {
         return response.json();
       })
-      .then(function (myJson) {
-        that.setState({ citations: myJson });
+      .then(function(myJson) {
+        that.setState({citations: myJson});
+        
       });
+
+    return(answer);
+
+  }
+  get_s2_info(citation_id) {
+
+    var that = this;
+    fetch('http://localhost:5000/citations/s2/' + citation_id)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(myJson) {
+        that.setState({current_s2_data: myJson});
+         });
 
   }
 
@@ -133,9 +154,7 @@ class Analyze extends Component {
   //Do this call every time a new Paper is loaded into the  component
 
   componentWillMount() {
-
     var that = this;
-
     if (this.props.location.state !== undefined) {
       this.setState({ assignmentId: this.props.location.state.id });
 
@@ -144,30 +163,34 @@ class Analyze extends Component {
           return response.json();
         })
         .then(function (myJson) {
+        try{
+          that.setState({paper_ids: myJson})
+          fetch('http://localhost:5000/papers/' + myJson[0]["_id"])
+            .then(function (response) {
+              return response.json();
+            })
+            .then(function (myJson) {
+              that.setState({ current_pdf_data: myJson["pdf"]["data"] });
 
-          try {
-            fetch('http://localhost:5000/papers/' + myJson[0]["_id"])
-              .then(function (response) {
-                return response.json();
-              })
-              .then(function (myJson) {
-                that.setState({ current_pdf_data: myJson["pdf"]["data"] });
+              that.get_citation_info(myJson["_id"]).then(function(value) {
 
-                that.get_citation_info(myJson["_id"]);
-                //return(myJson);
-                //that.setState({AvailableAssignments: myJson});
+                
+                that.get_s2_info(that.state.citations[1]["_id"]);
+              
               });
-          }
-          catch{
+}
+        catch{
             alert("No paper found for this assignment! (Please upload one)");
             that.props.history.push({
               pathname: "/",
               props: { ...that.state }
+        
+        //return(myJson);
+              //that.setState({AvailableAssignments: myJson});
             });
           }
         });
-
-    } else {
+   } else {
       this.setState({ assignmentId: "no assignment selected" });
     }
     //get the rubrics
@@ -182,6 +205,19 @@ class Analyze extends Component {
       });
   }
 
+  handleCitationChange(event){
+    //const target = event.target;
+    //const value = target.value;
+    //const name = target.name;
+    //alert(name + ", " + value);
+    //this.setState({
+    //[name]: value
+    //});
+
+    
+    this.get_s2_info(event.target.value);
+
+  }
 
   handleGetRubric(event) {
 
@@ -271,6 +307,38 @@ class Analyze extends Component {
     });
   }
 
+  refresh(index) {
+
+    //console.log(this.state.paper_ids[index]);
+
+
+    if (index < this.state.paper_ids.length) {
+    this.get_citation_info(this.state.paper_ids[index]["_id"]);
+    this.get_paper_info(this.state.paper_ids[index]["_id"]);
+    } else {
+    
+      console.log('refreshing out of range');
+
+    }
+  }
+
+
+
+  next_paper() {
+
+    this.refresh(1);
+    //this.setState({current_paper_id_index: this.state.current_paper_id_index + 1 });
+    
+    this.setState((prevState, props) => ({
+      current_paper_id_index: prevState.current_paper_id_index + 1
+    } 
+    ), () => this.refresh(this.state.current_paper_id_index));
+
+
+    console.log(this.state.current_paper_id_index);
+
+  }
+
   renderAnnotate() {
     if (this.state.citationData.length !== 0) {
       return ((!this.state.isMarkup) ?
@@ -347,8 +415,12 @@ class Analyze extends Component {
       for (let i = 0; i < data.length; i++) {
         if (data[i].id === citeIds[1]) {
           if (citeIds[0] === "source") {
-            let currentCitation = data[i];
+            //let currentCitation = data[i];
+
+						//CHANGE THIS ************************************************************************************
             this.state.citationData[i].annotation = annotation;
+
+
             if (box.classList.contains("savedAnimation")) {
               document.getElementById("curAnno").classList.remove("savedAnimation");
               document.getElementById("curAnno").classList.add("savedAnimation2");
@@ -363,6 +435,8 @@ class Analyze extends Component {
             let curArray = data[i].intextCites;
             for (let j = 0; j < curArray.length; j++) {
               if (curArray[j].id === citeIds[0]) {
+
+                //CHANGE THIS ************************************************************************************
                 this.state.citationData[i].intextCites[j].annotation = annotation;
 
                 if (box.classList.contains("savedAnimation")) {
@@ -385,6 +459,7 @@ class Analyze extends Component {
 
 
 
+
   toggleHidden() {
     this.setState({
       isHidden: !this.state.isHidden
@@ -399,7 +474,7 @@ class Analyze extends Component {
 
   render() {
     var pdf;
-    if (this.state.current_pdf_data == "this must get set") {
+    if (this.state.current_pdf_data === "this must get set") {
       pdf = <p> we dont have data yet </p>;
     } else {
       pdf = <PdfComponent data={this.state.current_pdf_data} />;
@@ -415,18 +490,48 @@ class Analyze extends Component {
 
     let citations = this.state.citations;
     var citationItems = <p> nothing found yet </p>
+    // if (citations != []) {
+
+    //   var citationItems = citations.map((citation) =>
+
+    //     <p id="biblio-box">{ citation.author[0].family + ', '  + citation.author[0].given  + ': '  + citation.title}</p>
+        
+      
+    //   );
+
+    // } else {
+    //   var citationItems = <p> nothing found yet </p>
+    // }
+
+
     if (citations != []) {
-      var citationItems = citations.map((citation) =>
-        <p id="biblio-box">{
-          citation.author[0].family + ', '
-          + citation.author[0].given + ': '
-          + citation.title}
-        </p>
-      );
+
+      var citationItems = citations.map( function(citation) {
+
+        if (citation.author[0] != undefined){
+        return( <p id="biblio-box">{ citation.author[0].family + ', '  + citation.author[0].given  + ': '  + citation.title}</p> )
+        }
+      
+      });
+
     } else {
       var citationItems = <p> nothing found yet </p>
     }
 
+
+
+    var citationDropdownItems = <option> nothing found yet </option>
+    if (citations != []) {
+      var citationDropdownItems = citations.map( function(citation) {
+        
+        if (citation.author[0] != undefined){
+        return(<option value={citation._id}> {citation.author[0].family} </option>)
+        }
+
+      });
+    } else {
+      var citationItems = <p> nothing found yet </p>
+    }
     return (
 
       /* Analyze Mode HTML Start */
@@ -463,12 +568,18 @@ class Analyze extends Component {
         {/* Row: Contains -- Semantic Scholor, Block Text, Sources, Biblio Box, and Progress Bar */}
         <Row>
           <Col xs="3">
+            <label for="assignForAnalyze">Citations:</label>
+              <Input onChange={this.handleCitationChange} onInput={this.onInput} id="assignForAnalyze" type="select" name="AssignNew" required >
+                <option value="" disabled selected hidden >Select a Citation</option>
+                {citationDropdownItems}
+              </Input>
             <h4>Discovery Tool</h4>
             <div class="discoveryTool">
               <Card>
                 <CardBody>
                   <CardTitle>Semantic Scholar</CardTitle>
-                  <CardText>Information from Semantic Scholar about source goes here</CardText>
+                  <CardText>Citation Velcoity: {this.state.current_s2_data["citation_velocity"]}</CardText>
+                  <CardText>Influential Citations: {this.state.current_s2_data["influential_citation_count"]}</CardText>
                 </CardBody>
               </Card>
               <Card>
@@ -511,7 +622,7 @@ class Analyze extends Component {
               <Progress id="assignmentProgress" value="0" />
             </div>
             <Button color="success" id="paperDone" onClick={this.handleSaveCitations}> Save Paper </Button>
-            <Button id="nextPaper" > Next Paper </Button>
+            <Button id="nextPaper" onClick={this.next_paper}> Next Paper </Button>
           </Col>
         </Row>
         {/*prop passing the rubric information*/}
