@@ -98,7 +98,7 @@ class AnalyzeSubMenu extends Component {
         <Row>
           <Col xs="12">
             <form className={`${!this.state.selectedAssignment ? "warnHighlight" : "safeHighlight"}`} onSubmit={this.handleSubmit}>
-              <h1> New Assignment</h1>
+              <h1> Analyze an Assignment</h1>
               <label for="assignForAnalyze">Class:</label>
               <Input onChange={this.handleClassSelection} id="assignForAnalyze" type="select" name="className" required >
                 <option value="" disabled selected hidden >Select a Class</option>
