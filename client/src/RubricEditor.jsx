@@ -47,6 +47,11 @@ class RubricEditor extends Component {
 		this.getRubrics();
 	}
 
+	componentDidUpdate(prevProps, prevState) {
+		if(prevState !== this.state){
+			
+		}
+	}
 	//handles change of button text
 	fillButtonText() {
 		if (this.state.needsSaving) {
@@ -412,8 +417,8 @@ class RubricEditor extends Component {
 					<div className={`${this.state.needsSaving ? "warnHighlight" : "safeHighlight"}`} id="cardStorage">
 						<Input type="text" id="rubricTitle" placeholder="Type Rubric Title Here" />
 						<hr />
-						{this.populateEdit()}
 						{this.renderActions()}
+						{this.populateEdit()}
 					</div>
 				}
 				{(!this.state.isEditing) ? <h4>Please select a rubric from the list or create a new one to get started.</h4> :

@@ -91,26 +91,29 @@ class Analyze extends Component {
 
 
   componentDidMount() {
-    if (this.props.location.state !== undefined) {
-      this.setState({ assignmentId: this.props.location.state.id });
+    if (this.props.location.state === undefined) {
+      this.props.history.push({
+        pathname: "/",
+        props: { ...this.state }
+      });
     } else {
-      this.setState({ assignmentId: "No Assignment Selected" });
+
+
+      var that = this;
+
+      //Grab info about the assignment
+      fetch('http://localhost:5000/assignments/' + this.props.location.state.id)
+        .then(function (response) {
+
+          return response.json();
+        })
+        .then(function (myJson) {
+          console.log(that.state);
+          that.setState({
+            assignment: myJson
+          }, console.log(that.state));
+        });
     }
-
-    var that = this;
-    
-    //Grab info about the assignment
-    fetch('http://localhost:5000/assignments/' + this.props.location.state.id)
-    .then(function(response){
-
-      return response.json();
-    })
-    .then(function(myJson){
-      console.log(that.state);
-      that.setState({
-        assignment: myJson
-      }, console.log(that.state));
-    });
   }
 
   get_citation_info(paper_id) {
@@ -156,10 +159,10 @@ class Analyze extends Component {
               });
           }
           catch{
-            alert("No paper found for this assignment! (...How did you get this far?)");
+            alert("No paper found for this assignment! (Please upload one)");
             that.props.history.push({
               pathname: "/",
-              props: { ...that.state}
+              props: { ...that.state }
             });
           }
         });
@@ -414,8 +417,11 @@ class Analyze extends Component {
     var citationItems = <p> nothing found yet </p>
     if (citations != []) {
       var citationItems = citations.map((citation) =>
-        <p id="biblio-box">{citation.author[0].family + ', ' + citation.author[0].given + ': ' + citation.title}</p>
-
+        <p id="biblio-box">{
+          citation.author[0].family + ', '
+          + citation.author[0].given + ': '
+          + citation.title}
+        </p>
       );
     } else {
       var citationItems = <p> nothing found yet </p>
