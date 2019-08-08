@@ -40,6 +40,7 @@ class RubricEditor extends Component {
 		this.handleDeleteRubric = this.handleDeleteRubric.bind(this);
 		this.getRubrics = this.getRubrics.bind(this);
 		this.changeEditingStatus = this.changeEditingStatus.bind(this);
+		this.changeEditingStatusRevert = this.changeEditingStatusRevert.bind(this);
 	}
 
 	//checks before the component mounts
@@ -52,6 +53,7 @@ class RubricEditor extends Component {
 			
 		}
 	}
+
 	//handles change of button text
 	fillButtonText() {
 		if (this.state.needsSaving) {
@@ -77,10 +79,18 @@ class RubricEditor extends Component {
 	}
 
 	changeEditingStatus() {
-	
 		this.setState({
-			isEditing: !this.state.isEditing
+			isEditing: !this.state.isEditing,
 		}, 	this.getRubrics())
+	}
+
+	changeEditingStatusRevert(){
+		this.setState({
+			isEditing: false,
+			rubricSize: 0,
+			rubricArray: [],
+			currentlyEditing: false
+		}, this.getRubrics())
 	}
 
 	getRubrics() {
@@ -246,8 +256,7 @@ class RubricEditor extends Component {
 
 
 		try {
-
-		this.changeEditingStatus();
+			this.changeEditingStatusRevert();
 		}
 		catch (e) {
 			//errorcatching here
@@ -305,7 +314,7 @@ class RubricEditor extends Component {
 		//if user is editing the rubrics
 		if (this.state.isEditing) {
 			//signifies user is editing an existing rubric
-			if (this.state.rubricExists) {
+			if (this.state.rubricExists && !this.state.currentlyEditing) {
 				//grab the users rubrics
 				const getRubric = this.state.AvailableRubrics;
 				//define an array to hold the cards belonging to an individual rubric
@@ -359,9 +368,9 @@ class RubricEditor extends Component {
 				//loop the value of rubric Size building a card for each one
 				let loop = this.state.rubricSize;
 				for (let i = 0; i < loop; i++) {
-					let newId = this.nextUniqueId();
-
-
+					let newId = this.nextUniqueId();							
+					//why / WRONG
+					this.state.idArray[i] = newId;
 					//WRONG
 					this.state.rubricArray.push(
 						<div className={`cardContainer `}>
@@ -423,7 +432,7 @@ class RubricEditor extends Component {
 				}
 				{(!this.state.isEditing) ? <h4>Please select a rubric from the list or create a new one to get started.</h4> :
 					<div class="rubricButtonContainer">
-						<button id="backSelect" onClick={() => this.changeEditingStatus()}>Back</button>
+						<button id="backSelect" onClick={() => this.changeEditingStatusRevert()}>Back</button>
 						<button id="rubBuildButton" disabled={this.state.needsSaving} onClick={() => this.buildRubric()}>{this.fillButtonText()}</button>
 						<button id="saveCards" onClick={() => this.saveCard()}>Save Cards</button>
 					</div>
