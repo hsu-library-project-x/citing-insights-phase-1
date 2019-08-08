@@ -1,10 +1,8 @@
 import React, {Component} from "react";
 import {Document, Page, pdfjs} from "react-pdf";
 import './css/PdfComponent.css';
-import paper from "./pdf/samplepaper2.pdf"; //Delete for production
 pdfjs.GlobalWorkerOptions.workerSrc = 
-`//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
-var reader = new FileReader();
+ `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
 
 
 const highlightPattern = (text, pattern) => {

@@ -6,18 +6,20 @@ import './css/Analyze.css';
 import Annotate from './Annotate.jsx';
 import Markup from './Markup.jsx';
 import RubricSubmit from './RubricSubmit.jsx';
-import { Label, Button, Input, Progress } from 'reactstrap';
+import { Button, Input, Progress } from 'reactstrap';
 import { Card, CardText, CardBody, CardTitle } from 'reactstrap';
 // Lets us use column / row and layout for our webpage using Reactstrap
 import { Row, Col } from 'reactstrap';
 import PdfComponent from "./PdfComponent.jsx";
 
+import update from 'immutability-helper';
+
 //global function for defining ID's
 function makeid(length) {
-  var result           = '';
-  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var result = '';
+  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   var charactersLength = characters.length;
-  for ( var i = 0; i < length; i++ ) {
+  for (var i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   return result;
@@ -148,7 +150,7 @@ class Analyze extends Component {
       })
       .then(function(myJson) {
         that.setState({current_s2_data: myJson});
-        
+   
       });
 
   }
@@ -160,23 +162,23 @@ class Analyze extends Component {
 
     
     var that = this;
-    if (this.props.location.state != undefined) {
-      this.setState({assignmentId: this.props.location.state.id});
+    if (this.props.location.state !== undefined) {
+      this.setState({ assignmentId: this.props.location.state.id });
 
       fetch('http://localhost:5000/papers/by_assignment_id/' + this.props.location.state.id)
-        .then(function(response) {
+        .then(function (response) {
           return response.json();
         })
-        .then(function(myJson) {
+        .then(function (myJson) {
 
 
           that.setState({paper_ids: myJson})
           fetch('http://localhost:5000/papers/' + myJson[0]["_id"])
-            .then(function(response) {
+            .then(function (response) {
               return response.json();
             })
-            .then(function(myJson) {
-              that.setState({current_pdf_data: myJson["pdf"]["data"]});
+            .then(function (myJson) {
+              that.setState({ current_pdf_data: myJson["pdf"]["data"] });
 
               that.get_citation_info(myJson["_id"]).then(function(value) {
 
@@ -201,8 +203,8 @@ class Analyze extends Component {
       .then(function (response) {
         return response.json();
       })
-      .then(function(myJson) {
-        that.setState({AvailableRubrics: myJson});
+      .then(function (myJson) {
+        that.setState({ AvailableRubrics: myJson });
 
       });
   }
@@ -221,7 +223,7 @@ class Analyze extends Component {
 
   }
 
-  handleGetRubric(event){
+  handleGetRubric(event) {
 
     const target = event.target;
     const id = target.value;
@@ -286,7 +288,7 @@ class Analyze extends Component {
       assessingRubric: false
     });
   }
-  
+
   //this saves annotations and intext citations associated with them
   handleSaveCitations() {
     let citationData = this.state.citationData;
@@ -441,8 +443,12 @@ class Analyze extends Component {
       for (let i = 0; i < data.length; i++) {
         if (data[i].id === citeIds[1]) {
           if (citeIds[0] === "source") {
-            let currentCitation = data[i];
+            //let currentCitation = data[i];
+
+						//CHANGE THIS ************************************************************************************
             this.state.citationData[i].annotation = annotation;
+
+
             if (box.classList.contains("savedAnimation")) {
               document.getElementById("curAnno").classList.remove("savedAnimation");
               document.getElementById("curAnno").classList.add("savedAnimation2");
@@ -457,9 +463,12 @@ class Analyze extends Component {
             let curArray = data[i].intextCites;
             for (let j = 0; j < curArray.length; j++) {
               if (curArray[j].id === citeIds[0]) {
+
+                //CHANGE THIS ************************************************************************************
                 this.state.citationData[i].intextCites[j].annotation = annotation;
 
-                if( box.classList.contains("savedAnimation")){
+
+                if (box.classList.contains("savedAnimation")) {
 
                   document.getElementById("curAnno").classList.remove("savedAnimation");
                   document.getElementById("curAnno").classList.add("savedAnimation2");
@@ -494,7 +503,7 @@ class Analyze extends Component {
 
   render() {
     var pdf;
-    if (this.state.current_pdf_data == "this must get set") {
+    if (this.state.current_pdf_data === "this must get set") {
       pdf = <p> we dont have data yet </p>;
     } else {
       pdf = <PdfComponent data={this.state.current_pdf_data} />;
@@ -504,8 +513,8 @@ class Analyze extends Component {
       <option value={rubric._id}>{rubric.name}</option>
     );
 
-                                 
-              let citations = this.state.citations;
+
+    let citations = this.state.citations;
 
     var citationItems = <p> nothing found yet </p>
     // if (citations != []) {
@@ -560,8 +569,7 @@ class Analyze extends Component {
     } else {
       var citationItems = <p> nothing found yet </p>
     }
-
-    return(
+    return (
 
       /* Analyze Mode HTML Start */
       <div class="DemoContents analyze-container">

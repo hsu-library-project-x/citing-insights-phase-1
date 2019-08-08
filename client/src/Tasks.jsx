@@ -6,7 +6,7 @@ import './css/App.css';
 import './css/Tasks.css';
 
 //Import Routing
-import { Switch, Route, HashRouter, Link, withRouter } from "react-router-dom";
+import { Switch, Route, Link, withRouter } from "react-router-dom";
 import Classes from "./Classes.jsx";
 import Assignments from "./Assignments.jsx";
 import Download from "./Download.jsx";
@@ -19,8 +19,6 @@ import addAssignment from './images/assignment.svg';
 import Continue from './images/continue.svg';
 import download from './images/download.svg';
 import rubric from './images/rubric.svg';
-
-import { ProtectedRoute } from "./ProtectedRoute";
 
 // Collapses the big drop down of all sub components
 function CollapseMain(props) {
@@ -49,10 +47,6 @@ function CollapseMain(props) {
 
 // Class to render our homepage
 class Tasks extends Component {
-
-	constructor(props) {
-		super(props);
-	}
 
 	// This changes the page title to correspond to what was clicked
 	changeName(evt) {
