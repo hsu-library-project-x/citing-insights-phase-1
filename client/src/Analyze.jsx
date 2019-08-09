@@ -177,9 +177,11 @@ class Analyze extends Component {
                 
                 that.get_s2_info(that.state.citations[1]["_id"]);
               
-              });
-}
-        catch{
+            
+
+});
+});
+} catch (e) {
             alert("No paper found for this assignment! (Please upload one)");
             that.props.history.push({
               pathname: "/",
