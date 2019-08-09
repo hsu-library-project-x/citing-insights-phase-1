@@ -183,7 +183,7 @@ class Analyze extends Component {
               that.get_citation_info(myJson["_id"]).then(function(value) {
 
                 
-                that.get_s2_info(that.state.citations[1]["_id"]);
+                that.get_s2_info(that.state.citations[0]["_id"]);
               
               });
               //return(myJson);
@@ -350,19 +350,30 @@ class Analyze extends Component {
 
 
 
-  next_paper() {
+  next_paper(direction) {
+    // Direction must be 1 or -1
+    // 1 is next and -1 is previous
+    //
+    var check = true;
+    var index = this.state.current_paper_id_index;
 
-    this.refresh(1);
-    //this.setState({current_paper_id_index: this.state.current_paper_id_index + 1 });
-    
+    //check that we wont go out of range
+    if (direction == -1 && index < 1) {
+      check = false;
+    }
+
+    if (direction == 1 && index > this.state.paper_ids.length) {
+      check  = false;
+    }
+
+    if (check) {
     this.setState((prevState, props) => ({
-      current_paper_id_index: prevState.current_paper_id_index + 1
+      current_paper_id_index: prevState.current_paper_id_index + direction
     } 
     ), () => this.refresh(this.state.current_paper_id_index));
-
-
-    console.log(this.state.current_paper_id_index);
-
+    } else {
+      console.log('refreshing out of range');
+    }
   }
 
   renderAnnotate() {
@@ -660,7 +671,8 @@ class Analyze extends Component {
               <Progress id="assignmentProgress" value="0" />
             </div>
             <Button color="success" id="paperDone" onClick={this.handleSaveCitations}> Save Paper </Button>
-            <Button id="nextPaper" onClick={this.next_paper}> Next Paper </Button>
+            <Button id="nextPaper" onClick={() => this.next_paper(1)}> Next Paper </Button>
+            <Button id="nextPaper" onClick={() => this.next_paper(-1)}> Previous Paper </Button>
           </Col>
         </Row>
         {/*prop passing the rubric information*/}
