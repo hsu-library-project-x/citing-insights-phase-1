@@ -19,15 +19,18 @@ class Rubric extends Component {
     }
 
     render() {
-        
+
         let rubrics = this.props.currentRubric.cards;
+
+        let rubricList = <p> naw dude </p>
+
         if (rubrics !== undefined && rubrics !== []) {
-            let rubricList = rubrics.map(function (rubric) {
+            rubricList = rubrics.map(function (rubric) {
                 return (
                     <AccordionItem>
                         <AccordionItemHeading>
                             <AccordionItemButton>
-                                heyy
+                                benchmark 1
                         </AccordionItemButton>
                         </AccordionItemHeading>
                         <AccordionItemPanel>
@@ -39,14 +42,13 @@ class Rubric extends Component {
                             temporibus eius iusto?</p>
                         </AccordionItemPanel>
                     </AccordionItem>
-
                 )
             });
         }
 
         return (
             <Accordion>
-                {rubrics}
+                {rubricList}
             </Accordion>
         );
     }
