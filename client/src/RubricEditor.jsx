@@ -162,13 +162,13 @@ class RubricEditor extends Component {
 					let newId = this.nextUniqueId();
 
 					//CHANGE THIS ************************************************************************************
-					//this.state.idArray[i] = newId;
+					this.state.idArray[i] = newId;
 
-					this.setState({
-						idArray: update(this.state.idArray, {
-							[i]: { $set: newId }
-						})
-					});
+					// this.setState({
+					// 	idArray: update(this.state.idArray, {
+					// 		[i]: { $set: newId }
+					// 	})
+					// });
 
 					this.state.rubricArray.push(
 						<div className={`cardContainer `}>
