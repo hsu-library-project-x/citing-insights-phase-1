@@ -19,25 +19,26 @@ class Rubric extends Component {
     }
 
     render() {
-        let rubrics = this.props.currentRubric;
-        // if(rubrics !== []){
+        
+        let rubrics = this.props.currentRubric.cards;
+        // if (rubrics !== []) {
         //     let rubricList = rubrics.map(function (rubric) {
         //         return (
         //             <AccordionItem>
-        //             <AccordionItemHeading>
-        //                 <AccordionItemButton>
-        //                     benchmark 1
+        //                 <AccordionItemHeading>
+        //                     <AccordionItemButton>
+        //                         benchmark 1
         //                 </AccordionItemButton>
-        //             </AccordionItemHeading>
-        //             <AccordionItemPanel>
-        //                 <p> Lorem ipsum dolor, sit amet consectetur
-        //                     adipisicing elit. Labore, earum suscipit,
-        //                     eveniet, ipsa soluta ex fugit molestiae
-        //                     beatae eius pariatur eos nam. Repudiandae
-        //                     reprehenderit dolor placeat praesentium
+        //                 </AccordionItemHeading>
+        //                 <AccordionItemPanel>
+        //                     <p> Lorem ipsum dolor, sit amet consectetur
+        //                         adipisicing elit. Labore, earum suscipit,
+        //                         eveniet, ipsa soluta ex fugit molestiae
+        //                         beatae eius pariatur eos nam. Repudiandae
+        //                         reprehenderit dolor placeat praesentium
         //                     temporibus eius iusto?</p>
-        //             </AccordionItemPanel>
-        //         </AccordionItem>
+        //                 </AccordionItemPanel>
+        //             </AccordionItem>
 
         //         )
         //     });
@@ -45,7 +46,7 @@ class Rubric extends Component {
 
         return (
             <Accordion>
-                
+
                 <AccordionItem>
                     <AccordionItemHeading>
                         <AccordionItemButton>
