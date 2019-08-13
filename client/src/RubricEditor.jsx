@@ -133,7 +133,10 @@ class RubricEditor extends Component {
 							// });
 
 							let curCard = curCards[i];
+							
 							this.state.cards.push(curCard["card" + i]);
+
+							
 							console.log(this.state.cards[i]);
 							//console.log(curCard["card" + i]);
 							this.state.rubricArray.push(
@@ -222,9 +225,38 @@ class RubricEditor extends Component {
 
 	//checks before the component mounts
 	componentDidMount() {
-		this.getRubrics();
+		this.getRubrics()
+		.then(() => {
+			if(this.state.AvailableRubrics === []){
+
+			}
+		});
+		
 	}
 
+	getDefaultRubric(){
+		const defaultRubric = {
+			"cards": [
+				{
+					"cardTitle": "Capstone 4",
+					"cardText": "Effectively defines the scope of the research question or thesis. Effectively determines key conceptsTypes of information (sources) selected directly relate to concepts or answer research question"
+				},				
+				{
+					"cardTitle": "Milestone 3",
+					"cardText": "Defines the scope of the research question or thesis completely. Can determine key concepts. Types of information (sources) selected relate to concepts or answer research question."
+				},				
+				{
+					"cardTitle": "Milestone 2",
+					"cardText": "Defines the scope of the research question or thesis incompletely (parts are missing, remains too broad or too narrow, etc.). Can determine key concepts. Types of information (sources) selected partially relate to concepts or answer research question."
+				},				
+				{
+					"cardTitle": "Benchmark 1",
+					"cardText": "Has difficulty defining the scope of the research question or thesis. Has difficulty determining key concepts. Types of information (sources) selected do not relate to concepts or answer research question."
+				}
+			]
+
+		}
+	}
 	//toggles editor enabling editing or adding new rubrics
 	buildEditor() {
 		let numCards = document.getElementById("rubricChoice").value;
@@ -280,13 +312,13 @@ class RubricEditor extends Component {
 						"cardText": text
 					};
 
-					let cardIdentifier = "card" + cardNum;
+					// let cardIdentifier = "card" + cardNum;
 
-					const cardData = {};
-					cardData[cardIdentifier] = cardInfo;
-					console.log(cardData);
+					// const cardData = {};
+					// cardData[cardIdentifier] = cardInfo;
+					// console.log(cardData);
 
-					this.state.rubricData.push(cardData);
+					this.state.rubricData.push(cardInfo);
 				}
 				else {
 					const cardInfo = {
@@ -294,20 +326,19 @@ class RubricEditor extends Component {
 						"cardText": text
 					};
 
-					let cardIdentifier = "card" + cardNum;
+					// let cardIdentifier = "card" + cardNum;
 
-					const cardData = {};
-					cardData[cardIdentifier] = cardInfo;
-					console.log(cardData);
+					// const cardData = {};
+					// cardData[cardIdentifier] = cardInfo;
+					// console.log(cardData);
 
 					//CHANGE THIS ************************************************************************************
-					this.state.rubricData[cardNum] = cardData;
+					this.state.rubricData.push(cardInfo);
 					// this.setState({
 					// 	rubricData: update(this.state.rubricData, {
 					// 		[cardNum]: { $set: cardData }
 					// 	})
 					// });
-
 				}
 			}
 		}
