@@ -55,7 +55,8 @@ class Analyze extends Component {
       currentRubric: [],
       current_s2_data: { "influential_citation_count": 20, "citation_velocity": 20 },
       paper_ids: [],
-      current_paper_id_index: 0
+      current_paper_id_index: 0,
+      current_citation_id: 0
 
     }
 
@@ -77,6 +78,9 @@ class Analyze extends Component {
     this.next_paper = this.next_paper.bind(this);
     this.refresh = this.refresh.bind(this);
     this.get_paper_info = this.get_paper_info.bind(this);
+    this.open_s2 = this.open_s2.bind(this);
+    this.open_alma_primo = this.open_alma_primo.bind(this);
+    this.open_google_scholar = this.open_google_scholar.bind(this);
   }
 
 
@@ -120,7 +124,7 @@ class Analyze extends Component {
         });
     }
   }
-
+    
   get_citation_info(paper_id) {
 
     var that = this;
@@ -140,6 +144,7 @@ class Analyze extends Component {
   get_s2_info(citation_id) {
 
     var that = this;
+    that.setState({current_citation_id: citation_id});
     fetch('http://localhost:5000/citations/s2/' + citation_id)
       .then(function (response) {
         return response.json();
@@ -322,6 +327,90 @@ class Analyze extends Component {
   }
 
 
+  open_s2() {
+
+    console.log('clicked');
+    console.log(this.state.citations);
+    var current_citation_id = this.state.current_citation_id;
+
+    var query = "";
+
+    this.state.citations.forEach(function(citation) {
+    
+      if (citation["_id"] == current_citation_id) {
+        
+        console.log(citation);
+        console.log(citation["author"][0]["family"]);
+        console.log(citation["title"][0]);
+
+          query = encodeURI(citation["author"][0]["family"] + " " + citation["title"][0]);
+        console.log(query);
+      }
+
+    });
+    
+
+    var win = window.open("https://www.semanticscholar.org/search?q=" + query, '_blank');
+    win.focus();
+
+  }
+
+  open_alma_primo() {
+
+    console.log('clicked');
+    console.log(this.state.citations);
+    var current_citation_id = this.state.current_citation_id;
+
+    var query = "";
+
+    this.state.citations.forEach(function(citation) {
+    
+      if (citation["_id"] == current_citation_id) {
+        
+        console.log(citation);
+        console.log(citation["author"][0]["family"]);
+        console.log(citation["title"][0]);
+
+          query = encodeURI(citation["title"][0]);
+        console.log(query);
+      }
+
+    });
+    
+
+    var win = window.open("https://humboldt-primo.hosted.exlibrisgroup.com/primo-explore/search?query=title,begins_with," +  query  +  ",AND&tab=everything&search_scope=EVERYTHING&sortby=title&vid=01CALS_HUL&lang=en_US&mode=advanced&offset=0&pcAvailability=true", '_blank');
+    win.focus();
+
+  }
+
+  open_google_scholar() {
+
+    console.log('clicked');
+    console.log(this.state.citations);
+    var current_citation_id = this.state.current_citation_id;
+
+    var query = "";
+
+    this.state.citations.forEach(function(citation) {
+    
+      if (citation["_id"] == current_citation_id) {
+        
+        console.log(citation);
+        console.log(citation["author"][0]["family"]);
+        console.log(citation["title"][0]);
+
+          query = encodeURI(citation["author"][0]["family"] + " " + citation["title"][0]);
+        console.log(query);
+      }
+
+    });
+    
+
+    var win = window.open("https://scholar.google.com/scholar?q=" + query, '_blank');
+    win.focus();
+
+  }
+
 
   next_paper() {
 
@@ -427,8 +516,6 @@ class Analyze extends Component {
       }
     }
   }
-
-
 
 
   toggleHidden() {
@@ -543,20 +630,20 @@ class Analyze extends Component {
               <div class="discoveryTool">
                 <Card>
                   <CardBody>
-                    <CardTitle>Semantic Scholar</CardTitle>
+                    <CardTitle><a style={{color: "blue", "text-decoration": "underline"}}   onClick={this.open_s2}>Semantic Scholar</a></CardTitle>
                     <CardText>Citation Velcoity: {this.state.current_s2_data["citation_velocity"]}</CardText>
                     <CardText>Influential Citations: {this.state.current_s2_data["influential_citation_count"]}</CardText>
                   </CardBody>
                 </Card>
                 <Card>
                   <CardBody>
-                    <CardTitle>Alma Primo</CardTitle>
+                    <CardTitle><a style={{color: "blue", "text-decoration": "underline"}}   onClick={this.open_alma_primo}>Alma Primo</a></CardTitle>
                     <CardText>Information from Alma Primo about source goes here</CardText>
                   </CardBody>
                 </Card>
                 <Card>
                   <CardBody>
-                    <CardTitle>Google Scholar</CardTitle>
+                    <CardTitle><a style={{color: "blue", "text-decoration": "underline"}}   onClick={this.open_google_scholar}>Google Scholar</a></CardTitle>
                     <CardText>Information from Google Scholar about source goes here</CardText>
                   </CardBody>
                 </Card>
