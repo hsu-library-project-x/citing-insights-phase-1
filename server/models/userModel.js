@@ -20,7 +20,8 @@ var userSchema = new Schema({
 			token: String
 		},
 		select: false
-	}
+	},
+	rubrics: Array
 });
 
 userSchema.set('toJSON', { getters: true, virtuals: true });
@@ -35,13 +36,15 @@ userSchema.statics.upsertGoogleUser = function (accessToken, refreshToken, profi
 	}, function (err, user) {
 		// no user was found, lets create a new one
 		if (!user) {
+			fetch(https)
 			var newUser = new that({
 				name: profile.displayName,
 				email: profile.emails[0].value,
 				googleProvider: {
 					id: profile.id,
 					token: accessToken
-				}
+				},
+				rubrics
 			});
 
 			newUser.save(function (error, savedUser) {

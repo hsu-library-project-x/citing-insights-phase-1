@@ -26,24 +26,17 @@ class Rubric extends Component {
 
         if (rubrics !== undefined && rubrics !== []) {
             rubricList = rubrics.map(function (rubric) {
-                console.log("CARD TITLE");
-                console.log(rubric.cardTitle);
+
                 return (
                     <div>
                         <input type="radio" name="cardName" value={"0"} />
                         <AccordionItem>
                             <AccordionItemHeading>
                                 <AccordionItemButton>
-                                    benchmark 1
-                        </AccordionItemButton>
+                                    {rubric.cardTitle}                        </AccordionItemButton>
                             </AccordionItemHeading>
                             <AccordionItemPanel>
-                                <p> Lorem ipsum dolor, sit amet consectetur
-                                    adipisicing elit. Labore, earum suscipit,
-                                    eveniet, ipsa soluta ex fugit molestiae
-                                    beatae eius pariatur eos nam. Repudiandae
-                                    reprehenderit dolor placeat praesentium
-                            temporibus eius iusto?</p>
+                                <p> {rubric.cardText}</p>
                             </AccordionItemPanel>
                         </AccordionItem>
                     </div>

@@ -137,6 +137,7 @@ class Analyze extends Component {
     return (answer);
 
   }
+
   get_s2_info(citation_id) {
 
     var that = this;
@@ -147,7 +148,6 @@ class Analyze extends Component {
       .then(function (myJson) {
         that.setState({ current_s2_data: myJson });
       });
-
   }
 
   //Here we populate citation source information and meta data
@@ -219,7 +219,6 @@ class Analyze extends Component {
   }
 
   handleGetRubric(event) {
-
     const target = event.target;
     const id = target.value;
     const rubricArray = this.state.AvailableRubrics;

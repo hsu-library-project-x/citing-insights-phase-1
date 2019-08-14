@@ -1,0 +1,122 @@
+{
+    "Determine the Extent of Information Needed": {
+        "cards": [
+            {
+                "cardTitle": "Capstone 4",
+                "cardText": "Effectively defines the scope of the research question or thesis. Effectively determines key conceptsTypes of information (sources) selected directly relate to concepts or answer research question"
+            },
+            {
+                "cardTitle": "Milestone 3",
+                "cardText": "Defines the scope of the research question or thesis completely. Can determine key concepts. Types of information (sources) selected relate to concepts or answer research question."
+            },
+            {
+                "cardTitle": "Milestone 2",
+                "cardText": "Defines the scope of the research question or thesis incompletely (parts are missing, remains too broad or too narrow, etc.). Can determine key concepts. Types of information (sources) selected partially relate to concepts or answer research question."
+            },
+            {
+                "cardTitle": "Benchmark 1",
+                "cardText": "Has difficulty defining the scope of the research question or thesis. Has difficulty determining key concepts. Types of information (sources) selected do not relate to concepts or answer research question."
+            }
+        ]
+    },
+    "Evaluate Information and its Sources Critically": {
+        "cards": [
+            {
+                "cardTitle": "Capstone 4",
+                "cardText": "Chooses a variety of information sources appropriate to the scope and discipline of the research question. Selects sources after considering the importance (to the researched topic) of the multiple criteria used (such as relevance to the research question. currency, authority, audience, and bias or point of view)."
+            },
+            {
+                "cardTitle": "Milestone 3",
+                "cardText": "Chooses a variety of information sources appropriate to the scope and discipline of the research question. Selects sources using multiple criteria (such as relevance to the research question, currency, and authority)."
+            },
+            {
+                "cardTitle": "Milestone 2",
+                "cardText": "Chooses a variety of information sources. Selects sources using basic criteria (such as relevance to the research question and currency)."
+            },
+            {
+                "cardTitle": "Benchmark 1",
+                "cardText": "Chooses a few information sources. Selects sources using limited criteria (such as relevance to the research question)."
+            }
+        ]
+    },
+    "Use Information Effectively to Accomplish a Specific Purpose": {
+        "cards": [
+            {
+                "cardTitle": "Capstone 4",
+                "cardText": "Communicates, organizes and synthesizes information from sources to fully achieve a specific purpose, with clarity and depth"
+            },
+            {
+                "cardTitle": "Milestone 3",
+                "cardText": ""
+            },
+            {
+                "cardTitle": "Milestone 2",
+                "cardText": "Defines the scope of the research question or thesis incompletely (parts are missing, remains too broad or too narrow, etc.). Can determine key concepts. Types of information (sources) selected partially relate to concepts or answer research question."
+            },
+            {
+                "cardTitle": "Benchmark 1",
+                "cardText": "Has difficulty defining the scope of the research question or thesis. Has difficulty determining key concepts. Types of information (sources) selected do not relate to concepts or answer research question."
+            }
+        ]
+    },
+    "Access and Use Information Ethically and Legally": {
+        "cards": [
+            {
+                "cardTitle": "Capstone 4",
+                "cardText": "Effectively defines the scope of the research question or thesis. Effectively determines key conceptsTypes of information (sources) selected directly relate to concepts or answer research question"
+            },
+            {
+                "cardTitle": "Milestone 3",
+                "cardText": "Defines the scope of the research question or thesis completely. Can determine key concepts. Types of information (sources) selected relate to concepts or answer research question."
+            },
+            {
+                "cardTitle": "Milestone 2",
+                "cardText": "Defines the scope of the research question or thesis incompletely (parts are missing, remains too broad or too narrow, etc.). Can determine key concepts. Types of information (sources) selected partially relate to concepts or answer research question."
+            },
+            {
+                "cardTitle": "Benchmark 1",
+                "cardText": "Has difficulty defining the scope of the research question or thesis. Has difficulty determining key concepts. Types of information (sources) selected do not relate to concepts or answer research question."
+            }
+        ]
+    },
+    "Sources and Evidence": {
+        "cards": [
+            {
+                "cardTitle": "Capstone 4",
+                "cardText": "Effectively defines the scope of the research question or thesis. Effectively determines key conceptsTypes of information (sources) selected directly relate to concepts or answer research question"
+            },
+            {
+                "cardTitle": "Milestone 3",
+                "cardText": "Defines the scope of the research question or thesis completely. Can determine key concepts. Types of information (sources) selected relate to concepts or answer research question."
+            },
+            {
+                "cardTitle": "Milestone 2",
+                "cardText": "Defines the scope of the research question or thesis incompletely (parts are missing, remains too broad or too narrow, etc.). Can determine key concepts. Types of information (sources) selected partially relate to concepts or answer research question."
+            },
+            {
+                "cardTitle": "Benchmark 1",
+                "cardText": "Has difficulty defining the scope of the research question or thesis. Has difficulty determining key concepts. Types of information (sources) selected do not relate to concepts or answer research question."
+            }
+        ]
+    },
+    "Evidence Selecting and using information to investigate a point of view or conclusion": {
+        "cards": [
+            {
+                "cardTitle": "Capstone 4",
+                "cardText": "Effectively defines the scope of the research question or thesis. Effectively determines key conceptsTypes of information (sources) selected directly relate to concepts or answer research question"
+            },
+            {
+                "cardTitle": "Milestone 3",
+                "cardText": "Defines the scope of the research question or thesis completely. Can determine key concepts. Types of information (sources) selected relate to concepts or answer research question."
+            },
+            {
+                "cardTitle": "Milestone 2",
+                "cardText": "Defines the scope of the research question or thesis incompletely (parts are missing, remains too broad or too narrow, etc.). Can determine key concepts. Types of information (sources) selected partially relate to concepts or answer research question."
+            },
+            {
+                "cardTitle": "Benchmark 1",
+                "cardText": "Has difficulty defining the scope of the research question or thesis. Has difficulty determining key concepts. Types of information (sources) selected do not relate to concepts or answer research question."
+            }
+        ]
+    }
+}
