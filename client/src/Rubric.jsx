@@ -23,7 +23,7 @@ class Rubric extends Component {
 
         let rubrics = this.props.currentRubric.cards;
 
-        let rubricList = <p> naw dude </p>
+        let rubricList = <p> Please select a rubric </p>
 
         if (rubrics !== undefined && rubrics !== []) {
             rubricList = rubrics.map(function (rubric, index) {

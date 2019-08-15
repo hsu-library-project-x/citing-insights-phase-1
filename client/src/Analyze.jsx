@@ -12,6 +12,10 @@ import Rubric from './Rubric.jsx';
 // Lets us use column / row and layout for our webpage using Reactstrap
 import { Row, Col } from 'reactstrap';
 import PdfComponent from "./PdfComponent.jsx";
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import { makeStyles } from '@material-ui/core/styles';
+
 
 import update from 'immutability-helper';
 
@@ -462,34 +466,58 @@ class Analyze extends Component {
     var citationItems = <p> nothing found yet </p>
 
 
-    if (citations != []) {
+      if (citations != []) {
 
-      var citationItems = citations.map(function (citation) {
+        var citationItems = citations.map(function (citation) {
 
-        if (citation.author[0] != undefined) {
-          return (<p id="biblio-box">{citation.author[0].family + ', ' + citation.author[0].given + ': ' + citation.title}</p>)
-        }
+          if (citation.author[0] != undefined) {
+            return (<p id="biblio-box">{citation.author[0].family + ', ' + citation.author[0].given + ': ' + citation.title}</p>)
+          }
 
-      });
+        });
 
-    } else {
-      var citationItems = <p> nothing found yet </p>
-    }
+      } else {
+        var citationItems = <p> nothing found yet </p>
+      }
 
 
 
     var citationDropdownItems = <option> nothing found yet </option>
-    if (citations != []) {
-      var citationDropdownItems = citations.map(function (citation) {
+      if (citations != []) {
+        var citationDropdownItems = citations.map(function (citation) {
 
-        if (citation.author[0] != undefined) {
-          return (<option value={citation._id}> {citation.author[0].family} </option>)
-        }
+          if (citation.author[0] != undefined) {
+            return (<option value={citation._id}> {citation.author[0].family} </option>);
+          }
 
-      });
-    } else {
-      var citationItems = <p> nothing found yet </p>
-    }
+        });
+      } else {
+        var citationItems = <p> nothing found yet </p>;
+      }
+
+    //https://material-ui.com/styles/basics/
+    const useStyles = makeStyles({
+  root: {
+    color: "green"
+  },
+  selected: {
+     color: "red"
+  }
+});
+
+    var citationNavItems = <BottomNavigationAction label={"nothing found yet"}/>
+      if (citations != []) {
+        var citationNavItems = citations.map(function (citation) {
+
+          //https://material-ui.com/components/bottom-navigation/
+          if (citation.author[0] != undefined) {
+            return (<BottomNavigationAction label={citation.author[0].family} className={useStyles} />);
+          }
+
+        });
+      } 
+
+
     return (
 
       /* Analyze Mode HTML Start */
@@ -497,24 +525,19 @@ class Analyze extends Component {
         <div class="DemoContents analyze-container">
           {/* One Giant container that will let us use rows / columns */}
           {/* Row: Contains rubric and student selectors */}
+
+          
+          <BottomNavigation showLabels>
+            {citationNavItems}
+          </BottomNavigation>
+          <br/>
+          <br/>
           <Row>
             <Col xs="3">
               <h2 className='aVnalyzeHeader'>Assignment</h2>
               <p id="assignmentInfo"> {this.state.assignment.name} </p>
             </Col>
             <Col xs="6">
-              <h2 className='analyzeHeader'>Papers</h2>
-              <Input type="select" id="selectedPaper" name="paper" onInput={this.displayPaper}>
-                {/* These should be automatically generated with AJAX and API */}
-                {/* Replace with a state that that stores based on papers gotten from associated assignment*/}
-                {/* TODO:: Replace these static options with dynamic options generated from a call to the database for paper ID's*/}
-                <option disabled selected hidden>Please Select a Paper</option>
-                <option value="1">Paper 1</option>
-                <option value="2">Paper 2</option>
-                <option value="3">Paper 3</option>
-                <option value="4">Paper 4</option>
-                <option value="5">Paper 5</option>
-              </Input>
             </Col>
             <Col xs="3">
               <h2 className='analyzeHeader' >Rubric</h2>
@@ -571,6 +594,7 @@ class Analyze extends Component {
             </Col>
             <Col xs="3">
               <Rubric currentRubric={this.state.currentRubric}/>
+              <br/>
               <textarea>
                 Make an optional annotation...
               </textarea>
