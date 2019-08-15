@@ -18,6 +18,7 @@ class Rubric extends Component {
         }
     }
 
+
     render() {
 
         let rubrics = this.props.currentRubric.cards;
@@ -25,18 +26,22 @@ class Rubric extends Component {
         let rubricList = <p> naw dude </p>
 
         if (rubrics !== undefined && rubrics !== []) {
-            rubricList = rubrics.map(function (rubric) {
+            rubricList = rubrics.map(function (rubric, index) {
+
+              console.log('printing rubrics');
+              console.log(rubric[ "card" + index  ]);
+              console.log(index);
 
                 return (
                     <div>
-                        <input type="radio" name="cardName" value={"0"} />
+                        <input type="radio" name="cardName" value={rubric["card" + index]["cardTitle"]} />
                         <AccordionItem>
                             <AccordionItemHeading>
                                 <AccordionItemButton>
-                                    {rubric.cardTitle}                        </AccordionItemButton>
+                                    {rubric["card" + index]["cardTitle"]}                        </AccordionItemButton>
                             </AccordionItemHeading>
                             <AccordionItemPanel>
-                                <p> {rubric.cardText}</p>
+                                <p> {rubric["card" + index]["cardText"]}</p>
                             </AccordionItemPanel>
                         </AccordionItem>
                     </div>
