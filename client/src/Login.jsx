@@ -79,6 +79,7 @@ class Login extends Component {
 						token: token
 					});
 					this.getInfo();
+					
 					this.props.history.push({
 						pathname: "/",
 						props: {
