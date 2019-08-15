@@ -571,7 +571,10 @@ class Analyze extends Component {
             </Col>
             <Col xs="3">
               <Rubric currentRubric={this.state.currentRubric}/>
-              <Button color="success" id="paperDone" onClick={this.handleSaveCitations}> Save Paper </Button>
+              <textarea>
+                Make an optional annotation...
+              </textarea>
+              <Button color="success" id="paperDone" onClick={this.handleSaveCitations}> Save Citation Grade </Button>
               <Button id="nextPaper" onClick={this.next_paper}> Next Paper </Button>
             </Col>
           </Row>
