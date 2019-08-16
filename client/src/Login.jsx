@@ -56,7 +56,7 @@ class Login extends Component {
 		const options = {
 			//origin: "*",
 			method: 'POST',
-			body: tokenBlob,
+			body: tokenBlob,						
 			mode: 'cors',
 			cache: 'default',
 			headers: {
