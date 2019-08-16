@@ -124,7 +124,7 @@ class Analyze extends Component {
         });
     }
   }
-    
+
   get_citation_info(paper_id) {
 
     var that = this;
@@ -144,7 +144,7 @@ class Analyze extends Component {
   get_s2_info(citation_id) {
 
     var that = this;
-    that.setState({current_citation_id: citation_id});
+    that.setState({ current_citation_id: citation_id });
     fetch('http://localhost:5000/citations/s2/' + citation_id)
       .then(function (response) {
         return response.json();
@@ -336,20 +336,20 @@ class Analyze extends Component {
 
     var query = "";
 
-    this.state.citations.forEach(function(citation) {
-    
+    this.state.citations.forEach(function (citation) {
+
       if (citation["_id"] == current_citation_id) {
-        
+
         console.log(citation);
         console.log(citation["author"][0]["family"]);
         console.log(citation["title"][0]);
 
-          query = encodeURI(citation["author"][0]["family"] + " " + citation["title"][0]);
+        query = encodeURI(citation["author"][0]["family"] + " " + citation["title"][0]);
         console.log(query);
       }
 
     });
-    
+
 
     var win = window.open("https://www.semanticscholar.org/search?q=" + query, '_blank');
     win.focus();
@@ -364,22 +364,22 @@ class Analyze extends Component {
 
     var query = "";
 
-    this.state.citations.forEach(function(citation) {
-    
+    this.state.citations.forEach(function (citation) {
+
       if (citation["_id"] == current_citation_id) {
-        
+
         console.log(citation);
         console.log(citation["author"][0]["family"]);
         console.log(citation["title"][0]);
 
-          query = encodeURI(citation["title"][0]);
+        query = encodeURI(citation["title"][0]);
         console.log(query);
       }
 
     });
-    
 
-    var win = window.open("https://humboldt-primo.hosted.exlibrisgroup.com/primo-explore/search?query=title,begins_with," +  query  +  ",AND&tab=everything&search_scope=EVERYTHING&sortby=title&vid=01CALS_HUL&lang=en_US&mode=advanced&offset=0&pcAvailability=true", '_blank');
+
+    var win = window.open("https://humboldt-primo.hosted.exlibrisgroup.com/primo-explore/search?query=title,begins_with," + query + ",AND&tab=everything&search_scope=EVERYTHING&sortby=title&vid=01CALS_HUL&lang=en_US&mode=advanced&offset=0&pcAvailability=true", '_blank');
     win.focus();
 
   }
@@ -392,20 +392,20 @@ class Analyze extends Component {
 
     var query = "";
 
-    this.state.citations.forEach(function(citation) {
-    
+    this.state.citations.forEach(function (citation) {
+
       if (citation["_id"] == current_citation_id) {
-        
+
         console.log(citation);
         console.log(citation["author"][0]["family"]);
         console.log(citation["title"][0]);
 
-          query = encodeURI(citation["author"][0]["family"] + " " + citation["title"][0]);
+        query = encodeURI(citation["author"][0]["family"] + " " + citation["title"][0]);
         console.log(query);
       }
 
     });
-    
+
 
     var win = window.open("https://scholar.google.com/scholar?q=" + query, '_blank');
     win.focus();
@@ -426,14 +426,14 @@ class Analyze extends Component {
     }
 
     if (direction == 1 && index > this.state.paper_ids.length) {
-      check  = false;
+      check = false;
     }
 
     if (check) {
-    this.setState((prevState, props) => ({
-      current_paper_id_index: prevState.current_paper_id_index + direction
-    } 
-    ), () => this.refresh(this.state.current_paper_id_index));
+      this.setState((prevState, props) => ({
+        current_paper_id_index: prevState.current_paper_id_index + direction
+      }
+      ), () => this.refresh(this.state.current_paper_id_index));
     } else {
       console.log('refreshing out of range');
     }
@@ -638,62 +638,63 @@ class Analyze extends Component {
                 <option value="" disabled selected hidden >Select a Citation</option>
                 {citationDropdownItems}
               </Input>
-            <h4>Discovery Tool</h4>
-            <div class="discoveryTool">
-              <Card>
-                <CardBody>
-                  <CardTitle>Semantic Scholar</CardTitle>
-                  <CardText>Citation Velcoity: {this.state.current_s2_data["citation_velocity"]}</CardText>
-                  <CardText>Influential Citations: {this.state.current_s2_data["influential_citation_count"]}</CardText>
-                </CardBody>
-              </Card>
-              <Card>
-                <CardBody>
-                  <CardTitle>Alma Primo</CardTitle>
-                  <CardText>Information from Alma Primo about source goes here</CardText>
-                </CardBody>
-              </Card>
-              <Card>
-                <CardBody>
-                  <CardTitle>Google Scholar</CardTitle>
-                  <CardText>Information from Google Scholar about source goes here</CardText>
-                </CardBody>
-              </Card>
-            </div>
-          </Col>
-          <Col xs="6">
-            <h4> Student Paper PDF</h4>
-            <div className="overflow-auto">
-              {pdf}
-            </div>
-            <Button id='markBtn' onClick={this.toggleMarkup.bind(this)}>Switch Markup/Annotate</Button>
-            {this.renderAnnotate()}
-          </Col>
-          <Col xs="3">
-            <h4>Found Citations</h4>
-            <ul id="ResearchList">
-              {this.state.citationData.map(citation => (
-                <li id={citation.id}><button id={this.state.rubricId} onClick={this.handleRubricAssessment} disabled={this.state.rubricSelected}>{citation.title}</button></li>
-              ))}
-            </ul>
-            <p id="biblio-box">Bibliography Goes Here
-
-
+              <h4>Discovery Tool</h4>
+              <div class="discoveryTool">
+                <Card>
+                  <CardBody>
+                    <CardTitle><a style={{color: "blue", "text-decoration": "underline"}}   onClick={this.open_s2}>Semantic Scholar</a></CardTitle>
+                    <CardText>Citation Velcoity: {this.state.current_s2_data["citation_velocity"]}</CardText>
+                    <CardText>Influential Citations: {this.state.current_s2_data["influential_citation_count"]}</CardText>
+                  </CardBody>
+                </Card>
+                <Card>
+                  <CardBody>
+                    <CardTitle><a style={{color: "blue", "text-decoration": "underline"}}   onClick={this.open_alma_primo}>Alma Primo</a></CardTitle>
+                    <CardText>Information from Alma Primo about source goes here</CardText>
+                  </CardBody>
+                </Card>
+                <Card>
+                  <CardBody>
+                    <CardTitle><a style={{color: "blue", "text-decoration": "underline"}}   onClick={this.open_google_scholar}>Google Scholar</a></CardTitle>
+                    <CardText>Information from Google Scholar about source goes here</CardText>
+                  </CardBody>
+                </Card>
+              </div>
+            </Col>
+            <Col xs="6">
+              <h4> Student Paper PDF</h4>
+              <div className="overflow-auto">
+                {pdf}
+              </div>
+              <Button id='markBtn' onClick={this.toggleMarkup.bind(this)}>Switch Markup/Annotate</Button>
+              {this.renderAnnotate()}
+            </Col>
+            <Col xs="3">
+              <h4>Found Citations</h4>
+              <ul id="ResearchList">
+                {this.state.citationData.map(citation => (
+                  <li id={citation.id}><button id={this.state.rubricId} onClick={this.handleRubricAssessment} disabled={this.state.rubricSelected}>{citation.title}</button></li>
+                ))}
+              </ul>
+              <p id="biblio-box">Bibliography Goes Here
+  
+  
             </p>
-            {citationItems}
-            <div class="progressBox">
-              <p>Citations Assessed: </p>
-              <Progress id="citeProgress" value="30" />
-              <p id="assignProgressText">Total Assessed: 0%</p>
-              <Progress id="assignmentProgress" value="0" />
-            </div>
-            <Button color="success" id="paperDone" onClick={this.handleSaveCitations}> Save Paper </Button>
-            <Button id="nextPaper" onClick={() => this.next_paper(1)}> Next Paper </Button>
-            <Button id="nextPaper" onClick={() => this.next_paper(-1)}> Previous Paper </Button>
-          </Col>
-        </Row>
-        {/*prop passing the rubric information*/}
-        {this.state.assessingRubric ? <RubricSubmit sourceText={this.state.sourceText} unmountMe={this.handleChildUnmount} curRubric={this.state.currentRubric} curPaper={this.state.curPaperId} /> : null}
+              {citationItems}
+              <div class="progressBox">
+                <p>Citations Assessed: </p>
+                <Progress id="citeProgress" value="30" />
+                <p id="assignProgressText">Total Assessed: 0%</p>
+                <Progress id="assignmentProgress" value="0" />
+              </div>
+              <Button color="success" id="paperDone" onClick={this.handleSaveCitations}> Save Paper </Button>
+              <Button id="nextPaper" onClick={() => this.next_paper(1)}> Next Paper </Button>
+              <Button id="nextPaper" onClick={() => this.next_paper(-1)}> Previous Paper </Button>
+            </Col>
+          </Row>
+          {/*prop passing the rubric information*/}
+          {this.state.assessingRubric ? <RubricSubmit sourceText={this.state.sourceText} unmountMe={this.handleChildUnmount} curRubric={this.state.currentRubric} curPaper={this.state.curPaperId} /> : null}
+        </div>
       </div>
     );
   }
