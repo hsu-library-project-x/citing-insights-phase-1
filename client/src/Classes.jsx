@@ -28,7 +28,7 @@ class Classes extends Component {
     this.getAssignments = this.getAssignments.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     console.log('mounted');
     console.log(this.props);
 

@@ -1,6 +1,6 @@
 // Importing Libraries
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import './css/App.css';
 import './css/Analyze.css';
 import Annotate from './Annotate.jsx';
@@ -8,6 +8,7 @@ import Markup from './Markup.jsx';
 import RubricSubmit from './RubricSubmit.jsx';
 import { Button, Input, Progress } from 'reactstrap';
 import { Card, CardText, CardBody, CardTitle } from 'reactstrap';
+import Rubric from './Rubric.jsx';
 // Lets us use column / row and layout for our webpage using Reactstrap
 import { Row, Col } from 'reactstrap';
 import PdfComponent from "./PdfComponent.jsx";
@@ -25,24 +26,7 @@ function makeid(length) {
   return result;
 }
 
-//Rubric Const, to be replaced possibly with new component
 
-
-function Citation(id, title, metadata) {
-  this.id = id;
-  this.title = title;
-  this.metadata = metadata;
-  this.intextCites = [];
-  this.annotation = "";
-}
-
-function IntextCitation(text, annotation, id) {
-  this.id = id;
-  this.text = text;
-  this.annotation = annotation;
-}
-
-// Demo is (for now) is our Analyze page
 class Analyze extends Component {
   constructor(props) {
     super(props);
@@ -69,17 +53,17 @@ class Analyze extends Component {
       curPaperId: "",
       sourceText: "",
       currentRubric: [],
-      current_s2_data: {"influential_citation_count": 20, "citation_velocity": 20},
+      current_s2_data: { "influential_citation_count": 20, "citation_velocity": 20 },
       paper_ids: [],
-      current_paper_id_index: 0
+      current_paper_id_index: 0,
+      current_citation_id: 0
 
     }
 
 
     this.renderActions = this.renderActions.bind(this);
     this.sendRequest = this.sendRequest.bind(this);
-    this.resetButton = this.resetButton.bind(this);
-    this.saveIntextCitation = this.saveIntextCitation.bind(this);
+    //this.saveIntextCitation = this.saveIntextCitation.bind(this);
     this.addAnnotation = this.addAnnotation.bind(this);
     this.componentWillMount = this.componentWillMount.bind(this);
     this.displayPaper = this.displayPaper.bind(this);
@@ -94,73 +78,87 @@ class Analyze extends Component {
     this.next_paper = this.next_paper.bind(this);
     this.refresh = this.refresh.bind(this);
     this.get_paper_info = this.get_paper_info.bind(this);
+    this.open_s2 = this.open_s2.bind(this);
+    this.open_alma_primo = this.open_alma_primo.bind(this);
+    this.open_google_scholar = this.open_google_scholar.bind(this);
   }
 
 
   get_paper_info(paper_id) {
-
-
     var that = this;
     fetch('http://localhost:5000/papers/' + paper_id)
-      .then(function(response) {
+      .then(function (response) {
         return response.json();
       })
       .then(function (myJson) {
         //console.log(JSON.stringify(myJson));
         //console.log(myJson);
 
-        that.setState({current_pdf_data: myJson["pdf"]["data"]});
+        that.setState({ current_pdf_data: myJson["pdf"]["data"] });
         //return (myJson);
         //that.setState({AvailableAssignments: myJson});
       });
-
   }
 
 
   componentDidMount() {
-    
-    if (this.props.location.state !== undefined) {
-      this.setState({ assignmentId: this.props.location.state.id });
+    if (this.props.location.state === undefined) {
+      this.props.history.push({
+        pathname: "/",
+        props: { ...this.state }
+      });
     } else {
-      this.setState({ assignmentId: "No Assignment Selected" });
+      var that = this;
+
+      //Grab info about the assignment
+      fetch('http://localhost:5000/assignments/' + this.props.location.state.id)
+        .then(function (response) {
+
+          return response.json();
+        })
+        .then(function (myJson) {
+          console.log(that.state);
+          that.setState({
+            assignment: myJson
+          }, console.log(that.state));
+        });
     }
   }
-
+    
   get_citation_info(paper_id) {
 
     var that = this;
+
     var answer = fetch('http://localhost:5000/citations/by_paper_id/' + paper_id)
-      .then(function(response) {
+      .then(function (response) {
         return response.json();
       })
-      .then(function(myJson) {
-        that.setState({citations: myJson});
-        
+      .then(function (myJson) {
+        that.setState({ citations: myJson });
+
       });
 
-    return(answer);
+    return (answer);
 
   }
   get_s2_info(citation_id) {
 
     var that = this;
+    that.setState({current_citation_id: citation_id});
     fetch('http://localhost:5000/citations/s2/' + citation_id)
-      .then(function(response) {
+      .then(function (response) {
         return response.json();
       })
-      .then(function(myJson) {
-        that.setState({current_s2_data: myJson});
-   
+      .then(function (myJson) {
+        that.setState({ current_s2_data: myJson });
       });
 
   }
-  //Here we populate citation source information and meta data
-  //Do this call every time a new Paper is loaded into the component
-  componentWillMount() {
-    //generate an id for each source
-    //
 
-    
+  //Here we populate citation source information and meta data
+  //Do this call every time a new Paper is loaded into the  component
+
+  componentWillMount() {
     var that = this;
     if (this.props.location.state !== undefined) {
       this.setState({ assignmentId: this.props.location.state.id });
@@ -171,35 +169,38 @@ class Analyze extends Component {
         })
         .then(function (myJson) {
 
+          that.setState({ paper_ids: myJson })
 
-          that.setState({paper_ids: myJson})
-          fetch('http://localhost:5000/papers/' + myJson[0]["_id"])
-            .then(function (response) {
-              return response.json();
-            })
-            .then(function (myJson) {
-              that.setState({ current_pdf_data: myJson["pdf"]["data"] });
+          try {
+            fetch('http://localhost:5000/papers/' + myJson[0]["_id"])
+              .then(function (response) {
+                return response.json();
+              })
+              .then(function (myJson) {
+                that.setState({ current_pdf_data: myJson["pdf"]["data"] });
 
-              that.get_citation_info(myJson["_id"]).then(function(value) {
-
-                
-                that.get_s2_info(that.state.citations[0]["_id"]);
-              
+                that.get_citation_info(myJson["_id"])
+                  .then(function (value) {
+                    that.get_s2_info(that.state.citations[1]["_id"]);
+                  });
               });
+          } catch (e) {
+            alert("No paper found for this assignment! (Please upload one)");
+            that.props.history.push({
+              pathname: "/",
+              props: { ...that.state }
+
               //return(myJson);
               //that.setState({AvailableAssignments: myJson});
             });
-          //that.setState({AvailableAssignments: myJson})
+          }
         });
-
-
-
     } else {
       this.setState({ assignmentId: "no assignment selected" });
     }
     //get the rubrics
     //replace hardcoded number with userID from login
-    fetch('http://localhost:5000/rubrics/' + this.props.user.id)
+    fetch('http://localhost:5000/rubrics/' + this.props.user._id)
       .then(function (response) {
         return response.json();
       })
@@ -209,7 +210,7 @@ class Analyze extends Component {
       });
   }
 
-  handleCitationChange(event){
+  handleCitationChange(event) {
     //const target = event.target;
     //const value = target.value;
     //const name = target.name;
@@ -218,7 +219,7 @@ class Analyze extends Component {
     //[name]: value
     //});
 
-    
+
     this.get_s2_info(event.target.value);
 
   }
@@ -238,7 +239,7 @@ class Analyze extends Component {
     this.setState({
       rubricSelected: false,
       rubricId: id
-    });
+    }, console.log(this.state));
   }
 
   handleRubricAssessment(event) {
@@ -259,28 +260,6 @@ class Analyze extends Component {
     this.setState({
       gotSources: false
     });
-
-
-    //TODO: need a fetch for paper using specific paper id
-
-    //TODO: display paper in the UI
-
-    //TODO: grab citations array from paper object /// REPLACE DUMMY CITATIONS
-
-    const dummycitations = ["Bracco, M., Lia, V. V., Gottlieb, A. M., Cámara Hernández, J., & Poggio, L. (2009). Genetic diversity in maize landraces from indigenous settlements of Northeastern Argentina. Genetica, 135(1), 39–49. https://doi.org/10.1007/s10709-008-9252-z", "Citation 2", "Citation 3", "Citation 4"];
-
-    this.setState({
-      citaitons: dummycitations
-    });
-
-    const metadata = "MetaData!";
-    for (let i = 0; i < dummycitations.length; i++) {
-      //TODO: REPLACE THIS WITH GETTING THE ID FOR THE CITATION FROM THE DATABASE
-      let citeSourceId = makeid(10);
-      let citeObj = new Citation(citeSourceId, dummycitations[i], metadata);
-      this.state.citationData.push(citeObj);
-    }
-    //TODO: Grab Semantic Scholar Information for the site
   }
 
   handleDelete() {
@@ -339,15 +318,99 @@ class Analyze extends Component {
 
 
     if (index < this.state.paper_ids.length) {
-    this.get_citation_info(this.state.paper_ids[index]["_id"]);
-    this.get_paper_info(this.state.paper_ids[index]["_id"]);
+      this.get_citation_info(this.state.paper_ids[index]["_id"]);
+      this.get_paper_info(this.state.paper_ids[index]["_id"]);
     } else {
-    
+
       console.log('refreshing out of range');
 
     }
   }
 
+
+  open_s2() {
+
+    console.log('clicked');
+    console.log(this.state.citations);
+    var current_citation_id = this.state.current_citation_id;
+
+    var query = "";
+
+    this.state.citations.forEach(function(citation) {
+    
+      if (citation["_id"] == current_citation_id) {
+        
+        console.log(citation);
+        console.log(citation["author"][0]["family"]);
+        console.log(citation["title"][0]);
+
+          query = encodeURI(citation["author"][0]["family"] + " " + citation["title"][0]);
+        console.log(query);
+      }
+
+    });
+    
+
+    var win = window.open("https://www.semanticscholar.org/search?q=" + query, '_blank');
+    win.focus();
+
+  }
+
+  open_alma_primo() {
+
+    console.log('clicked');
+    console.log(this.state.citations);
+    var current_citation_id = this.state.current_citation_id;
+
+    var query = "";
+
+    this.state.citations.forEach(function(citation) {
+    
+      if (citation["_id"] == current_citation_id) {
+        
+        console.log(citation);
+        console.log(citation["author"][0]["family"]);
+        console.log(citation["title"][0]);
+
+          query = encodeURI(citation["title"][0]);
+        console.log(query);
+      }
+
+    });
+    
+
+    var win = window.open("https://humboldt-primo.hosted.exlibrisgroup.com/primo-explore/search?query=title,begins_with," +  query  +  ",AND&tab=everything&search_scope=EVERYTHING&sortby=title&vid=01CALS_HUL&lang=en_US&mode=advanced&offset=0&pcAvailability=true", '_blank');
+    win.focus();
+
+  }
+
+  open_google_scholar() {
+
+    console.log('clicked');
+    console.log(this.state.citations);
+    var current_citation_id = this.state.current_citation_id;
+
+    var query = "";
+
+    this.state.citations.forEach(function(citation) {
+    
+      if (citation["_id"] == current_citation_id) {
+        
+        console.log(citation);
+        console.log(citation["author"][0]["family"]);
+        console.log(citation["title"][0]);
+
+          query = encodeURI(citation["author"][0]["family"] + " " + citation["title"][0]);
+        console.log(query);
+      }
+
+    });
+    
+
+    var win = window.open("https://scholar.google.com/scholar?q=" + query, '_blank');
+    win.focus();
+
+  }
 
 
   next_paper(direction) {
@@ -399,37 +462,7 @@ class Analyze extends Component {
       <button disabled={this.state.uploading} onClick={this.saveIntextCitation}>Save Intext Citation</button>
     );
   }
-  //might not need this
-  resetButton() {
-    this.setState({ successfullUpload: false });
-  }
 
-  //adds highlighted text and the  source to the intextcitation state array
-  saveIntextCitation() {
-    let citationId = document.getElementById("sourceSelect").value;
-
-    let text = document.getElementById("highlightText").value;
-    if (text === "" || text === "Put Highlighted Text Here!") {
-      alert("please highlight an intext citation");
-      return;
-    }
-    else {
-      let data = this.state.citationData;
-      //generate an id for the intext citation
-      //TODO: Replace this with getting the ID for the appropriate ID of the citations for a paper
-      let inTextId = makeid(8);
-      let inCiteObj = new IntextCitation(text, "", inTextId);
-      for (let i = 0; i < data.length; i++) {
-        let curData = data[i];
-        if (curData.id === citationId) {
-          this.state.citationData[i].intextCites.push(inCiteObj);
-          document.getElementById("highlightText").value = "";
-          document.getElementById("highlightText").classList.add("savedAnimation");
-          return;
-        }
-      }
-    }
-  }
 
   //adds annotation and pairs it with appropriate in text citation in the citationData State Array.
   addAnnotation() {
@@ -456,7 +489,7 @@ class Analyze extends Component {
           if (citeIds[0] === "source") {
             //let currentCitation = data[i];
 
-						//CHANGE THIS ************************************************************************************
+            //CHANGE THIS ************************************************************************************
             this.state.citationData[i].annotation = annotation;
 
 
@@ -478,7 +511,6 @@ class Analyze extends Component {
                 //CHANGE THIS ************************************************************************************
                 this.state.citationData[i].intextCites[j].annotation = annotation;
 
-
                 if (box.classList.contains("savedAnimation")) {
 
                   document.getElementById("curAnno").classList.remove("savedAnimation");
@@ -496,8 +528,6 @@ class Analyze extends Component {
       }
     }
   }
-
-
 
 
   toggleHidden() {
@@ -519,6 +549,9 @@ class Analyze extends Component {
     } else {
       pdf = <PdfComponent data={this.state.current_pdf_data} />;
     }
+
+
+
     let rubrics = this.state.AvailableRubrics;
     let rubricList = rubrics.map((rubric) =>
       <option value={rubric._id}>{rubric.name}</option>
@@ -526,54 +559,31 @@ class Analyze extends Component {
 
 
     let citations = this.state.citations;
-
     var citationItems = <p> nothing found yet </p>
-    // if (citations != []) {
-
-    //   var citationItems = citations.map((citation) =>
-
-    //     <p id="biblio-box">{ citation.author[0].family + ', '  + citation.author[0].given  + ': '  + citation.title}</p>
-        
-      
-    //   );
-
-    // } else {
-    //   var citationItems = <p> nothing found yet </p>
-    // }
 
 
     if (citations != []) {
 
-      var citationItems = citations.map( function(citation) {
+      var citationItems = citations.map(function (citation) {
 
-        if (citation.author[0] != undefined){
-        return( <p id="biblio-box">{ citation.author[0].family + ', '  + citation.author[0].given  + ': '  + citation.title}</p> )
+        if (citation.author[0] != undefined) {
+          return (<p id="biblio-box">{citation.author[0].family + ', ' + citation.author[0].given + ': ' + citation.title}</p>)
         }
-      
+
       });
 
     } else {
       var citationItems = <p> nothing found yet </p>
     }
 
-    // var citationDropdownItems = <option> nothing found yet </option>
-    // if (citations != []) {
-    //   var citationDropdownItems = citations.map((citation) =>
-    //     //<p id="biblio-box">{ citation.author[0].family + ', '  + citation.author[0].given  + ': '  + citation.title}</p>
-    //     <option value={citation._id}> {citation.author[0].family} </option>
-    //     //console.log(citation.author[0].family)
 
-    //   );
-    // } else {
-    //   var citationItems = <p> nothing found yet </p>
-    // }
 
     var citationDropdownItems = <option> nothing found yet </option>
     if (citations != []) {
-      var citationDropdownItems = citations.map( function(citation) {
-        
-        if (citation.author[0] != undefined){
-        return(<option value={citation._id}> {citation.author[0].family} </option>)
+      var citationDropdownItems = citations.map(function (citation) {
+
+        if (citation.author[0] != undefined) {
+          return (<option value={citation._id}> {citation.author[0].family} </option>)
         }
 
       });
@@ -583,41 +593,48 @@ class Analyze extends Component {
     return (
 
       /* Analyze Mode HTML Start */
-      <div class="DemoContents analyze-container">
-        {/* One Giant container that will let us use rows / columns */}
-        {/* Row: Contains rubric and student selectors */}
-        <Row>
-          <Col xs="3">
-            <h2 className='analyzeHeader'>Assignment</h2>
-            <p id="assignmentInfo"> {this.state.assignment.name} </p>
-          </Col>
-          <Col xs="6">
-            <h2 className='analyzeHeader'>Papers</h2>
-            <Input type="select" id="selectedPaper" name="paper" onInput={this.displayPaper}>
-              {/* These should be automatically generated with AJAX and API */}
-              {/* Replace with a state that that stores based on papers gotten from associated assignment*/}
-              {/* TODO:: Replace these static options with dynamic options generated from a call to the database for paper ID's*/}
-              <option disabled selected hidden>Please Select a Paper</option>
-              <option value="1">Paper 1</option>
-              <option value="2">Paper 2</option>
-              <option value="3">Paper 3</option>
-              <option value="4">Paper 4</option>
-              <option value="5">Paper 5</option>
-            </Input>
-          </Col>
-          <Col xs="3">
-            <h2 className='analyzeHeader' >Rubric</h2>
-            <Input type="select" id="rubricAssign" name="AssignRubric" onInput={this.handleGetRubric}>
-              <option value="" disabled selected hidden >Select a Rubric</option>
-              {rubricList}
-            </Input>
-          </Col>
-        </Row>
-        {/* Row: Contains -- Semantic Scholor, Block Text, Sources, Biblio Box, and Progress Bar */}
-        <Row>
-          <Col xs="3">
-            <label for="assignForAnalyze">Citations:</label>
-              <Input onChange={this.handleCitationChange} onInput={this.onInput} id="assignForAnalyze" type="select" name="AssignNew" required >
+      <div>
+        <div class="DemoContents analyze-container">
+          {/* One Giant container that will let us use rows / columns */}
+          {/* Row: Contains rubric and student selectors */}
+          <Row>
+            <Col xs="3">
+              <h2 className='aVnalyzeHeader'>Assignment</h2>
+              <p id="assignmentInfo"> {this.state.assignment.name} </p>
+            </Col>
+            <Col xs="6">
+              <h2 className='analyzeHeader'>Papers</h2>
+              <Input type="select" id="selectedPaper" name="paper" onInput={this.displayPaper}>
+                {/* These should be automatically generated with AJAX and API */}
+                {/* Replace with a state that that stores based on papers gotten from associated assignment*/}
+                {/* TODO:: Replace these static options with dynamic options generated from a call to the database for paper ID's*/}
+                <option disabled selected hidden>Please Select a Paper</option>
+                <option value="1">Paper 1</option>
+                <option value="2">Paper 2</option>
+                <option value="3">Paper 3</option>
+                <option value="4">Paper 4</option>
+                <option value="5">Paper 5</option>
+              </Input>
+            </Col>
+            <Col xs="3">
+              <h2 className='analyzeHeader' >Rubric</h2>
+              <Input type="select" id="rubricAssign" name="AssignRubric" onInput={this.handleGetRubric}>
+                <option value="" disabled selected hidden >Select a Rubric</option>
+                {rubricList}
+              </Input>
+            </Col>
+          </Row>
+          {/* Row: Contains -- Semantic Scholor, Block Text, Sources, Biblio Box, and Progress Bar */}
+          <Row>
+            <Col xs="3">
+              <label for="assignForAnalyze">Citations:</label>
+              <Input
+                onChange={this.handleCitationChange}
+                onInput={this.onInput}
+                id="assignForAnalyze"
+                type="select"
+                name="AssignNew"
+                required >
                 <option value="" disabled selected hidden >Select a Citation</option>
                 {citationDropdownItems}
               </Input>

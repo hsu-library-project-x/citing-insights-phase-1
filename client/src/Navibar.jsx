@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Navbar, NavbarBrand, NavItem } from 'reactstrap';
 import { NavLink, withRouter } from 'react-router-dom';
 import config from './config';
-import {GoogleLogout} from 'react-google-login';
+import { GoogleLogout } from 'react-google-login';
 import logo from './images/CIHome.png';
 
 class Navibar extends Component {
@@ -12,11 +12,11 @@ class Navibar extends Component {
         this.giveInfo = this.giveInfo.bind(this);
     }
 
-    giveInfo(){
+    giveInfo() {
         this.props.passInfoLogout();
     }
 
-    
+
     responseGoogle = (response) => {
         this.giveInfo();
         //Need to link to function in App.js, to reset our state to nothing
@@ -30,6 +30,14 @@ class Navibar extends Component {
         });
     }
 
+    //Removed this for time being; we really only get to analyze by going through tasks
+    //     <NavItem>
+    //     <NavLink to="/analyze">Analyze</NavLink>
+    //     </NavItem>
+    // <NavItem>
+    //<NavLink to="/accountsettings">Settings</NavLink>
+    //</NavItem> 
+
     render() {
         let content = !!this.props.isAuthenticated ? (
             <Navbar primary expand="md">
@@ -41,12 +49,7 @@ class Navibar extends Component {
                 <NavItem>
                     <NavLink to="/tasks">Tasks</NavLink>
                 </NavItem>
-                <NavItem>
-                    <NavLink to="/analyze">Analyze</NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink to="/accountsettings">Settings</NavLink>
-                </NavItem>
+
                 <NavItem onClick={this.responseGoogle}>
                     <GoogleLogout
                         clientId={config.GOOGLE_CLIENT_ID}
@@ -55,10 +58,11 @@ class Navibar extends Component {
                         onFailure={this.onFailure}
                     />
                 </NavItem>
+                <p> {this.props.user.name} </p>
             </Navbar>
         ) : (
                 <Navbar primary expand="md">
-                    <NavbarBrand><img className="navBarLogo"  src={logo} alt="logo" ></img></NavbarBrand>
+                    <NavbarBrand><img className="navBarLogo" src={logo} alt="logo" ></img></NavbarBrand>
                     {/* NavItem (Reactstrap) -- item in our navation bar*/}
                     <NavItem>
                         <NavLink to="/login">Login</NavLink>

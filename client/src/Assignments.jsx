@@ -168,6 +168,8 @@ class Assignment extends Component{
       formData.append(this.state.assignmentId, file, file.name);
       req.open("POST", "http://localhost:5000/upload");
       req.send(formData);
+      alert("Upload Successful!");
+    
     });
   }
 
