@@ -58,6 +58,7 @@ class Navibar extends Component {
                         onFailure={this.onFailure}
                     />
                 </NavItem>
+                <p> {this.props.user.name} </p>
             </Navbar>
         ) : (
                 <Navbar primary expand="md">
