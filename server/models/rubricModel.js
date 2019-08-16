@@ -7,13 +7,9 @@ var Schema   = mongoose.Schema;
 var rubricSchema = new Schema({
 	'name' : String,
 	'cards' : Array,
-	'user_id' : [{
+	'user_id' : {
 	 	type: Schema.Types.ObjectId,
 	 	ref: 'user'
-	}],
-	'default': {
-		type: Boolean,
-		default: false
 	}
 });
 

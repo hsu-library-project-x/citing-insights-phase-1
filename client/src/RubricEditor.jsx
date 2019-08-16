@@ -6,6 +6,8 @@ import { Input, Card, CardBody, Button } from 'reactstrap';
 import "./css/RubricEditor.css";
 import uniqueId from 'react-html-id';
 import update from 'immutability-helper';
+import defaultRubricsJson from './default_rubrics/defaultRubric.json';
+
 
 class RubricEditor extends Component {
 
@@ -43,6 +45,7 @@ class RubricEditor extends Component {
 		this.fillButtonText = this.fillButtonText.bind(this);
 		this.handleEditRubric = this.handleEditRubric.bind(this);
 		this.handleDeleteRubric = this.handleDeleteRubric.bind(this);
+		this.handleDefaultRubric = this.handleDefaultRubric.bind(this);
 	}
 
 	//handles change of button text
@@ -69,6 +72,26 @@ class RubricEditor extends Component {
 		});
 	}
 
+	handleDefaultRubric(event) {
+		var that = this;
+		//Grab the desired rubric from our json
+		var default_rubric = defaultRubricsJson[event.target.value];		
+		default_rubric.user_id = this.props.user.id;
+
+		const default_to_string = JSON.stringify(default_rubric);
+		fetch('http://localhost:5000/rubrics/', {
+			method: 'POST',
+			body: default_to_string,
+			mode: 'cors',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		}).then(function(response) {
+			that.getRubrics();
+		});
+
+	}
 	//called when clicking on the rubric list
 	handleEditRubric(event) {
 		event.preventDefault();
@@ -136,10 +159,10 @@ class RubricEditor extends Component {
 							// });
 
 							let curCard = curCards[i];
-							
+
 							this.state.cards.push(curCard["card" + i]);
 
-							
+
 							this.state.rubricArray.push(
 								<div className={`cardContainer`}>
 									<Card>
@@ -217,7 +240,7 @@ class RubricEditor extends Component {
 
 	async getRubrics() {
 		var that = this;
-		
+
 		//replace hardcoded number with userID from login
 		fetch('http://localhost:5000/rubrics/' + this.props.user._id)
 			.then(function (response) {
@@ -226,20 +249,6 @@ class RubricEditor extends Component {
 			.then(function (myJson) {
 				that.setState({ AvailableRubrics: myJson });
 			});
-			// .then(function() {
-			// 	let rubrics = that.state.AvailableRubrics;
-			// 	let rubriclist = rubrics.map((rubric) =>
-			// 		<div>
-			// 			<li onClick={that.handleEditRubric} class="classLi" id={rubric._id}>{rubric.name}</li>
-			// 			<button class="deleteButton" onClick={that.handleDeleteRubric}>
-			// 				<svg id={rubric._id} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path id={rubric._id} d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z" /></svg>
-			// 			</button>
-			// 		</div>
-			// 	);
-			// 	that.setState({
-			// 		rubricList: rubriclist 
-			// 	});
-			// });
 	}
 
 	//checks before the component mounts
@@ -247,29 +256,6 @@ class RubricEditor extends Component {
 		this.getRubrics();
 	}
 
-	getDefaultRubric(){
-		const defaultRubric = {
-			"cards": [
-				{
-					"cardTitle": "Capstone 4",
-					"cardText": "Effectively defines the scope of the research question or thesis. Effectively determines key conceptsTypes of information (sources) selected directly relate to concepts or answer research question"
-				},				
-				{
-					"cardTitle": "Milestone 3",
-					"cardText": "Defines the scope of the research question or thesis completely. Can determine key concepts. Types of information (sources) selected relate to concepts or answer research question."
-				},				
-				{
-					"cardTitle": "Milestone 2",
-					"cardText": "Defines the scope of the research question or thesis incompletely (parts are missing, remains too broad or too narrow, etc.). Can determine key concepts. Types of information (sources) selected partially relate to concepts or answer research question."
-				},				
-				{
-					"cardTitle": "Benchmark 1",
-					"cardText": "Has difficulty defining the scope of the research question or thesis. Has difficulty determining key concepts. Types of information (sources) selected do not relate to concepts or answer research question."
-				}
-			]
-
-		}
-	}
 	//toggles editor enabling editing or adding new rubrics
 	buildEditor() {
 		let numCards = document.getElementById("rubricChoice").value;
@@ -448,7 +434,17 @@ class RubricEditor extends Component {
 						<Input type="number" placeholder="Number of Rubric Elements from 1-10" name="rubricElements" id="rubricChoice" min="1" max="10">
 						</Input>
 						<Button id="rubEditButton" onClick={this.buildEditor}>Submit</Button>
-						rubrics						<h3> -OR- </h3>
+						<h3> -OR- </h3>
+
+						<h3 class="rubricEditHeader">Add Default Rubric</h3>
+
+						<Button id="rubDefaultButton" value="default_1" onClick={this.handleDefaultRubric}>Determine the Extent of Information Needed</Button>
+						<Button id="rubDefaultButton" value="default_2" onClick={this.handleDefaultRubric}>Evaluate Information and its Sources Critically</Button>
+						<Button id="rubDefaultButton" value="default_3" onClick={this.handleDefaultRubric}>Use Information Effectively to Accomplish a Specific Purpose</Button>
+						<Button id="rubDefaultButton" value="default_4" onClick={this.handleDefaultRubric}>Access and Use Information Ethically and Legally</Button>
+						<Button id="rubDefaultButton" value="default_5" onClick={this.handleDefaultRubric}>Sources and Evidence</Button>
+
+						<h3> -OR- </h3>
 						<h3 class="rubricEditHeader">Edit Existing:</h3>
 						<ul class="currentRubrics">
 							{rubricList}

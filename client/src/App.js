@@ -52,13 +52,14 @@ class App extends Component {
       user: null,
       token: ""
     });
+    localStorage.clear();
   };
 
   componentDidMount() {
     const persistedState = localStorage.getItem("user");
     //Test to see if user object is valid
     if (persistedState) {
-      this.setState(JSON.parse(persistedState));
+      this.setState(JSON.parse(persistedState));    
     }
   }
 

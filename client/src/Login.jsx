@@ -17,6 +17,7 @@ import { GoogleLogin } from "react-google-login";
 import config from "./config.json";
 
 
+
 class Login extends Component {
 	constructor(props) {
 		super(props);
@@ -28,11 +29,11 @@ class Login extends Component {
 		this.getInfo = this.getInfo.bind(this);
 	}
 
-	componentDidMount(){
-		if(this.props.isAuthenticated === true){
+	componentDidMount() {
+		if (this.props.isAuthenticated === true) {
 			this.props.history.push({
 				pathname: "/",
-				props: { ...this.state}
+				props: { ...this.state }
 			});
 		}
 	}
@@ -56,7 +57,7 @@ class Login extends Component {
 		const options = {
 			//origin: "*",
 			method: 'POST',
-			body: tokenBlob,						
+			body: tokenBlob,
 			mode: 'cors',
 			cache: 'default',
 			headers: {
@@ -91,7 +92,6 @@ class Login extends Component {
 			});
 		})
 	};
-
 
 	render() {
 		return (
