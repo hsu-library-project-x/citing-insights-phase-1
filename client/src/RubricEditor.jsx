@@ -43,7 +43,6 @@ class RubricEditor extends Component {
 		this.fillButtonText = this.fillButtonText.bind(this);
 		this.handleEditRubric = this.handleEditRubric.bind(this);
 		this.handleDeleteRubric = this.handleDeleteRubric.bind(this);
-		this.assignDefaultRubrics = this.assignDefaultRubrics.bind(this);
 	}
 
 	//handles change of button text
@@ -225,17 +224,7 @@ class RubricEditor extends Component {
 				return response.json();
 			})
 			.then(function (myJson) {
-				var tempJson = myJson;
-				console.log("myJson");
-				console.log(myJson);
-				if (myJson.length >= 1) {
-					console.log("passed")
-					that.setState({ AvailableRubrics: myJson });
-				}
-				else{
-					console.log("nope");
-					that.assignDefaultRubrics();
-				}
+				that.setState({ AvailableRubrics: myJson });
 			});
 	}
 
@@ -243,64 +232,7 @@ class RubricEditor extends Component {
 	componentDidMount() {
 		this.getRubrics();
 	}
-
-	//Give user default rubric(s)
-	async assignDefaultRubrics() {
-		var that = this;
-		//Note that the default rubric is an array, since that is what
-		//this.state.AvailableRubrics expects
-
-			const default_rubric = [{
-				name: "Determine the Extent of Information Needed",
-				cards: [
-					{
-						"card0":
-						{
-							"cardTitle": "Capstone 4",
-							"cardText": "Effectively defines the scope of the research question or thesis. Effectively determines key conceptsTypes of information (sources) selected directly relate to concepts or answer research question"
-						}
-					},
-					{
-						"card1":
-						{
-							"cardTitle": "Milestone 3",
-							"cardText": "Defines the scope of the research question or thesis completely. Can determine key concepts. Types of information (sources) selected relate to concepts or answer research question."
-						}
-					},
-					{
-						"card2":
-						{
-							"cardTitle": "Milestone 2",
-							"cardText": "Defines the scope of the research question or thesis incompletely (parts are missing, remains too broad or too narrow, etc.). Can determine key concepts. Types of information (sources) selected partially relate to concepts or answer research question."
-						}
-					},
-					{
-						"card3":
-						{
-							"cardTitle": "Benchmark 1",
-							"cardText": "Has difficulty defining the scope of the research question or thesis. Has difficulty determining key concepts. Types of information (sources) selected do not relate to concepts or answer research question."
-						}
-					}
-				],
-				user_id: this.props.user.id
-			}];
-			const default_to_string = JSON.stringify(default_rubric);
-			console.log(default_to_string);
-			fetch('https://localhost:5000/rubrics/', {
-				method: 'POST',
-				body: default_to_string,
-				mode: 'cors',
-				headers: {
-					'Accept': 'application/json',
-					'Content-Type': 'application/json'
-				}
-			}).then(function(response){
-				that.getRubrics();
-			});
-		
-	}
-
-
+	
 	//toggles editor enabling editing or adding new rubrics
 	buildEditor() {
 		let numCards = document.getElementById("rubricChoice").value;
