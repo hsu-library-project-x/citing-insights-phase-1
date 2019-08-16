@@ -6,6 +6,8 @@ import { Input, Card, CardBody, Button } from 'reactstrap';
 import "./css/RubricEditor.css";
 import uniqueId from 'react-html-id';
 import update from 'immutability-helper';
+import defaultRubricsJson from './default_rubrics/defaultRubric.json';
+
 
 class RubricEditor extends Component {
 
@@ -43,6 +45,7 @@ class RubricEditor extends Component {
 		this.fillButtonText = this.fillButtonText.bind(this);
 		this.handleEditRubric = this.handleEditRubric.bind(this);
 		this.handleDeleteRubric = this.handleDeleteRubric.bind(this);
+		this.handleDefaultRubric = this.handleDefaultRubric.bind(this);
 	}
 
 	//handles change of button text
@@ -69,6 +72,26 @@ class RubricEditor extends Component {
 		});
 	}
 
+	handleDefaultRubric(event) {
+		var that = this;
+		//Grab the desired rubric from our json
+		var default_rubric = defaultRubricsJson[event.target.value];		
+		default_rubric.user_id = this.props.user.id;
+
+		const default_to_string = JSON.stringify(default_rubric);
+		fetch('http://localhost:5000/rubrics/', {
+			method: 'POST',
+			body: default_to_string,
+			mode: 'cors',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		}).then(function(response) {
+			that.getRubrics();
+		});
+
+	}
 	//called when clicking on the rubric list
 	handleEditRubric(event) {
 		event.preventDefault();
@@ -232,7 +255,7 @@ class RubricEditor extends Component {
 	componentDidMount() {
 		this.getRubrics();
 	}
-	
+
 	//toggles editor enabling editing or adding new rubrics
 	buildEditor() {
 		let numCards = document.getElementById("rubricChoice").value;
@@ -411,7 +434,17 @@ class RubricEditor extends Component {
 						<Input type="number" placeholder="Number of Rubric Elements from 1-10" name="rubricElements" id="rubricChoice" min="1" max="10">
 						</Input>
 						<Button id="rubEditButton" onClick={this.buildEditor}>Submit</Button>
-						rubrics						<h3> -OR- </h3>
+						<h3> -OR- </h3>
+
+						<h3 class="rubricEditHeader">Add Default Rubric</h3>
+
+						<Button id="rubDefaultButton" value="default_1" onClick={this.handleDefaultRubric}>Determine the Extent of Information Needed</Button>
+						<Button id="rubDefaultButton" value="default_2" onClick={this.handleDefaultRubric}>Evaluate Information and its Sources Critically</Button>
+						<Button id="rubDefaultButton" value="default_3" onClick={this.handleDefaultRubric}>Use Information Effectively to Accomplish a Specific Purpose</Button>
+						<Button id="rubDefaultButton" value="default_4" onClick={this.handleDefaultRubric}>Access and Use Information Ethically and Legally</Button>
+						<Button id="rubDefaultButton" value="default_5" onClick={this.handleDefaultRubric}>Sources and Evidence</Button>
+
+						<h3> -OR- </h3>
 						<h3 class="rubricEditHeader">Edit Existing:</h3>
 						<ul class="currentRubrics">
 							{rubricList}

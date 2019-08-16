@@ -134,6 +134,13 @@
 	font-size:1.8em;
 }
 
+#rubDefaultButton{
+	width:20%;
+	border-radius:.5em;
+	background-color: #274259;
+	margin:0;
+}
+
 #rubEditButton{
 	width:20%;
 	border-radius:.5em;

@@ -17,6 +17,7 @@ import { GoogleLogin } from "react-google-login";
 import config from "./config.json";
 
 
+
 class Login extends Component {
 	constructor(props) {
 		super(props);
@@ -26,7 +27,6 @@ class Login extends Component {
 			token: ""
 		};
 		this.getInfo = this.getInfo.bind(this);
-		this.getDefaultRubrics = this.getDefaultRubrics.bind(this);
 	}
 
 	componentDidMount() {
@@ -80,7 +80,6 @@ class Login extends Component {
 						token: token
 					});
 					this.getInfo();
-					this.getDefaultRubrics(user);
 					this.props.history.push({
 						pathname: "/",
 						props: {
@@ -93,62 +92,6 @@ class Login extends Component {
 			});
 		})
 	};
-
-	getDefaultRubrics(user) {
-		console.log("UsssEERR");
-		console.log(user);
-
-		var that = this;
-
-			const default_rubric = {
-				name: "Determine the Extent of Information Needed",
-				cards: [
-					{
-						card0:
-						{
-							"cardTitle": "Capstone 4",
-							"cardText": "Effectively defines the scope of the research question or thesis. Effectively determines key conceptsTypes of information (sources) selected directly relate to concepts or answer research question"
-						}
-					},
-					{
-						card1:
-						{
-							"cardTitle": "Milestone 3",
-							"cardText": "Defines the scope of the research question or thesis completely. Can determine key concepts. Types of information (sources) selected relate to concepts or answer research question."
-						}
-					},
-					{
-					    card2:
-						{
-							"cardTitle": "Milestone 2",
-							"cardText": "Defines the scope of the research question or thesis incompletely (parts are missing, remains too broad or too narrow, etc.). Can determine key concepts. Types of information (sources) selected partially relate to concepts or answer research question."
-						}
-					},
-					{
-						card3:
-						{
-							"cardTitle": "Benchmark 1",
-							"cardText": "Has difficulty defining the scope of the research question or thesis. Has difficulty determining key concepts. Types of information (sources) selected do not relate to concepts or answer research question."
-						}
-					}
-				],
-				user_id: user._id
-			};
-
-			const default_to_string = JSON.stringify(default_rubric);
-			console.log(default_to_string);
-			fetch('http://localhost:5000/rubrics/', {
-				method: 'POST',
-				body: default_to_string,
-				mode: 'cors',
-				headers: {
-					'Accept': 'application/json',
-					'Content-Type': 'application/json'
-				}
-			}).then(res => console.log(res));
-		
-	}
-
 
 	render() {
 		return (
