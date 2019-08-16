@@ -74,7 +74,9 @@ class App extends Component {
           <HashRouter>
             <Navibar
               isAuthenticated={this.state.isAuthenticated}
-              passInfoLogout={this.passInfoLogout} />
+              passInfoLogout={this.passInfoLogout}
+              user={this.state.user}
+            />
 
             {/*This tells us what compenent to loaauthd after going to login, home, demo etc.*/}
             <div id="id01" class="pop content">
