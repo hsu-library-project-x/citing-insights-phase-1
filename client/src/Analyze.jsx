@@ -168,6 +168,7 @@ class Analyze extends Component {
           return response.json();
         })
         .then(function (myJson) {
+
           that.setState({ paper_ids: myJson })
 
           try {
@@ -412,19 +413,30 @@ class Analyze extends Component {
   }
 
 
-  next_paper() {
+  next_paper(direction) {
+    // Direction must be 1 or -1
+    // 1 is next and -1 is previous
+    //
+    var check = true;
+    var index = this.state.current_paper_id_index;
 
-    this.refresh(1);
-    //this.setState({current_paper_id_index: this.state.current_paper_id_index + 1 });
-
-    this.setState((prevState, props) => ({
-      current_paper_id_index: prevState.current_paper_id_index + 1
+    //check that we wont go out of range
+    if (direction == -1 && index < 1) {
+      check = false;
     }
+
+    if (direction == 1 && index > this.state.paper_ids.length) {
+      check  = false;
+    }
+
+    if (check) {
+    this.setState((prevState, props) => ({
+      current_paper_id_index: prevState.current_paper_id_index + direction
+    } 
     ), () => this.refresh(this.state.current_paper_id_index));
-
-
-    console.log(this.state.current_paper_id_index);
-
+    } else {
+      console.log('refreshing out of range');
+    }
   }
 
   renderAnnotate() {
@@ -626,46 +638,62 @@ class Analyze extends Component {
                 <option value="" disabled selected hidden >Select a Citation</option>
                 {citationDropdownItems}
               </Input>
-              <h4>Discovery Tool</h4>
-              <div class="discoveryTool">
-                <Card>
-                  <CardBody>
-                    <CardTitle><a style={{color: "blue", "text-decoration": "underline"}}   onClick={this.open_s2}>Semantic Scholar</a></CardTitle>
-                    <CardText>Citation Velcoity: {this.state.current_s2_data["citation_velocity"]}</CardText>
-                    <CardText>Influential Citations: {this.state.current_s2_data["influential_citation_count"]}</CardText>
-                  </CardBody>
-                </Card>
-                <Card>
-                  <CardBody>
-                    <CardTitle><a style={{color: "blue", "text-decoration": "underline"}}   onClick={this.open_alma_primo}>Alma Primo</a></CardTitle>
-                    <CardText>Information from Alma Primo about source goes here</CardText>
-                  </CardBody>
-                </Card>
-                <Card>
-                  <CardBody>
-                    <CardTitle><a style={{color: "blue", "text-decoration": "underline"}}   onClick={this.open_google_scholar}>Google Scholar</a></CardTitle>
-                    <CardText>Information from Google Scholar about source goes here</CardText>
-                  </CardBody>
-                </Card>
-              </div>
-            </Col>
-            <Col xs="6">
-              <h4> Student Paper PDF</h4>
-              <div className="overflow-auto">
-                {pdf}
-              </div>
-              <Button id='markBtn' onClick={this.toggleMarkup.bind(this)}>Switch Markup/Annotate</Button>
-              {this.renderAnnotate()}
-            </Col>
-            <Col xs="3">
-              <Rubric currentRubric={this.state.currentRubric}/>
-              <Button color="success" id="paperDone" onClick={this.handleSaveCitations}> Save Paper </Button>
-              <Button id="nextPaper" onClick={this.next_paper}> Next Paper </Button>
-            </Col>
-          </Row>
-          {/*prop passing the rubric information*/}
-          {this.state.assessingRubric ? <RubricSubmit sourceText={this.state.sourceText} unmountMe={this.handleChildUnmount} curRubric={this.state.currentRubric} curPaper={this.state.curPaperId} /> : null}
-        </div>
+            <h4>Discovery Tool</h4>
+            <div class="discoveryTool">
+              <Card>
+                <CardBody>
+                  <CardTitle>Semantic Scholar</CardTitle>
+                  <CardText>Citation Velcoity: {this.state.current_s2_data["citation_velocity"]}</CardText>
+                  <CardText>Influential Citations: {this.state.current_s2_data["influential_citation_count"]}</CardText>
+                </CardBody>
+              </Card>
+              <Card>
+                <CardBody>
+                  <CardTitle>Alma Primo</CardTitle>
+                  <CardText>Information from Alma Primo about source goes here</CardText>
+                </CardBody>
+              </Card>
+              <Card>
+                <CardBody>
+                  <CardTitle>Google Scholar</CardTitle>
+                  <CardText>Information from Google Scholar about source goes here</CardText>
+                </CardBody>
+              </Card>
+            </div>
+          </Col>
+          <Col xs="6">
+            <h4> Student Paper PDF</h4>
+            <div className="overflow-auto">
+              {pdf}
+            </div>
+            <Button id='markBtn' onClick={this.toggleMarkup.bind(this)}>Switch Markup/Annotate</Button>
+            {this.renderAnnotate()}
+          </Col>
+          <Col xs="3">
+            <h4>Found Citations</h4>
+            <ul id="ResearchList">
+              {this.state.citationData.map(citation => (
+                <li id={citation.id}><button id={this.state.rubricId} onClick={this.handleRubricAssessment} disabled={this.state.rubricSelected}>{citation.title}</button></li>
+              ))}
+            </ul>
+            <p id="biblio-box">Bibliography Goes Here
+
+
+            </p>
+            {citationItems}
+            <div class="progressBox">
+              <p>Citations Assessed: </p>
+              <Progress id="citeProgress" value="30" />
+              <p id="assignProgressText">Total Assessed: 0%</p>
+              <Progress id="assignmentProgress" value="0" />
+            </div>
+            <Button color="success" id="paperDone" onClick={this.handleSaveCitations}> Save Paper </Button>
+            <Button id="nextPaper" onClick={() => this.next_paper(1)}> Next Paper </Button>
+            <Button id="nextPaper" onClick={() => this.next_paper(-1)}> Previous Paper </Button>
+          </Col>
+        </Row>
+        {/*prop passing the rubric information*/}
+        {this.state.assessingRubric ? <RubricSubmit sourceText={this.state.sourceText} unmountMe={this.handleChildUnmount} curRubric={this.state.currentRubric} curPaper={this.state.curPaperId} /> : null}
       </div>
     );
   }
