@@ -7,6 +7,17 @@ var rubricModel = require('../models/rubricModel.js');
  */
 module.exports = {
 
+    all: function(req,res) {
+        rubricModel.find({},function (err, rubrics) {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Error when getting rubric.',
+                    error: err
+                });
+            }
+            return res.json(rubrics);
+        });
+    },
     /**
      * rubricController.list()
      */
@@ -52,7 +63,6 @@ module.exports = {
 			name : req.body.name,
 			cards : req.body.cards,
 			user_id : req.body.user_id
-
         });
 
         rubric.save(function (err, rubric) {

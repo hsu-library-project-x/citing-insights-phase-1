@@ -15,6 +15,7 @@ class RubricEditor extends Component {
 			rubricSize: 0,
 			rubricArray: [],
 			rubricData: [],
+			rubricList: [],
 			isEditing: false,
 			isSelecting: true,
 			needsSaving: true,
@@ -70,6 +71,7 @@ class RubricEditor extends Component {
 
 	//called when clicking on the rubric list
 	handleEditRubric(event) {
+		event.preventDefault();
 		const curRubrics = this.state.AvailableRubrics;
 		const target = event.target;
 		const curId = target.id;
@@ -121,6 +123,7 @@ class RubricEditor extends Component {
 						});
 						curCards = getRubric[j].cards;
 						for (let i = 0; i < curCards.length; i++) {
+
 							let newId = this.nextUniqueId();
 
 							//CHANGE THIS ************************************************************************************
@@ -133,9 +136,10 @@ class RubricEditor extends Component {
 							// });
 
 							let curCard = curCards[i];
+							
 							this.state.cards.push(curCard["card" + i]);
-							console.log(this.state.cards[i]);
-							//console.log(curCard["card" + i]);
+
+							
 							this.state.rubricArray.push(
 								<div className={`cardContainer`}>
 									<Card>
@@ -193,16 +197,19 @@ class RubricEditor extends Component {
 
 	//after cards are built, if editing, will populate the values with the selected rubric's values
 	populateEdit() {
-		if (this.state.currentlyEditing && !this.state.editPopulated) {
-			document.getElementById("rubricTitle").value = this.state.editingTitle;
-			for (let i = 0; i < this.state.idArray.length; i++) {
-				let title = "Title-" + this.state.idArray[i];
-				let text = "Text-" + this.state.idArray[i];
+		var that = this;
+		if (that.state.currentlyEditing && !that.state.editPopulated) {
+			document.getElementById("rubricTitle").value = that.state.editingTitle;
+			for (let i = 0; i < that.state.idArray.length; i++) {
+				let title = "Title-" + that.state.idArray[i];
+				let text = "Text-" + that.state.idArray[i];
 
-				document.getElementById(title).value = this.state.cards[i].cardTitle;
-				document.getElementById(text).value = this.state.cards[i].cardText;
+				console.log("stuff")
+				console.log(this.state.cards);
+				document.getElementById(title).value = that.state.cards[i].cardTitle;
+				document.getElementById(text).value = that.state.cards[i].cardText;
 			}
-			this.setState({
+			that.setState({
 				editPopulated: true
 			});
 		}
@@ -210,6 +217,7 @@ class RubricEditor extends Component {
 
 	async getRubrics() {
 		var that = this;
+		
 		//replace hardcoded number with userID from login
 		fetch('http://localhost:5000/rubrics/' + this.props.user._id)
 			.then(function (response) {
@@ -218,6 +226,20 @@ class RubricEditor extends Component {
 			.then(function (myJson) {
 				that.setState({ AvailableRubrics: myJson });
 			});
+			// .then(function() {
+			// 	let rubrics = that.state.AvailableRubrics;
+			// 	let rubriclist = rubrics.map((rubric) =>
+			// 		<div>
+			// 			<li onClick={that.handleEditRubric} class="classLi" id={rubric._id}>{rubric.name}</li>
+			// 			<button class="deleteButton" onClick={that.handleDeleteRubric}>
+			// 				<svg id={rubric._id} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path id={rubric._id} d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z" /></svg>
+			// 			</button>
+			// 		</div>
+			// 	);
+			// 	that.setState({
+			// 		rubricList: rubriclist 
+			// 	});
+			// });
 	}
 
 	//checks before the component mounts
@@ -225,6 +247,29 @@ class RubricEditor extends Component {
 		this.getRubrics();
 	}
 
+	getDefaultRubric(){
+		const defaultRubric = {
+			"cards": [
+				{
+					"cardTitle": "Capstone 4",
+					"cardText": "Effectively defines the scope of the research question or thesis. Effectively determines key conceptsTypes of information (sources) selected directly relate to concepts or answer research question"
+				},				
+				{
+					"cardTitle": "Milestone 3",
+					"cardText": "Defines the scope of the research question or thesis completely. Can determine key concepts. Types of information (sources) selected relate to concepts or answer research question."
+				},				
+				{
+					"cardTitle": "Milestone 2",
+					"cardText": "Defines the scope of the research question or thesis incompletely (parts are missing, remains too broad or too narrow, etc.). Can determine key concepts. Types of information (sources) selected partially relate to concepts or answer research question."
+				},				
+				{
+					"cardTitle": "Benchmark 1",
+					"cardText": "Has difficulty defining the scope of the research question or thesis. Has difficulty determining key concepts. Types of information (sources) selected do not relate to concepts or answer research question."
+				}
+			]
+
+		}
+	}
 	//toggles editor enabling editing or adding new rubrics
 	buildEditor() {
 		let numCards = document.getElementById("rubricChoice").value;
@@ -262,6 +307,7 @@ class RubricEditor extends Component {
 			let cardNum = i;
 			let titleid = "Title-" + id;
 			let textid = "Text-" + id;
+
 			let title = document.getElementById(titleid).value;
 			let text = document.getElementById(textid).value;
 
@@ -300,14 +346,7 @@ class RubricEditor extends Component {
 					cardData[cardIdentifier] = cardInfo;
 					console.log(cardData);
 
-					//CHANGE THIS ************************************************************************************
 					this.state.rubricData[cardNum] = cardData;
-					// this.setState({
-					// 	rubricData: update(this.state.rubricData, {
-					// 		[cardNum]: { $set: cardData }
-					// 	})
-					// });
-
 				}
 			}
 		}

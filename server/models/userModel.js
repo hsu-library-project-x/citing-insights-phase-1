@@ -20,7 +20,12 @@ var userSchema = new Schema({
 			token: String
 		},
 		select: false
-	}
+	},
+	rubrics: [{
+		type: Schema.Types.ObjectId,
+		ref: 'rubric'
+	}]
+
 });
 
 userSchema.set('toJSON', { getters: true, virtuals: true });
@@ -29,6 +34,7 @@ userSchema.set('toJSON', { getters: true, virtuals: true });
 userSchema.statics.upsertGoogleUser = function (accessToken, refreshToken, profile, cb) {
 	var that = this;
 	//Try to find user
+	fetch('http://localhost:5000/rubrics')
 	// ( using google id right now)
 	return this.findOne({
 		'googleProvider.id': profile.id
@@ -41,7 +47,11 @@ userSchema.statics.upsertGoogleUser = function (accessToken, refreshToken, profi
 				googleProvider: {
 					id: profile.id,
 					token: accessToken
-				}
+				},
+				rubrics: [
+					ObjectId("5d5481b4ef4362ef5d11a547"),
+					ObjectId("5d548271ef4362ef5d11a548")
+				]
 			});
 
 			newUser.save(function (error, savedUser) {

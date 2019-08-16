@@ -18,32 +18,34 @@ class Rubric extends Component {
         }
     }
 
+
     render() {
 
         let rubrics = this.props.currentRubric.cards;
 
-        let rubricList = <p> naw dude </p>
+        let rubricList = <p> Please select a rubric </p>
 
         if (rubrics !== undefined && rubrics !== []) {
-            rubricList = rubrics.map(function (rubric) {
+            rubricList = rubrics.map(function (rubric, index) {
+
+              console.log('printing rubrics');
+              console.log(rubric[ "card" + index  ]);
+              console.log(index);
+
                 return (
-                    <AccordionItem>
-                        <AccordionItemHeading>
-                            <AccordionItemButton>
-                                benchmark 1
-                        </AccordionItemButton>
-                        </AccordionItemHeading>
-                        <AccordionItemPanel>
-                            <p> Lorem ipsum dolor, sit amet consectetur
-                                adipisicing elit. Labore, earum suscipit,
-                                eveniet, ipsa soluta ex fugit molestiae
-                                beatae eius pariatur eos nam. Repudiandae
-                                reprehenderit dolor placeat praesentium
-                            temporibus eius iusto?</p>
-                        </AccordionItemPanel>
-                    </AccordionItem>
-                )
-            });
+                    <div>
+                        <input type="radio" name="cardName" value={rubric["card" + index]["cardTitle"]} />
+                        <AccordionItem>
+                            <AccordionItemHeading>
+                                <AccordionItemButton>
+                                    {rubric["card" + index]["cardTitle"]}                        </AccordionItemButton>
+                            </AccordionItemHeading>
+                            <AccordionItemPanel>
+                                <p> {rubric["card" + index]["cardText"]}</p>
+                            </AccordionItemPanel>
+                        </AccordionItem>
+                    </div>
+             ) });
         }
 
         return (
