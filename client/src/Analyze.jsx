@@ -273,7 +273,7 @@ class Analyze extends Component {
 
   //this saves annotations and intext citations associated with them
   handleSaveCitations() {
-    let citationData = this.state.citationData;
+    /*let citationData = this.state.citationData;
     this.setState.uploading = true;
     const promise = [];
     promise.push(this.sendRequest(citationData));
@@ -282,7 +282,43 @@ class Analyze extends Component {
     } catch (e) {
       // Not Production ready! Do some error handling here instead...
       this.setState({ successfullUpload: true, uploading: false });
+    }*/
+
+    console.log('TRYING TO SAVE CITATION');
+    console.log(this.state.current_citation_id);
+    console.log(this.state.rubricId);
+
+    var radio_value = "";
+    var radios = document.getElementsByName("radio");
+    console.log(radios);
+
+
+    for(var i = 0; i < radios.length; i++){
+    if(radios[i].checked){
+        radio_value = radios[i].value;
     }
+}
+
+    console.log(radio_value);
+
+
+    var annotation = document.getElementById("annotation").textContent;
+    console.log(annotation);
+    var enc = encodeURIComponent(annotation);
+    console.log(enc);
+    var dec = decodeURIComponent(enc);
+    console.log(dec);
+
+    console.log('http://localhost:5000/citations/save_citation_grade/' + this.state.current_citation_id + '/' + this.state.rubricId + '/' + encodeURIComponent(radio_value) + '/' + enc);
+
+fetch('http://localhost:5000/citations/save_citation_grade/' + this.state.current_citation_id + '/' + this.state.rubricId + '/' + encodeURIComponent(radio_value) + '/' + enc)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (myJson) {
+        //return (myJson);
+        //that.setState({AvailableAssignments: myJson});
+      });
   }
 
   sendRequest(data) {
@@ -652,12 +688,12 @@ class Analyze extends Component {
           if (citation.author[0] != undefined) {
 
             if (citation._id != current_id) {
-              return (<StyledNavItem label={citation.author[0].family} value={'vvv'}
+              return (<StyledNavItem label={citation.author[0].family}
                 onClick={  (e)  => {that.handleNavInput(citation._id)} } 
                 />);
             } else {
               return(
-                <StyledSelectedNavItem  onClick={  (e)  => {that.handleNavInput(citation._id)} }   label={citation.author[0].family} value={'vvvv'}/>
+                <StyledSelectedNavItem  onClick={  (e)  => {that.handleNavInput(citation._id)} }   label={citation.author[0].family} />
                );
 
             }
@@ -744,7 +780,7 @@ class Analyze extends Component {
             <Col xs="3">
               <Rubric currentRubric={this.state.currentRubric}/>
               <br/>
-              <textarea>
+              <textarea id="annotation">
                 Make an optional annotation...
               </textarea>
               <Button color="success" id="paperDone" onClick={this.handleSaveCitations}> Save Citation Grade </Button>

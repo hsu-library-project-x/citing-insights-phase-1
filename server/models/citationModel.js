@@ -29,8 +29,9 @@ var citationSchema = new Schema({
 	'annotation' : String,
 	'doi' : [
 		String
-  	],
-  	'rubricScore' : Array,
+  ],
+    'rubricId': { type: Schema.Types.ObjectId, ref: 'paper' },
+  	'rubricScore' : String,
   	'intextCitations' : Array,
   	'arxivid' : String,
   	'annotation': String,

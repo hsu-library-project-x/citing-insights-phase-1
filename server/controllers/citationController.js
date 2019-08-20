@@ -194,6 +194,52 @@ module.exports = {
     });
   },
 
+  save_citation_grade: function (req, res) {
+    var id = req.params.id;
+    console.log('SAVING CITATION GRADE');
+    console.log(id);
+    citationModel.findOne({_id: id}, function (err, citation) {
+      if (err) {
+        return res.status(500).json({
+          message: 'Error when getting citation',
+          error: err
+        });
+      }
+      if (!citation) {
+        return res.status(404).json({
+          message: 'No such citation'
+        });
+      }
+
+      citation.rubricId = req.params.rubricId;
+      citation.rubricScore = req.params.grade;
+      citation.annotation = req.params.annotation;
+
+        /*
+      citation.author = req.body.author ? req.body.author : citation.author;
+      citation.date = req.body.date ? req.body.date : citation.date;
+      citation.editor = req.body.editor ? req.body.editor : citation.editor;
+      citation.edition = req.body.edition ? req.body.edition : citation.edition;
+      citation.volume = req.body.volume ? req.body.volume : citation.volume;
+      citation.pages = req.body.pages ? req.body.pages : citation.pages;
+      citation.type = req.body.type ? req.body.type : citation.type;
+      citation.title = req.body.title ? req.body.title : citation.title;
+      citation.annotation = req.body.annotation ? req.body.annotation : citation.annotation;
+      citation.doi = req.body.doi ? req.body.doi : citation.doi;
+      citation.paper_id = req.body.paper_id ? req.body.paper_id : citation.paper_id;
+        */
+      citation.save(function (err, citation) {
+        if (err) {
+          return res.status(500).json({
+            message: 'Error when updating citation.',
+            error: err
+          });
+        }
+
+        return res.json(citation);
+      });
+    });
+  },
   //called by Rubric Submit, sets empty array to correct Scores
   add_rubric_score: function(req, res){
     console.log(req.body);
