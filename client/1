@@ -320,10 +320,6 @@ class Analyze extends Component {
     //console.log(this.state.paper_ids[index]);
 
 
-    console.log('index');
-    console.log(index);
-    console.log('ids');
-    console.log(this.state.paper_ids);
     if (index < this.state.paper_ids.length) {
       this.get_citation_info(this.state.paper_ids[index]["_id"]);
       this.get_paper_info(this.state.paper_ids[index]["_id"]);
@@ -440,7 +436,7 @@ class Analyze extends Component {
       this.setState((prevState, props) => ({
         current_paper_id_index: prevState.current_paper_id_index + direction
       }
-      ), () => this.refresh(1));
+      ), () => this.refresh(this.state.current_paper_id_index));
     } else {
       console.log('refreshing out of range');
     }
@@ -536,11 +532,6 @@ class Analyze extends Component {
     }
   }
 
-  handleNavInput(cit_id, e) {
-
-    console.log('clickin a nav item');
-    this.setState({current_citation_id: cit_id});
-}
 
   toggleHidden() {
     this.setState({
@@ -616,7 +607,7 @@ class Analyze extends Component {
 
     const StyledNavItem = withStyles({
   root: {
-    background: '#274259',
+    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
     borderRadius: 3,
     border: 0,
     color: 'white',
@@ -630,7 +621,7 @@ class Analyze extends Component {
 
     const StyledSelectedNavItem = withStyles({
   root: {
-    background: '#FFAC1D',
+    background: 'green',
     borderRadius: 3,
     border: 0,
     color: 'white',
@@ -638,7 +629,7 @@ class Analyze extends Component {
     padding: '0 30px',
     boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
   },
-      selected: {}
+    selected: {}
 })(BottomNavigationAction);
 
     var citationNavItems = <BottomNavigationAction label={"nothing found yet"}/>
@@ -652,13 +643,9 @@ class Analyze extends Component {
           if (citation.author[0] != undefined) {
 
             if (citation._id != current_id) {
-              return (<StyledNavItem label={citation.author[0].family} value={'vvv'}
-                onClick={  (e)  => {that.handleNavInput(citation._id)} } 
-                />);
+              return (<StyledNavItem label={citation.author[0].family} value={citation._id} />);
             } else {
-              return(
-                <StyledSelectedNavItem  onClick={  (e)  => {that.handleNavInput(citation._id)} }   label={citation.author[0].family} value={'vvvv'}/>
-               );
+            return(<StyledSelectedNavItem label={citation.author[0].family} value={citation._id} />);
 
             }
           }
@@ -676,7 +663,10 @@ class Analyze extends Component {
           {/* Row: Contains rubric and student selectors */}
 
           
-          <BottomNavigation value={'yes'} className={usestyles.root} showLabels>
+          <BottomNavigation value={'yes'} className={usestyles.root} showLabels
+                onChange={(event) => {
+                console.log(event.target.value);
+            }}>
             {citationNavItems}
           </BottomNavigation>
           <br/>
