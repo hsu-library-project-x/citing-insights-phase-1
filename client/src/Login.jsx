@@ -105,10 +105,13 @@ class Login extends Component {
 						</Col>
 						<Col xs="6">
 							<div class="beside_picture">
-								<h1> Welcome Back! </h1>
-								<div id="google">
+								<h1>Welcome Back!</h1>
+								<div class="googleLoginContainer" id="google">
 									<GoogleLogin
 										clientId={config.GOOGLE_CLIENT_ID}
+										render={renderProps => (
+											<button onClick={renderProps.onClick} disabled={renderProps.disabled}>Login with Google</button>
+										  )}
 										buttonText="Sign in with Google"
 										onSuccess={this.responseGoogle}
 										onFailure={this.onFailure}
