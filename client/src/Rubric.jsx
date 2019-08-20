@@ -7,18 +7,17 @@ import {
     AccordionItemButton,
     AccordionItemPanel,
 } from 'react-accessible-accordion';
-import 'react-accessible-accordion/dist/fancy-example.css';
+import './css/accordion.css';
 
 class Rubric extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isOpen: false,
-            value: ""
+            value: "",
+            allowZeroExpanded: true
         }
     }
-
-
     render() {
 
         let rubrics = this.props.currentRubric.cards;
@@ -28,9 +27,9 @@ class Rubric extends Component {
         if (rubrics !== undefined && rubrics !== []) {
             rubricList = rubrics.map(function (rubric, index) {
 
-              console.log('printing rubrics');
-              console.log(rubric[ "card" + index  ]);
-              console.log(index);
+                console.log('printing rubrics');
+                console.log(rubric["card" + index]);
+                console.log(index);
 
                 return (
                     <div>
@@ -45,11 +44,14 @@ class Rubric extends Component {
                             </AccordionItemPanel>
                         </AccordionItem>
                     </div>
-             ) });
+                )
+            });
         }
 
         return (
-            <Accordion>
+            <Accordion
+                allowZeroExpanded='true'
+                allowMultipleExpanded='true'>
                 {rubricList}
             </Accordion>
         );

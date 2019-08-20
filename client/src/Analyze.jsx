@@ -742,7 +742,10 @@ class Analyze extends Component {
               {this.renderAnnotate()}
             </Col>
             <Col xs="3">
-              <Rubric currentRubric={this.state.currentRubric}/>
+              <Rubric 
+              currentRubric={this.state.currentRubric}
+              allowZeroExpanded={true}
+              />
               <br/>
               <textarea>
                 Make an optional annotation...

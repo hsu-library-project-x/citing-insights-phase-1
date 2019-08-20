@@ -54,13 +54,15 @@ class Navibar extends Component {
                         clientId={config.GOOGLE_CLIENT_ID}
                         render={renderProps => (
                             <button onClick={renderProps.onClick} disabled={renderProps.disabled}>Logout</button>
-                          )}
+                        )}
                         buttonText="Log Out"
                         onLogoutSuccess={this.responseGoogle}
                         onFailure={this.onFailure}
                     />
                 </NavItem>
-                <p> {this.props.user.name} </p>
+                <NavItem color="light">
+                    {this.props.user.name}
+                </NavItem>
             </Navbar>
         ) : (
                 <Navbar primary expand="md">
