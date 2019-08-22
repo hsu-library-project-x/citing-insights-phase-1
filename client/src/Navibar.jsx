@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Navbar, NavbarBrand, NavItem } from 'reactstrap';
 import { NavLink, withRouter } from 'react-router-dom';
+import Feedback from "./Feedback";
 import config from './config';
 import { GoogleLogout } from 'react-google-login';
 import logo from './images/CIHome.png';
@@ -39,32 +40,34 @@ class Navibar extends Component {
 
     render() {
         let content = !!this.props.isAuthenticated ? (
-            <Navbar primary expand="md">
-                <NavbarBrand><img className="navBarLogo" src={logo} alt="logo" ></img></NavbarBrand>
-                {/* NavItem (Reactstrap) -- item in our navation bar*/}
-                <NavItem>
-                    <NavLink to="/home">Home</NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink to="/tasks">Tasks</NavLink>
-                </NavItem>
-
-                <NavItem onClick={this.responseGoogle}>
-                    <GoogleLogout
-                        clientId={config.GOOGLE_CLIENT_ID}
-                        render={renderProps => (
-                            <button onClick={renderProps.onClick} disabled={renderProps.disabled}>Logout</button>
-                        )}
-                        buttonText="Log Out"
-                        onLogoutSuccess={this.responseGoogle}
-                        onFailure={this.onFailure}
-                    />
-                </NavItem>
-                <NavItem color="light">
-                    {this.props.user.name}
-                </NavItem>
-            </Navbar>
-        ) : (
+                <Navbar primary expand="md">
+                    <NavbarBrand><img className="navBarLogo" src={logo} alt="logo" ></img></NavbarBrand>
+                    {/* NavItem (Reactstrap) -- item in our navation bar*/}
+                    <NavItem>
+                        <Feedback email={this.props.user.email} user_id={this.props.user.id}/>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink to="/home">Home</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink to="/tasks">Tasks</NavLink>
+                    </NavItem>
+                    <NavItem onClick={this.responseGoogle}>
+                        <GoogleLogout
+                            clientId={config.GOOGLE_CLIENT_ID}
+                            render={renderProps => (
+                                <button onClick={renderProps.onClick} disabled={renderProps.disabled}>Logout</button>
+                            )}
+                            buttonText="Log Out"
+                            onLogoutSuccess={this.responseGoogle}
+                            onFailure={this.onFailure}
+                        />
+                    </NavItem>
+                    <NavItem color="light">
+                        {this.props.user.name}
+                    </NavItem>
+                </Navbar>
+                ) : (
                 <Navbar primary expand="md">
                     <NavbarBrand><img className="navBarLogo" src={logo} alt="logo" ></img></NavbarBrand>
                     {/* NavItem (Reactstrap) -- item in our navation bar*/}
@@ -72,13 +75,13 @@ class Navibar extends Component {
                         <NavLink to="/login">Login</NavLink>
                     </NavItem>
                 </Navbar>
-            )
+                )
         return (
             <div>
-                {content}
-            </div>
-        )
-    }
-}
-
-export default withRouter(Navibar);
+                    {content}
+                </div>
+                )
+            }
+        }
+        
+        export default withRouter(Navibar);
