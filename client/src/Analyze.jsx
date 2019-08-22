@@ -802,7 +802,10 @@ fetch('http://localhost:5000/citations/save_citation_grade/' + this.state.curren
               {this.renderAnnotate()}
             </Col>
             <Col xs="3">
-              <Rubric currentRubric={this.state.currentRubric}/>
+              <Rubric 
+              currentRubric={this.state.currentRubric}
+              allowZeroExpanded={true}
+              />
               <br/>
               <textarea id="annotation">
                 Make an optional annotation...
