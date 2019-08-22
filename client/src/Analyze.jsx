@@ -284,6 +284,8 @@ class Analyze extends Component {
       this.setState({ successfullUpload: true, uploading: false });
     }*/
 
+
+
     console.log('TRYING TO SAVE CITATION');
     console.log(this.state.current_citation_id);
     console.log(this.state.rubricId);
@@ -302,7 +304,7 @@ class Analyze extends Component {
     console.log(radio_value);
 
 
-    var annotation = document.getElementById("annotation").textContent;
+    var annotation = document.getElementById("annotation").value;
     console.log(annotation);
     var enc = encodeURIComponent(annotation);
     console.log(enc);
@@ -318,7 +320,23 @@ fetch('http://localhost:5000/citations/save_citation_grade/' + this.state.curren
       .then(function (myJson) {
         //return (myJson);
         //that.setState({AvailableAssignments: myJson});
+
+
+        alert('citation saved');
       });
+
+
+
+    for (var i = 0; i < this.state.citations.length; i++) {
+
+      if (this.state.citations[i]["_id"] == this.state.current_citation_id) {
+
+        if ( i < this.state.citations.length - 1) {
+        this.setState({current_citation_id: this.state.citations[i + 1]["_id"]});
+        }
+      }
+
+    } 
   }
 
   sendRequest(data) {
