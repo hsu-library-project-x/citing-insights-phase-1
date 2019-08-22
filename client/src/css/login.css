@@ -1,27 +1,27 @@
 button
 {
-  border: none;
-  background-color: green;
+  border: 1px solid #FFAC1D;
+  background-color: #274259;
   color:white;
   padding: 1em;
-  cursor:pointer ;
   width: 75%;
   margin-right: 1em;
-
+  border-radius: 5em;
 }
 
 .googleLoginContainer{
   margin:1em;
-  margin-left:7em;
-
+  margin-left:5em;
+  border: #FFAC1D;
 }
 
 #google > button{
   width: 55%;
   margin-top: 1.5em;
-  margin-left: 10%;
+  margin-left: 20%;
   display: block;
 }
+
 button:hover
 {
   opacity: 0.8;
@@ -42,7 +42,7 @@ button:hover
   font-family: "avenir", sans-serif;
   color:#383D3B;
   text-align: center;
-  margin-top: 3em;
+  margin-top: 2em;
   margin-left: 1em;
 }
 
@@ -250,4 +250,5 @@ button:hover
   /* margin-left: -30%; */
   
  }
+
 } 

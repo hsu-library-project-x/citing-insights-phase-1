@@ -16,7 +16,6 @@ class Navibar extends Component {
         this.props.passInfoLogout();
     }
 
-
     responseGoogle = (response) => {
         this.giveInfo();
         //Need to link to function in App.js, to reset our state to nothing
@@ -53,6 +52,9 @@ class Navibar extends Component {
                 <NavItem onClick={this.responseGoogle}>
                     <GoogleLogout
                         clientId={config.GOOGLE_CLIENT_ID}
+                        render={renderProps => (
+                            <button onClick={renderProps.onClick} disabled={renderProps.disabled}>Logout</button>
+                          )}
                         buttonText="Log Out"
                         onLogoutSuccess={this.responseGoogle}
                         onFailure={this.onFailure}
