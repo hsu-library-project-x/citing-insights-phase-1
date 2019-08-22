@@ -478,6 +478,11 @@ fetch('http://localhost:5000/citations/save_citation_grade/' + this.state.curren
     // Direction must be 1 or -1
     // 1 is next and -1 is previous
     //
+
+    console.log('DIRECTION');
+    console.log(direction);
+
+
     var check = true;
     var index = this.state.current_paper_id_index;
 
@@ -489,12 +494,13 @@ fetch('http://localhost:5000/citations/save_citation_grade/' + this.state.curren
     if (direction == 1 && index > this.state.paper_ids.length) {
       check = false;
     }
+    check = true;
 
     if (check) {
       this.setState((prevState, props) => ({
         current_paper_id_index: prevState.current_paper_id_index + direction
       }
-      ), () => this.refresh(1));
+      ), () => this.refresh(this.state.current_paper_id_index));
     } else {
       console.log('refreshing out of range');
     }
@@ -802,7 +808,8 @@ fetch('http://localhost:5000/citations/save_citation_grade/' + this.state.curren
                 Make an optional annotation...
               </textarea>
               <Button color="success" id="paperDone" onClick={this.handleSaveCitations}> Save Citation Grade </Button>
-              <Button id="nextPaper" onClick={this.next_paper}> Next Paper </Button>
+              <Button id="nextPaper" onClick={ () => {this.next_paper(1)}}> Next Paper </Button>
+              <Button id="nextPaper" onClick={ () => {this.next_paper(-1)}}> Previous Paper </Button>
             </Col>
           </Row>
           {/*prop passing the rubric information*/}
