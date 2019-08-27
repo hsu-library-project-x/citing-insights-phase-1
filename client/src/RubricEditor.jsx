@@ -75,7 +75,7 @@ class RubricEditor extends Component {
 	handleDefaultRubric(event) {
 		var that = this;
 		//Grab the desired rubric from our json
-		var default_rubric = defaultRubricsJson[event.target.value];		
+		var default_rubric = defaultRubricsJson[event.target.value];
 		default_rubric.user_id = this.props.user.id;
 
 		const default_to_string = JSON.stringify(default_rubric);
@@ -87,7 +87,7 @@ class RubricEditor extends Component {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json'
 			}
-		}).then(function(response) {
+		}).then(function (response) {
 			that.getRubrics();
 		});
 
@@ -426,18 +426,11 @@ class RubricEditor extends Component {
 
 		return (
 			<div className={`rubricEdit-container`}>
-				<h1>Rubric Editor</h1>
+				<h1>Rubric Selection</h1>
 				{(!this.state.isEditing) ?
 					<div class="numCardsSelector">
-						<h3 class="rubricEditHeader">Create New:</h3>
-						{/* <p> Number of Rubric Elements</p> */}
-						<Input type="number" placeholder="Number of Rubric Elements from 1-10" name="rubricElements" id="rubricChoice" min="1" max="10">
-						</Input>
-						<Button id="rubEditButton" onClick={this.buildEditor}>Submit</Button>
-						<h3> -OR- </h3>
-
-						<h3 class="rubricEditHeader">Add Default Rubric</h3>
-
+						<h3 class="rubricEditHeader"> Use AAC&U Rubric Values </h3>
+						<br />
 						<Button id="rubDefaultButton" value="default_1" onClick={this.handleDefaultRubric}>Determine the Extent of Information Needed</Button>
 						<Button id="rubDefaultButton" value="default_2" onClick={this.handleDefaultRubric}>Evaluate Information and its Sources Critically</Button>
 						<Button id="rubDefaultButton" value="default_3" onClick={this.handleDefaultRubric}>Use Information Effectively to Accomplish a Specific Purpose</Button>
@@ -445,6 +438,14 @@ class RubricEditor extends Component {
 						<Button id="rubDefaultButton" value="default_5" onClick={this.handleDefaultRubric}>Sources and Evidence</Button>
 
 						<h3> -OR- </h3>
+						<h3 class="rubricEditHeader">Create New:</h3>
+						{/* <p> Number of Rubric Elements</p> */}
+						<Input type="number" placeholder="Number of Rubric Elements from 1-5" name="rubricElements" id="rubricChoice" min="1" max="5">
+						</Input>
+						<Button id="rubEditButton" onClick={this.buildEditor}>Submit</Button>
+						<h3> -OR- </h3>
+
+
 						<h3 class="rubricEditHeader">Edit Existing:</h3>
 						<ul class="currentRubrics">
 							{rubricList}

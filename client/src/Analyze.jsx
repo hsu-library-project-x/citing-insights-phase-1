@@ -71,7 +71,7 @@ class Analyze extends Component {
     this.addAnnotation = this.addAnnotation.bind(this);
     this.componentWillMount = this.componentWillMount.bind(this);
     this.displayPaper = this.displayPaper.bind(this);
-    this.renderAnnotate = this.renderAnnotate.bind(this);
+    // this.renderAnnotate = this.renderAnnotate.bind(this);
     this.handleGetRubric = this.handleGetRubric.bind(this);
     this.handleRubricAssessment = this.handleRubricAssessment.bind(this);
     this.handleChildUnmount = this.handleChildUnmount.bind(this);
@@ -295,11 +295,11 @@ class Analyze extends Component {
     console.log(radios);
 
 
-    for(var i = 0; i < radios.length; i++){
-    if(radios[i].checked){
+    for (var i = 0; i < radios.length; i++) {
+      if (radios[i].checked) {
         radio_value = radios[i].value;
+      }
     }
-}
 
     console.log(radio_value);
 
@@ -313,7 +313,7 @@ class Analyze extends Component {
 
     console.log('http://localhost:5000/citations/save_citation_grade/' + this.state.current_citation_id + '/' + this.state.rubricId + '/' + encodeURIComponent(radio_value) + '/' + enc);
 
-fetch('http://localhost:5000/citations/save_citation_grade/' + this.state.current_citation_id + '/' + this.state.rubricId + '/' + encodeURIComponent(radio_value) + '/' + enc)
+    fetch('http://localhost:5000/citations/save_citation_grade/' + this.state.current_citation_id + '/' + this.state.rubricId + '/' + encodeURIComponent(radio_value) + '/' + enc)
       .then(function (response) {
         return response.json();
       })
@@ -331,12 +331,12 @@ fetch('http://localhost:5000/citations/save_citation_grade/' + this.state.curren
 
       if (this.state.citations[i]["_id"] == this.state.current_citation_id) {
 
-        if ( i < this.state.citations.length - 1) {
-        this.setState({current_citation_id: this.state.citations[i + 1]["_id"]});
+        if (i < this.state.citations.length - 1) {
+          this.setState({ current_citation_id: this.state.citations[i + 1]["_id"] });
         }
       }
 
-    } 
+    }
   }
 
   sendRequest(data) {
@@ -506,22 +506,22 @@ fetch('http://localhost:5000/citations/save_citation_grade/' + this.state.curren
     }
   }
 
-  renderAnnotate() {
-    if (this.state.citationData.length !== 0) {
-      return ((!this.state.isMarkup) ?
-        <div class="annotate">
-          <Annotate citedata={this.state.citationData} />
-          <Button color="success" id="addAnnotation" onClick={this.addAnnotation}>Save Annotation</Button>
-        </div> :
-        <div class="markup">
-          <Markup citesource={this.state.citationData} />
-          <div className="Actions">
-            {this.renderActions()}
-          </div>
-        </div>
-      );
-    }
-  }
+  // renderAnnotate() {
+  //   if (this.state.citationData.length !== 0) {
+  //     return ((!this.state.isMarkup) ?
+  //       <div class="annotate">
+  //         <Annotate citedata={this.state.citationData} />
+  //         <Button color="success" id="addAnnotation" onClick={this.addAnnotation}>Save Annotation</Button>
+  //       </div> :
+  //       <div class="markup">
+  //         <Markup citesource={this.state.citationData} />
+  //         <div className="Actions">
+  //           {this.renderActions()}
+  //         </div>
+  //       </div>
+  //     );
+  //   }
+  // }
 
   //Checks to see if there is appropriate text in the intext citation textarea, renders either disabled button or save button depending on context
   renderActions() {
@@ -599,8 +599,8 @@ fetch('http://localhost:5000/citations/save_citation_grade/' + this.state.curren
   handleNavInput(cit_id, e) {
 
     console.log('clickin a nav item');
-    this.setState({current_citation_id: cit_id});
-}
+    this.setState({ current_citation_id: cit_id });
+  }
 
   toggleHidden() {
     this.setState({
@@ -634,97 +634,97 @@ fetch('http://localhost:5000/citations/save_citation_grade/' + this.state.curren
     var citationItems = <p> nothing found yet </p>
 
 
-      if (citations != []) {
+    if (citations != []) {
 
-        var citationItems = citations.map(function (citation) {
+      var citationItems = citations.map(function (citation) {
 
-          if (citation.author[0] != undefined) {
-            return (<p id="biblio-box">{citation.author[0].family + ', ' + citation.author[0].given + ': ' + citation.title}</p>)
-          }
+        if (citation.author[0] != undefined) {
+          return (<p id="biblio-box">{citation.author[0].family + ', ' + citation.author[0].given + ': ' + citation.title}</p>)
+        }
 
-        });
+      });
 
-      } else {
-        var citationItems = <p> nothing found yet </p>
-      }
+    } else {
+      var citationItems = <p> nothing found yet </p>
+    }
 
 
 
     var citationDropdownItems = <option> nothing found yet </option>
-      if (citations != []) {
-        var citationDropdownItems = citations.map(function (citation) {
+    if (citations != []) {
+      var citationDropdownItems = citations.map(function (citation) {
 
-          if (citation.author[0] != undefined) {
-            return (<option value={citation._id}> {citation.author[0].family} </option>);
-          }
+        if (citation.author[0] != undefined) {
+          return (<option value={citation._id}> {citation.author[0].family} </option>);
+        }
 
-        });
-      } else {
-        var citationItems = <p> nothing found yet </p>;
-      }
+      });
+    } else {
+      var citationItems = <p> nothing found yet </p>;
+    }
 
 
     //https://material-ui.com/styles/basics/
     const usestyles = makeStyles({
-  root: {
-    color: "green"
-  },
-  selected: {
-     color: "red"
-  }
+      root: {
+        color: "green"
+      },
+      selected: {
+        color: "red"
+      }
     });
 
     const StyledNavItem = withStyles({
-  root: {
-    background: '#274259',
-    borderRadius: 3,
-    border: 0,
-    color: 'white',
-    height: 48,
-    padding: '0 30px',
-    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-  },
-    selected: {}
-})(BottomNavigationAction);
-    
+      root: {
+        background: '#274259',
+        borderRadius: 3,
+        border: 0,
+        color: 'white',
+        height: 48,
+        padding: '0 30px',
+        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+      },
+      selected: {}
+    })(BottomNavigationAction);
+
 
     const StyledSelectedNavItem = withStyles({
-  root: {
-    background: '#FFAC1D',
-    borderRadius: 3,
-    border: 0,
-    color: 'white',
-    height: 48,
-    padding: '0 30px',
-    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-  },
+      root: {
+        background: '#FFAC1D',
+        borderRadius: 3,
+        border: 0,
+        color: 'white',
+        height: 48,
+        padding: '0 30px',
+        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+      },
       selected: {}
-})(BottomNavigationAction);
+    })(BottomNavigationAction);
 
-    var citationNavItems = <BottomNavigationAction label={"nothing found yet"}/>
-      if (citations != []) {
-        var that = this;
-        var citationNavItems = citations.map(function (citation) {
+    var citationNavItems = <BottomNavigationAction label={"nothing found yet"} />
+    if (citations != []) {
+      var that = this;
+      var citationNavItems = citations.map(function (citation) {
 
-          //https://material-ui.com/components/bottom-navigation/
+        //https://material-ui.com/components/bottom-navigation/
 
-          var current_id = that.state.current_citation_id;
-          if (citation.author[0] != undefined) {
+        var current_id = that.state.current_citation_id;
+        if (citation.author[0] != undefined) {
 
-            if (citation._id != current_id) {
-              return (<StyledNavItem label={citation.author[0].family}
-                onClick={  (e)  => {that.handleNavInput(citation._id)} } 
-                />);
-            } else {
-              return(
-                <StyledSelectedNavItem  onClick={  (e)  => {that.handleNavInput(citation._id)} }   label={citation.author[0].family} />
-               );
+          if (citation._id != current_id) {
+            return (<StyledNavItem label={citation.author[0].family}
+              onClick={(e) => { that.handleNavInput(citation._id) }}
+            />);
+          } else {
+            return (
+              <StyledSelectedNavItem onClick={(e) => { that.handleNavInput(citation._id) }} label={citation.author[0].family} />
+            );
 
-            }
           }
+        }
 
-        });
-      } 
+      });
+    }
 
 
     return (
@@ -735,30 +735,18 @@ fetch('http://localhost:5000/citations/save_citation_grade/' + this.state.curren
           {/* One Giant container that will let us use rows / columns */}
           {/* Row: Contains rubric and student selectors */}
 
-          
+
           <BottomNavigation value={'yes'} className={usestyles.root} showLabels>
             {citationNavItems}
           </BottomNavigation>
-          <br/>
-          <br/>
+          <br />
+          <br />
+          {/* Row: Contains -- Semantic Scholor, Block Text, Sources, Biblio Box, and Progress Bar */}
           <Row>
             <Col xs="3">
               <h2 className='aVnalyzeHeader'>Assignment</h2>
               <p id="assignmentInfo"> {this.state.assignment.name} </p>
-            </Col>
-            <Col xs="6">
-            </Col>
-            <Col xs="3">
-              <h2 className='analyzeHeader' >Rubric</h2>
-              <Input type="select" id="rubricAssign" name="AssignRubric" onInput={this.handleGetRubric}>
-                <option value="" disabled selected hidden >Select a Rubric</option>
-                {rubricList}
-              </Input>
-            </Col>
-          </Row>
-          {/* Row: Contains -- Semantic Scholor, Block Text, Sources, Biblio Box, and Progress Bar */}
-          <Row>
-            <Col xs="3">
+              <br />
               <label for="assignForAnalyze">Citations:</label>
               <Input
                 onChange={this.handleCitationChange}
@@ -774,20 +762,20 @@ fetch('http://localhost:5000/citations/save_citation_grade/' + this.state.curren
               <div class="discoveryTool">
                 <Card>
                   <CardBody>
-                    <CardTitle><a style={{color: "blue", "text-decoration": "underline"}}   onClick={this.open_s2}>Semantic Scholar</a></CardTitle>
+                    <CardTitle><a style={{ color: "blue", "text-decoration": "underline" }} onClick={this.open_s2}>Semantic Scholar</a></CardTitle>
                     <CardText>Citation Velcoity: {this.state.current_s2_data["citation_velocity"]}</CardText>
                     <CardText>Influential Citations: {this.state.current_s2_data["influential_citation_count"]}</CardText>
                   </CardBody>
                 </Card>
                 <Card>
                   <CardBody>
-                    <CardTitle><a style={{color: "blue", "text-decoration": "underline"}}   onClick={this.open_alma_primo}>Alma Primo</a></CardTitle>
+                    <CardTitle><a style={{ color: "blue", "text-decoration": "underline" }} onClick={this.open_alma_primo}>Alma Primo</a></CardTitle>
                     <CardText>Information from Alma Primo about source goes here</CardText>
                   </CardBody>
                 </Card>
                 <Card>
                   <CardBody>
-                    <CardTitle><a style={{color: "blue", "text-decoration": "underline"}}   onClick={this.open_google_scholar}>Google Scholar</a></CardTitle>
+                    <CardTitle><a style={{ color: "blue", "text-decoration": "underline" }} onClick={this.open_google_scholar}>Google Scholar</a></CardTitle>
                     <CardText>Information from Google Scholar about source goes here</CardText>
                   </CardBody>
                 </Card>
@@ -798,21 +786,26 @@ fetch('http://localhost:5000/citations/save_citation_grade/' + this.state.curren
               <div className="overflow-auto">
                 {pdf}
               </div>
-              <Button id='markBtn' onClick={this.toggleMarkup.bind(this)}>Switch Markup/Annotate</Button>
-              {this.renderAnnotate()}
+              {/* <Button id='markBtn' onClick={this.toggleMarkup.bind(this)}>Switch Markup/Annotate</Button>
+              {this.renderAnnotate()} */}
             </Col>
             <Col xs="3">
-              <Rubric 
-              currentRubric={this.state.currentRubric}
-              allowZeroExpanded={true}
+              <h2 className='analyzeHeader' >Rubric</h2>
+              <Input type="select" id="rubricAssign" name="AssignRubric" onInput={this.handleGetRubric}>
+                <option value="" disabled selected hidden >Select a Rubric</option>
+                {rubricList}
+              </Input>
+              <Rubric
+                currentRubric={this.state.currentRubric}
+                allowZeroExpanded={true}
               />
-              <br/>
+              <br />
               <textarea id="annotation">
                 Make an optional annotation...
               </textarea>
-              <Button color="success" id="paperDone" onClick={this.handleSaveCitations}> Save Citation Grade </Button>
-              <Button id="nextPaper" onClick={ () => {this.next_paper(1)}}> Next Paper </Button>
-              <Button id="nextPaper" onClick={ () => {this.next_paper(-1)}}> Previous Paper </Button>
+              <Button color="success" id="paperDone" onClick={this.handleSaveCitations}>Save Rubric Value </Button>
+              <Button id="nextPaper" onClick={() => { this.next_paper(1) }}> Next Paper </Button>
+              <Button id="nextPaper" onClick={() => { this.next_paper(-1) }}> Previous Paper </Button>
             </Col>
           </Row>
           {/*prop passing the rubric information*/}
