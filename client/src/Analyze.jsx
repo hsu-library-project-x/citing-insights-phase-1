@@ -16,6 +16,8 @@ import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
+import ScrollableTabsButtonAuto from './tabs.jsx'
+
 
 import update from 'immutability-helper';
 
@@ -185,7 +187,7 @@ class Analyze extends Component {
 
                 that.get_citation_info(myJson["_id"])
                   .then(function (value) {
-                    that.get_s2_info(that.state.citations[1]["_id"]);
+                    //that.get_s2_info(that.state.citations[1]["_id"]);
                   });
               });
           } catch (e) {
@@ -739,6 +741,7 @@ fetch('http://localhost:5000/citations/save_citation_grade/' + this.state.curren
           <BottomNavigation value={'yes'} className={usestyles.root} showLabels>
             {citationNavItems}
           </BottomNavigation>
+          <ScrollableTabsButtonAuto citations={this.state.citations}/>
           <br/>
           <br/>
           <Row>
