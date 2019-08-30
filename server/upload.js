@@ -82,7 +82,7 @@ module.exports = function upload(req, res) {
             //successful parse
             var json_file = require(
                 json_path + file.path
-                    .replace("fileUpload/", "")
+                    .replace("fileUpload", "")
                     .replace(".pdf", ".json")
             );
 

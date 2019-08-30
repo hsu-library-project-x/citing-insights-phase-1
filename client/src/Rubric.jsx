@@ -27,6 +27,7 @@ class Rubric extends Component {
         if (rubrics !== undefined && rubrics !== []) {
             rubricList = rubrics.map(function (rubric, index) {
 
+
                 console.log('printing rubrics');
                 console.log(rubric["card" + index]);
                 console.log(index);
@@ -37,7 +38,8 @@ class Rubric extends Component {
                         <AccordionItem>
                             <AccordionItemHeading>
                                 <AccordionItemButton>
-                                    {rubric["card" + index]["cardTitle"]}                        </AccordionItemButton>
+                                    {rubric["card" + index]["cardTitle"]}                        
+                                </AccordionItemButton>
                             </AccordionItemHeading>
                             <AccordionItemPanel>
                                 <p> {rubric["card" + index]["cardText"]}</p>
