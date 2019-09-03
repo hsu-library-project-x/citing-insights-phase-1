@@ -87,7 +87,7 @@ module.exports = function upload(req, res) {
             );
 
             var full_json_path = json_path + file.path
-                .replace("fileUpload/", "")
+                .replace("fileUpload", "")
                 .replace(".pdf", ".json");
 
             for (index in json_file) {
