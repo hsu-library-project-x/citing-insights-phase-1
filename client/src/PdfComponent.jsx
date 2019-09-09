@@ -102,9 +102,6 @@ class PdfComponent extends Component {
     return (
       <div>
         <React.Fragment>
-
-          
-
           <Document file={this.state.pdf} onLoadSuccess={this.onDocumentLoadSuccess}  >
             <Page onLoadSuccess={() => removeTextLayerOffset()} pageNumber={pageNumber} customTextRenderer={this.makeTextRenderer(searchText)} />
           </Document>
@@ -119,8 +116,6 @@ class PdfComponent extends Component {
             <button class="pdfButtons" type="button" disabled={pageNumber >= numPages} onClick={this.nextPage}>Next</button>
           </div>
         </React.Fragment>
-
-
       </div>
     );
   }

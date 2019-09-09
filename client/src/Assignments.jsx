@@ -167,10 +167,10 @@ class Assignment extends Component{
       const formData = new FormData();
       formData.append(this.state.assignmentId, file, file.name);
       req.open("POST", "http://localhost:5000/upload");
-      req.send(formData);
-      alert("Upload Successful!");
+      req.send(formData)
     
     });
+
   }
 
   render(){	
