@@ -24,6 +24,12 @@ class Annotate extends Component {
 			citeData: v,
 			loaded: true
 		});
+
+		for(let i = 0; i < v.length; i++){
+			this.state.inTextOptions.push(
+				<option value={"source_" + v[i].id}>{"Source Citation: " + v[i].title}</option>
+			)	
+		}
 	}
 
 	renderActions(){
@@ -33,8 +39,7 @@ class Annotate extends Component {
 				let curInCiteArray =  data[i].intextCites;
 				for(let j = 0; j < curInCiteArray.length; j++){
 					if(j === 0){
-						document.getElementById("selectedText").innerHTML = curInCiteArray[j].text;
-						document.getElementById("curAnno").value = curInCiteArray[j].annotation;
+						document.getElementById("selectedText").innerHTML = "Select A Citation";
 					}
 					let curIntextId = curInCiteArray[j].id
 					//let inTextValue = "intext" + j;
@@ -47,6 +52,7 @@ class Annotate extends Component {
 
 			return(
 				<Input type="select" id="inCitesForAnno" onChange={this.getText}>
+					<option disabled selected hidden>Select a Citation to Annotate</option>
 					{this.state.inTextOptions}
 				</Input>
 			);
@@ -59,6 +65,14 @@ class Annotate extends Component {
 		let curids = document.getElementById("inCitesForAnno").value.split("_");
 
 		for(let i = 0; i < data.length; i++){
+			if(curids[0] === "source"){
+				if(data[i].id === curids[1]){
+					let annotation = data[i].annotation;
+					document.getElementById("selectedText").innerHTML = "This is a Source Citation";
+					document.getElementById("curAnno").value = annotation;
+					return;
+				}
+			}
 			if(data[i].id === curids[1]){
 				let curArray = data[i].intextCites;
 				for(let j = 0; j < curArray.length; j++){
@@ -79,7 +93,7 @@ class Annotate extends Component {
 	    	<div class="anno-contain">
 		    	<p> Annotation Box </p>
 		    	<div id="sourceSelectContainer">{this.renderActions()}</div>
-		    	<p id="selectedText"></p>
+		    	<p id="selectedText">Select A Citation!</p>
 		    	<Input type="textarea" name="annotation" id="curAnno" />
 		    </div>
     	);

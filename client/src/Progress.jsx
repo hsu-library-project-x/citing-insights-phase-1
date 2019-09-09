@@ -1,21 +1,20 @@
-import React, { Component } from 'react'
-import './css/Progress.css'
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-class Progress extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {}
-  }
-  render() {
-    return (
-      <div className="ProgressBar">
-        <div
-          className="Progress"
-          style={{ width: this.props.progress + '%' }}
-        />
-      </div>
-    )
-  }
+const useStyles = makeStyles(theme => ({
+  progress: {
+    margin: theme.spacing(2),
+  },
+}));
+
+export default function CircularIndeterminate() {
+  const classes = useStyles();
+
+  return (
+    <div>
+      <CircularProgress className={classes.progress} />
+      <CircularProgress className={classes.progress} color="secondary" />
+    </div>
+  );
 }
-
-export default Progress

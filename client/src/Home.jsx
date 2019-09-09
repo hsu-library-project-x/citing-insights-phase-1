@@ -11,8 +11,7 @@ import './css/Home.css';
 import {Row, Col} from 'reactstrap';
 
 //import pictures!
-import settings from './images/gears.svg';
-import tasks from './images/pencil.svg';
+import logo from "./images/CIHome.png";
  
 
 // Class to render our homepage
@@ -24,33 +23,38 @@ class Home extends Component{
 				<br />
 				<Row>
 					{/* Empty Col for formatting purposes */}
-					<Col xs="1"></Col>
+					<Col xs="3"></Col>
 
-					<Col xs="5">
+					<Col xs="6">
+						<img id="HomeLogo" src={logo} alt="logo" ></img>
+						<br />
 						<HashRouter>
 							{/* div to hold the Tasks button/ option for user */}
 							<Link to="/tasks">
 								<button class="hubButton">
-									<img alt="taskIcon" class="hubIcon" src={tasks} />
 									<p>Tasks</p>
 								</button> 
 							</Link>
-						</HashRouter>
-					</Col>
-					
-					<Col xs="5"> 
-						<HashRouter>
-							<Link to="/accountsettings">
+							<Link to="">
 								<button class="hubButton">
-										<img alt="settingsIcon" class="hubIcon" src={settings} /> 
-										<p>Account Settings</p>
+									<p>Downloads (TBC)</p>
 								</button>
+							</Link>
+							<Link to="">
+								<button class="hubButton">
+									<p>To Be Continued</p>
+								</button>
+							</Link>
+							<Link to="">
+								<p> About Us</p>
+							</Link>
+							<Link to="">
+								<p> Contact Us</p>
 							</Link>
 						</HashRouter>
 					</Col>
 					{/* Empty Col for formatting purposes */} 
-					<Col xs="1">
-					</Col>
+					<Col xs="3"></Col>
 				</Row>
 			</div>
 			

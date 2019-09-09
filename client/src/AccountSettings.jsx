@@ -1,5 +1,7 @@
 //Imprort Libraries that we need
 import React, {Component} from 'react';
+import { withRouter} from 'react-router-dom';
+
 import {Form, FormGroup} from 'reactstrap';
 
 //Import CSS
@@ -121,4 +123,4 @@ class AccountSettings extends Component{
 	}
 }
 
-export default AccountSettings;
+export default withRouter(AccountSettings);

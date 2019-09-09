@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {withRouter} from 'react-router-dom';
 import { Label, Input } from 'reactstrap';
 import { Row, Col } from 'reactstrap';
 import './css/App.css';
@@ -164,9 +165,11 @@ class Assignment extends Component{
       //check if document is a pdf.. if not go to catch statement
       //continuing to get server error
       const formData = new FormData();
-      formData.append("ClassID", file, file.name);
+      formData.append(this.state.assignmentId, file, file.name);
       req.open("POST", "http://localhost:5000/upload");
       req.send(formData);
+      alert("Upload Successful!");
+    
     });
   }
 
@@ -186,6 +189,7 @@ class Assignment extends Component{
       /* So far our homepage is just a h1 tag with text */
       <div class="classes-container assign-container" >
         <h1>Upload Files</h1>
+        <p>Please upload papers as PDF in MLA format</p>
         <Row>
           <Col xs="2">
           </Col>
@@ -233,4 +237,4 @@ class Assignment extends Component{
   }
 }
 
-export default Assignment;
+export default withRouter(Assignment);

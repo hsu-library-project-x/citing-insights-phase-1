@@ -43,10 +43,28 @@ module.exports = {
         });
     },
 
+    by_assignment_id: function (req, res) {
+        var id = req.params.id;
+        paperModel.find({assignment_id: id}, "_id",  function (err, paper) {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Error when getting paper.',
+                    error: err
+                });
+            }
+            if (!paper) {
+                return res.status(404).json({
+                    message: 'No such paper'
+                });
+            }
+            return res.json(paper);
+        });
+    },
     /**
      * paperController.create()
      */
     create: function (req, res) {
+        
         var paper = new paperModel({
 			title : req.body.title,
 			name : req.body.name,

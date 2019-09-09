@@ -50,7 +50,7 @@ a.active{
 
 .analyze-container{
   padding-top: 6em;
-  background-color: #F7F6E7;
+  background-color: #DFDDC5;
   width: 100%;
   color: black;
   margin-top: -1.1em;
@@ -78,3 +78,7 @@ a.navbar-brand{
   height:30%;
 }
 
+
+.navBarLogo{
+  width: 15%;
+}

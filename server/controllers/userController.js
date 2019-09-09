@@ -1,5 +1,7 @@
-var userModel = require('../models/userModel.js');
-
+//var userModel = require('../models/userModel.js');
+var passport = require("passport");
+require('../models/userModel')();
+var userModel = require("mongoose").model("user");
 /**
  * userController.js
  *
@@ -43,26 +45,9 @@ module.exports = {
         });
     },
 
-    /**
-     * userController.create()
-     */
-    create: function (req, res) {
-        var user = new userModel({
-			email : req.body.email,
-			password : req.body.password
 
-        });
-
-        user.save(function (err, user) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when creating user',
-                    error: err
-                });
-            }
-            return res.status(201).json(user);
-        });
-    },
+     
+    
 
     /**
      * userController.update()

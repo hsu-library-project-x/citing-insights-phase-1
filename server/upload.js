@@ -26,29 +26,39 @@ module.exports = function upload(req, res) {
     //Either multipart or urlencoded
     form.type = "multipart";
 
+    console.log('attempting to print params');
+  //console.log(req.headers);
+
     form
         .on("file", (field, file) => {
-            console.log("received");
 
             // this length be increased if there are collisions
             var file_name = chance.string({
-                pool: "abcdefghijklmnopqrstuvwxyz", 
-                length: 10 
+                pool: "abcdefghijklmnopqrstuvwxyz",
+                length: 10
             });
+            console.log('attempting to print field');
+            console.log(field);
 
             //Ghostscript strips pdf into raw text
             var txt_path = __dirname + "/tmp/txt/" + file_name + ".txt"
-          console.log(txt_path);
-          
-          shell.exec("gs -sDEVICE=txtwrite -o " + txt_path + " " + file.path);
-
             console.log(txt_path);
 
+            shell.exec("gs -sDEVICE=txtwrite -o " + txt_path + " " + file.path);
+
+
             //the replace functions just get rid of carriage returns
-            var raw_text = { 
-                "body": fs.readFileSync(txt_path).toString().replace(/\r+/g, "").replace(/\n+/g, ""), 
-                "title": null, 
-                "name": null 
+
+            var textByLine = fs.readFileSync(file.path);
+
+
+
+            var raw_text = {
+                "body": fs.readFileSync(txt_path).toString().replace(/\r+/g, "").replace(/\n+/g, ""),
+                "pdf": textByLine,
+                "title": null,
+                "name": null,
+                "assignment_id": field
             };
             // we actually want to set a variable to see whether or not things happenned successfully
             // instantiate the paper and save to db
@@ -72,20 +82,20 @@ module.exports = function upload(req, res) {
             //successful parse
             var json_file = require(
                 json_path + file.path
-                .replace("fileUpload/", "")
-                .replace(".pdf", ".json")
+                    .replace("fileUpload", "")
+                    .replace(".pdf", ".json")
             );
 
             var full_json_path = json_path + file.path
-                .replace("fileUpload/", "")
+                .replace("fileUpload", "")
                 .replace(".pdf", ".json");
 
             for (index in json_file) {
                 var citation = new citationModel(json_file[index]);
-                citation.set({ "paper_id" : paper.id});
+                citation.set({ "paper_id": paper.id });
 
-                citation.save(function (err, citation){
-                    if(err){
+                citation.save(function (err, citation) {
+                    if (err) {
                         check = false;
                         console.log(err);
                     }
@@ -102,10 +112,10 @@ module.exports = function upload(req, res) {
         })
         .on("end", () => {
             //we want to check a bool set in paper.save to see if we cool
-            if(check){
+            if (check) {
                 res.send("we cool");
             }
-            else{
+            else {
                 res.send("we Not cool");
             }
             console.log("ending");

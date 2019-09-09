@@ -1,7 +1,11 @@
 import React, {Component} from 'react';
+import {withRouter} from 'react-router-dom';
+
 import {Input} from 'reactstrap';
 import MultiselectTwoSides from 'react-multiselect-two-sides';
 import './css/Download.css';
+
+//import searchIcon from './images/magnifying-glass.svg';
 
 
 // Class to render our homepage
@@ -27,6 +31,7 @@ class Download extends Component{
 			],
 			value: [],
 			highlight: [],
+			search: false,
 			settings: [
 				{
 					label: 'Show controls',
@@ -48,11 +53,21 @@ class Download extends Component{
 					name: 'disabled',
 					value: false
 				}
-			]
+			],
 		};
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleChangeSetting = this.handleChangeSetting.bind(this);
+		this.showSearch=this.showSearch.bind(this);
+	}
+
+	showSearch(state){
+
+		this.setState({
+		search: !this.state.search
+		});
+		
+		document.getElementsByClassName('.msts__side_filter').style.display= {  display: this.state.search ? 'none': 'inline'};
 	}
 
 	handleChange(value) {
@@ -107,34 +122,45 @@ class Download extends Component{
 
 		return (
 			<div class="download-container">
+				<h1>Download</h1>
 				<form id="downloadForm">
+					{/* <label for='class'>Class:</label> */}
 					<Input name="class" type="select" required>
 						<option value="" disabled selected hidden >Select a Class</option>
 						<option value="1">Class One</option>	
 					</Input>
+					<br />
+					{/* <label for='assignment'>Assignment:</label> */}
 					<Input name="assignment" type="select" required>
 						<option value="" disabled selected hidden >Select an Assignment</option>
 						<option value="1">Assignment One</option>	
 					</Input>
+					{/* <button onClick={this.showSearch(this.state.search)} ><img src="./images/magnifying-glass.svg" alt="magnifying-glass" /></button> */}
+					
 					<MultiselectTwoSides
 						className="multiselect"
 						availableHeader="Available"
 						availableFooter={`Available: ${availableCount}`}
 						selectedHeader="Selected"
 						selectedFooter={`Selected: ${selectedCount}`}
-						placeholder="Filter..."
+						placeholder="search"
 						options={options}
 						highlight={highlight}
 						value={value}
 						onChange={this.handleChange}
 						{...s}
-					/>
-					<Input type="submit" value="Submit"/>
+					/>					
+					<Input type="submit" value="Download"/>
 				</form>
 			</div>
 		);
 	}
 }
 
+// <div>Icons made by <a href="https://www.flaticon.com/authors/gregor-cresnar" 
+// title="Gregor Cresnar">Gregor Cresnar</a> from <a href="https://www.flaticon.com/"                
+// title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/"                 
+// title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div> */}
 
-export default Download;
+
+export default withRouter(Download);
