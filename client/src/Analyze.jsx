@@ -758,6 +758,15 @@ class Analyze extends Component {
                 <option value="" disabled selected hidden >Select a Citation</option>
                 {citationDropdownItems}
               </Input>
+              <h4>Citation (with style): </h4>
+              <div class="discoveryTool">
+                <Card> 
+                  <CardBody>
+                    <CardTitle></CardTitle>
+                    <CardText> Build Citation and pipe the info into here </CardText>
+                  </CardBody>
+                </Card>
+              </div>
               <h4>Discovery Tool</h4>
               <div class="discoveryTool">
                 <Card>
