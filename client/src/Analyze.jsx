@@ -763,20 +763,19 @@ class Analyze extends Component {
                 <Card>
                   <CardBody>
                     <CardTitle><a style={{ color: "blue", "text-decoration": "underline" }} onClick={this.open_s2}>Semantic Scholar</a></CardTitle>
-                    <CardText>Citation Velcoity: {this.state.current_s2_data["citation_velocity"]}</CardText>
-                    <CardText>Influential Citations: {this.state.current_s2_data["influential_citation_count"]}</CardText>
+                    <CardText>Citation Velcoity: {this.state.current_s2_data["citation_velocity"]} <br/>Influential Citations: {this.state.current_s2_data["influential_citation_count"]}</CardText>
                   </CardBody>
                 </Card>
                 <Card>
                   <CardBody>
                     <CardTitle><a style={{ color: "blue", "text-decoration": "underline" }} onClick={this.open_alma_primo}>Alma Primo</a></CardTitle>
-                    <CardText>Information from Alma Primo about source goes here</CardText>
+                    <CardText>Find Source through Library Discovery System</CardText>
                   </CardBody>
                 </Card>
                 <Card>
                   <CardBody>
                     <CardTitle><a style={{ color: "blue", "text-decoration": "underline" }} onClick={this.open_google_scholar}>Google Scholar</a></CardTitle>
-                    <CardText>Information from Google Scholar about source goes here</CardText>
+                    <CardText>Google Scholar Information</CardText>
                   </CardBody>
                 </Card>
               </div>
