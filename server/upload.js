@@ -27,7 +27,7 @@ module.exports = function upload(req, res) {
     form.type = "multipart";
 
     console.log('attempting to print params');
-  //console.log(req.headers);
+    //console.log(req.headers);
 
     form
         .on("file", (field, file) => {
@@ -120,6 +120,6 @@ module.exports = function upload(req, res) {
             }
             console.log("ending");
             //shell.exec('rm ' + txt_path);
-        })
+        });
     form.parse(req);
 }
