@@ -20,6 +20,16 @@
     width: 100%;
     text-align: left;
     border: none;
+    /*float:left;*/
+
+}
+
+#radio{
+    margin-top: 1.5em;
+    float:right;
+    margin-right: 1em;
+    border: solid black 0.5em;
+    margin-left: 1em;
 }
 
 .accordion__button:hover {
