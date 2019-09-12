@@ -72,6 +72,13 @@ li > a{
   border-radius: 2em;
 }
 
+.analyze-container .btn-link{
+  text-align:left;
+  text-decoration: underline;
+  color: blue;
+  margin:0;
+}
+
 .anno-contain > .btn{
   margin: auto;
   margin-top: .5em;

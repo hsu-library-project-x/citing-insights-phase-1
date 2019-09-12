@@ -1,4 +1,5 @@
 // Importing Libraries
+// Importing Libraries
 import React, { Component } from 'react';
 import { withRouter, Redirect } from 'react-router-dom';
 import './css/App.css';
@@ -771,19 +772,19 @@ class Analyze extends Component {
               <div class="discoveryTool">
                 <Card>
                   <CardBody>
-                    <CardTitle><a style={{ color: "blue", "text-decoration": "underline" }} onClick={this.open_s2}>Semantic Scholar</a></CardTitle>
+                    <CardTitle><Button color="link" onClick={this.open_s2}>Semantic Scholar</Button></CardTitle>
                     <CardText>Citation Velcoity: {this.state.current_s2_data["citation_velocity"]} <br/>Influential Citations: {this.state.current_s2_data["influential_citation_count"]}</CardText>
                   </CardBody>
                 </Card>
                 <Card>
                   <CardBody>
-                    <CardTitle><a style={{ color: "blue", "text-decoration": "underline" }} onClick={this.open_alma_primo}>Alma Primo</a></CardTitle>
+                    <CardTitle> <Button color="link" onClick={this.open_alma_primo}>Alma Primo</Button></CardTitle>
                     <CardText>Find Source through Library Discovery System</CardText>
                   </CardBody>
                 </Card>
                 <Card>
                   <CardBody>
-                    <CardTitle><a style={{ color: "blue", "text-decoration": "underline" }} onClick={this.open_google_scholar}>Google Scholar</a></CardTitle>
+                    <CardTitle><Button color="link" onClick={this.open_google_scholar}>Google Scholar</Button></CardTitle>
                     <CardText>Google Scholar Information</CardText>
                   </CardBody>
                 </Card>

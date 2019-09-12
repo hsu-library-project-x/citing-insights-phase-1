@@ -76,7 +76,7 @@ class Tasks extends Component {
 					<div class="button-container">
 						<Link to="/tasks/assignments">
 							<button class="menuButton" onClick={this.changeName}>
-								<img alt="assignmentIcon" id="Assignments" src={addAssignment} />
+								<img alt="assignmentIcon" id="Upload" src={addAssignment} />
 								Upload Papers
 								</button>
 						</Link>
