@@ -189,7 +189,7 @@ class Assignment extends Component{
       /* So far our homepage is just a h1 tag with text */
       <div class="classes-container assign-container" >
         <h1>Upload Files</h1>
-        <p>Please upload papers as PDF in MLA format</p>
+        <p>Please upload papers as PDF</p>
         <Row>
           <Col xs="2">
           </Col>
