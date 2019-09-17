@@ -30,6 +30,12 @@
 	display: block;
 }
 
+.react-pdf__Page__canvas{
+	width:100%;
+	margin-right:auto;
+	margin-left:auto;
+}
+
 .pdfInfo >label{
 	display: inline-block;
 	margin-right: 1em;

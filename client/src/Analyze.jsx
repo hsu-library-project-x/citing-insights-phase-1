@@ -737,15 +737,15 @@ class Analyze extends Component {
           {/* Row: Contains rubric and student selectors */}
 
 
-          <BottomNavigation value={'yes'} className={usestyles.root} showLabels>
-            {citationNavItems}
-          </BottomNavigation>
-          <br />
-          <br />
+          {/*<BottomNavigation value={'yes'} className={usestyles.root} showLabels>*/}
+          {/*  {citationNavItems}*/}
+          {/*</BottomNavigation>*/}
+          {/*<br />*/}
+          {/*<br />*/}
           {/* Row: Contains -- Semantic Scholor, Block Text, Sources, Biblio Box, and Progress Bar */}
           <Row>
             <Col xs="3">
-              <h2 className='aVnalyzeHeader'>Assignment</h2>
+              <label for="assignmentInfo" className='analyzeHeader'>Assignment</label>
               <p id="assignmentInfo"> {this.state.assignment.name} </p>
               <br />
               <label for="assignForAnalyze">Citations:</label>
@@ -791,7 +791,7 @@ class Analyze extends Component {
               </div>
             </Col>
             <Col xs="6">
-              <h4> Student Paper PDF</h4>
+              {/*<h4> Student Paper PDF</h4>*/}
               <div className="overflow-auto">
                 {pdf}
               </div>
@@ -799,7 +799,7 @@ class Analyze extends Component {
               {this.renderAnnotate()} */}
             </Col>
             <Col xs="3">
-              <h2 className='analyzeHeader' >Rubric</h2>
+              {/*<h2 className='analyzeHeader' >Rubric</h2>*/}
               <Input type="select" id="rubricAssign" name="AssignRubric" onInput={this.handleGetRubric}>
                 <option value="" disabled selected hidden >Select a Rubric</option>
                 {rubricList}
