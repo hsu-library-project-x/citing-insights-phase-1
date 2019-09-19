@@ -737,33 +737,34 @@ class Analyze extends Component {
           {/* Row: Contains rubric and student selectors */}
 
 
-          {/*<BottomNavigation value={'yes'} className={usestyles.root} showLabels>*/}
-          {/*  {citationNavItems}*/}
-          {/*</BottomNavigation>*/}
+          <BottomNavigation value={'yes'} className={usestyles.root} showLabels>
+            {citationNavItems}
+          </BottomNavigation>
           {/*<br />*/}
           {/*<br />*/}
           {/* Row: Contains -- Semantic Scholor, Block Text, Sources, Biblio Box, and Progress Bar */}
           <Row>
             <Col xs="3">
-              <label for="assignmentInfo" className='analyzeHeader'>Assignment</label>
-              <p id="assignmentInfo"> {this.state.assignment.name} </p>
+              {/*<label for="assignmentInfo" className='analyzeHeader'> Current Assignment</label>*/}
+              <p id="assignmentInfo">Current Assignment - {this.state.assignment.name} </p>
               <br />
-              <label for="assignForAnalyze">Citations:</label>
+              {/*<label for="assignForAnalyze">Citations:</label>*/}
+
+              <h4 id="CitationLabel">Citation (with style): </h4>
               <Input
-                onChange={this.handleCitationChange}
-                onInput={this.onInput}
-                id="assignForAnalyze"
-                type="select"
-                name="AssignNew"
-                required >
+                  onChange={this.handleCitationChange}
+                  onInput={this.onInput}
+                  id="assignForAnalyze"
+                  type="select"
+                  name="AssignNew"
+                  required >
                 <option value="" disabled selected hidden >Select a Citation</option>
                 {citationDropdownItems}
               </Input>
-              <h4>Citation (with style): </h4>
               <div class="discoveryTool">
                 <Card> 
                   <CardBody>
-                    <CardTitle></CardTitle>
+                    <CardTitle>Citation</CardTitle>
                     <CardText> Build Citation and pipe the info into here </CardText>
                   </CardBody>
                 </Card>

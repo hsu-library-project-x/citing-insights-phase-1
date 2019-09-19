@@ -99,12 +99,18 @@ li > a{
   overflow: scroll;
 }
 
+#CitationLabel{
+  margin-top: 1em;
+}
+
 .analyze-container #assignmentInfo{
   display: inline-block;
+  width: 70%;
   border: 2.5px solid #274259;
   border-top: 5px solid #274259;
-  background-color:white;
-  text-align: center;
+  background-color:#274259;
+  color:white;
+  text-align: left;
   padding-left:1em;
   padding-right:1em;
   border-radius: 5px;
@@ -125,7 +131,7 @@ li > a{
   margin-top: 1em;
   border: 2.5px solid #274259;
   border-top: 5px solid #274259;
-  margin-bottom: 2em;
+  /*margin-bottom: 1.5em;*/
   margin-top: 0;
 }
 
@@ -195,10 +201,14 @@ h2.analyzeHeader{
   text-align: left;
 }
 
+.discoveryTool {
+  margin:1em;
+}
 .discoveryTool > .card > .card-body{
   border: 2.5px solid #274259;
   border-left: 5px solid #FFAC1D;
   padding: 0.5em;
+
 }
 
 .discoveryTool > .card > .card-body > .card-title{
@@ -232,6 +242,10 @@ h2.analyzeHeader{
 .analyze-container .pdfSearch{
   width: 30%;
 }
+
+label{
+   width:100%;
+ }
 
 .analyze-container .pdfInfo>label{
   margin-left: 1em;
