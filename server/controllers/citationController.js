@@ -54,6 +54,12 @@ module.exports = {
     });
   },
 
+  by_user_id: function (req, res) {
+
+    var user_id = req.parans.user_id;
+    citationModel.findOne({ _user_id})
+  },
+
   s2: function (req, res) {
     var id = req.params.id;
     console.log('s2');

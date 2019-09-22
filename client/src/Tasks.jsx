@@ -18,6 +18,7 @@ import addClass from './images/class.svg';
 import addAssignment from './images/assignment.svg';
 import Continue from './images/continue.svg';
 import download from './images/download.svg';
+import Results from './Results.jsx';
 import rubric from './images/rubric.svg';
 
 // Collapses the big drop down of all sub components
@@ -90,10 +91,10 @@ class Tasks extends Component {
 						</Link>
 					</div>
 					<div class="button-container">
-						<Link to="/tasks/download">
+						<Link to="/tasks/overview">
 							<button class="menuButton" onClick={this.changeName}>
-								<img alt="downloadIcon" id="Download" src={download} />
-								Download
+								<img alt="downloadIcon" id="Overview" src={download} />
+								Overview
 								</button>
 						</Link>
 					</div>
@@ -113,7 +114,7 @@ class Tasks extends Component {
 								<Classes user={this.props.user} {...props} />} />
 						<Route path="/tasks/assignments" render={(props) => <Assignments user={this.props.user} {...props} />} />
 						<Route path="/tasks/analyzemenu" render={(props) => <AnalyzeSubMenu user={this.props.user} {...props} />} />
-						<Route path="/tasks/download" render={(props) => <Download user={this.props.user} {...props} />} />
+						<Route path="/tasks/overview" render={(props) => <Results user={this.props.user} {...props} />} />
 						<Route path="/tasks/rubriceditor" render={(props) => <RubricEditor user={this.props.user} {...props} />} />
 						<Route path="/tasks/analyze" render={(props) => <Analyze user={this.props.user} {...props} />} />
 					</Switch>
