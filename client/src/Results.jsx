@@ -13,7 +13,8 @@ class Results extends Component {
             assignmentName: '',
             AvailableCourses: [],
             AvailableAssignments: [],
-            AvailablePapers: []
+            AvailablePapers: [],
+            citations: []
         }
 
         this.handleClassSelection = this.handleClassSelection.bind(this);
@@ -80,7 +81,7 @@ class Results extends Component {
     getRubricValues() {
         var that = this;
 
-        var answer = fetch('http://localhost:5000/citations/by_paper_id/')
+        var answer = fetch('http://localhost:5000/citations/by_paper_id/' + this.state.selectedPaperId)
             .then(function (response) {
                 return response.json();
             })
@@ -109,7 +110,7 @@ class Results extends Component {
 
         return (
             <div class="download-container">
-                <h1>Hey</h1>
+                <h1>Overview</h1>
                 <Row>
                     <Col xs="3">
                         <label for="assignForAnalyze">Class:</label>
