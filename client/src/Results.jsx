@@ -9,6 +9,20 @@ class Results extends Component {
             citations: {}
         }
     }
+    
+    //Given a Class, this function makes a call to get all assignments in that class.
+    handleClassSelection(event) {
+        var that = this;
+        var target = event.target;
+        fetch('http://localhost:5000/assignments/by_class_id/' + target.value)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+
+                that.setState({ AvailableAssignments: myJson });
+            });
+    }
 
     getRubricValues() {
         var that = this;
@@ -27,7 +41,7 @@ class Results extends Component {
         return (
             <div class="download-container">
                 <h1>Hey</h1>
-     
+
             </div>
         )
     }
