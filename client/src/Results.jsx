@@ -1,19 +1,46 @@
 import React, { Component } from 'react';
-import { CircularProgress } from '@material-ui/core';
+import { Label, Input } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 import "./css/Download.css";
 
 class Results extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            citations: {}
+            className: '',
+            selectedAssignmentId: '',
+            selectedPaperId: '',
+            assignmentName: '',
+            AvailableCourses: [],
+            AvailableAssignments: [],
+            AvailablePapers: []
         }
+
+        this.handleClassSelection = this.handleClassSelection.bind(this);
+        this.handleAssignmentSelection = this.handleAssignmentSelection.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.getRubricValues = this.getRubricValues.bind(this);
     }
-    
+
+    //On mount, makes a call to retrieve all Classes for the user
+    componentWillMount() {
+
+        var that = this;
+
+        fetch('http://localhost:5000/courses')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                that.setState({ AvailableCourses: myJson });
+            });
+    }
+
     //Given a Class, this function makes a call to get all assignments in that class.
     handleClassSelection(event) {
         var that = this;
         var target = event.target;
+        console.log(target);
         fetch('http://localhost:5000/assignments/by_class_id/' + target.value)
             .then(function (response) {
                 return response.json();
@@ -22,6 +49,32 @@ class Results extends Component {
 
                 that.setState({ AvailableAssignments: myJson });
             });
+    }
+
+    handleAssignmentSelection(event) {
+        var that = this;
+        var target = event.target;
+        console.log(target);
+        fetch('http://localhost:5000/papers/by_assignment_id/' + target.value)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+
+                that.setState({ AvailablePapers: myJson });
+            });
+    }
+
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+        //alert(name + ", " + value);
+        this.setState({
+            [name]: value
+        }, console.log(this.state)
+        );
+
     }
 
     getRubricValues() {
@@ -38,10 +91,49 @@ class Results extends Component {
     }
 
     render() {
+
+        let courses = this.state.AvailableCourses;
+        let optionItems = courses.map((course) =>
+            <option value={course._id}>{course.name}</option>
+        );
+
+        let assignments = this.state.AvailableAssignments;
+        let optionAssignments = assignments.map((assignment) =>
+            <option value={assignment._id}>{assignment.name}</option>
+        );
+
+        let papers = this.state.AvailablePapers;
+        let optionPapers = papers.map((paper) =>
+            <option value={paper._id}>{paper.title}</option>
+        );
+
         return (
             <div class="download-container">
                 <h1>Hey</h1>
+                <Row>
+                    <Col xs="3">
+                        <label for="assignForAnalyze">Class:</label>
+                        <Input onChange={this.handleClassSelection} id="assignForAnalyze" type="select" name="className" required >
+                            <option value="" disabled selected hidden >Select a Class</option>
+                            {optionItems}
+                        </Input>
+                        <label for="assignForAnalyze">Assignment:</label>
+                        <Input onChange={this.handleAssignmentSelection} id="assignForAnalyze" type="select" name="selectedAssignmentId" required >
+                            <option value="" disabled selected hidden >Select an Assignment</option>
+                            {optionAssignments}
+                        </Input>
+                        <label for="assignForAnalyze">Paper:</label>
+                        <Input onChange={this.handleInputChange} id="assignForAnalyze" type="select" name="selectedPaperId" required >
+                            <option value="" disabled selected hidden >Select an Paper</option>
+                            {optionPapers}              
+                        </Input>
+                    </Col>
+                    <Col xs="9">
+                        <div>
 
+                        </div>
+                    </Col>
+                </Row>
             </div>
         )
     }
