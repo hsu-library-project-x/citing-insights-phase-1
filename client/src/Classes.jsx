@@ -40,7 +40,7 @@ class Classes extends Component {
 
     var that = this;
 
-    fetch('http://localhost:5000/courses')
+    fetch('http://localhost:5000/courses/' + this.props.user.id)
       .then(function (response) {
         return response.json();
       })
@@ -91,7 +91,7 @@ class Classes extends Component {
     };
 
     let test = JSON.stringify(data);
-    fetch('http://localhost:5000/courses', {
+    fetch('http://localhost:5000/courses/', {
       method: 'POST',
       body: test,
       headers: {
@@ -160,7 +160,6 @@ class Classes extends Component {
         },
       })
       .then((response) => {
-        console.log(this.state);
         self.getAssignments(this.state.ClassId);
       });
     }
