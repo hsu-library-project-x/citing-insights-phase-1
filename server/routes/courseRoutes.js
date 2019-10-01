@@ -5,7 +5,7 @@ var courseController = require('../controllers/courseController.js');
 /*
  * GET
  */
-router.get('/', courseController.list);
+router.get('/:id', courseController.list);
 
 /*
  * GET
