@@ -12,6 +12,10 @@
     border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+#radio{
+    float:right;
+    margin: 1.2em;
+}
 .accordion__button {
     background-color: #f4f4f4;
     color: #444;

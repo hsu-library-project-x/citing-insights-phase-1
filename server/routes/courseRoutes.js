@@ -3,9 +3,9 @@ var router = express.Router();
 var courseController = require('../controllers/courseController.js');
 
 /*
- * GET
+ * GET // :id is user_id
  */
-router.get('/', courseController.list);
+router.get('/:id', courseController.list);
 
 /*
  * GET

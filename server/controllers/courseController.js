@@ -9,9 +9,11 @@ module.exports = {
 
     /**
      * courseController.list()
+     * Lists BY USER ID
      */
     list: function (req, res) {
-        courseModel.find(function (err, courses) {
+        var id = req.params.id;
+        courseModel.find({user_id: id}, function (err, courses) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when getting course.',
