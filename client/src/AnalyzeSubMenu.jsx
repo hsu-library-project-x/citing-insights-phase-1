@@ -65,10 +65,8 @@ class AnalyzeSubMenu extends Component {
   }
 
   async handleSubmit(event) {
-
     event.preventDefault();
     this.setState({ redirect: true });
-
   }
 
   //In each render, map out Courses and Assignments into variables so we can place them in a drop down

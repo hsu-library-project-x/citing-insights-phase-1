@@ -29,15 +29,15 @@ var citationSchema = new Schema({
 	'annotation': String,
 	'doi': [
 		String
-  ],
-    'rubricId': { type: Schema.Types.ObjectId, ref: 'paper' },
-  	'rubricScore' : String,
-  	'intextCitations' : Array,
-  	'arxivid' : String,
-  	'annotation': String,
-	'paper_id' : {
-	 	type: Schema.Types.ObjectId,
-	 	ref: 'paper'
+	],
+	'rubricId': { type: Schema.Types.ObjectId, ref: 'paper' },
+	'rubricScore': String,
+	'intextCitations': Array,
+	'arxivid': String,
+	'annotation': String,
+	'paper_id': {
+		type: Schema.Types.ObjectId,
+		ref: 'paper'
 	}
 });
 

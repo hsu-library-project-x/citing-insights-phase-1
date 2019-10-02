@@ -138,11 +138,8 @@ class Analyze extends Component {
       })
       .then(function (myJson) {
         that.setState({ citations: myJson });
-
       });
-
     return (answer);
-
   }
 
   get_s2_info(citation_id) {
@@ -443,13 +440,9 @@ class Analyze extends Component {
         query = encodeURI(citation["title"][0]);
         console.log(query);
       }
-
     });
-
-
     var win = window.open("https://humboldt-primo.hosted.exlibrisgroup.com/primo-explore/search?query=title,begins_with," + query + ",AND&tab=everything&search_scope=EVERYTHING&sortby=title&vid=01CALS_HUL&lang=en_US&mode=advanced&offset=0&pcAvailability=true", '_blank');
     win.focus();
-
   }
 
   open_google_scholar() {
