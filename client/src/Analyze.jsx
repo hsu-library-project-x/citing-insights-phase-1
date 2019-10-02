@@ -628,16 +628,12 @@ class Analyze extends Component {
     var citationItems = <p> nothing found yet </p>
 
 
-    if (citations != []) {
-
+    if (citations !== []) {
       var citationItems = citations.map(function (citation) {
-
-        if (citation.author[0] != undefined) {
+        if (citation.author[0] !== undefined || citation.title === "Overall_Student_Paper") {
           return (<p id="biblio-box">{citation.author[0].family + ', ' + citation.author[0].given + ': ' + citation.title}</p>)
         }
-
       });
-
     } else {
       var citationItems = <p> nothing found yet </p>
     }
@@ -645,10 +641,9 @@ class Analyze extends Component {
 
 
     var citationDropdownItems = <option> nothing found yet </option>
-    if (citations != []) {
+    if (citations !== []) {
       var citationDropdownItems = citations.map(function (citation) {
-
-        if (citation.author[0] != undefined) {
+        if (citation.author[0] !== undefined || citation.title === "Overall_Student_Paper") {
           return (<option value={citation._id}> {citation.author[0].family} </option>);
         }
 
@@ -754,7 +749,7 @@ class Analyze extends Component {
               </Input>
               <h4>Citation (with style): </h4>
               <div class="discoveryTool">
-                <Card> 
+                <Card>
                   <CardBody>
                     <CardTitle></CardTitle>
                     <CardText> Build Citation and pipe the info into here </CardText>
@@ -766,7 +761,7 @@ class Analyze extends Component {
                 <Card>
                   <CardBody>
                     <CardTitle><Button color="link" onClick={this.open_s2}>Semantic Scholar</Button></CardTitle>
-                    <CardText>Citation Velcoity: {this.state.current_s2_data["citation_velocity"]} <br/>Influential Citations: {this.state.current_s2_data["influential_citation_count"]}</CardText>
+                    <CardText>Citation Velcoity: {this.state.current_s2_data["citation_velocity"]} <br />Influential Citations: {this.state.current_s2_data["influential_citation_count"]}</CardText>
                   </CardBody>
                 </Card>
                 <Card>
@@ -797,6 +792,14 @@ class Analyze extends Component {
                 <option value="" disabled selected hidden >Select a Rubric</option>
                 {rubricList}
               </Input>
+
+              {/* 
+              Desired: Need to abstract the following into a single tab;
+              one tab will be rubrics for citations, one will be rubric for paper.
+              -OR-
+              Practical/Easy: Make paper grade be a single citation in the drop down of citations( eg. Overall Paper, Beer, Chowdry) 
+               */}
+
               <Rubric
                 currentRubric={this.state.currentRubric}
                 allowZeroExpanded={true}
@@ -808,6 +811,8 @@ class Analyze extends Component {
               <Button color="success" id="paperDone" onClick={this.handleSaveCitations}>Save Rubric Value </Button>
               <Button id="nextPaper" onClick={() => { this.next_paper(1) }}> Next Paper </Button>
               <Button id="nextPaper" onClick={() => { this.next_paper(-1) }}> Previous Paper </Button>
+
+
             </Col>
           </Row>
           {/*prop passing the rubric information*/}
