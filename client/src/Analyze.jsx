@@ -63,7 +63,7 @@ class Analyze extends Component {
       current_paper_id_index: 0,
       current_citation_id: 0
 
-    }
+    };
 
 
     this.renderActions = this.renderActions.bind(this);
@@ -86,6 +86,7 @@ class Analyze extends Component {
     this.open_s2 = this.open_s2.bind(this);
     this.open_alma_primo = this.open_alma_primo.bind(this);
     this.open_google_scholar = this.open_google_scholar.bind(this);
+    // this.showMeCitation = this.showMeCitation.bind(this);
   }
 
 
@@ -98,13 +99,11 @@ class Analyze extends Component {
       .then(function (myJson) {
         //console.log(JSON.stringify(myJson));
         //console.log(myJson);
-
         that.setState({ current_pdf_data: myJson["pdf"]["data"] });
         //return (myJson);
         //that.setState({AvailableAssignments: myJson});
       });
   }
-
 
   componentDidMount() {
     if (this.props.location.state === undefined) {
@@ -118,11 +117,10 @@ class Analyze extends Component {
       //Grab info about the assignment
       fetch('http://localhost:5000/assignments/' + this.props.location.state.id)
         .then(function (response) {
-
           return response.json();
         })
         .then(function (myJson) {
-          console.log(that.state);
+          console.log("MY STATE IS - " + that.state);
           that.setState({
             assignment: myJson
           }, console.log(that.state));
@@ -171,7 +169,7 @@ class Analyze extends Component {
         })
         .then(function (myJson) {
 
-          that.setState({ paper_ids: myJson })
+          that.setState({ paper_ids: myJson });
 
           try {
             fetch('http://localhost:5000/papers/' + myJson[0]["_id"])
@@ -180,7 +178,6 @@ class Analyze extends Component {
               })
               .then(function (myJson) {
                 that.setState({ current_pdf_data: myJson["pdf"]["data"] });
-
                 that.get_citation_info(myJson["_id"])
                   .then(function (value) {
                     that.get_s2_info(that.state.citations[1]["_id"]);
@@ -191,7 +188,6 @@ class Analyze extends Component {
             that.props.history.push({
               pathname: "/",
               props: { ...that.state }
-
               //return(myJson);
               //that.setState({AvailableAssignments: myJson});
             });
@@ -208,7 +204,6 @@ class Analyze extends Component {
       })
       .then(function (myJson) {
         that.setState({ AvailableRubrics: myJson });
-
       });
   }
 
@@ -220,10 +215,7 @@ class Analyze extends Component {
     //this.setState({
     //[name]: value
     //});
-
-
     this.get_s2_info(event.target.value);
-
   }
 
   handleGetRubric(event) {
@@ -336,6 +328,20 @@ class Analyze extends Component {
 
     }
   }
+
+
+  // showMeCitation(){
+  //   let citationText = "";
+  //
+  //   this.componentDidMount().then(
+  //       console.log("LIIIZZZZ" + this.state.paper_ids[this.state.current_paper_id_index]["_id"]),
+  //       citationText = this.get_citation_info(this.state.paper_ids[this.state.current_paper_id_index]["_id"])
+  //   );
+  //
+  //   return(
+  //       citationText
+  //   ) ;
+  // }
 
   sendRequest(data) {
     return new Promise((resolve, reject) => {
@@ -617,7 +623,6 @@ class Analyze extends Component {
     }
 
 
-
     let rubrics = this.state.AvailableRubrics;
     let rubricList = rubrics.map((rubric) =>
       <option value={rubric._id}>{rubric.name}</option>
@@ -630,14 +635,15 @@ class Analyze extends Component {
 
     if (citations !== []) {
       var citationItems = citations.map(function (citation) {
-        if (citation.author[0] !== undefined || citation.title === "Overall_Student_Paper") {
-          return (<p id="biblio-box">{citation.author[0].family + ', ' + citation.author[0].given + ': ' + citation.title}</p>)
+
+        if (citation.author[0] != undefined) {
+          return (
+            <p id="biblio-box">{citation.author[0].family + ', ' + citation.author[0].given + ': ' + citation.title}</p>)
         }
       });
     } else {
       var citationItems = <p> nothing found yet </p>
     }
-
 
 
     var citationDropdownItems = <option> nothing found yet </option>
@@ -651,6 +657,47 @@ class Analyze extends Component {
     } else {
       var citationItems = <p> nothing found yet </p>;
     }
+    //
+    // if (citations != []) {
+    //   var paperCitations = citations.map(function (citation) {
+    //
+    //     if (citation.author[0] !=undefined) {
+    //       return (<option value={citation._id}> {citation.author[0].family} </option>);
+    //     }
+    //
+    //   });
+    // } else {
+    //   var paperItems =<p> No citation selected </p>;
+    // }
+    // console.log("LIIIZ : " , citations);
+    function getAuthors(authors) {
+      return authors.map((d) =>
+        d.family + ", " + d.given + "\n"
+      );
+    }
+
+    function formatCitation(citation) {
+      return (<div>
+        {getAuthors(citation.author)} ({citation.date}). {citation.title}
+      </div>
+      );
+
+    }
+    let bigCitation = <option> No citation selected </option>;
+
+    if (citations != []) {
+      bigCitation = citations.map((citation) => {
+        if (citation.author[0] != undefined && citation._id === this.state.current_citation_id) {
+          return (formatCitation(citation));
+        } else {
+          return ("");
+        }
+      });
+    } else {
+      let lastOption = <p> No Citation Selected </p>;
+    }
+
+
 
 
     //https://material-ui.com/styles/basics/
@@ -725,18 +772,20 @@ class Analyze extends Component {
           {/* Row: Contains rubric and student selectors */}
 
 
-          {/*<BottomNavigation value={'yes'} className={usestyles.root} showLabels>*/}
-          {/*  {citationNavItems}*/}
-          {/*</BottomNavigation>*/}
+          <BottomNavigation value={'yes'} className={usestyles.root} showLabels>
+            {citationNavItems}
+          </BottomNavigation>
           {/*<br />*/}
           {/*<br />*/}
           {/* Row: Contains -- Semantic Scholor, Block Text, Sources, Biblio Box, and Progress Bar */}
           <Row>
             <Col xs="3">
-              <label for="assignmentInfo" className='analyzeHeader'>Assignment</label>
-              <p id="assignmentInfo"> {this.state.assignment.name} </p>
+              {/*<label for="assignmentInfo" className='analyzeHeader'> Current Assignment</label>*/}
+              <p id="assignmentInfo">Current Assignment - {this.state.assignment.name} </p>
               <br />
-              <label for="assignForAnalyze">Citations:</label>
+              {/*<label for="assignForAnalyze">Citations:</label>*/}
+
+              <h4 id="CitationLabel">Citation (with style): </h4>
               <Input
                 onChange={this.handleCitationChange}
                 onInput={this.onInput}
@@ -747,12 +796,11 @@ class Analyze extends Component {
                 <option value="" disabled selected hidden >Select a Citation</option>
                 {citationDropdownItems}
               </Input>
-              <h4>Citation (with style): </h4>
               <div class="discoveryTool">
                 <Card>
                   <CardBody>
-                    <CardTitle></CardTitle>
-                    <CardText> Build Citation and pipe the info into here </CardText>
+                    <CardTitle>Citation</CardTitle>
+                    <CardText> {bigCitation} </CardText>
                   </CardBody>
                 </Card>
               </div>

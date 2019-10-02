@@ -9,6 +9,7 @@ module.exports = {
 
     /**
      * courseController.list()
+     * Lists BY USER ID
      */
     list: function (req, res) {
         var id = req.params.id;
