@@ -28,7 +28,7 @@ class Results extends Component {
 
         var that = this;
 
-        fetch('http://localhost:5000/courses')
+        fetch('http://localhost:5000/courses/' + this.props.user.id)
             .then(function (response) {
                 return response.json();
             })
