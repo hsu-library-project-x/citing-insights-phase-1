@@ -782,9 +782,9 @@ class Analyze extends Component {
           {/* Row: Contains rubric and student selectors */}
 
 
-          <BottomNavigation value={'yes'} className={usestyles.root} showLabels>
-            {citationNavItems}
-          </BottomNavigation>
+          {/*<BottomNavigation value={'yes'} className={usestyles.root} showLabels>*/}
+          {/*  {citationNavItems}*/}
+          {/*</BottomNavigation>*/}
           {/*<br />*/}
           {/*<br />*/}
           {/* Row: Contains -- Semantic Scholor, Block Text, Sources, Biblio Box, and Progress Bar */}

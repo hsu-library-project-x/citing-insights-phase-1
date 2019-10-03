@@ -7,6 +7,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+import "./css/Feedback.css";
+
 class Feedback extends Component {
   constructor(props){
     super(props);
@@ -69,9 +71,9 @@ class Feedback extends Component {
   render() {
     return (
       <div>
-        <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
+        <button className={"NavLinkButton"} onClick={this.handleClickOpen}>
           Give Feedback
-          </Button>
+          </button>
         <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">Feedback</DialogTitle>
           <DialogContent>
@@ -86,7 +88,7 @@ class Feedback extends Component {
               type="text"
               multiline
               fullWidth
-              placeholder="Give Feedback..."
+              placeholder="Give Feedback....."
               onChange={this.handleInput}
             />
           </DialogContent>

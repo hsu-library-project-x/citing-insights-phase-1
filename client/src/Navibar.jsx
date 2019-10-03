@@ -56,7 +56,7 @@ class Navibar extends Component {
                         <GoogleLogout
                             clientId={config.GOOGLE_CLIENT_ID}
                             render={renderProps => (
-                                <button onClick={renderProps.onClick} disabled={renderProps.disabled}>Logout</button>
+                                <button class={"NavLinkButton"} onClick={renderProps.onClick} disabled={renderProps.disabled}>Logout</button>
                             )}
                             buttonText="Log Out"
                             onLogoutSuccess={this.responseGoogle}

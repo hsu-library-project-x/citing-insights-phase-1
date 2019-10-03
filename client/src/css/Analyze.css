@@ -1,5 +1,7 @@
 .navbar{
   background-color: #FFAC1D;
+  color: #274259;
+  font-weight: bold;
 }
 
 
@@ -16,10 +18,13 @@ li.nav-item{
   list-style-type: none;
   padding-left: 1em;
   padding-right: 1em;
+
 }
 
 li > a{
-  color: white;
+  /*color: white;*/
+  color: #274259;
+  font-weight: bold;
 }
 
 #biblio-box{
