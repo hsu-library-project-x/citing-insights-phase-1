@@ -37,6 +37,17 @@ class Results extends Component {
             .then(function (myJson) {
                 that.setState({ AvailableCourses: myJson });
             });
+
+        //Grab the user's rubrics
+        fetch('http://localhost:5000/rubrics/' + this.props.user.id)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                that.setState({ rubrics: myJson })
+            });
+            console.log("rubrics");
+            console.log(this.state.rubrics);
     }
 
     //Given a Class, this function makes a call to get all assignments in that class.
@@ -179,6 +190,8 @@ class Results extends Component {
                     </Col>
                     <Col xs="9">
                         <div>
+                            <Button id="showEvals" onClick={() => { this.showCitations() }}>
+                                Show Evaluations
                             <h1>Overview</h1>
                             <Button id="findEvals" onClick={this.getCitations}>
                                 Find evaluations
