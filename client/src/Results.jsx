@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Label, Input, Button} from 'reactstrap';
+import { Label, Input, Button, Card, CardText, CardBody, CardTitle } from 'reactstrap';
 import { Row, Col } from 'reactstrap';
 import "./css/Download.css";
 
@@ -14,15 +14,14 @@ class Results extends Component {
             AvailableCourses: [],
             AvailableAssignments: [],
             AvailablePapers: [],
+            rubrics: [],
             citations: [],
-            bigCitation: <p></p>
+            bigCitations: []
         }
 
         this.handleClassSelection = this.handleClassSelection.bind(this);
         this.handleAssignmentSelection = this.handleAssignmentSelection.bind(this);
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.getCitations = this.getCitations.bind(this);
-        this.getRubricValues = this.getRubricValues.bind(this);
+        this.showCitations = this.showCitations.bind(this);
         this.handlePaperSelection = this.handlePaperSelection.bind(this)
     }
 
@@ -30,7 +29,7 @@ class Results extends Component {
     componentWillMount() {
 
         var that = this;
-
+        //Grab the user's courses
         fetch('http://localhost:5000/courses/' + this.props.user.id)
             .then(function (response) {
                 return response.json();
@@ -82,43 +81,60 @@ class Results extends Component {
             });
     }
 
-    handleInputChange(event) {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
-        //alert(name + ", " + value);
+    showCitations() {
+
+
+        //Query for Citations where rubric value or annotation is not null
+        function getAuthors(authors) {
+            return authors.map((d) =>
+                d.family + ", " + d.given + "\n"
+            );
+        }
+
+        function formatCitation(citation) {
+            return (
+                <div>
+                    <Card>
+                        <CardBody>
+                            <CardTitle>Citation</CardTitle>
+                            <CardText>
+                                {getAuthors(citation.author)} ({citation.date}). {citation.title}
+                            </CardText>
+                            <CardText>
+                                Annotation: {citation.annotation}
+                            </CardText>
+                            <CardText>
+                                Rubric Value: {citation.rubricId}
+                            </CardText>
+                            <CardText>
+                                Rubric Score {citation.rubricScore}
+                            </CardText>
+                        </CardBody>
+                    </Card>
+                </div>
+            );
+        }
+
+        let citations = this.state.citations;
+
+        let bigCitation;
+        console.log(citations);
+
+        if (citations !== []) {
+            bigCitation = citations.map((citation) => {
+                if (citation.evaluated === true) {
+                    return (formatCitation(citation));
+                } else {
+                    return ("");
+                }
+            });
+        } else {
+            let lastOption = <p> No Citation Selected </p>;
+        }
         this.setState({
-            [name]: value
-        }, console.log(this.state)
-        );
+            bigCitations: bigCitation
+        });
 
-    }
-
-    getCitations(paper_id) {
-
-        var that = this;
-
-        var answer = fetch('http://localhost:5000/citations/find_evaluations/' + this.state.paper_id)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (myJson) {
-                that.setState({ citations: myJson });
-            });
-        return (answer);
-    }
-
-    getRubricValues() {
-        var that = this;
-
-        var answer = fetch('http://localhost:5000/citations/by_paper_id/' + this.state.selectedPaperId)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (myJson) {
-                that.setState({ citations: myJson });
-            });
-        return (answer);
     }
 
     render() {
@@ -138,35 +154,7 @@ class Results extends Component {
             <option value={paper._id}>{paper.title}</option>
         );
 
-        //Query for Citations where rubric value or annotation is not null
-        function getAuthors(authors) {
-            return authors.map((d) =>
-                d.family + ", " + d.given + "\n"
-            );
-        }
 
-        function formatCitation(citation) {
-            return (<div>
-                {getAuthors(citation.author)} ({citation.date}). {citation.title}
-            </div>
-            );
-        }
-
-        let citations = this.state.citations;
-        let bigCitation = <p> No citation selected </p>;
-        console.log(citations);
-
-        if (citations !== []) {
-            bigCitation = citations.map((citation) => {
-                if (citation.evaluated === true) {
-                    return (formatCitation(citation));
-                } else {
-                    return("");
-                }
-            });
-        } else {
-            let lastOption = <p> No Citation Selected </p>;
-        }
 
         return (
             <div class="download-container">
@@ -197,6 +185,7 @@ class Results extends Component {
                             </Button>
                         </div>
                     </Col>
+                    <p1> {this.state.bigCitations}</p1>
                 </Row>
             </div>
         )
