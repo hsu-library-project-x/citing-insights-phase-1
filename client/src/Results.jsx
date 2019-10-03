@@ -22,7 +22,6 @@ class Results extends Component {
         this.handleAssignmentSelection = this.handleAssignmentSelection.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.getCitations = this.getCitations.bind(this);
-        this.getRubricValues = this.getRubricValues.bind(this);
         this.handlePaperSelection = this.handlePaperSelection.bind(this)
     }
 
@@ -108,19 +107,6 @@ class Results extends Component {
         return (answer);
     }
 
-    getRubricValues() {
-        var that = this;
-
-        var answer = fetch('http://localhost:5000/citations/by_paper_id/' + this.state.selectedPaperId)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (myJson) {
-                that.setState({ citations: myJson });
-            });
-        return (answer);
-    }
-
     render() {
 
         let courses = this.state.AvailableCourses;
@@ -170,7 +156,6 @@ class Results extends Component {
 
         return (
             <div class="download-container">
-                <h1>Overview</h1>
                 <Row>
                     <Col xs="3">
                         <label for="assignForAnalyze">Class:</label>
@@ -191,7 +176,8 @@ class Results extends Component {
                     </Col>
                     <Col xs="9">
                         <div>
-                            <Button id="findEvals" onClick={this.getCitations}>
+                            <h1>Overview</h1>
+                            <Button size="lg" id="findEvals" onClick={this.getCitations}>
                                 Find evaluations
                             </Button>
                         </div>
