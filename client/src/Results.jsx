@@ -170,7 +170,7 @@ class Results extends Component {
 
         return (
             <div class="download-container">
-                <h1>Overview</h1>
+
                 <Row>
                     <Col xs="3">
                         <label for="assignForAnalyze">Class:</label>
@@ -191,6 +191,7 @@ class Results extends Component {
                     </Col>
                     <Col xs="9">
                         <div>
+                            <h1>Overview</h1>
                             <Button id="findEvals" onClick={this.getCitations}>
                                 Find evaluations
                             </Button>
