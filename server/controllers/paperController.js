@@ -45,7 +45,7 @@ module.exports = {
 
     by_assignment_id: function (req, res) {
         var id = req.params.id;
-        paperModel.find({assignment_id: id}, "_id",  function (err, paper) {
+        paperModel.find({assignment_id: id}, "_id title",   function (err, paper) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when getting paper.',

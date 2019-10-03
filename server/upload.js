@@ -51,12 +51,10 @@ module.exports = function upload(req, res) {
 
             var textByLine = fs.readFileSync(file.path);
 
-
-
             var raw_text = {
                 "body": "",
                 "pdf": textByLine,
-                "title": null,
+                "title": file.name,
                 "name": null,
                 "assignment_id": field
             };

@@ -67,9 +67,7 @@ class Analyze extends Component {
 
 
     this.renderActions = this.renderActions.bind(this);
-    this.sendRequest = this.sendRequest.bind(this);
     //this.saveIntextCitation = this.saveIntextCitation.bind(this);
-    this.addAnnotation = this.addAnnotation.bind(this);
     this.componentWillMount = this.componentWillMount.bind(this);
     this.displayPaper = this.displayPaper.bind(this);
     // this.renderAnnotate = this.renderAnnotate.bind(this);
@@ -96,7 +94,7 @@ class Analyze extends Component {
       .then(function (response) {
         return response.json();
       })
-      .then(function(myJson) {
+      .then(function (myJson) {
         //console.log(JSON.stringify(myJson));
         //console.log(myJson);
         that.setState({ current_pdf_data: myJson["pdf"]["data"] });
@@ -138,11 +136,8 @@ class Analyze extends Component {
       })
       .then(function (myJson) {
         that.setState({ citations: myJson });
-
       });
-
     return (answer);
-
   }
 
   get_s2_info(citation_id) {
@@ -173,7 +168,6 @@ class Analyze extends Component {
         .then(function (myJson) {
 
           that.setState({ paper_ids: myJson });
-
           try {
             fetch('http://localhost:5000/papers/' + myJson[0]["_id"])
               .then(function (response) {
@@ -211,13 +205,6 @@ class Analyze extends Component {
   }
 
   handleCitationChange(event) {
-    //const target = event.target;
-    //const value = target.value;
-    //const name = target.name;
-    //alert(name + ", " + value);
-    //this.setState({
-    //[name]: value
-    //});
     this.get_s2_info(event.target.value);
   }
 
@@ -264,20 +251,8 @@ class Analyze extends Component {
     });
   }
 
-  //this saves annotations and intext citations associated with them
+  //this saves annotations and rubric values associated with citation
   handleSaveCitations() {
-    /*let citationData = this.state.citationData;
-    this.setState.uploading = true;
-    const promise = [];
-    promise.push(this.sendRequest(citationData));
-    try {
-      this.setState({ successfullUpload: true, uploading: false });
-    } catch (e) {
-      // Not Production ready! Do some error handling here instead...
-      this.setState({ successfullUpload: true, uploading: false });
-    }*/
-
-
 
     console.log('TRYING TO SAVE CITATION');
     console.log(this.state.current_citation_id);
@@ -287,7 +262,6 @@ class Analyze extends Component {
     var radios = document.getElementsByName("radio");
     console.log(radios);
 
-
     for (var i = 0; i < radios.length; i++) {
       if (radios[i].checked) {
         radio_value = radios[i].value;
@@ -295,7 +269,6 @@ class Analyze extends Component {
     }
 
     console.log(radio_value);
-
 
     var annotation = document.getElementById("annotation").value;
     console.log(annotation);
@@ -311,14 +284,8 @@ class Analyze extends Component {
         return response.json();
       })
       .then(function (myJson) {
-        //return (myJson);
-        //that.setState({AvailableAssignments: myJson});
-
-
         alert('citation saved');
       });
-
-
 
     for (var i = 0; i < this.state.citations.length; i++) {
 
@@ -332,55 +299,9 @@ class Analyze extends Component {
     }
   }
 
-
-  // showMeCitation(){
-  //   let citationText = "";
-  //
-  //   this.componentDidMount().then(
-  //       console.log("LIIIZZZZ" + this.state.paper_ids[this.state.current_paper_id_index]["_id"]),
-  //       citationText = this.get_citation_info(this.state.paper_ids[this.state.current_paper_id_index]["_id"])
-  //   );
-  //
-  //   return(
-  //       citationText
-  //   ) ;
-  // }
-
-  sendRequest(data) {
-    return new Promise((resolve, reject) => {
-      //Call for each citation
-      for (var citation in data) {
-        if (data[citation].annotation !== "") {
-          let annotation = JSON.stringify(data[citation].annotation);
-          fetch('http://localhost:5000/citation/add_annotation/' + data[citation].id, {
-            method: 'PUT',
-            body: annotation,
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-          });
-        }
-        if (data[citation].intextCites.length !== 0) {
-          let intextCitations = JSON.stringify(data[citation].intextCites);
-          fetch('http://localhost:5000/citation/add_intext_citations/' + data[citation].id, {
-            method: 'PUT',
-            body: intextCitations,
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-          });
-        }
-      }
-    });
-  }
-
   refresh(index) {
 
     //console.log(this.state.paper_ids[index]);
-
-
     console.log('index');
     console.log(index);
     console.log('ids');
@@ -409,7 +330,7 @@ class Analyze extends Component {
       if (citation["_id"] == current_citation_id) {
 
         console.log(citation);
-        console.log( citation["author"][0]["family"]);
+        console.log(citation["author"][0]["family"]);
         console.log(citation["title"][0]);
 
         query = encodeURI(citation["author"][0]["family"] + " " + citation["title"][0]);
@@ -443,13 +364,9 @@ class Analyze extends Component {
         query = encodeURI(citation["title"][0]);
         console.log(query);
       }
-
     });
-
-
     var win = window.open("https://humboldt-primo.hosted.exlibrisgroup.com/primo-explore/search?query=title,begins_with," + query + ",AND&tab=everything&search_scope=EVERYTHING&sortby=title&vid=01CALS_HUL&lang=en_US&mode=advanced&offset=0&pcAvailability=true", '_blank');
     win.focus();
-
   }
 
   open_google_scholar() {
@@ -513,23 +430,6 @@ class Analyze extends Component {
     }
   }
 
-  // renderAnnotate() {
-  //   if (this.state.citationData.length !== 0) {
-  //     return ((!this.state.isMarkup) ?
-  //       <div class="annotate">
-  //         <Annotate citedata={this.state.citationData} />
-  //         <Button color="success" id="addAnnotation" onClick={this.addAnnotation}>Save Annotation</Button>
-  //       </div> :
-  //       <div class="markup">
-  //         <Markup citesource={this.state.citationData} />
-  //         <div className="Actions">
-  //           {this.renderActions()}
-  //         </div>
-  //       </div>
-  //     );
-  //   }
-  // }
-
   //Checks to see if there is appropriate text in the intext citation textarea, renders either disabled button or save button depending on context
   renderActions() {
     return (
@@ -537,74 +437,7 @@ class Analyze extends Component {
     );
   }
 
-
-  //adds annotation and pairs it with appropriate in text citation in the citationData State Array.
-  addAnnotation() {
-    let value = document.getElementById("inCitesForAnno").value;
-    let citeIds = value.split('_');
-    if (citeIds[0] === "" || citeIds[1] === "") {
-      alert("please select a citation to link your annotation")
-      return;
-    }
-    else {
-      let annotation = document.getElementById("curAnno").value;
-      if (annotation === "") {
-        alert("Please don't submit an empty annotation");
-        return;
-      }
-      //attach an annotation to an intext citation
-      //need a way to grab the citation id, and the intext citation id to pair them appropriately
-      let data = this.state.citationData;
-      let box = document.getElementById("curAnno");
-      //if its an annotation of the source, add that annotation to overall citaion
-      //search space O(2n)
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].id === citeIds[1]) {
-          if (citeIds[0] === "source") {
-            //let currentCitation = data[i];
-
-            //CHANGE THIS ************************************************************************************
-            this.state.citationData[i].annotation = annotation;
-
-
-            if (box.classList.contains("savedAnimation")) {
-              document.getElementById("curAnno").classList.remove("savedAnimation");
-              document.getElementById("curAnno").classList.add("savedAnimation2");
-            }
-            else {
-              document.getElementById("curAnno").classList.add("savedAnimation");
-              document.getElementById("curAnno").classList.remove("savedAnimation2");
-            }
-            return;
-          }
-          else {
-            let curArray = data[i].intextCites;
-            for (let j = 0; j < curArray.length; j++) {
-              if (curArray[j].id === citeIds[0]) {
-
-                //CHANGE THIS ************************************************************************************
-                this.state.citationData[i].intextCites[j].annotation = annotation;
-
-                if (box.classList.contains("savedAnimation")) {
-
-                  document.getElementById("curAnno").classList.remove("savedAnimation");
-                  document.getElementById("curAnno").classList.add("savedAnimation2");
-                }
-                else {
-                  document.getElementById("curAnno").classList.add("savedAnimation");
-                  document.getElementById("curAnno").classList.remove("savedAnimation2");
-                }
-                return;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
   handleNavInput(cit_id, e) {
-
     console.log('clickin a nav item');
     this.setState({ current_citation_id: cit_id });
   }
@@ -626,13 +459,13 @@ class Analyze extends Component {
     if (this.state.current_pdf_data === "this must get set") {
       pdf = <p> we dont have data yet </p>;
     } else {
-      pdf = <PdfComponent data={this.state.current_pdf_data}/>;
+      pdf = <PdfComponent data={this.state.current_pdf_data} />;
     }
 
 
     let rubrics = this.state.AvailableRubrics;
     let rubricList = rubrics.map((rubric) =>
-        <option value={rubric._id}>{rubric.name}</option>
+      <option value={rubric._id}>{rubric.name}</option>
     );
 
 
@@ -646,7 +479,7 @@ class Analyze extends Component {
 
         if (citation.author[0] != undefined) {
           return (
-              <p id="biblio-box">{citation.author[0].family + ', ' + citation.author[0].given + ': ' + citation.title}</p>)
+            <p id="biblio-box">{citation.author[0].family + ', ' + citation.author[0].given + ': ' + citation.title}</p>)
         }
 
       });
@@ -681,31 +514,32 @@ class Analyze extends Component {
     //   var paperItems =<p> No citation selected </p>;
     // }
     // console.log("LIIIZ : " , citations);
-    function getAuthors(authors){
-     return authors.map((d) =>
-          d.family  + ", " + d.given + "\n"
-       );
+    function getAuthors(authors) {
+      return authors.map((d) =>
+        d.family + ", " + d.given + "\n"
+      );
     }
 
-    function formatCitation(citation){
-      return ( <div>
-                  {getAuthors(citation.author) } ({ citation.date }). { citation.title }
-              </div>
-        );
+    function formatCitation(citation) {
+      return (<div>
+        {getAuthors(citation.author)} ({citation.date}). {citation.title}
+      </div>
+      );
 
     }
-    let bigCitation =<option> No citation selected </option>;
+    let bigCitation = <option> No citation selected </option>;
 
-      if (citations != [])  {
-        bigCitation = citations.map( (citation) => {
-              if (citation.author[0] != undefined && citation._id === this.state.current_citation_id) {
-                return (  formatCitation(citation));
-              } else {
-                return ("");
-              }});
-      } else {
-       let lastOption = <p> No Citation Selected </p>;
-      }
+    if (citations != []) {
+      bigCitation = citations.map((citation) => {
+        if (citation.author[0] != undefined && citation._id === this.state.current_citation_id) {
+          return (formatCitation(citation));
+        } else {
+          return ("");
+        }
+      });
+    } else {
+      let lastOption = <p> No Citation Selected </p>;
+    }
 
 
 
@@ -782,9 +616,9 @@ class Analyze extends Component {
           {/* Row: Contains rubric and student selectors */}
 
 
-          {/*<BottomNavigation value={'yes'} className={usestyles.root} showLabels>*/}
-          {/*  {citationNavItems}*/}
-          {/*</BottomNavigation>*/}
+          {/* <BottomNavigation value={'yes'} className={usestyles.root} showLabels>
+            {citationNavItems}
+          </BottomNavigation> */}
           {/*<br />*/}
           {/*<br />*/}
           {/* Row: Contains -- Semantic Scholor, Block Text, Sources, Biblio Box, and Progress Bar */}
@@ -797,17 +631,17 @@ class Analyze extends Component {
 
               <h4 id="CitationLabel">Citation (with style): </h4>
               <Input
-                  onChange={this.handleCitationChange}
-                  onInput={this.onInput}
-                  id="assignForAnalyze"
-                  type="select"
-                  name="AssignNew"
-                  required >
+                onChange={this.handleCitationChange}
+                onInput={this.onInput}
+                id="assignForAnalyze"
+                type="select"
+                name="AssignNew"
+                required >
                 <option value="" disabled selected hidden >Select a Citation</option>
                 {citationDropdownItems}
               </Input>
               <div class="discoveryTool">
-                <Card> 
+                <Card>
                   <CardBody>
                     <CardTitle>Citation</CardTitle>
                     <CardText> {bigCitation} </CardText>
@@ -819,7 +653,7 @@ class Analyze extends Component {
                 <Card>
                   <CardBody>
                     <CardTitle><Button color="link" onClick={this.open_s2}>Semantic Scholar</Button></CardTitle>
-                    <CardText>Citation Velcoity: {this.state.current_s2_data["citation_velocity"]} <br/>Influential Citations: {this.state.current_s2_data["influential_citation_count"]}</CardText>
+                    <CardText>Citation Velcoity: {this.state.current_s2_data["citation_velocity"]} <br />Influential Citations: {this.state.current_s2_data["influential_citation_count"]}</CardText>
                   </CardBody>
                 </Card>
                 <Card>
