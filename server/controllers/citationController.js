@@ -236,9 +236,9 @@ module.exports = {
     });
   },
 
-  find_evaluations: function (req,res ){ 
-    var paper_id = req.params.paper_id;
+  find_evaluations: function (req,res){ 
 
+    var paper_id = req.params.paper_id;
     citationModel.find({paper_id: paper_id, evaluated: true}, function(err, citation) {
       if(err){
         return res.status(500).json({

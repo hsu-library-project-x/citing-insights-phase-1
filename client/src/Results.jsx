@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Label, Input, Button} from 'reactstrap';
+import { Label, Input, Button } from 'reactstrap';
 import { Row, Col } from 'reactstrap';
 import "./css/Download.css";
 
@@ -20,9 +20,7 @@ class Results extends Component {
 
         this.handleClassSelection = this.handleClassSelection.bind(this);
         this.handleAssignmentSelection = this.handleAssignmentSelection.bind(this);
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.getCitations = this.getCitations.bind(this);
-        this.getRubricValues = this.getRubricValues.bind(this);
+        this.showCitations = this.showCitations.bind(this);
         this.handlePaperSelection = this.handlePaperSelection.bind(this)
     }
 
@@ -82,43 +80,8 @@ class Results extends Component {
             });
     }
 
-    handleInputChange(event) {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
-        //alert(name + ", " + value);
-        this.setState({
-            [name]: value
-        }, console.log(this.state)
-        );
+    showCitations() {
 
-    }
-
-    getCitations(paper_id) {
-
-        var that = this;
-
-        var answer = fetch('http://localhost:5000/citations/find_evaluations/' + this.state.paper_id)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (myJson) {
-                that.setState({ citations: myJson });
-            });
-        return (answer);
-    }
-
-    getRubricValues() {
-        var that = this;
-
-        var answer = fetch('http://localhost:5000/citations/by_paper_id/' + this.state.selectedPaperId)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (myJson) {
-                that.setState({ citations: myJson });
-            });
-        return (answer);
     }
 
     render() {
@@ -153,15 +116,16 @@ class Results extends Component {
         }
 
         let citations = this.state.citations;
-        let bigCitation = <p> No citation selected </p>;
+
+        // let bigCitation = <option> No citation selected </option>
         console.log(citations);
 
         if (citations !== []) {
-            bigCitation = citations.map((citation) => {
+            let bigCitation = citations.map((citation) => {
                 if (citation.evaluated === true) {
                     return (formatCitation(citation));
                 } else {
-                    return("");
+                    return ("");
                 }
             });
         } else {
@@ -191,8 +155,8 @@ class Results extends Component {
                     </Col>
                     <Col xs="9">
                         <div>
-                            <Button id="findEvals" onClick={this.getCitations}>
-                                Find evaluations
+                            <Button id="showEvals" onClick={()=>{this.showCitations()}}>
+                                Show Evaluations
                             </Button>
                         </div>
                     </Col>

@@ -527,6 +527,7 @@ class Analyze extends Component {
       );
 
     }
+    
     let bigCitation = <option> No citation selected </option>;
 
     if (citations != []) {
