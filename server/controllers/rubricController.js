@@ -21,6 +21,7 @@ module.exports = {
     /**
      * rubricController.list()
      */
+    
     list: function (req, res) {
         var user_id = req.params.user_id;
         rubricModel.find({user_id: user_id},function (err, rubrics) {

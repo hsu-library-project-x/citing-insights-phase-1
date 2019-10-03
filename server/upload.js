@@ -27,7 +27,7 @@ module.exports = function upload(req, res) {
     form.type = "multipart";
 
     console.log('attempting to print params');
-  //console.log(req.headers);
+    //console.log(req.headers);
 
     form
         .on("file", (field, file) => {
@@ -41,22 +41,20 @@ module.exports = function upload(req, res) {
             console.log(field);
 
             //Ghostscript strips pdf into raw text
-            var txt_path = __dirname + "/tmp/txt/" + file_name + ".txt"
-            console.log(txt_path);
+            //var txt_path = __dirname + "/tmp/txt/" + file_name + ".txt"
+            //console.log(txt_path);
 
-            shell.exec("gs -sDEVICE=txtwrite -o " + txt_path + " " + file.path);
+            //shell.exec("gs -sDEVICE=txtwrite -o " + txt_path + " " + file.path);
 
 
             //the replace functions just get rid of carriage returns
 
             var textByLine = fs.readFileSync(file.path);
 
-
-
             var raw_text = {
-                "body": fs.readFileSync(txt_path).toString().replace(/\r+/g, "").replace(/\n+/g, ""),
+                "body": "",
                 "pdf": textByLine,
-                "title": null,
+                "title": file.name,
                 "name": null,
                 "assignment_id": field
             };
@@ -74,7 +72,7 @@ module.exports = function upload(req, res) {
 
             //** citations start */
 
-            var json_path = "./tmp/json/";
+            var json_path = "./tmp/json";
 
             //Need to now run anystyle on pdf
             shell.exec("anystyle -w -f json find " + file.path + " " + json_path);
@@ -89,6 +87,7 @@ module.exports = function upload(req, res) {
             var full_json_path = json_path + file.path
                 .replace("fileUpload", "")
                 .replace(".pdf", ".json");
+
 
             for (index in json_file) {
                 var citation = new citationModel(json_file[index]);
@@ -106,7 +105,7 @@ module.exports = function upload(req, res) {
 
             shell.exec('rm ' + full_json_path);
             shell.exec('rm ' + file.path);
-            shell.exec('rm ' + txt_path);
+          //  shell.exec('rm ' + txt_path);
 
             //after creating a citation model, save to db
         })
@@ -120,6 +119,6 @@ module.exports = function upload(req, res) {
             }
             console.log("ending");
             //shell.exec('rm ' + txt_path);
-        })
+        });
     form.parse(req);
 }
