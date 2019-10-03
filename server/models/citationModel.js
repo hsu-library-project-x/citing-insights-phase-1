@@ -30,7 +30,7 @@ var citationSchema = new Schema({
 	'doi': [
 		String
 	],
-	'rubricId': { type: Schema.Types.ObjectId, ref: 'paper' },
+	'rubricId': { type: Schema.Types.ObjectId, ref: 'rubric' },
 	'rubricScore': String,
 	'intextCitations': Array,
 	'arxivid': String,
@@ -38,7 +38,8 @@ var citationSchema = new Schema({
 	'paper_id': {
 		type: Schema.Types.ObjectId,
 		ref: 'paper'
-	}
+	},
+	'evaluated' : Boolean
 });
 
 module.exports = mongoose.model('citation', citationSchema);

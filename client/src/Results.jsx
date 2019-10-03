@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Label, Input } from 'reactstrap';
+import { Label, Input, Button} from 'reactstrap';
 import { Row, Col } from 'reactstrap';
 import "./css/Download.css";
 
@@ -14,13 +14,16 @@ class Results extends Component {
             AvailableCourses: [],
             AvailableAssignments: [],
             AvailablePapers: [],
-            citations: []
+            citations: [],
+            bigCitation: <p></p>
         }
 
         this.handleClassSelection = this.handleClassSelection.bind(this);
         this.handleAssignmentSelection = this.handleAssignmentSelection.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.getCitations = this.getCitations.bind(this);
         this.getRubricValues = this.getRubricValues.bind(this);
+        this.handlePaperSelection = this.handlePaperSelection.bind(this)
     }
 
     //On mount, makes a call to retrieve all Classes for the user
@@ -66,6 +69,19 @@ class Results extends Component {
             });
     }
 
+    handlePaperSelection(event) {
+        var that = this;
+        var target = event.target;
+        console.log(target.value);
+        fetch('http://localhost:5000/citations/find_evaluations/' + target.value)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                that.setState({ paper_id: target.value, citations: myJson });
+            });
+    }
+
     handleInputChange(event) {
         const target = event.target;
         const value = target.value;
@@ -76,6 +92,20 @@ class Results extends Component {
         }, console.log(this.state)
         );
 
+    }
+
+    getCitations(paper_id) {
+
+        var that = this;
+
+        var answer = fetch('http://localhost:5000/citations/find_evaluations/' + this.state.paper_id)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                that.setState({ citations: myJson });
+            });
+        return (answer);
     }
 
     getRubricValues() {
@@ -108,6 +138,36 @@ class Results extends Component {
             <option value={paper._id}>{paper.title}</option>
         );
 
+        //Query for Citations where rubric value or annotation is not null
+        function getAuthors(authors) {
+            return authors.map((d) =>
+                d.family + ", " + d.given + "\n"
+            );
+        }
+
+        function formatCitation(citation) {
+            return (<div>
+                {getAuthors(citation.author)} ({citation.date}). {citation.title}
+            </div>
+            );
+        }
+
+        let citations = this.state.citations;
+        let bigCitation = <p> No citation selected </p>;
+        console.log(citations);
+
+        if (citations !== []) {
+            bigCitation = citations.map((citation) => {
+                if (citation.evaluated === true) {
+                    return (formatCitation(citation));
+                } else {
+                    return("");
+                }
+            });
+        } else {
+            let lastOption = <p> No Citation Selected </p>;
+        }
+
         return (
             <div class="download-container">
                 <h1>Overview</h1>
@@ -124,14 +184,16 @@ class Results extends Component {
                             {optionAssignments}
                         </Input>
                         <label for="assignForAnalyze">Paper:</label>
-                        <Input onChange={this.handleInputChange} id="assignForAnalyze" type="select" name="selectedPaperId" required >
+                        <Input onChange={this.handlePaperSelection} id="assignForAnalyze" type="select" name="selectedPaperId" required >
                             <option value="" disabled selected hidden >Select an Paper</option>
-                            {optionPapers}              
+                            {optionPapers}
                         </Input>
                     </Col>
                     <Col xs="9">
                         <div>
-
+                            <Button id="findEvals" onClick={this.getCitations}>
+                                Find evaluations
+                            </Button>
                         </div>
                     </Col>
                 </Row>

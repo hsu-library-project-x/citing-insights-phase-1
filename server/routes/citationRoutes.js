@@ -20,6 +20,8 @@ router.get('/save_citation_grade/:id/:rubricId/:grade/:annotation', citationCont
 
 router.get('/:user_id', citationController.by_user_id);
 
+router.get('/find_evaluations/:paper_id', citationController.find_evaluations);
+
 /*
  * POST
  */
