@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Label, Input, Button } from 'reactstrap';
+import { Label, Input, Button, Card, CardText, CardBody, CardTitle } from 'reactstrap';
 import { Row, Col } from 'reactstrap';
 import "./css/Download.css";
 
@@ -14,6 +14,7 @@ class Results extends Component {
             AvailableCourses: [],
             AvailableAssignments: [],
             AvailablePapers: [],
+            rubrics: [],
             citations: [],
             bigCitations: []
         }
@@ -28,7 +29,7 @@ class Results extends Component {
     componentWillMount() {
 
         var that = this;
-
+        //Grab the user's courses
         fetch('http://localhost:5000/courses/' + this.props.user.id)
             .then(function (response) {
                 return response.json();
@@ -36,6 +37,17 @@ class Results extends Component {
             .then(function (myJson) {
                 that.setState({ AvailableCourses: myJson });
             });
+
+        //Grab the user's rubrics
+        fetch('http://localhost:5000/rubrics/' + this.props.user.id)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                that.setState({ rubrics: myJson })
+            });
+            console.log("rubrics");
+            console.log(this.state.rubrics);
     }
 
     //Given a Class, this function makes a call to get all assignments in that class.
@@ -81,6 +93,8 @@ class Results extends Component {
     }
 
     showCitations() {
+
+
         //Query for Citations where rubric value or annotation is not null
         function getAuthors(authors) {
             return authors.map((d) =>
@@ -89,9 +103,26 @@ class Results extends Component {
         }
 
         function formatCitation(citation) {
-            return (<div>
-                {getAuthors(citation.author)} ({citation.date}). {citation.title}
-            </div>
+            return (
+                <div>
+                    <Card>
+                        <CardBody>
+                            <CardTitle>Citation</CardTitle>
+                            <CardText>
+                                {getAuthors(citation.author)} ({citation.date}). {citation.title}
+                            </CardText>
+                            <CardText>
+                                Annotation: {citation.annotation}
+                            </CardText>
+                            <CardText>
+                                Rubric Value: {citation.rubricId}
+                            </CardText>
+                            <CardText>
+                                Rubric Score {citation.rubricScore}
+                            </CardText>
+                        </CardBody>
+                    </Card>
+                </div>
             );
         }
 
