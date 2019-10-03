@@ -190,11 +190,9 @@ class Results extends Component {
                     </Col>
                     <Col xs="9">
                         <div>
+                            <h1>Overview</h1>
                             <Button id="showEvals" onClick={() => { this.showCitations() }}>
                                 Show Evaluations
-                            <h1>Overview</h1>
-                            <Button id="findEvals" onClick={this.getCitations}>
-                                Find evaluations
                             </Button>
                         </div>
                     </Col>
