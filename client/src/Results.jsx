@@ -15,7 +15,7 @@ class Results extends Component {
             AvailableAssignments: [],
             AvailablePapers: [],
             citations: [],
-            bigCitation: <p></p>
+            bigCitations: []
         }
 
         this.handleClassSelection = this.handleClassSelection.bind(this);
@@ -81,6 +81,39 @@ class Results extends Component {
     }
 
     showCitations() {
+        //Query for Citations where rubric value or annotation is not null
+        function getAuthors(authors) {
+            return authors.map((d) =>
+                d.family + ", " + d.given + "\n"
+            );
+        }
+
+        function formatCitation(citation) {
+            return (<div>
+                {getAuthors(citation.author)} ({citation.date}). {citation.title}
+            </div>
+            );
+        }
+
+        let citations = this.state.citations;
+
+        let bigCitation;
+        console.log(citations);
+
+        if (citations !== []) {
+            bigCitation = citations.map((citation) => {
+                if (citation.evaluated === true) {
+                    return (formatCitation(citation));
+                } else {
+                    return ("");
+                }
+            });
+        } else {
+            let lastOption = <p> No Citation Selected </p>;
+        }
+        this.setState({
+            bigCitations: bigCitation
+        });
 
     }
 
@@ -101,36 +134,7 @@ class Results extends Component {
             <option value={paper._id}>{paper.title}</option>
         );
 
-        //Query for Citations where rubric value or annotation is not null
-        function getAuthors(authors) {
-            return authors.map((d) =>
-                d.family + ", " + d.given + "\n"
-            );
-        }
 
-        function formatCitation(citation) {
-            return (<div>
-                {getAuthors(citation.author)} ({citation.date}). {citation.title}
-            </div>
-            );
-        }
-
-        let citations = this.state.citations;
-
-        // let bigCitation = <option> No citation selected </option>
-        console.log(citations);
-
-        if (citations !== []) {
-            let bigCitation = citations.map((citation) => {
-                if (citation.evaluated === true) {
-                    return (formatCitation(citation));
-                } else {
-                    return ("");
-                }
-            });
-        } else {
-            let lastOption = <p> No Citation Selected </p>;
-        }
 
         return (
             <div class="download-container">
@@ -155,11 +159,12 @@ class Results extends Component {
                     </Col>
                     <Col xs="9">
                         <div>
-                            <Button id="showEvals" onClick={()=>{this.showCitations()}}>
+                            <Button id="showEvals" onClick={() => { this.showCitations() }}>
                                 Show Evaluations
                             </Button>
                         </div>
                     </Col>
+                    <p1> {this.state.bigCitations}</p1>
                 </Row>
             </div>
         )
