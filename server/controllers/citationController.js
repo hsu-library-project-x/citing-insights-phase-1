@@ -219,6 +219,7 @@ module.exports = {
       }
 
       citation.rubricId = req.params.rubricId;
+      citation.rubricTitle = req.params.rubricTitle;
       citation.rubricScore = req.params.grade;
       citation.annotation = req.params.annotation;
       citation.evaluated = true;

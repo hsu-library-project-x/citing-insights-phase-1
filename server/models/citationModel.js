@@ -31,6 +31,7 @@ var citationSchema = new Schema({
 		String
 	],
 	'rubricId': { type: Schema.Types.ObjectId, ref: 'rubric' },
+	'rubricTitle': String,
 	'rubricScore': String,
 	'intextCitations': Array,
 	'arxivid': String,

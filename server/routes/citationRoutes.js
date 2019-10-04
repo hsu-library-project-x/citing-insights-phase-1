@@ -16,7 +16,7 @@ router.get('/by_paper_id/:id', citationController.by_paper_id);
 
 router.get('/s2/:id', citationController.s2);
 
-router.get('/save_citation_grade/:id/:rubricId/:grade/:annotation', citationController.save_citation_grade);
+router.get('/save_citation_grade/:id/:rubricId/:rubricTitle/:grade/:annotation', citationController.save_citation_grade);
 
 router.get('/:user_id', citationController.by_user_id);
 
