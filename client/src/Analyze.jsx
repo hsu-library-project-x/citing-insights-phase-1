@@ -279,7 +279,7 @@ class Analyze extends Component {
 
     console.log('http://localhost:5000/citations/save_citation_grade/' + this.state.current_citation_id + '/' + this.state.rubricId + '/' + encodeURIComponent(radio_value) + '/' + enc);
 
-    fetch('http://localhost:5000/citations/save_citation_grade/' + this.state.current_citation_id + '/' + this.state.rubricId + '/' + encodeURIComponent(radio_value) + '/' + enc)
+    fetch('http://localhost:5000/citations/save_citation_grade/' + this.state.current_citation_id + '/' + this.state.rubricId + '/' + this.state.currentRubric.name + '/' + encodeURIComponent(radio_value) + '/' + enc)
       .then(function (response) {
         return response.json();
       })

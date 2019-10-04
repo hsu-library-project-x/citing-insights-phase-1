@@ -46,8 +46,8 @@ class Results extends Component {
             .then(function (myJson) {
                 that.setState({ rubrics: myJson })
             });
-            console.log("rubrics");
-            console.log(this.state.rubrics);
+        console.log("rubrics");
+        console.log(this.state.rubrics);
     }
 
     //Given a Class, this function makes a call to get all assignments in that class.
@@ -103,22 +103,23 @@ class Results extends Component {
         }
 
         function formatCitation(citation) {
+
             return (
                 <div>
                     <Card>
                         <CardBody>
                             <CardTitle>Citation</CardTitle>
                             <CardText>
-                                {getAuthors(citation.author)} ({citation.date}). {citation.title}
+                                {getAuthors(citation.author)} ({citation.date}).{citation.title}
+                            </CardText>
+                            <CardText>
+                                Rubric Title: {citation.rubricTitle} 
+                            </CardText>
+                            <CardText>
+                                Rubric Score: {citation.rubricScore}
                             </CardText>
                             <CardText>
                                 Annotation: {citation.annotation}
-                            </CardText>
-                            <CardText>
-                                Rubric Value: {citation.rubricId}
-                            </CardText>
-                            <CardText>
-                                Rubric Score {citation.rubricScore}
                             </CardText>
                         </CardBody>
                     </Card>
