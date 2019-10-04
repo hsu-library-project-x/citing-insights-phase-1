@@ -90,7 +90,7 @@ class Analyze extends Component {
 
   get_paper_info(paper_id) {
     var that = this;
-    fetch('http://localhost:5000/papers/' + paper_id)
+    fetch('/papers/' + paper_id)
       .then(function (response) {
         return response.json();
       })
@@ -115,7 +115,7 @@ class Analyze extends Component {
       var that = this;
 
       //Grab info about the assignment
-      fetch('http://localhost:5000/assignments/' + this.props.location.state.id)
+      fetch('/assignments/' + this.props.location.state.id)
         .then(function (response) {
 
           return response.json();
@@ -133,7 +133,7 @@ class Analyze extends Component {
 
     var that = this;
 
-    var answer = fetch('http://localhost:5000/citations/by_paper_id/' + paper_id)
+    var answer = fetch('/citations/by_paper_id/' + paper_id)
       .then(function (response) {
         return response.json();
       })
@@ -150,7 +150,7 @@ class Analyze extends Component {
 
     var that = this;
     that.setState({ current_citation_id: citation_id });
-    fetch('http://localhost:5000/citations/s2/' + citation_id)
+    fetch('/citations/s2/' + citation_id)
       .then(function (response) {
         return response.json();
       })
@@ -167,7 +167,7 @@ class Analyze extends Component {
     if (this.props.location.state !== undefined) {
       this.setState({ assignmentId: this.props.location.state.id });
 
-      fetch('http://localhost:5000/papers/by_assignment_id/' + this.props.location.state.id)
+      fetch('/papers/by_assignment_id/' + this.props.location.state.id)
         .then(function (response) {
           return response.json();
         })
@@ -176,7 +176,7 @@ class Analyze extends Component {
           that.setState({ paper_ids: myJson })
 
           try {
-            fetch('http://localhost:5000/papers/' + myJson[0]["_id"])
+            fetch('/papers/' + myJson[0]["_id"])
               .then(function (response) {
                 return response.json();
               })
@@ -204,7 +204,7 @@ class Analyze extends Component {
     }
     //get the rubrics
     //replace hardcoded number with userID from login
-    fetch('http://localhost:5000/rubrics/' + this.props.user._id)
+    fetch('/rubrics/' + this.props.user._id)
       .then(function (response) {
         return response.json();
       })
@@ -291,7 +291,7 @@ class Analyze extends Component {
       for (var citation in data) {
         if (data[citation].annotation !== "") {
           let annotation = JSON.stringify(data[citation].annotation);
-          fetch('http://localhost:5000/citation/add_annotation/' + data[citation].id, {
+          fetch('/citation/add_annotation/' + data[citation].id, {
             method: 'PUT',
             body: annotation,
             headers: {
@@ -302,7 +302,7 @@ class Analyze extends Component {
         }
         if (data[citation].intextCites.length !== 0) {
           let intextCitations = JSON.stringify(data[citation].intextCites);
-          fetch('http://localhost:5000/citation/add_intext_citations/' + data[citation].id, {
+          fetch('/citation/add_intext_citations/' + data[citation].id, {
             method: 'PUT',
             body: intextCitations,
             headers: {

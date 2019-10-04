@@ -90,7 +90,7 @@ class Analyze extends Component {
 
   get_paper_info(paper_id) {
     var that = this;
-    fetch('http://localhost:5000/papers/' + paper_id)
+    fetch('/papers/' + paper_id)
       .then(function (response) {
         return response.json();
       })
@@ -113,7 +113,7 @@ class Analyze extends Component {
       var that = this;
 
       //Grab info about the assignment
-      fetch('http://localhost:5000/assignments/' + this.props.location.state.id)
+      fetch('/assignments/' + this.props.location.state.id)
         .then(function (response) {
           return response.json();
         })
@@ -130,7 +130,7 @@ class Analyze extends Component {
 
     var that = this;
 
-    var answer = fetch('http://localhost:5000/citations/by_paper_id/' + paper_id)
+    var answer = fetch('/citations/by_paper_id/' + paper_id)
       .then(function (response) {
         return response.json();
       })
@@ -144,7 +144,7 @@ class Analyze extends Component {
 
     var that = this;
     that.setState({ current_citation_id: citation_id });
-    fetch('http://localhost:5000/citations/s2/' + citation_id)
+    fetch('/citations/s2/' + citation_id)
       .then(function (response) {
         return response.json();
       })
@@ -161,7 +161,7 @@ class Analyze extends Component {
     if (this.props.location.state !== undefined) {
       this.setState({ assignmentId: this.props.location.state.id });
 
-      fetch('http://localhost:5000/papers/by_assignment_id/' + this.props.location.state.id)
+      fetch('/papers/by_assignment_id/' + this.props.location.state.id)
         .then(function (response) {
           return response.json();
         })
@@ -169,7 +169,7 @@ class Analyze extends Component {
 
           that.setState({ paper_ids: myJson });
           try {
-            fetch('http://localhost:5000/papers/' + myJson[0]["_id"])
+            fetch('/papers/' + myJson[0]["_id"])
               .then(function (response) {
                 return response.json();
               })
@@ -195,7 +195,7 @@ class Analyze extends Component {
     }
     //get the rubrics
     //replace hardcoded number with userID from login
-    fetch('http://localhost:5000/rubrics/' + this.props.user._id)
+    fetch('/rubrics/' + this.props.user._id)
       .then(function (response) {
         return response.json();
       })
@@ -277,9 +277,9 @@ class Analyze extends Component {
     var dec = decodeURIComponent(enc);
     console.log(dec);
 
-    console.log('http://localhost:5000/citations/save_citation_grade/' + this.state.current_citation_id + '/' + this.state.rubricId + '/' + encodeURIComponent(radio_value) + '/' + enc);
+    console.log('/citations/save_citation_grade/' + this.state.current_citation_id + '/' + this.state.rubricId + '/' + encodeURIComponent(radio_value) + '/' + enc);
 
-    fetch('http://localhost:5000/citations/save_citation_grade/' + this.state.current_citation_id + '/' + this.state.rubricId + '/' + this.state.currentRubric.name + '/' + encodeURIComponent(radio_value) + '/' + enc)
+    fetch('/citations/save_citation_grade/' + this.state.current_citation_id + '/' + this.state.rubricId + '/' + this.state.currentRubric.name + '/' + encodeURIComponent(radio_value) + '/' + enc)
       .then(function (response) {
         return response.json();
       })

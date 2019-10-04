@@ -43,7 +43,7 @@ class Assignment extends Component{
 
     var that = this;
 
-    fetch('http://localhost:5000/courses/' + this.props.user.id)
+    fetch('/courses/' + this.props.user.id)
       .then(function(response) {
         return response.json();
       })
@@ -59,7 +59,7 @@ class Assignment extends Component{
     var target = event.target;
     //incorrect
     console.log('we just clicked');
-    fetch('http://localhost:5000/assignments/by_class_id/' + target.value)
+    fetch('/assignments/by_class_id/' + target.value)
       .then(function(response) {
         return response.json();
       })
@@ -166,7 +166,7 @@ class Assignment extends Component{
       //continuing to get server error
       const formData = new FormData();
       formData.append(this.state.assignmentId, file, file.name);
-      req.open("POST", "http://localhost:5000/upload");
+      req.open("POST", "/upload");
       req.send(formData)
     
     });

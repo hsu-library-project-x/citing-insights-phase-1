@@ -40,7 +40,7 @@ class Classes extends Component {
 
     var that = this;
 
-    fetch('http://localhost:5000/courses/' + this.props.user.id)
+    fetch('/courses/' + this.props.user.id)
       .then(function (response) {
         return response.json();
       })
@@ -55,7 +55,7 @@ class Classes extends Component {
     var self = this;
     console.log("class id:")
     console.log(class_id);
-    fetch('http://localhost:5000/assignments/by_class_id/' + class_id)
+    fetch('/assignments/by_class_id/' + class_id)
       .then(function (response) {
         return response.json();
       })
@@ -91,7 +91,7 @@ class Classes extends Component {
     };
 
     let test = JSON.stringify(data);
-    fetch('http://localhost:5000/courses/', {
+    fetch('/courses/', {
       method: 'POST',
       body: test,
       headers: {
@@ -122,7 +122,7 @@ class Classes extends Component {
 
     let dataString = JSON.stringify(data);
 
-    fetch('http://localhost:5000/assignments', {
+    fetch('/assignments', {
       method: 'POST',
       body: dataString,
       headers: {
@@ -152,7 +152,7 @@ class Classes extends Component {
     if (window.confirm("Are you sure you wish to delete this?")) {
       const target = event.target;
 
-      fetch('http://localhost:5000/assignments/' + target.id, {
+      fetch('/assignments/' + target.id, {
         method: 'Delete',
         headers: {
           'Accept': 'application/json',
@@ -172,7 +172,7 @@ class Classes extends Component {
       if (window.confirm("WARNING!! You are about to delete this course, please click OK to proceed")) {
 
         const target = event.target;
-        fetch('http://localhost:5000/courses/' + target.id, {
+        fetch('/courses/' + target.id, {
           method: 'Delete',
           headers: {
             'Accept': 'application/json',

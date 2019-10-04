@@ -30,7 +30,7 @@ class Results extends Component {
 
         var that = this;
         //Grab the user's courses
-        fetch('http://localhost:5000/courses/' + this.props.user.id)
+        fetch('/courses/' + this.props.user.id)
             .then(function (response) {
                 return response.json();
             })
@@ -39,7 +39,7 @@ class Results extends Component {
             });
 
         //Grab the user's rubrics
-        fetch('http://localhost:5000/rubrics/' + this.props.user.id)
+        fetch('/rubrics/' + this.props.user.id)
             .then(function (response) {
                 return response.json();
             })
@@ -55,7 +55,7 @@ class Results extends Component {
         var that = this;
         var target = event.target;
         console.log(target);
-        fetch('http://localhost:5000/assignments/by_class_id/' + target.value)
+        fetch('/assignments/by_class_id/' + target.value)
             .then(function (response) {
                 return response.json();
             })
@@ -69,7 +69,7 @@ class Results extends Component {
         var that = this;
         var target = event.target;
         console.log(target);
-        fetch('http://localhost:5000/papers/by_assignment_id/' + target.value)
+        fetch('/papers/by_assignment_id/' + target.value)
             .then(function (response) {
                 return response.json();
             })
@@ -83,7 +83,7 @@ class Results extends Component {
         var that = this;
         var target = event.target;
         console.log(target.value);
-        fetch('http://localhost:5000/citations/find_evaluations/' + target.value)
+        fetch('/citations/find_evaluations/' + target.value)
             .then(function (response) {
                 return response.json();
             })

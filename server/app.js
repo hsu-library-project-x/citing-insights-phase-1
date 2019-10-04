@@ -42,7 +42,7 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('/home/citing_insights/citing-insights-phase-1/client/build/'));
 
 
 
@@ -52,7 +52,6 @@ app.use(bodyParser.json());
 
 app.post('/upload', upload);
 
-app.use('/', routes);
 app.use('/users', users);
 app.use('/courses', courses);
 app.use('/assignments', assignments);
@@ -66,12 +65,14 @@ app.get('/file_upload', function (req, res) {
   res.render('test.html');
 })
 
-/* this code is deprecated
-// we want to ultimately call CitationsController.show
-app.get('/get_citations/:prof/:name', function (req, res) {
-  const data = require('./json/' + req.params.prof + '/' + req.params.name + '.json')
-  res.json(data);
-}); */
+app.get('*', (req, res) => {
+
+  console.log(req);
+  console.log(res);
+  console.log(path.join(__dirname + '../../client/build/index.html'));
+  res.sendFile(path.join(__dirname + '../../client/build/index.html'));
+});
+
 
 module.exports = app;
 

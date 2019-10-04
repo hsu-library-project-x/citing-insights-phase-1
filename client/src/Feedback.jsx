@@ -54,7 +54,7 @@ class Feedback extends Component {
 
     var json = JSON.stringify(data);
 
-    fetch("http://localhost:5000/feedback/", {
+    fetch("/feedback/", {
       method: "POST",
       body: json,
       headers: {

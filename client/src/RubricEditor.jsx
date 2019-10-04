@@ -79,7 +79,7 @@ class RubricEditor extends Component {
 		default_rubric.user_id = this.props.user.id;
 
 		const default_to_string = JSON.stringify(default_rubric);
-		fetch('http://localhost:5000/rubrics/', {
+		fetch('/rubrics/', {
 			method: 'POST',
 			body: default_to_string,
 			mode: 'cors',
@@ -119,7 +119,7 @@ class RubricEditor extends Component {
 
 		for (let i = 0; i < curRubrics.length; i++) {
 			if (curRubrics[i]._id === curId) {
-				fetch('http://localhost:5000/rubrics/' + curId, {
+				fetch('/rubrics/' + curId, {
 					method: 'Delete',
 					headers: {
 						'Accept': 'application/json',
@@ -242,7 +242,7 @@ class RubricEditor extends Component {
 		var that = this;
 
 		//replace hardcoded number with userID from login
-		fetch('http://localhost:5000/rubrics/' + this.props.user._id)
+		fetch('/rubrics/' + this.props.user._id)
 			.then(function (response) {
 				return response.json();
 			})
@@ -380,7 +380,7 @@ class RubricEditor extends Component {
 				"user_id": this.props.user.id
 			}
 			let dataString = JSON.stringify(newdata);
-			fetch('http://localhost:5000/rubrics', {
+			fetch('/rubrics', {
 				method: 'POST',
 				body: dataString,
 				mode: 'cors',
@@ -401,7 +401,7 @@ class RubricEditor extends Component {
 				"user_id": this.props.user._id
 			}
 			let dataString = JSON.stringify(newdata);
-			fetch('http://localhost:5000/rubrics/' + this.state.curId, {
+			fetch('/rubrics/' + this.state.curId, {
 				method: 'PUT',
 				body: dataString,
 				headers: {
