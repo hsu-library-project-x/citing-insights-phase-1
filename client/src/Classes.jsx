@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col,  Input, Label} from 'reactstrap'
+import { Row, Col, Input, Label } from 'reactstrap'
 import { withRouter } from 'react-router-dom';
 import './css/App.css';
 import './css/Classes.css'
@@ -60,7 +60,8 @@ class Classes extends Component {
         return response.json();
       })
       .then(function (myJson) {
-          self.setState({
+        self.setState({
+          ClassId: class_id,
           AvailableAssignments: myJson
         });
       });
@@ -159,9 +160,9 @@ class Classes extends Component {
           'Content-Type': 'application/json'
         },
       })
-      .then((response) => {
-        self.getAssignments(this.state.ClassId);
-      });
+        .then((response) => {
+          self.getAssignments(this.state.ClassId);
+        });
     }
   }
 
