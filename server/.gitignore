@@ -62,4 +62,6 @@ typings/
 
 config.js
 
-fileUpload/*
+fileUpload/* 
+
+#test
