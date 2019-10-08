@@ -88,6 +88,25 @@ module.exports = function upload(req, res) {
                 .replace("fileUpload", "")
                 .replace(".pdf", ".json");
 
+            //Need a default citation that will represent the entire paper, to be envaluated with a rubric later
+            //(Overall Student Paper)
+            let defaultCitation = {
+                "author": [
+                    {
+                        "family": "Overall Student Paper"
+                    }
+                ],
+                "paper_id": paper.id
+            }
+
+            let studentPaperCtitaion = new citationModel(defaultCitation);
+
+            studentPaperCtitaion.save(function (err, studentPaperCtitaion) {
+                if (err) {
+                    check = false;
+                    console.log(err);
+                }
+            });
 
             for (index in json_file) {
                 var citation = new citationModel(json_file[index]);
@@ -105,7 +124,7 @@ module.exports = function upload(req, res) {
 
             shell.exec('rm ' + full_json_path);
             shell.exec('rm ' + file.path);
-          //  shell.exec('rm ' + txt_path);
+            //  shell.exec('rm ' + txt_path);
 
             //after creating a citation model, save to db
         })
