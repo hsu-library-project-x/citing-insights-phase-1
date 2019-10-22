@@ -1,7 +1,7 @@
 const IncomingForm = require("formidable").IncomingForm;
 const mongoose = require("mongoose");
 const fs = require("fs");
-const shell = require("shelljs")
+const shell = require("shelljs");
 
 var Chance = require("chance");
 var chance = new Chance();

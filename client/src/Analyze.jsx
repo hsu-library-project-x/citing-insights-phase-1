@@ -654,7 +654,7 @@ class Analyze extends Component {
                 <Card>
                   <CardBody>
                     <CardTitle><Button color="link" onClick={this.open_s2}>Semantic Scholar</Button></CardTitle>
-                    <CardText>Citation Velcoity: {this.state.current_s2_data["citation_velocity"]} <br />Influential Citations: {this.state.current_s2_data["influential_citation_count"]}</CardText>
+                    <CardText>Citation Velocity: {this.state.current_s2_data["citation_velocity"]} <br />Influential Citations: {this.state.current_s2_data["influential_citation_count"]}</CardText>
                   </CardBody>
                 </Card>
                 <Card>
