@@ -9,7 +9,6 @@ import { Switch, Route, Link, withRouter } from "react-router-dom";
 import Classes from "./Classes.jsx";
 import Assignments from "./Assignments.jsx";
 import AnalyzeSubMenu from "./AnalyzeSubMenu.jsx";
-import Download from "./Download.jsx";
 import Analyze from "./Analyze.jsx";
 import RubricEditor from "./RubricEditor.jsx";
 

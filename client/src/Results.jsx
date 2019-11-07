@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Label, Input, Button, Card, CardText, CardBody, CardTitle } from 'reactstrap';
+import { Input, Button, Card, CardText, CardBody, CardTitle } from 'reactstrap';
 import { Row, Col } from 'reactstrap';
 
 class Results extends Component {
@@ -139,7 +139,7 @@ class Results extends Component {
                 }
             });
         } else {
-            let lastOption = <p> No Citation Selected </p>;
+            return( <p> No Citation Selected </p>);
         }
         this.setState({
             bigCitations: bigCitation

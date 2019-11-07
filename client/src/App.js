@@ -16,6 +16,8 @@ import { ProtectedRoute } from "./ProtectedRoute.jsx";
 import Navibar from './Navibar.jsx';
 //import Error from "./Error.jsx";
 
+import "./App.css";
+
 
 
 // App acts as the main page for intial rendering -- all pages and stages are called 
