@@ -7,6 +7,7 @@ import './css/Assignment.css';
 
 import Dropzone from './Dropzone.jsx';
 import Progress from './Progress.jsx';
+import SelectInput from '@material-ui/core/Select/SelectInput';
 
 // Class to render our homepage
 class Assignment extends Component{
@@ -168,7 +169,8 @@ class Assignment extends Component{
       formData.append(this.state.assignmentId, file, file.name);
       req.open("POST", "http://localhost:5000/upload");
       req.send(formData)
-    
+      alert("Uploading...");
+      alert("Upload Successful")
     });
 
   }
