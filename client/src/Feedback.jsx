@@ -70,9 +70,9 @@ class Feedback extends Component {
   render() {
     return (
       <div>
-        <button className={"NavLinkButton"} onClick={this.handleClickOpen}>
+        <Button className={"NavLinkButton"} onClick={this.handleClickOpen}>
           Give Feedback
-          </button>
+          </Button>
         <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">Feedback</DialogTitle>
           <DialogContent>

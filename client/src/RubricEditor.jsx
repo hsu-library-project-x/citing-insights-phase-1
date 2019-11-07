@@ -1,12 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react'  
 import { withRouter } from 'react-router-dom';
-import { Input, Card, CardBody, Button } from 'reactstrap';
+import { Input, Card, CardBody } from 'reactstrap';
+import Button from '@material-ui/core/Button';
 import uniqueId from 'react-html-id';
 import defaultRubricsJson from './default_rubrics/defaultRubric.json';
 
-
 class RubricEditor extends Component {
-
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -414,9 +413,9 @@ class RubricEditor extends Component {
 		let rubricList = rubrics.map((rubric) =>
 			<div>
 				<li onClick={this.handleEditRubric} class="classLi" id={rubric._id}>{rubric.name}</li>
-				<button class="deleteButton" onClick={this.handleDeleteRubric}>
+				<Button class="deleteButton" onClick={this.handleDeleteRubric}>
 					<svg id={rubric._id} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path id={rubric._id} d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z" /></svg>
-				</button>
+				</Button>
 			</div>
 		);
 
@@ -456,9 +455,9 @@ class RubricEditor extends Component {
 				}
 				{(!this.state.isEditing) ? <h4>Please select a rubric from the list or create a new one to get started.</h4> :
 					<div class="rubricButtonContainer">
-						<button id="backSelect" onClick={this.reset}>Back</button>
-						<button id="rubBuildButton" disabled={this.state.needsSaving} onClick={this.buildRubric}>{this.fillButtonText()}</button>
-						<button id="saveCards" onClick={() => this.saveCard()}>Save Cards</button>
+						<Button id="backSelect" onClick={this.reset}>Back</Button>
+						<Button id="rubBuildButton" disabled={this.state.needsSaving} onClick={this.buildRubric}>{this.fillButtonText()}</Button>
+						<Button id="saveCards" onClick={() => this.saveCard()}>Save Cards</Button>
 					</div>
 				}
 			</div>

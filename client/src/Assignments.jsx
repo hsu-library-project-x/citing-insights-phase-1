@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import { Label, Input } from 'reactstrap';
 import { Row, Col } from 'reactstrap';
+import Button from '@material-ui/core/Button';
 
 import Dropzone from './Dropzone.jsx';
 import Progress from './Progress.jsx';
@@ -100,11 +101,11 @@ class Assignment extends Component{
   renderActions() {
     if (this.state.successfullUploaded) {
       return (
-        <button onClick={() => this.setState({ files: [], successfullUploaded: false })}>Clear</button>
+        <Button onClick={() => this.setState({ files: [], successfullUploaded: false })}>Clear</Button>
       );
     } else {
       return (
-        <button disabled={this.state.files.length < 0 || this.state.uploading} onClick={this.uploadFiles}>Upload</button>
+        <Button disabled={this.state.files.length < 0 || this.state.uploading} onClick={this.uploadFiles}>Upload</Button>
       );
     }
   }

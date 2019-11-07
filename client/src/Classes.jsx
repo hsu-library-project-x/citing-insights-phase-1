@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Row, Col,  Input, Label} from 'reactstrap'
+import Button from '@material-ui/core/Button';
 import { withRouter } from 'react-router-dom';
+import { Input } from "reactstrap";
 
 
 // Class to render our homepage
@@ -184,7 +185,7 @@ class Classes extends Component {
     }
   }
 
-  //call when input changes to update the state
+  //call when Input changes to update the state
   handleInputChange(event) {
     const target = event.target;
     const value = target.value;
@@ -206,17 +207,17 @@ class Classes extends Component {
     let classList = courses.map((course) =>
       <div>
         <li onClick={this.handleGetAssignment} class="classLi" id={course._id}>{course.name + ": " + course.course_note}</li>
-        <button class="deleteButton" onClick={this.handleDeleteCourse}>
+        <Button class="deleteButton" onClick={this.handleDeleteCourse}>
           <svg id={course._id} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path id={course._id} d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z" /></svg>
-        </button>
+        </Button>
       </div>
     );
     let assignList = assignments.map((assignment) =>
       <div>
         <li>{assignment.name + ": " + assignment.note}</li>
-        <button class="deleteButton" onClick={this.handleDeleteAssignment}>
+        <Button class="deleteButton" onClick={this.handleDeleteAssignment}>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path id={assignment._id} d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z" /></svg>
-        </button>
+        </Button>
       </div>
     );
 
@@ -230,49 +231,37 @@ class Classes extends Component {
 
     return (
       <div class="classes-container">
-        <Row>
-          <Col xs="6">
             <h2> New Class </h2>
-            <form id="addClassForm" onSubmit={this.handleSubmitClass}>
-              <Label for="className">Name: </Label>
+            <form onSubmit={this.handleSubmitClass}>
+              <label for="className">Name: </label>
               <Input onChange={this.handleInputChange} type="text" id="className" name="ClassName" placeholder="Type class name here" required />
-              <Label for="classNotes">Notes: </Label>
+              <label for="classNotes">Notes: </label>
               <Input onChange={this.handleInputChange} type="textarea" id="classNotes" name="ClassNote" placeholder="Optional Notes on the class" />
               <Input type="submit" value="Submit" />
             </form>
-
-          </Col>
-          <Col xs="6">
             <h2> New Assignment </h2>
-            <form id="addAssignmentForm" onSubmit={this.handleSubmitAssign}  >
-              <Label for="classAssign">Class:</Label>
+            <form onSubmit={this.handleSubmitAssign}  >
+              <label for="classAssign">Class:</label>
               <Input onChange={this.handleInputChange} type="select" id="classAssign" name="ClassId" required>
                 <option value="" disabled selected hidden >Select a Class</option>
                 {optionItems}
               </Input><br /> <br />
-              <Label for="assignName">Name:</Label>
+              <label for="assignName">Name:</label>
               <Input onChange={this.handleInputChange} type="text" id="assignName" name="AssignName" placeholder="Type assignment name here" required /> <br />
-              <Label for="assignNotes">Notes:</Label>
+              <label for="assignNotes">Notes:</label>
               <Input onChange={this.handleInputChange} type="textarea" id="assignNotes" name="AssignNote" placeholder="Optional Notes on the assignment" />
               <Input type="submit" value="Submit" />
 
             </form>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs="6">
+
             <h3>Your Classes</h3>
             <ul class="currentClasses">
               {classList}
             </ul>
-          </Col>
-          <Col xs="6">
             <h3>Your Assignments</h3>
             <ul class="currentClasses">
               {assignList}
             </ul>
-          </Col>
-        </Row>
       </div>
 
     );

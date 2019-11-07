@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import RubricSubmit from './RubricSubmit.jsx';
-import { Button, Input } from 'reactstrap';
+import { Input } from 'reactstrap';
+import  Button from '@material-ui/core/Button';
 import { Card, CardText, CardBody, CardTitle } from 'reactstrap';
 import Rubric from './Rubric.jsx';
 import { Row, Col } from 'reactstrap';
@@ -408,10 +409,10 @@ class Analyze extends Component {
     }
   }
 
-  //Checks to see if there is appropriate text in the intext citation textarea, renders either disabled button or save button depending on context
+  //Checks to see if there is appropriate text in the intext citation textarea, renders either disabled Button or save Button depending on context
   renderActions() {
     return (
-      <button disabled={this.state.uploading} onClick={this.saveIntextCitation}>Save Intext Citation</button>
+      <Button disabled={this.state.uploading} onClick={this.saveIntextCitation}>Save Intext Citation</Button>
     );
   }
 
@@ -627,19 +628,19 @@ class Analyze extends Component {
               <div class="discoveryTool">
                 <Card>
                   <CardBody>
-                    <CardTitle><Button color="link" onClick={this.open_s2}>Semantic Scholar</Button></CardTitle>
+                    <CardTitle><Button onClick={this.open_s2}>Semantic Scholar</Button></CardTitle>
                     <CardText>Citation Velocity: {this.state.current_s2_data["citation_velocity"]} <br />Influential Citations: {this.state.current_s2_data["influential_citation_count"]}</CardText>
                   </CardBody>
                 </Card>
                 <Card>
                   <CardBody>
-                    <CardTitle> <Button color="link" onClick={this.open_alma_primo}>Alma Primo</Button></CardTitle>
+                    <CardTitle> <Button onClick={this.open_alma_primo}>Alma Primo</Button></CardTitle>
                     <CardText>Find Source through Library Discovery System</CardText>
                   </CardBody>
                 </Card>
                 <Card>
                   <CardBody>
-                    <CardTitle><Button color="link" onClick={this.open_google_scholar}>Google Scholar</Button></CardTitle>
+                    <CardTitle><Button onClick={this.open_google_scholar}>Google Scholar</Button></CardTitle>
                     <CardText>Google Scholar Information</CardText>
                   </CardBody>
                 </Card>
@@ -667,7 +668,7 @@ class Analyze extends Component {
               <textarea id="annotation">
                 Make an optional annotation...
               </textarea>
-              <Button color="success" id="paperDone" onClick={this.handleSaveCitations}>Save Rubric Value </Button>
+              <Button id="paperDone" onClick={this.handleSaveCitations}>Save Rubric Value </Button>
               <Button id="nextPaper" onClick={() => { this.next_paper(1) }}> Next Paper </Button>
               <Button id="nextPaper" onClick={() => { this.next_paper(-1) }}> Previous Paper </Button>
             </Col>

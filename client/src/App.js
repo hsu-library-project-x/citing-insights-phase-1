@@ -7,16 +7,14 @@ import React, { Component } from 'react';
 // Hashrouter allows us to do routing for website
 import { Switch, Route, HashRouter} from "react-router-dom";
 
-// Analyze, Login, and Home are all pages for our website
 import Analyze from "./Analyze.jsx";
 import Login from "./Login.jsx";
-import Home from "./Home.jsx";
 import Tasks from "./Tasks.jsx";
 import { ProtectedRoute } from "./ProtectedRoute.jsx";
 import Navibar from './Navibar.jsx';
 //import Error from "./Error.jsx";
 
-import "./App.css";
+import "./css/App.css";
 
 
 
@@ -100,11 +98,6 @@ class App extends Component {
                 <ProtectedRoute
                   path="/tasks"
                   component={Tasks}
-                  {...this.state}
-                />
-                <ProtectedRoute
-                  exact path="/home"
-                  component={Home}
                   {...this.state}
                 />
                 <ProtectedRoute

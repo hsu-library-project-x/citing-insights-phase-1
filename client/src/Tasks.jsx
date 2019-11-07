@@ -2,6 +2,7 @@
 
 //Imprort Libraries
 import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
 
 
 //Import Routing
@@ -67,42 +68,42 @@ class Tasks extends Component {
 					<h1 class="head-1 head-2" id="headTitle">Tasks</h1>
 					<div class="button-container">
 						<Link to='/tasks/courses' >
-							<button class="menuButton" onClick={this.changeName}>
+							<Button class="menuButton" onClick={this.changeName}>
 								<img alt="classesIcon" id="Class" src={addClass} />
 								Manage Courses
-								</button>
+								</Button>
 						</Link>
 					</div>
 					<div class="button-container">
 						<Link to="/tasks/assignments">
-							<button class="menuButton" onClick={this.changeName}>
+							<Button class="menuButton" onClick={this.changeName}>
 								<img alt="assignmentIcon" id="Upload" src={addAssignment} />
 								Upload Papers
-								</button>
+								</Button>
 						</Link>
 					</div>
 					<div class="button-container">
 						<Link to="/tasks/analyzemenu">
-							<button class="menuButton" onClick={this.changeName}>
+							<Button class="menuButton" onClick={this.changeName}>
 								<img alt="analyzeIcon" id="Analyze" src={Continue} />
 								Analyze
-								</button>
+								</Button>
 						</Link>
 					</div>
 					<div class="button-container">
 						<Link to="/tasks/overview">
-							<button class="menuButton" onClick={this.changeName}>
+							<Button class="menuButton" onClick={this.changeName}>
 								<img alt="downloadIcon" id="Overview" src={download} />
 								Overview
-								</button>
+								</Button>
 						</Link>
 					</div>
 					<div class="button-container">
 						<Link to="/tasks/rubriceditor">
-							<button class="menuButton" onClick={this.changeName}>
+							<Button class="menuButton" onClick={this.changeName}>
 								<img alt="rubricIcon" id="Rubric" src={rubric} />
 								Edit Rubrics
-								</button>
+								</Button>
 						</Link>
 					</div>
 				</div>

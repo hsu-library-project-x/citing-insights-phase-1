@@ -1,20 +1,13 @@
-// Our Login "Page" for Citing Insights
-
-// Import Libraries
+// Citing Insights Login and Home 
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-// Button,Container, Row, Col are all Reactrap elements that we are 
-//     going to use for our login
-import { Row, Col } from 'reactstrap';
-
-//import picture
-import picture from './images/library-image.jpg';
-
+import { HashRouter, Link } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
-
+import Button from '@material-ui/core/Button';
 import config from "./config.json";
 
-
+// // import Logo
+// import logo from "./images/CIHome.png";
 
 class Login extends Component {
 	constructor(props) {
@@ -95,30 +88,23 @@ class Login extends Component {
 		return (
 			<div class="container">
 				<div id="login_page">
-					<Row>
-						<Col xs="6">
-							<div id="image_container">
-								<img id="welcome_img" alt="" src={picture} />
-							</div>
-						</Col>
-						<Col xs="6">
-							<div class="beside_picture">
-								<h1>Welcome Back!</h1>
-								<div class="googleLoginContainer" id="google">
-									<GoogleLogin
-										clientId={config.GOOGLE_CLIENT_ID}
-										render={renderProps => (
-											<button onClick={renderProps.onClick} disabled={renderProps.disabled}>Login with Google</button>
-										  )}
-										buttonText="Sign in with Google"
-										onSuccess={this.responseGoogle}
-										onFailure={this.onFailure}
-									/>
-								</div>
-							</div>
-						</Col>
-					</Row>
+					<h1>The Opportunity to Change the Assessment World</h1>
+					<div class="googleLoginContainer" id="google">
+						<GoogleLogin
+							clientId={config.GOOGLE_CLIENT_ID}
+							render={renderProps => (
+								<Button onClick={renderProps.onClick} disabled={renderProps.disabled}>Login with Google</Button>
+								)}
+							buttonText="Sign in with Google"
+							onSuccess={this.responseGoogle}
+							onFailure={this.onFailure}
+						/>
+					</div>
 				</div >
+				<HashRouter>
+				<Link to=""> About Us</ Link>
+				<Link to=""> Contact Us </Link>
+				</HashRouter>
 			</div >
 		);
 	}

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Input, Button, Card, CardText, CardBody, CardTitle } from 'reactstrap';
+import { Input, Card, CardText, CardBody, CardTitle } from 'reactstrap';
+import Button from '@material-ui/core/Button';
 import { Row, Col } from 'reactstrap';
 
 class Results extends Component {
