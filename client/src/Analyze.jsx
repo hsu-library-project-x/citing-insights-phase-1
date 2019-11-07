@@ -149,8 +149,11 @@ class Analyze extends Component {
         return response.json();
       })
       .then(function (myJson) {
-        that.setState({ current_s2_data: myJson });
+        that.setState({ 
+          current_s2_data: myJson
+          //current_citation_id: citation_id
       });
+    });
   }
 
   //Here we populate citation source information and meta data

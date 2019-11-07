@@ -167,8 +167,9 @@ class Assignment extends Component{
       const formData = new FormData();
       formData.append(this.state.assignmentId, file, file.name);
       req.open("POST", "/upload");
-      req.send(formData)
-    
+      req.send(formData);
+      alert("Uploading...");
+      alert("Upload Successful!");
     });
 
   }
