@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Label, Input, Button, Card, CardText, CardBody, CardTitle } from 'reactstrap';
 import { Row, Col } from 'reactstrap';
-import "./css/Download.css";
 
 class Results extends Component {
     constructor(props) {

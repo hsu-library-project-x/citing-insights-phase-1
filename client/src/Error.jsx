@@ -3,8 +3,6 @@
 
 import React, {Component} from 'react';
 
-import './css/App.css';
-import './css/Error.css';
 
 import error from './images/Error.svg'
 

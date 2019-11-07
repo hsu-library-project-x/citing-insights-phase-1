@@ -3,7 +3,6 @@ import {withRouter} from 'react-router-dom';
 
 import {Input} from 'reactstrap';
 import MultiselectTwoSides from 'react-multiselect-two-sides';
-import './css/Download.css';
 
 //import searchIcon from './images/magnifying-glass.svg';
 

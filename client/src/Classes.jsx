@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col,  Input, Label} from 'reactstrap'
 import { withRouter } from 'react-router-dom';
-import './css/App.css';
-import './css/Classes.css'
 
 
 // Class to render our homepage

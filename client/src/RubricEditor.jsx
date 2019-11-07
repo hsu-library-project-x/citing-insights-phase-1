@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import { Input, Card, CardBody, Button } from 'reactstrap';
-import "./css/RubricEditor.css";
 import uniqueId from 'react-html-id';
 import update from 'immutability-helper';
 import defaultRubricsJson from './default_rubrics/defaultRubric.json';

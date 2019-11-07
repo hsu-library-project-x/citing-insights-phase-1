@@ -3,7 +3,6 @@
 // Libraries that we imported
 //import ReactDOM from 'react-dom';
 import React, { Component } from 'react';
-import './css/App.css';
 
 // Hashrouter allows us to do routing for website
 import { Switch, Route, HashRouter} from "react-router-dom";
@@ -13,7 +12,6 @@ import Analyze from "./Analyze.jsx";
 import Login from "./Login.jsx";
 import Home from "./Home.jsx";
 import Tasks from "./Tasks.jsx";
-import AccountSettings from "./AccountSettings.jsx";
 import { ProtectedRoute } from "./ProtectedRoute.jsx";
 import Navibar from './Navibar.jsx';
 //import Error from "./Error.jsx";
@@ -110,11 +108,6 @@ class App extends Component {
                 <ProtectedRoute
                   path="/analyze"
                   component={Analyze}
-                  {...this.state}
-                />
-                <ProtectedRoute
-                  path="/accountSettings"
-                  component={AccountSettings}
                   {...this.state}
                 />
               </Switch>

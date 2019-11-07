@@ -7,7 +7,6 @@ import {
     AccordionItemButton,
     AccordionItemPanel,
 } from 'react-accessible-accordion';
-import './css/accordion.css';
 
 class Rubric extends Component {
     constructor(props) {

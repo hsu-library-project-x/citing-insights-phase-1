@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import { Label, Input } from 'reactstrap';
 import { Row, Col } from 'reactstrap';
-import './css/App.css';
-import './css/Assignment.css';
 
 import Dropzone from './Dropzone.jsx';
 import Progress from './Progress.jsx';

@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import {Document, Page, pdfjs} from "react-pdf";
-import './css/PdfComponent.css';
 pdfjs.GlobalWorkerOptions.workerSrc = 
  `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
 

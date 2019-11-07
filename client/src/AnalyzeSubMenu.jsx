@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import { Redirect } from "react-router-dom";
 import { Row, Col, Input } from "reactstrap";
 
-import './css/AnalyseSubMenu.css'
 
 class AnalyzeSubMenu extends Component {
 

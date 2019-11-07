@@ -3,8 +3,6 @@
 //Imprort Libraries
 import React, {Component} from 'react';
 import { HashRouter, Link } from "react-router-dom";
-import './css/App.css';
-import './css/Home.css';
 
 //import jumbotron for looks
 //import container, row, anc col for formatting

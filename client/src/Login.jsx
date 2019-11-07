@@ -6,8 +6,6 @@ import { withRouter } from 'react-router-dom';
 // Button,Container, Row, Col are all Reactrap elements that we are 
 //     going to use for our login
 import { Row, Col } from 'reactstrap';
-import './css/App.css';
-import './css/login.css';
 
 //import picture
 import picture from './images/library-image.jpg';

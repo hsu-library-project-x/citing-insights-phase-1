@@ -2,8 +2,6 @@
 import React, { Component } from 'react';
 import {Input, Button} from 'reactstrap';
 
-//import our css
-import './css/Markup.css';
 
 //this function returns user highlighted text
 function getSelectionText() {

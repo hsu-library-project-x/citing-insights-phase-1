@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Label, Input, Card, CardText, CardBody, CardTitle} from 'reactstrap';
-import './css/RubricSubmit.css';
 
 
 class RubricSubmit extends Component{
