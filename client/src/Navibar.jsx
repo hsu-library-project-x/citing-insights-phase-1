@@ -41,7 +41,7 @@ class Navibar extends Component {
     render() {
         let content = !!this.props.isAuthenticated ? (
                 <Navbar primary expand="md">
-                    <NavbarBrand><img className="navBarLogo" src={logo} alt="logo" ></img></NavbarBrand>
+                    <NavbarBrand><img className="navBarLogo" src={logo} alt="Citing_Insights_Logo"  role="image" ></img></NavbarBrand>
                     {/* NavItem (Reactstrap) -- item in our navation bar*/}
                     <NavItem>
                         <Feedback email={this.props.user.email} user_id={this.props.user.id}/>

@@ -80,7 +80,6 @@ class AccountSettings extends Component{
 	render(){
 		return(
 		<div className="container">
-
 					<div class="settings_form">
 						<Form>
 							<h1> <img class="icon" alt="pencil icon" src={tasks} /> Account Settings </h1>

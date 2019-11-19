@@ -68,16 +68,17 @@ a.active{
 .navbar{
   height: 90%;
 }
+
 a.navbar-brand{
   padding:0;
   margin:0;
   display:inline-flex;
 }
+
 #navIcon{
   width: 30%;
   height:30%;
 }
-
 
 .navBarLogo{
   width: 15%;
