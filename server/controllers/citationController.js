@@ -88,7 +88,7 @@ module.exports = {
       console.log(author_name);
       console.log(title_name);
 
-      var json_obj = JSON.parse(Get("https://api.crossref.org/works?query.author=" + author_name + "&query.title=" + title_name + '&mailto=citinginsightsheroku@gmail.com' ));
+      var json_obj = JSON.parse(Get("https://api.crossref.org/works?query.author=" + author_name + "&query.bibliographic=" + title_name + '&mailto=citinginsightsheroku@gmail.com' ));
 
       //console.log("this is the DOI: "+ json_obj.message.items[0].DOI);
 
