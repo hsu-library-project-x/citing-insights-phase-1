@@ -11,6 +11,15 @@ var citationModel = require("./models/citationModel.js");
 
 var check = true;
 
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+
+function Get(yourUrl){
+    var Httpreq = new XMLHttpRequest(); // a new request
+    Httpreq.open("GET",yourUrl,false);
+    Httpreq.send(null);
+    return Httpreq.responseText;
+  }
+
 module.exports = function upload(req, res) {
 
     console.log("goin into it");
@@ -91,8 +100,25 @@ module.exports = function upload(req, res) {
 
             for (index in json_file) {
                 var citation = new citationModel(json_file[index]);
+                console.log(citation);
                 citation.set({ "paper_id": paper.id });
 
+                //// This section has been moved from citationController /////
+                var author_name = "";
+                if (citation.author.length > 0 && "given" in citation.author[0] && "family" in citation.author[0]) {
+                    author_name = citation.author[0]["family"] + "+" + citation.author[0]["given"];
+                }
+                var title_name = "";
+                if (citation.title.length > 0) {
+                    title_name = citation.title[0];
+                }
+
+                console.log(author_name);
+                console.log(title_name);
+
+                var json_obj = JSON.parse(Get("https://api.crossref.org/works?query.author=" + author_name + "&query.bibliographic=" + title_name + '&mailto=citinginsightsheroku@gmail.com'));
+                ///////////////////////////////////////////////////////////
+                console.log(json_obj);
                 citation.save(function (err, citation) {
                     if (err) {
                         check = false;
@@ -105,7 +131,7 @@ module.exports = function upload(req, res) {
 
             shell.exec('rm ' + full_json_path);
             shell.exec('rm ' + file.path);
-          //  shell.exec('rm ' + txt_path);
+            //  shell.exec('rm ' + txt_path);
 
             //after creating a citation model, save to db
         })
