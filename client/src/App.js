@@ -11,9 +11,7 @@ import { Switch, Route, HashRouter} from "react-router-dom";
 // Analyze, Login, and Home are all pages for our website
 import Analyze from "./Analyze.jsx";
 import Login from "./Login.jsx";
-import Home from "./Home.jsx";
 import Tasks from "./Tasks.jsx";
-import AccountSettings from "./AccountSettings.jsx";
 import { ProtectedRoute } from "./ProtectedRoute.jsx";
 import Navibar from './Navibar.jsx';
 //import Error from "./Error.jsx";
@@ -103,18 +101,8 @@ class App extends Component {
                   {...this.state}
                 />
                 <ProtectedRoute
-                  exact path="/home"
-                  component={Home}
-                  {...this.state}
-                />
-                <ProtectedRoute
                   path="/analyze"
                   component={Analyze}
-                  {...this.state}
-                />
-                <ProtectedRoute
-                  path="/accountSettings"
-                  component={AccountSettings}
                   {...this.state}
                 />
               </Switch>

@@ -30,14 +30,6 @@ class Navibar extends Component {
         });
     }
 
-    //Removed this for time being; we really only get to analyze by going through tasks
-    //     <NavItem>
-    //     <NavLink to="/analyze">Analyze</NavLink>
-    //     </NavItem>
-    // <NavItem>
-    //<NavLink to="/accountsettings">Settings</NavLink>
-    //</NavItem> 
-
     render() {
         let content = !!this.props.isAuthenticated ? (
                 <Navbar primary expand="md">
@@ -45,9 +37,6 @@ class Navibar extends Component {
                     {/* NavItem (Reactstrap) -- item in our navation bar*/}
                     <NavItem>
                         <Feedback email={this.props.user.email} user_id={this.props.user.id}/>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink to="/home">Home</NavLink>
                     </NavItem>
                     <NavItem>
                         <NavLink to="/tasks">Tasks</NavLink>

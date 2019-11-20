@@ -4,8 +4,6 @@ import React, { Component } from 'react';
 import { withRouter, Redirect } from 'react-router-dom';
 import './css/App.css';
 import './css/Analyze.css';
-import Annotate from './Annotate.jsx';
-import Markup from './Markup.jsx';
 import RubricSubmit from './RubricSubmit.jsx';
 import { Button, Input, Progress } from 'reactstrap';
 import { Card, CardText, CardBody, CardTitle } from 'reactstrap';
@@ -13,12 +11,9 @@ import Rubric from './Rubric.jsx';
 // Lets us use column / row and layout for our webpage using Reactstrap
 import { Row, Col } from 'reactstrap';
 import PdfComponent from "./PdfComponent.jsx";
-import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
-
-import update from 'immutability-helper';
 
 //global function for defining ID's
 function makeid(length) {
@@ -676,8 +671,6 @@ class Analyze extends Component {
               <div className="overflow-auto">
                 {pdf}
               </div>
-              {/* <Button id='markBtn' onClick={this.toggleMarkup.bind(this)}>Switch Markup/Annotate</Button>
-              {this.renderAnnotate()} */}
             </Col>
             <Col xs="3">
               {/*<h2 className='analyzeHeader' >Rubric</h2>*/}

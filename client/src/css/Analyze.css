@@ -153,13 +153,6 @@ li > a{
 	margin-top: 1.2em;
 }
 
-.annotate .btn{
-  width: 45%;
-  margin-left: 2.5%;
-  margin-right: 2.5%;
-  margin-top: .25em;
-}
-
 #selectedText{
   padding: .5em;
   background-color: white;
@@ -264,8 +257,4 @@ label{
   0%{border-width: 0px; background-color: white;}
   50%{border-width: 9px; background-color: green;}
   100%{border-width: 0px; background-color: white;}
-}
-
-.card-group{
-  
 }

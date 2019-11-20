@@ -6,7 +6,6 @@ import './css/App.css';
 import './css/Assignment.css';
 
 import Dropzone from './Dropzone.jsx';
-import Progress from './Progress.jsx';
 import SelectInput from '@material-ui/core/Select/SelectInput';
 
 // Class to render our homepage
@@ -83,22 +82,6 @@ class Assignment extends Component{
 
   }
 
-  renderProgress(file) {
-    const uploadProgress = this.state.uploadProgress[file.name];
-    if (this.state.uploading || this.state.successfullUploaded) {
-      return (
-        <div className="ProgressWrapper">
-          <Progress progress={uploadProgress ? uploadProgress.percentage : 0} />
-          <img
-            className="CheckIcon"
-            alt="done"
-            src="baseline-check_circle_outline-24px.svg"
-            style={{ opacity: uploadProgress && uploadProgress.state === "done" ? 0.5 : 0}}
-          />
-        </div>
-      );
-    }
-  }
 
   renderActions() {
     if (this.state.successfullUploaded) {
@@ -188,7 +171,6 @@ class Assignment extends Component{
     );
 
     return(
-      /* So far our homepage is just a h1 tag with text */
       <div class="classes-container assign-container" >
         <h1>Upload Files</h1>
         <p>Please upload papers as PDF</p>
@@ -220,7 +202,6 @@ class Assignment extends Component{
                         return (
                           <div key={file.name} className="Row">
                             <span className="Filename">{file.name}</span>
-                            {this.renderProgress(file)}
                           </div>
                         );
                       })}
