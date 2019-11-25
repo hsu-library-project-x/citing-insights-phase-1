@@ -6,6 +6,7 @@ import { GoogleLogout } from 'react-google-login';
 import config from '../../config.json';
 import Feedback from "../Feedback/Feedback.jsx";
 import logo from './CIHome.png';
+import "./Navibar.css";
 
 class Navibar extends Component {
     constructor(props) {

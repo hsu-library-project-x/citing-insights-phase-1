@@ -1,0 +1,31 @@
+
+.navbar{
+    height: 90%;
+  }
+  a.navbar-brand{
+    padding:0;
+    margin:0;
+    display:inline-flex;
+  }
+  #navIcon{
+    width: 30%;
+    height:30%;
+  }
+  
+  
+  .navBarLogo{
+    width: 15%;
+  }
+  
+  
+  nav{
+    height: 6em;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .navbar{
+    background-color: #FFAC1D;
+    color: #274259;
+    font-weight: bold;
+  }

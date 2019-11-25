@@ -239,3 +239,18 @@
 .cardContainer .card .card-body{
 	background-color: #274259;
 }
+
+/* .card{
+	width: 33%;
+	display:inline-block;
+  }
+  
+  .card-body{
+	padding: 1em;
+	text-align: left;
+  }
+  
+  .card-body > label{
+	width: 100%;
+	text-align: left;
+  } */
