@@ -1,25 +1,13 @@
-// App.js is going to interact with our server
-
-// Libraries that we imported
-//import ReactDOM from 'react-dom';
 import React, { Component } from 'react';
-import './css/App.css';
-
-// Hashrouter allows us to do routing for website
 import { Switch, Route, HashRouter} from "react-router-dom";
-
-// Analyze, Login, and Home are all pages for our website
-import Analyze from "./Analyze.jsx";
-import Login from "./Login.jsx";
-import Tasks from "./Tasks.jsx";
 import { ProtectedRoute } from "./ProtectedRoute.jsx";
-import Navibar from './Navibar.jsx';
-//import Error from "./Error.jsx";
 
+import Analyze from "./Components/Analyze/Analyze.jsx";
+import Login from "./Components/Login/Login.jsx";
+import Tasks from "./Components/Tasks/Tasks.jsx";
 
-
-// App acts as the main page for intial rendering -- all pages and stages are called 
-// from App function
+import Navibar from './Components/Navibar/Navibar.jsx';
+import './App.css';
 
 class App extends Component {
 
@@ -67,17 +55,12 @@ class App extends Component {
     return (
       <div>
         <div class="head">
-          {/* <h2 class="alt-text">Citing Insights</h2>
-          <p class="alt-text">Welcome to Citing Insights Portal</p> */}
-          {/*Hashrouter! Defining our Router (React-Dom)*/}
           <HashRouter>
             <Navibar
               isAuthenticated={this.state.isAuthenticated}
               passInfoLogout={this.passInfoLogout}
               user={this.state.user}
             />
-
-            {/*This tells us what compenent to loaauthd after going to login, home, demo etc.*/}
             <div id="id01" class="pop content">
               <Switch>
                 <Route
@@ -107,7 +90,6 @@ class App extends Component {
                 />
               </Switch>
             </div>
-            {/*End our router*/}
           </HashRouter>
         </div>
       </div>
