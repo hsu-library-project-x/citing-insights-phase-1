@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter, Redirect } from 'react-router-dom';
 import { Button, Input, Progress } from 'reactstrap';
 
-import { Card, CardText, CardBody, CardTitle } from 'reactstrap';
+
 import { Row, Col } from 'reactstrap';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
@@ -11,19 +11,8 @@ import Rubric from '../Rubric/Rubric.jsx';
 import RubricSubmit from '../Rubric/RubricSubmit.jsx';
 import PdfComponent from "./PdfComponent.jsx";
 import './Analyze.css';
-
-
-//global function for defining ID's
-function makeid(length) {
-  var result = '';
-  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  var charactersLength = characters.length;
-  for (var i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-}
-
+import DiscoveryTool from './DiscoveryTool.jsx';
+import Citation from './Citation.jsx'
 
 class Analyze extends Component {
   constructor(props) {
@@ -51,7 +40,7 @@ class Analyze extends Component {
       curPaperId: "",
       sourceText: "",
       currentRubric: [],
-      current_s2_data: { "influential_citation_count": 20, "citation_velocity": 20 },
+      current_s2_data: { "influential_citation_count": '--', "citation_velocity": "--" },
       paper_ids: [],
       current_paper_id_index: 0,
       current_citation_id: 0
@@ -59,25 +48,16 @@ class Analyze extends Component {
     };
 
 
-    this.renderActions = this.renderActions.bind(this);
-    //this.saveIntextCitation = this.saveIntextCitation.bind(this);
     this.componentWillMount = this.componentWillMount.bind(this);
-    this.displayPaper = this.displayPaper.bind(this);
-    // this.renderAnnotate = this.renderAnnotate.bind(this);
     this.handleGetRubric = this.handleGetRubric.bind(this);
     this.handleRubricAssessment = this.handleRubricAssessment.bind(this);
     this.handleChildUnmount = this.handleChildUnmount.bind(this);
     this.handleSaveCitations = this.handleSaveCitations.bind(this);
     this.get_citation_info = this.get_citation_info.bind(this);
     this.get_s2_info = this.get_s2_info.bind(this);
-    this.handleCitationChange = this.handleCitationChange.bind(this);
     this.next_paper = this.next_paper.bind(this);
     this.refresh = this.refresh.bind(this);
     this.get_paper_info = this.get_paper_info.bind(this);
-    this.open_s2 = this.open_s2.bind(this);
-    this.open_alma_primo = this.open_alma_primo.bind(this);
-    this.open_google_scholar = this.open_google_scholar.bind(this);
-    // this.showMeCitation = this.showMeCitation.bind(this);
   }
 
 
@@ -114,7 +94,7 @@ class Analyze extends Component {
           console.log("MY STATE IS - " + that.state);
           that.setState({
             assignment: myJson
-          }, console.log(that.state));
+          });
         });
     }
   }
@@ -197,9 +177,7 @@ class Analyze extends Component {
       });
   }
 
-  handleCitationChange(event) {
-    this.get_s2_info(event.target.value);
-  }
+ 
 
   handleGetRubric(event) {
     const target = event.target;
@@ -293,113 +271,16 @@ class Analyze extends Component {
   }
 
   refresh(index) {
-
-    //console.log(this.state.paper_ids[index]);
-    console.log('index');
-    console.log(index);
-    console.log('ids');
-    console.log(this.state.paper_ids);
     if (index < this.state.paper_ids.length) {
       this.get_citation_info(this.state.paper_ids[index]["_id"]);
       this.get_paper_info(this.state.paper_ids[index]["_id"]);
     } else {
-
-      console.log('refreshing out of range');
-
+      return "";
     }
   }
 
 
-  open_s2() {
-
-    console.log('clicked');
-    console.log(this.state.citations);
-    var current_citation_id = this.state.current_citation_id;
-
-    var query = "";
-
-    this.state.citations.forEach(function (citation) {
-
-      if (citation["_id"] == current_citation_id) {
-
-        console.log(citation);
-        console.log(citation["author"][0]["family"]);
-        console.log(citation["title"][0]);
-
-        query = encodeURI(citation["author"][0]["family"] + " " + citation["title"][0]);
-        console.log(query);
-      }
-
-    });
-
-
-    var win = window.open("https://www.semanticscholar.org/search?q=" + query, '_blank');
-    win.focus();
-
-  }
-
-  open_alma_primo() {
-
-    console.log('clicked');
-    console.log(this.state.citations);
-    var current_citation_id = this.state.current_citation_id;
-
-    var query = "";
-
-    this.state.citations.forEach(function (citation) {
-
-      if (citation["_id"] == current_citation_id) {
-
-        console.log(citation);
-        console.log(citation["author"][0]["family"]);
-        console.log(citation["title"][0]);
-
-        query = encodeURI(citation["title"][0]);
-        console.log(query);
-      }
-    });
-    var win = window.open("https://humboldt-primo.hosted.exlibrisgroup.com/primo-explore/search?query=title,begins_with," + query + ",AND&tab=everything&search_scope=EVERYTHING&sortby=title&vid=01CALS_HUL&lang=en_US&mode=advanced&offset=0&pcAvailability=true", '_blank');
-    win.focus();
-  }
-
-  open_google_scholar() {
-
-    console.log('clicked');
-    console.log(this.state.citations);
-    var current_citation_id = this.state.current_citation_id;
-
-    var query = "";
-
-    this.state.citations.forEach(function (citation) {
-
-      if (citation["_id"] == current_citation_id) {
-
-        console.log(citation);
-        console.log(citation["author"][0]["family"]);
-        console.log(citation["title"][0]);
-
-        query = encodeURI(citation["author"][0]["family"] + " " + citation["title"][0]);
-        console.log(query);
-      }
-
-    });
-
-
-    var win = window.open("https://scholar.google.com/scholar?q=" + query, '_blank');
-    win.focus();
-
-  }
-
-
   next_paper(direction) {
-    // Direction must be 1 or -1
-    // 1 is next and -1 is previous
-    //
-
-    console.log('DIRECTION');
-    console.log(direction);
-
-
     var check = true;
     var index = this.state.current_paper_id_index;
 
@@ -421,13 +302,6 @@ class Analyze extends Component {
     } else {
       console.log('refreshing out of range');
     }
-  }
-
-  //Checks to see if there is appropriate text in the intext citation textarea, renders either disabled button or save button depending on context
-  renderActions() {
-    return (
-      <button disabled={this.state.uploading} onClick={this.saveIntextCitation}>Save Intext Citation</button>
-    );
   }
 
   handleNavInput(cit_id, e) {
@@ -460,218 +334,33 @@ class Analyze extends Component {
     let rubricList = rubrics.map((rubric) =>
       <option value={rubric._id}>{rubric.name}</option>
     );
-
-
-    let citations = this.state.citations;
-    var citationItems = <p> nothing found yet </p>
-
-
-    if (citations != []) {
-
-      var citationItems = citations.map(function (citation) {
-
-        if (citation.author[0] != undefined) {
-          return (
-            <p id="biblio-box">{citation.author[0].family + ', ' + citation.author[0].given + ': ' + citation.title}</p>)
-        }
-
-      });
-
-    } else {
-      var citationItems = <p> nothing found yet </p>
-    }
-
-
-    var citationDropdownItems = <option> nothing found yet </option>
-    if (citations != []) {
-      var citationDropdownItems = citations.map(function (citation) {
-
-        if (citation.author[0] != undefined) {
-          return (<option value={citation._id}> {citation.author[0].family} </option>);
-        }
-
-      });
-    } else {
-      var citationItems = <p> nothing found yet </p>;
-    }
-    //
-    // if (citations != []) {
-    //   var paperCitations = citations.map(function (citation) {
-    //
-    //     if (citation.author[0] !=undefined) {
-    //       return (<option value={citation._id}> {citation.author[0].family} </option>);
-    //     }
-    //
-    //   });
-    // } else {
-    //   var paperItems =<p> No citation selected </p>;
-    // }
-    // console.log("LIIIZ : " , citations);
-    function getAuthors(authors) {
-      return authors.map((d) =>
-        d.family + ", " + d.given + "\n"
-      );
-    }
-
-    function formatCitation(citation) {
-      return (<div>
-        {getAuthors(citation.author)} ({citation.date}). {citation.title}
-      </div>
-      );
-
-    }
-    
-    let bigCitation = <option> No citation selected </option>;
-
-    if (citations != []) {
-      bigCitation = citations.map((citation) => {
-        if (citation.author[0] != undefined && citation._id === this.state.current_citation_id) {
-          return (formatCitation(citation));
-        } else {
-          return ("");
-        }
-      });
-    } else {
-      let lastOption = <p> No Citation Selected </p>;
-    }
-
-
-
-
-    //https://material-ui.com/styles/basics/
-    const usestyles = makeStyles({
-      root: {
-        color: "green"
-      },
-      selected: {
-        color: "red"
-      }
-    });
-
-    const StyledNavItem = withStyles({
-      root: {
-        background: '#274259',
-        borderRadius: 3,
-        border: 0,
-        color: 'white',
-        height: 48,
-        padding: '0 30px',
-        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-      },
-      selected: {}
-    })(BottomNavigationAction);
-
-
-    const StyledSelectedNavItem = withStyles({
-      root: {
-        background: '#FFAC1D',
-        borderRadius: 3,
-        border: 0,
-        color: 'white',
-        height: 48,
-        padding: '0 30px',
-        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-      },
-      selected: {}
-    })(BottomNavigationAction);
-
-    var citationNavItems = <BottomNavigationAction label={"nothing found yet"} />
-    if (citations != []) {
-      var that = this;
-      var citationNavItems = citations.map(function (citation) {
-
-        //https://material-ui.com/components/bottom-navigation/
-
-        var current_id = that.state.current_citation_id;
-        if (citation.author[0] != undefined) {
-
-          if (citation._id != current_id) {
-            return (<StyledNavItem label={citation.author[0].family}
-              onClick={(e) => { that.handleNavInput(citation._id) }}
-            />);
-          } else {
-            return (
-              <StyledSelectedNavItem onClick={(e) => { that.handleNavInput(citation._id) }} label={citation.author[0].family} />
-            );
-
-          }
-        }
-
-      });
-    }
-
-
     return (
 
       /* Analyze Mode HTML Start */
       <div>
         <div class="DemoContents analyze-container">
-          {/* One Giant container that will let us use rows / columns */}
-          {/* Row: Contains rubric and student selectors */}
-
-
-          {/* <BottomNavigation value={'yes'} className={usestyles.root} showLabels>
-            {citationNavItems}
-          </BottomNavigation> */}
-          {/*<br />*/}
-          {/*<br />*/}
-          {/* Row: Contains -- Semantic Scholor, Block Text, Sources, Biblio Box, and Progress Bar */}
           <Row>
             <Col xs="3">
-              {/*<label for="assignmentInfo" className='analyzeHeader'> Current Assignment</label>*/}
               <p id="assignmentInfo">Current Assignment - {this.state.assignment.name} </p>
-              <br />
-              {/*<label for="assignForAnalyze">Citations:</label>*/}
-
-              <h4 id="CitationLabel">Citation (with style): </h4>
-              <Input
-                onChange={this.handleCitationChange}
-                onInput={this.onInput}
-                id="assignForAnalyze"
-                type="select"
-                name="AssignNew"
-                required >
-                <option value="" disabled selected hidden >Select a Citation</option>
-                {citationDropdownItems}
-              </Input>
-              <div class="discoveryTool">
-                <Card>
-                  <CardBody>
-                    <CardTitle>Citation</CardTitle>
-                    <CardText> {bigCitation} </CardText>
-                  </CardBody>
-                </Card>
-              </div>
-              <h4>Discovery Tool</h4>
-              <div class="discoveryTool">
-                <Card>
-                  <CardBody>
-                    <CardTitle><Button color="link" onClick={this.open_s2}>Semantic Scholar</Button></CardTitle>
-                    <CardText>Citation Velocity: {this.state.current_s2_data["citation_velocity"]} <br />Influential Citations: {this.state.current_s2_data["influential_citation_count"]}</CardText>
-                  </CardBody>
-                </Card>
-                <Card>
-                  <CardBody>
-                    <CardTitle> <Button color="link" onClick={this.open_alma_primo}>Alma Primo</Button></CardTitle>
-                    <CardText>Find Source through Library Discovery System</CardText>
-                  </CardBody>
-                </Card>
-                <Card>
-                  <CardBody>
-                    <CardTitle><Button color="link" onClick={this.open_google_scholar}>Google Scholar</Button></CardTitle>
-                    <CardText>Google Scholar Information</CardText>
-                  </CardBody>
-                </Card>
-              </div>
+              {this.state.citations !== [] && this.state.current_citation_id !== 0 ? 
+              <Citation 
+                citations={this.state.citations}
+                current_citation_id={this.state.current_citation_id}
+                get_s2_info={this.get_s2_info}
+              /> : null
+               }
+              {this.state.citations !== [] && this.state.current_s2_data !== 0 ? 
+              <DiscoveryTool 
+                citations={this.state.citations}
+                current_s2_data={this.state.current_s2_data}
+              /> : null}
             </Col>
             <Col xs="6">
-              {/*<h4> Student Paper PDF</h4>*/}
               <div className="overflow-auto">
                 {pdf}
               </div>
             </Col>
             <Col xs="3">
-              {/*<h2 className='analyzeHeader' >Rubric</h2>*/}
               <Input type="select" id="rubricAssign" name="AssignRubric" onInput={this.handleGetRubric}>
                 <option value="" disabled selected hidden >Select a Rubric</option>
                 {rubricList}
@@ -689,7 +378,6 @@ class Analyze extends Component {
               <Button id="nextPaper" onClick={() => { this.next_paper(-1) }}> Previous Paper </Button>
             </Col>
           </Row>
-          {/*prop passing the rubric information*/}
           {this.state.assessingRubric ? <RubricSubmit sourceText={this.state.sourceText} unmountMe={this.handleChildUnmount} curRubric={this.state.currentRubric} curPaper={this.state.curPaperId} /> : null}
         </div>
       </div>
