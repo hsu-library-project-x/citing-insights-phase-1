@@ -12,6 +12,7 @@ class Citation extends Component {
       this.getAuthors = this.getAuthors.bind(this);
       this.formatCitation = this.formatCitation.bind(this);
       this.handleCitationChange = this.handleCitationChange.bind(this);
+      this.passUpNewId = this.passUpNewId.bind(this);
     }
 
     getAuthors(authors) {
@@ -30,6 +31,10 @@ class Citation extends Component {
       
     handleCitationChange(event) {
         this.props.get_s2_info(event.target.value);
+    }
+
+    passUpNewId(){
+      this.props.updateCitationId(this.state.current_citation_id);
     }
   
     render(){
@@ -62,7 +67,7 @@ class Citation extends Component {
                 <h4 id="CitationLabel">Citation (with style): </h4>
                 <Input
                     onChange={this.handleCitationChange}
-                    onInput={this.onInput}
+                    onInput={this.updateCitationId}
                     id="assignForAnalyze"
                     type="select"
                     name="AssignNew"

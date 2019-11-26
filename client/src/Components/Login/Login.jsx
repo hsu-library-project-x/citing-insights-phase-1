@@ -34,6 +34,7 @@ class Login extends Component {
 	logout = () => {
 		this.setState({ isAuthenticated: false, token: '', user: null })
 	};
+
 	getInfo() {
 		this.props.passInfoLogin(this.state.isAuthenticated, this.state.token, this.state.user);
 	}
@@ -69,7 +70,7 @@ class Login extends Component {
 						token: token
 					});
 					this.getInfo();
-					this.props.history.push({
+					this.props.history.push({   
 						pathname: "/",
 						props: {
 							isAuthenticated: true,

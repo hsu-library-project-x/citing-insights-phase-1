@@ -1,30 +1,19 @@
 import React, { Component } from 'react';
-import { withRouter, Redirect } from 'react-router-dom';
-import { Button, Input, Progress } from 'reactstrap';
-
-
+import { withRouter } from 'react-router-dom';
+import { Button, Input } from 'reactstrap';
 import { Row, Col } from 'reactstrap';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-
-import Rubric from '../Rubric/Rubric.jsx';
+import RubricAccordion from '../Rubric/RubricAccordion.jsx';
 import RubricSubmit from '../Rubric/RubricSubmit.jsx';
 import PdfComponent from "./PdfComponent.jsx";
-import './Analyze.css';
 import DiscoveryTool from './DiscoveryTool.jsx';
 import Citation from './Citation.jsx'
+import './Analyze.css';
 
 class Analyze extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isHidden: true,
-      isMarkup: true,
-      uploading: false,
-      successfullUpload: false,
       citations: [],
-      citationData: [],
-      curHighlight: "",
       assignment: {
         _id: "",
         name: "",
@@ -33,7 +22,6 @@ class Analyze extends Component {
       },
       current_pdf_data: "this must get set",
       AvailableRubrics: [],
-      gotSources: false,
       rubricSelected: true,
       assessingRubric: false,
       rubricId: "",
@@ -44,13 +32,10 @@ class Analyze extends Component {
       paper_ids: [],
       current_paper_id_index: 0,
       current_citation_id: 0
-
     };
-
 
     this.componentWillMount = this.componentWillMount.bind(this);
     this.handleGetRubric = this.handleGetRubric.bind(this);
-    this.handleRubricAssessment = this.handleRubricAssessment.bind(this);
     this.handleChildUnmount = this.handleChildUnmount.bind(this);
     this.handleSaveCitations = this.handleSaveCitations.bind(this);
     this.get_citation_info = this.get_citation_info.bind(this);
@@ -58,8 +43,8 @@ class Analyze extends Component {
     this.next_paper = this.next_paper.bind(this);
     this.refresh = this.refresh.bind(this);
     this.get_paper_info = this.get_paper_info.bind(this);
+    this.updateCitationId = this.updateCitationId.bind(this);
   }
-
 
   get_paper_info(paper_id) {
     var that = this;
@@ -68,11 +53,7 @@ class Analyze extends Component {
         return response.json();
       })
       .then(function (myJson) {
-        //console.log(JSON.stringify(myJson));
-        //console.log(myJson);
         that.setState({ current_pdf_data: myJson["pdf"]["data"] });
-        //return (myJson);
-        //that.setState({AvailableAssignments: myJson});
       });
   }
 
@@ -84,7 +65,6 @@ class Analyze extends Component {
       });
     } else {
       var that = this;
-
       //Grab info about the assignment
       fetch('http://localhost:5000/assignments/' + this.props.location.state.id)
         .then(function (response) {
@@ -100,9 +80,7 @@ class Analyze extends Component {
   }
 
   get_citation_info(paper_id) {
-
     var that = this;
-
     var answer = fetch('http://localhost:5000/citations/by_paper_id/' + paper_id)
       .then(function (response) {
         return response.json();
@@ -158,16 +136,12 @@ class Analyze extends Component {
             that.props.history.push({
               pathname: "/",
               props: { ...that.state }
-              //return(myJson);
-              //that.setState({AvailableAssignments: myJson});
             });
           }
         });
     } else {
       this.setState({ assignmentId: "no assignment selected" });
     }
-    //get the rubrics
-    //replace hardcoded number with userID from login
     fetch('http://localhost:5000/rubrics/' + this.props.user._id)
       .then(function (response) {
         return response.json();
@@ -176,8 +150,6 @@ class Analyze extends Component {
         that.setState({ AvailableRubrics: myJson });
       });
   }
-
- 
 
   handleGetRubric(event) {
     const target = event.target;
@@ -196,12 +168,6 @@ class Analyze extends Component {
     }, console.log(this.state));
   }
 
-  handleRubricAssessment(event) {
-    this.setState({
-      sourceText: event.target.innerText,
-      assessingRubric: true
-    });
-  }
 
   handleChildUnmount() {
     this.setState({
@@ -209,26 +175,9 @@ class Analyze extends Component {
     });
   }
 
-  //This function will change the students paper
-  displayPaper() {
-    this.setState({
-      gotSources: false
-    });
-  }
-
-  handleDelete() {
-    this.setState({
-      assessingRubric: false
-    });
-  }
 
   //this saves annotations and rubric values associated with citation
   handleSaveCitations() {
-
-    console.log('TRYING TO SAVE CITATION');
-    console.log(this.state.current_citation_id);
-    console.log(this.state.rubricId);
-
     var radio_value = "";
     var radios = document.getElementsByName("radio");
     console.log(radios);
@@ -279,7 +228,6 @@ class Analyze extends Component {
     }
   }
 
-
   next_paper(direction) {
     var check = true;
     var index = this.state.current_paper_id_index;
@@ -288,12 +236,10 @@ class Analyze extends Component {
     if (direction == -1 && index < 1) {
       check = false;
     }
-
     if (direction == 1 && index > this.state.paper_ids.length) {
       check = false;
     }
     check = true;
-
     if (check) {
       this.setState((prevState, props) => ({
         current_paper_id_index: prevState.current_paper_id_index + direction
@@ -304,21 +250,10 @@ class Analyze extends Component {
     }
   }
 
-  handleNavInput(cit_id, e) {
-    console.log('clickin a nav item');
-    this.setState({ current_citation_id: cit_id });
-  }
-
-  toggleHidden() {
+  updateCitationId(new_id){
     this.setState({
-      isHidden: !this.state.isHidden
-    })
-  }
-
-  toggleMarkup() {
-    this.setState({
-      isMarkup: !this.state.isMarkup
-    })
+      current_citation_id: new_id,
+    });
   }
 
   render() {
@@ -328,15 +263,11 @@ class Analyze extends Component {
     } else {
       pdf = <PdfComponent data={this.state.current_pdf_data} />;
     }
-
-
     let rubrics = this.state.AvailableRubrics;
     let rubricList = rubrics.map((rubric) =>
       <option value={rubric._id}>{rubric.name}</option>
     );
     return (
-
-      /* Analyze Mode HTML Start */
       <div>
         <div class="DemoContents analyze-container">
           <Row>
@@ -347,11 +278,12 @@ class Analyze extends Component {
                 citations={this.state.citations}
                 current_citation_id={this.state.current_citation_id}
                 get_s2_info={this.get_s2_info}
+                updateCitationId={this.updateCitationId}
               /> : null
                }
-              {this.state.citations !== [] && this.state.current_s2_data !== 0 ? 
+              {this.state.citation_id !== 0 && this.state.current_s2_data !== 0 ? 
               <DiscoveryTool 
-                citations={this.state.citations}
+                citations={this.state.current_citation_id}
                 current_s2_data={this.state.current_s2_data}
               /> : null}
             </Col>
@@ -365,7 +297,7 @@ class Analyze extends Component {
                 <option value="" disabled selected hidden >Select a Rubric</option>
                 {rubricList}
               </Input>
-              <Rubric
+              <RubricAccordion
                 currentRubric={this.state.currentRubric}
                 allowZeroExpanded={true}
               />

@@ -8,8 +8,7 @@ import {
     AccordionItemPanel,
 } from 'react-accessible-accordion';
 import './accordion.css';
-
-class Rubric extends Component {
+class RubricAccordion extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -61,4 +60,4 @@ class Rubric extends Component {
     }
 }
 
-export default withRouter(Rubric);
+export default withRouter(RubricAccordion);
