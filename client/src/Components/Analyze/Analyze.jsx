@@ -31,7 +31,8 @@ class Analyze extends Component {
       current_s2_data: { "influential_citation_count": '--', "citation_velocity": "--" },
       paper_ids: [],
       current_paper_id_index: 0,
-      current_citation_id: 0
+      current_citation_id: 0,
+      current_citation: null,
     };
 
     this.componentWillMount = this.componentWillMount.bind(this);
@@ -93,8 +94,15 @@ class Analyze extends Component {
 
   get_s2_info(citation_id) {
 
+    let cur_citation = this.state.citations.map(d => {
+      if(d._id === citation_id){
+        return d;
+      }
+    });
+
     var that = this;
     that.setState({ current_citation_id: citation_id });
+    that.setState({current_citation: cur_citation});
     fetch('http://localhost:5000/citations/s2/' + citation_id)
       .then(function (response) {
         return response.json();
@@ -267,7 +275,11 @@ class Analyze extends Component {
     let rubricList = rubrics.map((rubric) =>
       <option value={rubric._id}>{rubric.name}</option>
     );
+    consosle.log('citations');
+    console.log("boom. boom. boom");
+    console.log(this.state.current_citation_id);
     return (
+     
       <div>
         <div class="DemoContents analyze-container">
           <Row>
@@ -281,9 +293,9 @@ class Analyze extends Component {
                 updateCitationId={this.updateCitationId}
               /> : null
                }
-              {this.state.citation_id !== 0 && this.state.current_s2_data !== 0 ? 
+              {this.state.current_citation !== "" ? 
               <DiscoveryTool 
-                citations={this.state.current_citation_id}
+                current_citation={this.state.current_citation}
                 current_s2_data={this.state.current_s2_data}
               /> : null}
             </Col>
@@ -301,7 +313,6 @@ class Analyze extends Component {
                 currentRubric={this.state.currentRubric}
                 allowZeroExpanded={true}
               />
-              <br />
               <textarea id="annotation">
                 Make an optional annotation...
               </textarea>
