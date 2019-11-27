@@ -52,49 +52,48 @@ class Tasks extends Component {
 	}
 
 	render() {
-		console.log(this.props);
 		return (
 			<div id="MainContainer">
 				<div className="mainCollapse"> 
 					<button className="miniCircle" onClick={CollapseMain}></button>
 				</div>
-				<div class="sidebar" id="SideBar">
-					<h1 class="head-1 head-2" id="headTitle">Tasks</h1>
-					<div class="button-container">
+				<div className="sidebar" id="SideBar">
+					<h1 className="head-1 head-2" id="headTitle">Tasks</h1>
+					<div className="button-container">
 						<Link to='/tasks/courses' >
-							<button class="menuButton" onClick={this.changeName}>
+							<button className="menuButton" onClick={this.changeName}>
 								<img role='image' alt="classesIcon" id="Class" src={addClass} />
 								Manage Courses
 								</button>
 						</Link>
 					</div>
-					<div class="button-container">
+					<div className="button-container">
 						<Link to="/tasks/assignments">
-							<button class="menuButton" onClick={this.changeName}>
+							<button className="menuButton" onClick={this.changeName}>
 								<img role='image' alt="assignmentIcon" id="Upload" src={addAssignment} />
 								Upload Papers
 								</button>
 						</Link>
 					</div>
-					<div class="button-container">
+					<div className="button-container">
 						<Link to="/tasks/analyzemenu">
-							<button class="menuButton" onClick={this.changeName}>
+							<button className="menuButton" onClick={this.changeName}>
 								<img role='image' alt="analyzeIcon" id="Analyze" src={Continue} />
 								Analyze
 								</button>
 						</Link>
 					</div>
-					<div class="button-container">
+					<div className="button-container">
 						<Link to="/tasks/overview">
-							<button class="menuButton" onClick={this.changeName}>
+							<button className="menuButton" onClick={this.changeName}>
 								<img role='image' alt="downloadIcon" id="Overview" src={download} />
 								Overview
 								</button>
 						</Link>
 					</div>
-					<div class="button-container">
+					<div className="button-container">
 						<Link to="/tasks/rubriceditor">
-							<button class="menuButton" onClick={this.changeName}>
+							<button className="menuButton" onClick={this.changeName}>
 								<img role='image' alt="rubricIcon" id="Rubric" src={rubric} />
 								Edit Rubrics
 								</button>

@@ -85,7 +85,7 @@ class Login extends Component {
 
 	render() {
 		return (
-			<div class="container">
+			<div className="container">
 				<div id="login_page">
 					<Row>
 						<Col xs="6">
@@ -94,9 +94,9 @@ class Login extends Component {
 							</div>
 						</Col>
 						<Col xs="6">
-							<div class="beside_picture">
+							<div className="beside_picture">
 								<h1>Welcome Back!</h1>
-								<div class="googleLoginContainer" id="google">
+								<div className="googleLoginContainer" id="google">
 									<GoogleLogin
 										clientId={config.GOOGLE_CLIENT_ID}
 										render={renderProps => (

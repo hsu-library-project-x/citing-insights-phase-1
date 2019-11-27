@@ -34,7 +34,7 @@ class Navibar extends Component {
 
     render() {
         let content = !!this.props.isAuthenticated ? (
-                <Navbar primary expand="md">
+                <Navbar primary='true' expand="md">
                     <NavbarBrand><img role='image' className="navBarLogo" src={logo} alt="Citing Insights logo" ></img></NavbarBrand>
                     {/* NavItem (Reactstrap) -- item in our navation bar*/}
                     <NavItem>
@@ -47,7 +47,7 @@ class Navibar extends Component {
                         <GoogleLogout
                             clientId={config.GOOGLE_CLIENT_ID}
                             render={renderProps => (
-                                <button class={"NavLinkButton"} onClick={renderProps.onClick} disabled={renderProps.disabled}>Logout</button>
+                                <button className={"NavLinkButton"} onClick={renderProps.onClick} disabled={renderProps.disabled}>Logout</button>
                             )}
                             buttonText="Log Out"
                             onLogoutSuccess={this.responseGoogle}
@@ -59,7 +59,7 @@ class Navibar extends Component {
                     </NavItem>
                 </Navbar>
                 ) : (
-                <Navbar primary expand="md">
+                <Navbar primary='true' expand="md">
                     <NavbarBrand><img className="navBarLogo" src={logo} alt="logo" ></img></NavbarBrand>
                     {/* NavItem (Reactstrap) -- item in our navation bar*/}
                     <NavItem>

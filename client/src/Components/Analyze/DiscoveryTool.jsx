@@ -9,6 +9,7 @@ class DiscoveryTool extends Component {
           current_s2_data: this.props.current_s2_data,
       }
       console.log("ALL YOU POELE");
+      console.log("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
       
       this.open_s2 = this.open_s2.bind(this);
       this.open_alma_primo = this.open_alma_primo.bind(this);

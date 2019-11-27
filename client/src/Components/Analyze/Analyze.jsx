@@ -275,7 +275,8 @@ class Analyze extends Component {
     let rubricList = rubrics.map((rubric) =>
       <option value={rubric._id}>{rubric.name}</option>
     );
-    consosle.log('citations');
+    console.log('citations');
+    console.log(this.state.citations);
     console.log("boom. boom. boom");
     console.log(this.state.current_citation_id);
     return (

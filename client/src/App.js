@@ -54,14 +54,14 @@ class App extends Component {
   render() {
     return (
       <div>
-        <div class="head">
+        <div className="head">
           <HashRouter>
             <Navibar
               isAuthenticated={this.state.isAuthenticated}
               passInfoLogout={this.passInfoLogout}
               user={this.state.user}
             />
-            <div id="id01" class="pop content">
+            <div id="id01" className="pop content">
               <Switch>
                 <Route
                   exact path="/login"
