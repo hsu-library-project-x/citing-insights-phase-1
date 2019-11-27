@@ -5,7 +5,9 @@ var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 function Get(yourUrl){
   var Httpreq = new XMLHttpRequest(); // a new request
+  var userAgent = //insert here;
   Httpreq.open("GET",yourUrl,false);
+  Httpreq.setRequestHeader('User-Agent', 'mailto=citinginsightsheroku@gmail.com');
   Httpreq.send(null);
   return Httpreq.responseText;
 }
@@ -88,7 +90,7 @@ module.exports = {
       console.log(author_name);
       console.log(title_name);
 
-      var json_obj = JSON.parse(Get("https://api.crossref.org/works?query.author=" + author_name + "&query.bibliographic=" + title_name + '&mailto=citinginsightsheroku@gmail.com' ));
+      var json_obj = JSON.parse(Get("https://api.crossref.org/works?query.author=" + author_name + "&query.bibliographic=" + title_name + '&mailto=citinginsightsheroku@gmail.com&rows=1&offset=0'));
 
       //console.log("this is the DOI: "+ json_obj.message.items[0].DOI);
 
