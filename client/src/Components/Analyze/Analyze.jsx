@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Button, Input } from 'reactstrap';
-import { Row, Col } from 'reactstrap';
+import { Button, Input, Row, Col } from 'reactstrap';
 import RubricAccordion from '../Rubric/RubricAccordion.jsx';
 import RubricSubmit from '../Rubric/RubricSubmit.jsx';
 import PdfComponent from "./PdfComponent.jsx";
@@ -32,7 +31,6 @@ class Analyze extends Component {
       paper_ids: [],
       current_paper_id_index: 0,
       current_citation_id: 0,
-      current_citation: null,
     };
 
     this.componentWillMount = this.componentWillMount.bind(this);
@@ -48,7 +46,7 @@ class Analyze extends Component {
   }
 
   get_paper_info(paper_id) {
-    var that = this;
+    let that = this;
     fetch('http://localhost:5000/papers/' + paper_id)
       .then(function (response) {
         return response.json();
@@ -65,14 +63,13 @@ class Analyze extends Component {
         props: { ...this.state }
       });
     } else {
-      var that = this;
+      let that = this;
       //Grab info about the assignment
       fetch('http://localhost:5000/assignments/' + this.props.location.state.id)
         .then(function (response) {
           return response.json();
         })
         .then(function (myJson) {
-          console.log("MY STATE IS - " + that.state);
           that.setState({
             assignment: myJson
           });
@@ -81,8 +78,8 @@ class Analyze extends Component {
   }
 
   get_citation_info(paper_id) {
-    var that = this;
-    var answer = fetch('http://localhost:5000/citations/by_paper_id/' + paper_id)
+    let that = this;
+    let answer = fetch('http://localhost:5000/citations/by_paper_id/' + paper_id)
       .then(function (response) {
         return response.json();
       })
@@ -93,16 +90,8 @@ class Analyze extends Component {
   }
 
   get_s2_info(citation_id) {
-
-    let cur_citation = this.state.citations.map(d => {
-      if(d._id === citation_id){
-        return d;
-      }
-    });
-
-    var that = this;
+    let that = this;
     that.setState({ current_citation_id: citation_id });
-    that.setState({current_citation: cur_citation});
     fetch('http://localhost:5000/citations/s2/' + citation_id)
       .then(function (response) {
         return response.json();
@@ -116,7 +105,7 @@ class Analyze extends Component {
   //Do this call every time a new Paper is loaded into the  component
 
   componentWillMount() {
-    var that = this;
+    let that = this;
     if (this.props.location.state !== undefined) {
       this.setState({ assignmentId: this.props.location.state.id });
 
@@ -135,7 +124,7 @@ class Analyze extends Component {
               .then(function (myJson) {
                 that.setState({ current_pdf_data: myJson["pdf"]["data"] });
                 that.get_citation_info(myJson["_id"])
-                  .then(function (value) {
+                  .then(() =>  {
                     that.get_s2_info(that.state.citations[1]["_id"]);
                   });
               });
@@ -173,7 +162,7 @@ class Analyze extends Component {
     this.setState({
       rubricSelected: false,
       rubricId: id
-    }, console.log(this.state));
+    });
   }
 
 
@@ -186,41 +175,32 @@ class Analyze extends Component {
 
   //this saves annotations and rubric values associated with citation
   handleSaveCitations() {
-    var radio_value = "";
-    var radios = document.getElementsByName("radio");
-    console.log(radios);
+    let radio_value = "";
+    let radios = document.getElementsByName("radio");
 
-    for (var i = 0; i < radios.length; i++) {
+    for (let i = 0; i < radios.length; i++) {
       if (radios[i].checked) {
         radio_value = radios[i].value;
       }
     }
-
-    console.log(radio_value);
-
-    var annotation = document.getElementById("annotation").value;
-    console.log(annotation);
-    var enc = encodeURIComponent(annotation);
-    console.log(enc);
-    var dec = decodeURIComponent(enc);
-    console.log(dec);
-
-    console.log('http://localhost:5000/citations/save_citation_grade/' + this.state.current_citation_id + '/' + this.state.rubricId + '/' + encodeURIComponent(radio_value) + '/' + enc);
+    let annotation = document.getElementById("annotation").value;
+    let enc = encodeURIComponent(annotation);
+    // let dec = decodeURIComponent(enc);
 
     fetch('http://localhost:5000/citations/save_citation_grade/' + this.state.current_citation_id + '/' + this.state.rubricId + '/' + encodeURIComponent(radio_value) + '/' + enc)
       .then(function (response) {
         return response.json();
       })
-      .then(function (myJson) {
+      .then( () =>  {
         alert('citation saved');
       });
 
-    for (var i = 0; i < this.state.citations.length; i++) {
+    for (let k = 0; k < this.state.citations.length; k++) {
 
-      if (this.state.citations[i]["_id"] == this.state.current_citation_id) {
+      if (this.state.citations[k]["_id"] === this.state.current_citation_id) {
 
-        if (i < this.state.citations.length - 1) {
-          this.setState({ current_citation_id: this.state.citations[i + 1]["_id"] });
+        if (k < this.state.citations.length - 1) {
+          this.setState({ current_citation_id: this.state.citations[k + 1]["_id"] });
         }
       }
 
@@ -237,14 +217,14 @@ class Analyze extends Component {
   }
 
   next_paper(direction) {
-    var check = true;
-    var index = this.state.current_paper_id_index;
+    let check = true;
+    let index = this.state.current_paper_id_index;
 
     //check that we wont go out of range
-    if (direction == -1 && index < 1) {
+    if (direction === -1 && index < 1) {
       check = false;
     }
-    if (direction == 1 && index > this.state.paper_ids.length) {
+    if (direction === 1 && index > this.state.paper_ids.length) {
       check = false;
     }
     check = true;
@@ -262,10 +242,11 @@ class Analyze extends Component {
     this.setState({
       current_citation_id: new_id,
     });
+
   }
 
   render() {
-    var pdf;
+    let pdf;
     if (this.state.current_pdf_data === "this must get set") {
       pdf = <p> we dont have data yet </p>;
     } else {
@@ -275,14 +256,10 @@ class Analyze extends Component {
     let rubricList = rubrics.map((rubric) =>
       <option value={rubric._id}>{rubric.name}</option>
     );
-    console.log('citations');
-    console.log(this.state.citations);
-    console.log("boom. boom. boom");
-    console.log(this.state.current_citation_id);
     return (
-     
+
       <div>
-        <div class="DemoContents analyze-container">
+        <div className="DemoContents analyze-container">
           <Row>
             <Col xs="3">
               <p id="assignmentInfo">Current Assignment - {this.state.assignment.name} </p>
@@ -290,14 +267,14 @@ class Analyze extends Component {
               <Citation 
                 citations={this.state.citations}
                 current_citation_id={this.state.current_citation_id}
-                get_s2_info={this.get_s2_info}
                 updateCitationId={this.updateCitationId}
               /> : null
                }
-              {this.state.current_citation !== "" ? 
-              <DiscoveryTool 
-                current_citation={this.state.current_citation}
-                current_s2_data={this.state.current_s2_data}
+              {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
+              <DiscoveryTool
+                  citations={this.state.citations}
+                  current_citation_id={this.state.current_citation_id}
+                  current_s2_data={this.state.current_s2_data}
               /> : null}
             </Col>
             <Col xs="6">
