@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Input, Card, CardBody, Button } from 'reactstrap';
 import uniqueId from 'react-html-id';
-import update from 'immutability-helper';
 
 import defaultRubricsJson from '../../default_rubrics/defaultRubric.json';
 import "./RubricEditor.css";
@@ -63,18 +62,12 @@ class RubricEditor extends Component {
 			needsSaving: true
 		});
 	}
-
-	//ensures that the rubric is saved before submitting
-	onChangeInput(info) {
-		this.setState({
-			needsSaving: true
-		});
-	}
+	
 
 	handleDefaultRubric(event) {
-		var that = this;
+		let that = this;
 		//Grab the desired rubric from our json
-		var default_rubric = defaultRubricsJson[event.target.value];
+		let default_rubric = defaultRubricsJson[event.target.value];
 		default_rubric.user_id = this.props.user.id;
 
 		const default_to_string = JSON.stringify(default_rubric);
@@ -114,7 +107,7 @@ class RubricEditor extends Component {
 		const curRubrics = this.state.AvailableRubrics;
 		const target = event.target;
 		const curId = target.id;
-		var that = this;
+		let that = this;
 
 		for (let i = 0; i < curRubrics.length; i++) {
 			if (curRubrics[i]._id === curId) {
@@ -125,7 +118,7 @@ class RubricEditor extends Component {
 						'Content-Type': 'application/json'
 					},
 				})
-					.then(function (response) {
+					.then(function () {
 						that.getRubrics()
 					});
 			}
@@ -212,22 +205,19 @@ class RubricEditor extends Component {
 			}
 			//Create Add new Card clickable here... 
 			//think how we are implementing cards here
-			var array = this.state.rubricArray;
+			let array = this.state.rubricArray;
 			return (array);
 		}
 	}
 
 	//after cards are built, if editing, will populate the values with the selected rubric's values
 	populateEdit() {
-		var that = this;
+		let that = this;
 		if (that.state.currentlyEditing && !that.state.editPopulated) {
 			document.getElementById("rubricTitle").value = that.state.editingTitle;
 			for (let i = 0; i < that.state.idArray.length; i++) {
 				let title = "Title-" + that.state.idArray[i];
 				let text = "Text-" + that.state.idArray[i];
-
-				console.log("stuff")
-				console.log(this.state.cards);
 				document.getElementById(title).value = that.state.cards[i].cardTitle;
 				document.getElementById(text).value = that.state.cards[i].cardText;
 			}
@@ -238,7 +228,7 @@ class RubricEditor extends Component {
 	}
 
 	async getRubrics() {
-		var that = this;
+		let that = this;
 
 		//replace hardcoded number with userID from login
 		fetch('http://localhost:5000/rubrics/' + this.props.user._id)
@@ -331,6 +321,7 @@ class RubricEditor extends Component {
 					cardData[cardIdentifier] = cardInfo;
 					console.log(cardData);
 
+					// CHANGE THIS *******************************************
 					this.state.rubricData[cardNum] = cardData;
 				}
 			}
@@ -371,13 +362,13 @@ class RubricEditor extends Component {
 
 	//adding a new rubric
 	sendRequest(rubricTitle, data) {
-		var that = this;
-		return new Promise((resolve, reject) => {
+		let that = this;
+		return new Promise(() => {
 			const newdata = {
 				"name": rubricTitle,
 				"cards": data,
 				"user_id": this.props.user.id
-			}
+			};
 			let dataString = JSON.stringify(newdata);
 			fetch('http://localhost:5000/rubrics', {
 				method: 'POST',
@@ -393,12 +384,12 @@ class RubricEditor extends Component {
 
 	//updating an existing rubric
 	updateRequest(rubricTitle, data) {
-		return new Promise((resolve, reject) => {
+		return new Promise(() => {
 			const newdata = {
 				"name": rubricTitle,
 				"cards": data,
 				"user_id": this.props.user._id
-			}
+			};
 			let dataString = JSON.stringify(newdata);
 			fetch('http://localhost:5000/rubrics/' + this.state.curId, {
 				method: 'PUT',
@@ -416,8 +407,8 @@ class RubricEditor extends Component {
 		let rubrics = this.state.AvailableRubrics;
 		let rubricList = rubrics.map((rubric) =>
 			<div>
-				<li onClick={this.handleEditRubric} class="classLi" id={rubric._id}>{rubric.name}</li>
-				<button class="deleteButton" onClick={this.handleDeleteRubric}>
+				<li onClick={this.handleEditRubric} className="classLi" id={rubric._id}>{rubric.name}</li>
+				<button className="deleteButton" onClick={this.handleDeleteRubric}>
 					<svg id={rubric._id} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path id={rubric._id} d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z" /></svg>
 				</button>
 			</div>
@@ -427,8 +418,8 @@ class RubricEditor extends Component {
 			<div className={`rubricEdit-container`}>
 				<h1>Rubric Selection</h1>
 				{(!this.state.isEditing) ?
-					<div class="numCardsSelector">
-						<h3 class="rubricEditHeader"> Use AAC&U Rubric Values </h3>
+					<div className="numCardsSelector">
+						<h3 className="rubricEditHeader"> Use AAC&U Rubric Values </h3>
 						<br />
 						<Button id="rubDefaultButton" value="default_1" onClick={this.handleDefaultRubric}>Determine the Extent of Information Needed</Button>
 						<Button id="rubDefaultButton" value="default_2" onClick={this.handleDefaultRubric}>Evaluate Information and its Sources Critically</Button>
@@ -437,7 +428,7 @@ class RubricEditor extends Component {
 						<Button id="rubDefaultButton" value="default_5" onClick={this.handleDefaultRubric}>Sources and Evidence</Button>
 
 						<h3> -OR- </h3>
-						<h3 class="rubricEditHeader">Create New:</h3>
+						<h3 className="rubricEditHeader">Create New:</h3>
 						{/* <p> Number of Rubric Elements</p> */}
 						<Input type="number" placeholder="Number of Rubric Elements from 1-5" name="rubricElements" id="rubricChoice" min="1" max="5">
 						</Input>
@@ -445,8 +436,8 @@ class RubricEditor extends Component {
 						<h3> -OR- </h3>
 
 
-						<h3 class="rubricEditHeader">Edit Existing:</h3>
-						<ul class="currentRubrics">
+						<h3 className="rubricEditHeader">Edit Existing:</h3>
+						<ul className="currentRubrics">
 							{rubricList}
 						</ul>
 					</div> :
@@ -458,7 +449,7 @@ class RubricEditor extends Component {
 					</div>
 				}
 				{(!this.state.isEditing) ? <h4>Please select a rubric from the list or create a new one to get started.</h4> :
-					<div class="rubricButtonContainer">
+					<div className="rubricButtonContainer">
 						<button id="backSelect" onClick={this.reset}>Back</button>
 						<button id="rubBuildButton" disabled={this.state.needsSaving} onClick={this.buildRubric}>{this.fillButtonText()}</button>
 						<button id="saveCards" onClick={() => this.saveCard()}>Save Cards</button>

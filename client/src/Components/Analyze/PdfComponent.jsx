@@ -3,7 +3,7 @@ import {Document, Page, pdfjs} from "react-pdf";
 import './PdfComponent.css';
 
 pdfjs.GlobalWorkerOptions.workerSrc = 
- `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
+ `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 
 const highlightPattern = (text, pattern) => {
@@ -51,8 +51,8 @@ class PdfComponent extends Component {
 
   componentWillReceiveProps(nextProps) {
     
-    var bytes = new Uint8Array(nextProps.data);
-    var blob=new Blob([bytes], {type: "application/pdf;base64"});
+    let bytes = new Uint8Array(nextProps.data);
+    let blob=new Blob([bytes], {type: "application/pdf;base64"});
 
     this.setState({pdf: blob})
 }
@@ -61,8 +61,8 @@ class PdfComponent extends Component {
 
     
     
-    var bytes = new Uint8Array(this.props.data);
-    var blob=new Blob([bytes], {type: "application/pdf;base64"});
+    let bytes = new Uint8Array(this.props.data);
+    let blob=new Blob([bytes], {type: "application/pdf;base64"});
 
     this.setState({pdf: blob})
   }
@@ -89,12 +89,12 @@ class PdfComponent extends Component {
 
   render() {
     const { numPages, pageNumber, searchText } = this.state;
-    //var pdfAsArray = convertDataURIToBinary(fileURL);
+    //let pdfAsArray = convertDataURIToBinary(fileURL);
 
 
-    //var bytes = new Uint8Array(this.props.data);
-    //var blob=new Blob([bytes], {type: "application/pdf;base64"});
-    //var link=document.createElement('a');
+    //let bytes = new Uint8Array(this.props.data);
+    //let blob=new Blob([bytes], {type: "application/pdf;base64"});
+    //let link=document.createElement('a');
     //link.href=window.URL.createObjectURL(blob);
     //link.download="myFileName.pdf";
     //link.click();
@@ -106,17 +106,17 @@ class PdfComponent extends Component {
           <Document file={this.state.pdf} onLoadSuccess={this.onDocumentLoadSuccess}  >
             <Page onLoadSuccess={() => removeTextLayerOffset()} pageNumber={pageNumber} customTextRenderer={this.makeTextRenderer(searchText)} />
           </Document>
-          <div class="pdfInfo">
+          <div className="pdfInfo">
             <p className="pdfPage">
               Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
             </p>
 
             <form role="search">
                <label htmlFor="search">Search:</label>
-               <input  placeholder="Begin typing..." class="pdfSearch" type="search" id="search" value={searchText} onChange={this.onChange} />
+               <input  placeholder="Begin typing..." className="pdfSearch" type="search" id="search" value={searchText} onChange={this.onChange} />
             </form>
-            <button class="pdfButtons" type="button" disabled={pageNumber <= 1} onClick={this.previousPage}>Previous</button>
-            <button class="pdfButtons" type="button" disabled={pageNumber >= numPages} onClick={this.nextPage}>Next</button>
+            <button className="pdfButtons" type="button" disabled={pageNumber <= 1} onClick={this.previousPage}>Previous</button>
+            <button className="pdfButtons" type="button" disabled={pageNumber >= numPages} onClick={this.nextPage}>Next</button>
           </div>
         </React.Fragment>
       </div>

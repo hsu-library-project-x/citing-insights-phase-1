@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Row, Col,  Input, Label} from 'reactstrap'
+import { Row, Col,  Input, Label} from 'reactstrap';
 import { withRouter } from 'react-router-dom';
-import './Classes.css'
+import './Classes.css';
 
 
 // Class to render our homepage
@@ -31,13 +31,13 @@ class Classes extends Component {
     console.log('mounted');
     console.log(this.props);
 
-    var that = this;
+    let that = this;
     that.getClasses();
   }
 
   async getClasses() {
 
-    var that = this;
+    let that = this;
 
     fetch('http://localhost:5000/courses/' + this.props.user.id)
       .then(function (response) {
@@ -51,8 +51,8 @@ class Classes extends Component {
   }
 
   async getAssignments(class_id) {
-    var self = this;
-    console.log("class id:")
+    let self = this;
+    console.log("class id:");
     console.log(class_id);
     fetch('http://localhost:5000/assignments/by_class_id/' + class_id)
       .then(function (response) {
@@ -69,20 +69,20 @@ class Classes extends Component {
 
     const target = event.target;
     const id = target.id;
-    var self = this;
+    let self = this;
     let listElements = document.getElementsByClassName("classLi");
 
     for (let i = 0; i < listElements.length; i++) {
       listElements[i].classList.remove("selected-class");
     }
 
-    self.getAssignments(id);
+    self.getAssignments(id); //promise returned is ignored
     target.classList.add("selected-class");
   }
 
   async handleSubmitClass(event) {
     event.preventDefault();
-    var self = this;
+    let self = this;
     const data = {
       "name": this.state.ClassName,
       "note": this.state.ClassNote,
@@ -97,7 +97,7 @@ class Classes extends Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-    }).then((response) => {
+    }).then(() => { //unsed param response previously
       self.getClasses()
     });
 
@@ -111,7 +111,7 @@ class Classes extends Component {
   async handleSubmitAssign(event) {
 
     event.preventDefault();
-    var self = this;
+    let self = this;
 
     const data = {
       "name": this.state.AssignName,
@@ -128,9 +128,8 @@ class Classes extends Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-    }).then((response) => {
-      console.log("posted");
-      console.log(response.json());
+    }).then(() => { // unused param response prev
+
       self.getClasses();
       self.getAssignments(data.class_id);
     });
@@ -147,7 +146,7 @@ class Classes extends Component {
   handleDeleteAssignment(event) {
 
 
-    var self = this;
+    let self = this;
     if (window.confirm("Are you sure you wish to delete this?")) {
       const target = event.target;
 
@@ -158,7 +157,7 @@ class Classes extends Component {
           'Content-Type': 'application/json'
         },
       })
-      .then((response) => {
+      .then( () => { //unsued param response
         self.getAssignments(this.state.ClassId);
       });
     }
@@ -166,7 +165,7 @@ class Classes extends Component {
 
   handleDeleteCourse(event) {
 
-    var self = this;
+    let self = this;
     if (window.confirm("Are you sure you wish to delete this course?")) {
       if (window.confirm("WARNING!! You are about to delete this course, please click OK to proceed")) {
 
@@ -177,8 +176,7 @@ class Classes extends Component {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
           },
-        }).then((response) => {
-
+        }).then(() => {
           self.getClasses();
         });
       }
@@ -206,8 +204,8 @@ class Classes extends Component {
     );
     let classList = courses.map((course) =>
       <div>
-        <li onClick={this.handleGetAssignment} class="classLi" id={course._id}>{course.name + ": " + course.course_note}</li>
-        <button class="deleteButton" onClick={this.handleDeleteCourse}>
+        <li onClick={this.handleGetAssignment} className="classLi" id={course._id}>{course.name + ": " + course.course_note}</li>
+        <button className="deleteButton" onClick={this.handleDeleteCourse}>
           <svg id={course._id} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path id={course._id} d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z" /></svg>
         </button>
       </div>
@@ -215,7 +213,7 @@ class Classes extends Component {
     let assignList = assignments.map((assignment) =>
       <div>
         <li>{assignment.name + ": " + assignment.note}</li>
-        <button class="deleteButton" onClick={this.handleDeleteAssignment}>
+        <button className="deleteButton" onClick={this.handleDeleteAssignment}>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path id={assignment._id} d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z" /></svg>
         </button>
       </div>
@@ -230,7 +228,7 @@ class Classes extends Component {
     }
 
     return (
-      <div class="classes-container">
+      <div className="classes-container">
         <Row>
           <Col xs="6">
             <h2> New Class </h2>
@@ -263,13 +261,13 @@ class Classes extends Component {
         <Row>
           <Col xs="6">
             <h3>Your Classes</h3>
-            <ul class="currentClasses">
+            <ul className="currentClasses">
               {classList}
             </ul>
           </Col>
           <Col xs="6">
             <h3>Your Assignments</h3>
-            <ul class="currentClasses">
+            <ul className="currentClasses">
               {assignList}
             </ul>
           </Col>

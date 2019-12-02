@@ -4,12 +4,12 @@ import { withRouter } from 'react-router-dom';
 import { Redirect } from "react-router-dom";
 import { Row, Col, Input } from "reactstrap";
 
-import './AnalyseSubMenu.css'
+import './AnalyseSubMenu.css';
 
 class AnalyzeSubMenu extends Component {
 
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       className: '',
       selectedAssignmentId: '',
@@ -17,7 +17,7 @@ class AnalyzeSubMenu extends Component {
       AvailableCourses: [],
       AvailableAssignments: [],
       redirect: false
-    }
+    };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,7 +27,7 @@ class AnalyzeSubMenu extends Component {
   //On mount, makes a call to retrieve all Classes for the user
   componentWillMount() {
 
-    var that = this;
+    let that = this;
 
     fetch('http://localhost:5000/courses/' + this.props.user.id)
       .then(function (response) {
@@ -40,8 +40,8 @@ class AnalyzeSubMenu extends Component {
 
   //Given a Class, this function makes a call to get all assignments in that class.
   handleClassSelection(event) {
-    var that = this;
-    var target = event.target;
+    let that = this;
+    let target = event.target;
     fetch('http://localhost:5000/assignments/by_class_id/' + target.value)
       .then(function (response) {
         return response.json();
@@ -59,7 +59,7 @@ class AnalyzeSubMenu extends Component {
     //alert(name + ", " + value);
     this.setState({
       [name]: value
-    },     console.log(this.state)
+    },
     );
 
   }
@@ -69,7 +69,7 @@ class AnalyzeSubMenu extends Component {
     this.setState({ redirect: true });
   }
 
-  //In each render, map out Courses and Assignments into variables so we can place them in a drop down
+  //In each render, map out Courses and Assignments into letiables so we can place them in a drop down
   render() {
 
     let courses = this.state.AvailableCourses;
@@ -92,18 +92,18 @@ class AnalyzeSubMenu extends Component {
     }
     
     return (
-      <div class="analyze-container ana-subcontainer" >
+      <div className="analyze-container ana-subcontainer" >
         <Row>
           <Col xs="12">
             <form className={`${!this.state.selectedAssignment ? "warnHighlight" : "safeHighlight"}`} onSubmit={this.handleSubmit}>
               <h1> Analyze an Assignment</h1>
-              <label for="assignForAnalyze">Class:</label>
+              <label >Class:</label> {/*Investigate for attribute */}
               <Input onChange={this.handleClassSelection} id="assignForAnalyze" type="select" name="className" required >
                 <option value="" disabled selected hidden >Select a Class</option>
                 {optionItems}
               </Input>
-              <label for="assignForAnalyze">Assignment:</label>
-              <Input onChange={this.handleInputChange} id="assignForAnalyze" type="select" name="selectedAssignmentId" required >
+              <label >Assignment:</label> {/*Investigate for attribute */}
+              <Input onChange={this.handleInputChange} id="assignForAnalyze2" type="select" name="selectedAssignmentId" required >
                 <option value="" disabled selected hidden >Select an Assignment</option>
                 {optionAssignments}
               </Input>

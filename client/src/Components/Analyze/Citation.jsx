@@ -8,7 +8,7 @@ class Citation extends Component {
           citations: this.props.citations,
           current_citation_id: '',
           completeCitation: "",
-      }
+      };
 
       this.getAuthors = this.getAuthors.bind(this);
       this.formatCitation = this.formatCitation.bind(this);
@@ -42,9 +42,9 @@ class Citation extends Component {
 
     generateCitationCard(citations, id) {
         let text = '';
-        if (citations != []) {
+        if (citations !== []) {
             text = citations.map( c => {
-                if (c.author[0] != undefined && c._id === id) {
+                if (c.author[0] !== undefined && c._id === id) {
                     return (this.formatCitation(c));
                 } else {
                     return ("");
@@ -59,9 +59,10 @@ class Citation extends Component {
 
     generateDropDown(citations){
         let drop =[];
-        if (citations != []) {
+        if (citations !== []) {
+            // eslint-disable-next-line array-callback-return
             drop = citations.map(c => {
-                if (c.author[0] != undefined) {
+                if (c.author[0] !== undefined) {
                     return (<option value={c._id}> {c.author[0].family} </option>);
                 }
             });

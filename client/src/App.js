@@ -66,7 +66,7 @@ class App extends Component {
                 <Route
                   exact path="/login"
                   render={
-                    (props) =>
+                    () =>
                       <Login
                         passInfoLogin={this.passInfoLogin}
                         isAuthenticated={this.state.isAuthenticated}

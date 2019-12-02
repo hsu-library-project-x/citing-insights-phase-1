@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Label, Input, Button, Card, CardText, CardBody, CardTitle } from 'reactstrap';
+import { Input, Button, Card, CardText, CardBody, CardTitle } from 'reactstrap';
 import { Row, Col } from 'reactstrap';
 
 
@@ -17,7 +17,7 @@ class Results extends Component {
             rubrics: [],
             citations: [],
             bigCitations: []
-        }
+        };
 
         this.handleClassSelection = this.handleClassSelection.bind(this);
         this.handleAssignmentSelection = this.handleAssignmentSelection.bind(this);
@@ -28,7 +28,7 @@ class Results extends Component {
     //On mount, makes a call to retrieve all Classes for the user
     componentWillMount() {
 
-        var that = this;
+        let that = this;
         //Grab the user's courses
         fetch('http://localhost:5000/courses/' + this.props.user.id)
             .then(function (response) {
@@ -52,8 +52,8 @@ class Results extends Component {
 
     //Given a Class, this function makes a call to get all assignments in that class.
     handleClassSelection(event) {
-        var that = this;
-        var target = event.target;
+        let that = this;
+        let target = event.target;
         console.log(target);
         fetch('http://localhost:5000/assignments/by_class_id/' + target.value)
             .then(function (response) {
@@ -66,8 +66,8 @@ class Results extends Component {
     }
 
     handleAssignmentSelection(event) {
-        var that = this;
-        var target = event.target;
+        let that = this;
+        let target = event.target;
         console.log(target);
         fetch('http://localhost:5000/papers/by_assignment_id/' + target.value)
             .then(function (response) {
@@ -80,8 +80,8 @@ class Results extends Component {
     }
 
     handlePaperSelection(event) {
-        var that = this;
-        var target = event.target;
+        let that = this;
+        let target = event.target;
         console.log(target.value);
         fetch('http://localhost:5000/citations/find_evaluations/' + target.value)
             .then(function (response) {
@@ -140,7 +140,7 @@ class Results extends Component {
                 }
             });
         } else {
-            let lastOption = <p> No Citation Selected </p>;
+            return <p> No Citation Selected </p>;
         }
         this.setState({
             bigCitations: bigCitation
@@ -168,22 +168,22 @@ class Results extends Component {
 
 
         return (
-            <div class="download-container">
+            <div className="download-container">
 
                 <Row>
                     <Col xs="3">
-                        <label for="assignForAnalyze">Class:</label>
+                        <label>Class:</label> {/*Investigate if it's for or form*/}
                         <Input onChange={this.handleClassSelection} id="assignForAnalyze" type="select" name="className" required >
                             <option value="" disabled selected hidden >Select a Class</option>
                             {optionItems}
                         </Input>
-                        <label for="assignForAnalyze">Assignment:</label>
-                        <Input onChange={this.handleAssignmentSelection} id="assignForAnalyze" type="select" name="selectedAssignmentId" required >
+                        <label>Assignment:</label>  {/*Investigate if it's for or form*/}
+                        <Input onChange={this.handleAssignmentSelection} id="assignForAnalyze2" type="select" name="selectedAssignmentId" required >
                             <option value="" disabled selected hidden >Select an Assignment</option>
                             {optionAssignments}
                         </Input>
-                        <label for="assignForAnalyze">Paper:</label>
-                        <Input onChange={this.handlePaperSelection} id="assignForAnalyze" type="select" name="selectedPaperId" required >
+                        <label>Paper:</label>  {/*Investigate if it's for or form*/}
+                        <Input onChange={this.handlePaperSelection} id="assignForAnalyze3" type="select" name="selectedPaperId" required >
                             <option value="" disabled selected hidden >Select an Paper</option>
                             {optionPapers}
                         </Input>

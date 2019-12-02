@@ -19,7 +19,7 @@ class Navibar extends Component {
         this.props.passInfoLogout();
     }
 
-    responseGoogle = (response) => {
+    responseGoogle = () => {
         this.giveInfo();
         //Need to link to function in App.js, to reset our state to nothing
         this.props.history.push({
@@ -30,12 +30,14 @@ class Navibar extends Component {
                 token: ""
             }
         });
-    }
+    };
 
     render() {
         let content = !!this.props.isAuthenticated ? (
                 <Navbar primary='true' expand="md">
-                    <NavbarBrand><img role='image' className="navBarLogo" src={logo} alt="Citing Insights logo" ></img></NavbarBrand>
+                    <NavbarBrand>
+                        <img  className="navBarLogo" src={logo} alt="Citing Insights logo"  />
+                    </NavbarBrand>
                     {/* NavItem (Reactstrap) -- item in our navation bar*/}
                     <NavItem>
                         <Feedback email={this.props.user.email} user_id={this.props.user.id}/>
@@ -60,13 +62,13 @@ class Navibar extends Component {
                 </Navbar>
                 ) : (
                 <Navbar primary='true' expand="md">
-                    <NavbarBrand><img className="navBarLogo" src={logo} alt="logo" ></img></NavbarBrand>
+                    <NavbarBrand> <img className="navBarLogo" src={logo} alt="logo"  /></NavbarBrand>
                     {/* NavItem (Reactstrap) -- item in our navation bar*/}
                     <NavItem>
                         <NavLink to="/login">Login</NavLink>
                     </NavItem>
                 </Navbar>
-                )
+                );
         return (
             <div>
                 {content}

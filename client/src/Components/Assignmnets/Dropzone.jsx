@@ -3,7 +3,7 @@ import './Dropzone.css';
 
 class Dropzone extends Component {
 	constructor(props) {
-		super(props)
+		super(props);
 		this.state = {
 			highlight: false
 		};
@@ -33,7 +33,7 @@ class Dropzone extends Component {
 
 	fileListToArray(list) {
 		const array = [];
-		for (var i = 0; i < list.length; i++) {
+		for (let i = 0; i < list.length; i++) {
 		    array.push(list.item(i));
 		}
 		return array;

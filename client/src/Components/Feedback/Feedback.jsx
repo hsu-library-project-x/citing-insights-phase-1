@@ -16,7 +16,7 @@ class Feedback extends Component {
     this.state={
       open: false,
       message: ""
-    }
+    };
 
     this.handleClickOpen = this.handleClickOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -43,16 +43,15 @@ class Feedback extends Component {
     })
   }
 
-  handleSubmit(e) {
-    var that = this;
-    console.log(that.props);
-    var data = {
+  handleSubmit() {
+    let that = this;
+    let data = {
       message: this.state.message,
       email: that.props.email,
       user_id: that.props.user_id
     };
 
-    var json = JSON.stringify(data);
+    let json = JSON.stringify(data);
 
     fetch("http://localhost:5000/feedback/", {
       method: "POST",
@@ -62,7 +61,7 @@ class Feedback extends Component {
         'Content-Type': 'application/json'
       }
     })
-    .then((response) => {
+    .then(() => { //unused param response
       this.handleClose();
       alert("Thanks, feedback successfully submitted!");
     })

@@ -6,7 +6,6 @@ import { Row, Col } from 'reactstrap';
 import './Assignment.css';
 
 import Dropzone from './Dropzone.jsx';
-import SelectInput from '@material-ui/core/Select/SelectInput';
 
 // Class to render our homepage
 class Assignment extends Component{
@@ -41,7 +40,7 @@ class Assignment extends Component{
   componentWillMount() {
     console.log('mounted');
 
-    var that = this;
+    let that = this;
 
     fetch('http://localhost:5000/courses/' + this.props.user.id)
       .then(function(response) {
@@ -55,8 +54,8 @@ class Assignment extends Component{
   }
 
   handleClassSelection(event) {
-    var that = this;
-    var target = event.target;
+    let that = this;
+    let target = event.target;
     //incorrect
     console.log('we just clicked');
     fetch('http://localhost:5000/assignments/by_class_id/' + target.value)
@@ -131,14 +130,14 @@ class Assignment extends Component{
         }
       });
 
-      req.upload.addEventListener("load", event => {
+      req.upload.addEventListener("load", () => { //prev had unused var event
         const copy = { ...this.state.uploadProgress };
         copy[file.name] = { state: "done", percentage: 100 };
         this.setState({ uploadProgress: copy });
         resolve(req.response);
       });
 
-      req.upload.addEventListener("error", event => {
+      req.upload.addEventListener("error", () => {//prev had unused var event
         const copy = { ...this.state.uploadProgress };
         copy[file.name] = { state: "error", percentage: 0 };
         this.setState({ uploadProgress: copy });
@@ -151,7 +150,7 @@ class Assignment extends Component{
       const formData = new FormData();
       formData.append(this.state.assignmentId, file, file.name);
       req.open("POST", "http://localhost:5000/upload");
-      req.send(formData)
+      req.send(formData);
       alert("Uploading...");
       alert("Upload Successful")
     });
@@ -171,14 +170,14 @@ class Assignment extends Component{
     );
 
     return(
-      <div class="classes-container assign-container" >
+      <div className="classes-container assign-container" >
         <h1>Upload Files</h1>
         <p>Please upload papers as PDF</p>
         <Row>
           <Col xs="2">
           </Col>
           <Col xs="8">
-            <div class="assignment_form">
+            <div className="assignment_form">
               <form>
                 <Label for="selectClass">Class:</Label>
                 <Input onChange={this.handleClassSelection} type="select" id="selectClass" name="classId" required>

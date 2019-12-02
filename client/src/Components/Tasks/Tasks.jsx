@@ -14,10 +14,10 @@ import download from './download.svg';
 import rubric from './rubric.svg';
 
 import './Tasks.css';
-import { Button } from '@material-ui/core';
+// import { Button } from '@material-ui/core';
 
 // Collapses the big drop down of all sub components
-function CollapseMain(props) {
+function CollapseMain() {
 	let sidebar = document.getElementById("SideBar");
 	let buttons = document.getElementsByClassName("menuButton");
 	if (sidebar.classList.contains("collapse-main")) {
@@ -55,14 +55,14 @@ class Tasks extends Component {
 		return (
 			<div id="MainContainer">
 				<div className="mainCollapse"> 
-					<button className="miniCircle" onClick={CollapseMain}></button>
+					<button className="miniCircle" onClick={CollapseMain} />
 				</div>
 				<div className="sidebar" id="SideBar">
 					<h1 className="head-1 head-2" id="headTitle">Tasks</h1>
 					<div className="button-container">
 						<Link to='/tasks/courses' >
 							<button className="menuButton" onClick={this.changeName}>
-								<img role='image' alt="classesIcon" id="Class" src={addClass} />
+								<img  alt="classesIcon" id="Class" src={addClass} />
 								Manage Courses
 								</button>
 						</Link>
@@ -70,7 +70,7 @@ class Tasks extends Component {
 					<div className="button-container">
 						<Link to="/tasks/assignments">
 							<button className="menuButton" onClick={this.changeName}>
-								<img role='image' alt="assignmentIcon" id="Upload" src={addAssignment} />
+								<img  alt="assignmentIcon" id="Upload" src={addAssignment} />
 								Upload Papers
 								</button>
 						</Link>
@@ -78,7 +78,7 @@ class Tasks extends Component {
 					<div className="button-container">
 						<Link to="/tasks/analyzemenu">
 							<button className="menuButton" onClick={this.changeName}>
-								<img role='image' alt="analyzeIcon" id="Analyze" src={Continue} />
+								<img  alt="analyzeIcon" id="Analyze" src={Continue} />
 								Analyze
 								</button>
 						</Link>
@@ -86,7 +86,7 @@ class Tasks extends Component {
 					<div className="button-container">
 						<Link to="/tasks/overview">
 							<button className="menuButton" onClick={this.changeName}>
-								<img role='image' alt="downloadIcon" id="Overview" src={download} />
+								<img  alt="downloadIcon" id="Overview" src={download} />
 								Overview
 								</button>
 						</Link>
@@ -94,7 +94,7 @@ class Tasks extends Component {
 					<div className="button-container">
 						<Link to="/tasks/rubriceditor">
 							<button className="menuButton" onClick={this.changeName}>
-								<img role='image' alt="rubricIcon" id="Rubric" src={rubric} />
+								<img  alt="rubricIcon" id="Rubric" src={rubric} />
 								Edit Rubrics
 								</button>
 						</Link>

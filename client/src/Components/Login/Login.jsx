@@ -90,7 +90,7 @@ class Login extends Component {
 					<Row>
 						<Col xs="6">
 							<div id="image_container">
-								<img role='image' id="welcome_img" alt="HSU library" src={picture} />
+								<img id="welcome_img" alt="HSU library" src={picture} />
 							</div>
 						</Col>
 						<Col xs="6">

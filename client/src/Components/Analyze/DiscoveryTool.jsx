@@ -51,7 +51,7 @@ class DiscoveryTool extends Component {
       
     render(){
         return(
-            <div class="discoveryTool">
+            <div className="discoveryTool">
               <h4>Discovery Tool</h4>
                 <Card>
                   <CardBody>

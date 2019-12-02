@@ -217,7 +217,7 @@ class Analyze extends Component {
   }
 
   next_paper(direction) {
-    let check = true;
+    let check = true;  //THis is redunant?
     let index = this.state.current_paper_id_index;
 
     //check that we wont go out of range
@@ -227,7 +227,7 @@ class Analyze extends Component {
     if (direction === 1 && index > this.state.paper_ids.length) {
       check = false;
     }
-    check = true;
+    check = true; //redundancy?
     if (check) {
       this.setState((prevState, props) => ({
         current_paper_id_index: prevState.current_paper_id_index + direction
@@ -257,8 +257,6 @@ class Analyze extends Component {
       <option value={rubric._id}>{rubric.name}</option>
     );
     return (
-
-      <div>
         <div className="DemoContents analyze-container">
           <Row>
             <Col xs="3">
@@ -301,7 +299,6 @@ class Analyze extends Component {
           </Row>
           {this.state.assessingRubric ? <RubricSubmit sourceText={this.state.sourceText} unmountMe={this.handleChildUnmount} curRubric={this.state.currentRubric} curPaper={this.state.curPaperId} /> : null}
         </div>
-      </div>
     );
   }
 }

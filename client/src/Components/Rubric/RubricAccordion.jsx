@@ -21,7 +21,7 @@ class RubricAccordion extends Component {
 
         let rubrics = this.props.currentRubric.cards;
 
-        let rubricList = <p> Please select a rubric </p>
+        let rubricList = <p> Please select a rubric </p>;
 
         if (rubrics !== undefined && rubrics !== []) {
             rubricList = rubrics.map(function (rubric, index) {
