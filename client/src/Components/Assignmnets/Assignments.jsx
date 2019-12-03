@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
-import { Input } from 'reactstrap';
 
 
 import Dropzone from './Dropzone.jsx';
@@ -175,15 +174,15 @@ class Assignment extends Component{
             <div className="assignment_form">
               <form>
                 <label for="selectClass">Class:</label>
-                <Input onChange={this.handleClassSelection} type="select" id="selectClass" name="classId" required>
+                <select onChange={this.handleClassSelection}  id="selectClass" name="classId" required>
                   <option value="" disabled selected hidden >select a class</option>
                   {optionItems}
-                </Input>
+                </select>
                 <label for="selectAssignment">Assignment:</label>
-                <Input onChange={this.handleInputChange} type="select" id="selectAssignment" name="assignmentId" required>
+                <select onChange={this.handleInputChange}  id="selectAssignment" name="assignmentId" required>
                   <option value="" disabled selected hidden >select an assignment</option>
                   {optionAssignments}
-                </Input>
+                </select>
 
                 <div className="Upload">
                   <span className="Title">Upload:</span> 

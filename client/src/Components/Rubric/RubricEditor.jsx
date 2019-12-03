@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Card} from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
-import { Input } from 'reactstrap';
+import TextField from "@material-ui/core/TextField";
 import uniqueId from 'react-html-id';
 
 import defaultRubricsJson from '../../default_rubrics/defaultRubric.json';
@@ -158,9 +158,9 @@ class RubricEditor extends Component {
 								<div className={`cardContainer`}>
 									<Card>
 										{/* <CardTitle for={"Title-"+newId}>Rubric Item Title</CardTitle> */}
-										<Input name={i} onInput={this.onInput} type="text" id={"Title-" + newId} class="rubricTitles" />
+										<TextField name={i} onInput={this.onInput} type="text" id={"Title-" + newId} class="rubricTitles" />
 										{/* <CardText for={"Text-"+newId}>Rubric Descriptions</CardText> */}
-										<Input name={i} onInput={this.onInput} type="textarea" id={"Text-" + newId} class="rubricDescriptions" />
+										<TextField name={i} onInput={this.onInput} type="textarea" id={"Text-" + newId} class="rubricDescriptions" />
 									</Card>
 								</div>
 							);
@@ -190,9 +190,9 @@ class RubricEditor extends Component {
 						<div className={`cardContainer `}>
 							<Card>
 								{/* <CardTitle for={"Title-"+newId}>Rubric Item Title</CardTitle> */}
-								<Input placeholder="Enter Rubric Item Name ...." onInput={this.onInput} type="text" id={"Title-" + newId} class="rubricTitles" />
+								<TextField placeholder="Enter Rubric Item Name ...." onInput={this.onInput}  id={"Title-" + newId} class="rubricTitles" />
 								{/* <CardText for={"Text-"+newId}>Rubric Descriptions</CardText> */}
-								<Input placeholder="Enter Rubric Item Description ...." onInput={this.onInput} type="textarea" id={"Text-" + newId} class="rubricDescriptions" />
+								<TextField placeholder="Enter Rubric Item Description ...." onInput={this.onInput} id={"Text-" + newId} class="rubricDescriptions" />
 							</Card>
 						</div>
 					);
@@ -425,8 +425,8 @@ class RubricEditor extends Component {
 						<h3> -OR- </h3>
 						<h3 className="rubricEditHeader">Create New:</h3>
 						{/* <p> Number of Rubric Elements</p> */}
-						<Input type="number" placeholder="Number of Rubric Elements from 1-5" name="rubricElements" id="rubricChoice" min="1" max="5">
-						</Input>
+						<TextField type="number" placeholder="Number of Rubric Elements from 1-5" name="rubricElements" id="rubricChoice" min="1" max="5">
+						</TextField>
 						<button id="rubEditbutton" onClick={this.buildEditor}>Submit</button>
 						<h3> -OR- </h3>
 
@@ -437,7 +437,7 @@ class RubricEditor extends Component {
 						</ul>
 					</div> :
 					<div className={`${this.state.needsSaving ? "warnHighlight" : "safeHighlight"}`} id="cardStorage">
-						<Input type="text" id="rubricTitle" placeholder="Type Rubric Title Here" />
+						<TextField id="rubricTitle" placeholder="Type Rubric Title Here" />
 						<hr />
 						{this.renderActions()}
 						{this.populateEdit()}

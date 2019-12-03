@@ -3,9 +3,6 @@ import { withRouter } from 'react-router-dom';
 
 import { Redirect } from "react-router-dom";
 
-import {Input} from 'reactstrap';
-
-
 class AnalyzeSubMenu extends Component {
 
   constructor(props) {
@@ -96,16 +93,16 @@ class AnalyzeSubMenu extends Component {
             <form className={`${!this.state.selectedAssignment ? "warnHighlight" : "safeHighlight"}`} onSubmit={this.handleSubmit}>
               <h1> Analyze an Assignment</h1>
               <label >Class:</label> {/*Investigate for attribute */}
-              <Input onChange={this.handleClassSelection} id="assignForAnalyze" type="select" name="className" required >
+              <select onChange={this.handleClassSelection} id="assignForAnalyze" name="className" required >
                 <option value="" disabled selected hidden >Select a Class</option>
                 {optionItems}
-              </Input>
+              </select>
               <label >Assignment:</label> {/*Investigate for attribute */}
-              <Input onChange={this.handleInputChange} id="assignForAnalyze2" type="select" name="selectedAssignmentId" required >
+              <select onChange={this.handleInputChange} id="assignForAnalyze2"  name="selectedAssignmentId" required >
                 <option value="" disabled selected hidden >Select an Assignment</option>
                 {optionAssignments}
-              </Input>
-              <Input type="submit" value="Submit" disabled={this.state.redirect} />
+              </select>
+              <button type="submit" disabled={this.state.redirect} > submit </button>
             </form>
       </div>
     );

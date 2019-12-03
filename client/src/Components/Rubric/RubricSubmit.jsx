@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Card} from '@material-ui/core';
-import {Input} from 'reactstrap';
+import TextField from "@material-ui/core/TextField";
 
 class RubricSubmit extends Component{
 	constructor () {
@@ -43,7 +43,13 @@ class RubricSubmit extends Component{
 			        <h6>{curCard.cardTitle}</h6>
 			        <p>{curCard.cardText}</p>
 			        <label for="rubricValue">Score</label>
-			        <Input type="number" placeholder="0-10" min="0" max="10" name={"score" + i} id={"rubricValue" + i} />
+			        <TextField
+						type="number"
+						placeholder="0-10"
+						min="0"
+						max="10"
+						name={"score" + i}
+						id={"rubricValue" + i} />
 			    </Card>
 		    );
 			}

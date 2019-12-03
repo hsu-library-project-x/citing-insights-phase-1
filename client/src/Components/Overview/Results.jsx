@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Input } from 'reactstrap';
 import {Card} from '@material-ui/core';
 
 
@@ -144,7 +143,6 @@ class Results extends Component {
     }
 
     render() {
-
         let courses = this.state.AvailableCourses;
         let optionItems = courses.map((course) =>
             <option value={course._id}>{course.name}</option>
@@ -160,25 +158,23 @@ class Results extends Component {
             <option value={paper._id}>{paper.title}</option>
         );
 
-
-
         return (
             <div className="download-container">
                 <label>Class:</label> {/*Investigate if it's for or form*/}
-                <Input onChange={this.handleClassSelection} id="assignForAnalyze" type="select" name="className" required >
+                <select onChange={this.handleClassSelection} id="assignForAnalyze" name="className" required >
                     <option value="" disabled selected hidden >Select a Class</option>
                     {optionItems}
-                </Input>
+                </select>
                 <label>Assignment:</label>  {/*Investigate if it's for or form*/}
-                <Input onChange={this.handleAssignmentSelection} id="assignForAnalyze2" type="select" name="selectedAssignmentId" required >
+                <select onChange={this.handleAssignmentSelection} id="assignForAnalyze2" name="selectedAssignmentId" required >
                     <option value="" disabled selected hidden >Select an Assignment</option>
                     {optionAssignments}
-                </Input>
+                </select>
                 <label>Paper:</label>  {/*Investigate if it's for or form*/}
-                <Input onChange={this.handlePaperSelection} id="assignForAnalyze3" type="select" name="selectedPaperId" required >
+                <select onChange={this.handlePaperSelection} id="assignForAnalyze3"  name="selectedPaperId" required >
                     <option value="" disabled selected hidden >Select an Paper</option>
                     {optionPapers}
-                </Input>
+                </select>
                 <div>
                     <h1>Overview</h1>
                     <button id="showEvals" onClick={() => { this.showCitations() }}>

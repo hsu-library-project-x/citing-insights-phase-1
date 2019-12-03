@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Button, Input, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import RubricAccordion from './RubricAccordion.jsx';
 import RubricSubmit from '../Rubric/RubricSubmit.jsx';
 import PdfComponent from "./PdfComponent.jsx";
@@ -280,10 +280,10 @@ class Analyze extends Component {
               </div>
             </Grid>
             <Grid xs="3">
-              <Input type="select" id="rubricAssign" name="AssignRubric" onInput={this.handleGetRubric}>
+              <select name="AssignRubric" onChange={this.handleGetRubric}>
                 <option value="" disabled selected hidden >Select a Rubric</option>
                 {rubricList}
-              </Input>
+              </select>
               <RubricAccordion
                 currentRubric={this.state.currentRubric}
                 allowZeroExpanded={true}

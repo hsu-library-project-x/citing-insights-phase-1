@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Button } from '@material-ui/core';
+import { Card } from '@material-ui/core';
 
 class DiscoveryTool extends Component {
     constructor(props) {
@@ -54,9 +54,9 @@ class DiscoveryTool extends Component {
             <div className="discoveryTool">
               <h4>Discovery Tool</h4>
                 <Card>
-                    <Button onClick={this.open_s2}>
+                    <button onClick={this.open_s2}>
                         Semantic Scholar
-                    </Button>
+                    </button>
                     <p>
                         Citation Velocity: {this.state.current_s2_data["citation_velocity"]}
                         <br />
@@ -64,15 +64,15 @@ class DiscoveryTool extends Component {
                     </p>
                 </Card>
                 <Card>
-                    <Button onClick={this.open_alma_primo}>
+                    <button onClick={this.open_alma_primo}>
                         Alma Primo
-                    </Button>
+                    </button>
                     <p>Find Source through Library Discovery System</p>
                 </Card>
                 <Card>
-                    <Button onClick={this.open_google_scholar}>
+                    <button onClick={this.open_google_scholar}>
                         Google Scholar
-                    </Button>
+                    </button>
                     <p>Google Scholar Information</p>
                 </Card>
               </div>

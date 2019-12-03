@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input} from 'reactstrap';
+import {TextField} from "@material-ui/core";
 import { withRouter } from 'react-router-dom';
 
 
@@ -232,24 +232,45 @@ class Classes extends Component {
             <h2> New Class </h2>
             <form id="addClassForm" onSubmit={this.handleSubmitClass}>
               <label for="className">Name: </label>
-              <Input onChange={this.handleInputChange} type="text" id="className" name="ClassName" placeholder="Type class name here" required />
+              <TextField
+                  onChange={this.handleInputChange}
+                  id="className"
+                  name="ClassName"
+                  placeholder="Type class name here"
+                  required />
               <label for="classNotes">Notes: </label>
-              <Input onChange={this.handleInputChange} type="textarea" id="classNotes" name="ClassNote" placeholder="Optional Notes on the class" />
-              <Input type="submit" value="Submit" />
+              <TextField
+                  onChange={this.handleInputChange}
+                  multiline
+                  rowsMax="4"
+                  id="classNotes"
+                  name="ClassNote"
+                  placeholder="Optional Notes on the class" />
+              <button type="submit"> Submit </button>
             </form>
             <h2> New Assignment </h2>
             <form id="addAssignmentForm" onSubmit={this.handleSubmitAssign}  >
               <label for="classAssign">Class:</label>
-              <Input onChange={this.handleInputChange} type="select" id="classAssign" name="ClassId" required>
+              <select onChange={this.handleInputChange} id="classAssign" name="ClassId" required>
                 <option value="" disabled selected hidden >Select a Class</option>
                 {optionItems}
-              </Input><br /> <br />
+              </select>
               <label for="assignName">Name:</label>
-              <Input onChange={this.handleInputChange} type="text" id="assignName" name="AssignName" placeholder="Type assignment name here" required /> <br />
+              <TextField
+                  onChange={this.handleInputChange}
+                  id="assignName"
+                  name="AssignName"
+                  placeholder="Type assignment name here"
+                  required />
               <label for="assignNotes">Notes:</label>
-              <Input onChange={this.handleInputChange} type="textarea" id="assignNotes" name="AssignNote" placeholder="Optional Notes on the assignment" />
-              <Input type="submit" value="Submit" />
-
+              <TextField
+                  onChange={this.handleInputChange}
+                  id="assignNotes"
+                  name="AssignNote"
+                  multiline
+                  rowsMax="4"
+                  placeholder="Optional Notes on the assignment" />
+              <button type="submit"> Submit </button>
             </form>
             <h3>Your Classes</h3>
             <ul className="currentClasses">
