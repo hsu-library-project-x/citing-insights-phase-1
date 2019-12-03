@@ -34,28 +34,30 @@ class Navibar extends Component {
         return (
                 <AppBar position="static">
                     <Toolbar>
-                    <Typography variant="h6" >
+                    <Typography variant="h6"  >
                         Citing Insights  {/*TODO: Add back in svg when ready */}
                     </Typography>
+
                         {this.props.isAuthenticated ?
-                            <div>
-                                <Feedback email={this.props.user.email} user_id={this.props.user.id}/>
-                                <Button onClick={this.responseGoogle}>
-                                    <GoogleLogout
-                                        clientId={config.GOOGLE_CLIENT_ID}
-                                        render={renderProps => (
-                                            <button className={"NavLinkButton"} onClick={renderProps.onClick}
-                                                    disabled={renderProps.disabled}>Logout</button>
-                                        )}
-                                        buttonText="Log Out"
-                                        onLogoutSuccess={this.responseGoogle}
-                                        onFailure={this.onFailure}
-                                    />
-                                </Button>
-                                {this.props.user.name}
-                            </div> :
-                            <div></div>
+                            <Feedback email={this.props.user.email} user_id={this.props.user.id}/> : null
                         }
+
+                        {this.props.isAuthenticated ?
+                            <Button onClick={this.responseGoogle}  >
+                                <GoogleLogout
+                                    clientId={config.GOOGLE_CLIENT_ID}
+                                    render={renderProps => (
+                                        <button className={"NavLinkButton"} onClick={renderProps.onClick}
+                                                disabled={renderProps.disabled}>Logout</button>
+                                    )}
+                                    buttonText="Log Out"
+                                    onLogoutSuccess={this.responseGoogle}
+                                    onFailure={this.onFailure}
+                                />
+                            </Button> : null
+                        }
+
+                        {this.props.isAuthenticated ? this.props.user.name : null}
                     </Toolbar>
                 </AppBar>
                 );
