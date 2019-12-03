@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardText, CardBody, CardTitle, Button } from 'reactstrap';
+import { Card, Button } from '@material-ui/core';
 
 class DiscoveryTool extends Component {
     constructor(props) {
@@ -54,38 +54,26 @@ class DiscoveryTool extends Component {
             <div className="discoveryTool">
               <h4>Discovery Tool</h4>
                 <Card>
-                  <CardBody>
-                    <CardTitle>
-                        <Button color="link" onClick={this.open_s2}>
-                            Semantic Scholar
-                        </Button>
-                    </CardTitle>
-                    <CardText>
+                    <Button onClick={this.open_s2}>
+                        Semantic Scholar
+                    </Button>
+                    <p>
                         Citation Velocity: {this.state.current_s2_data["citation_velocity"]}
                         <br />
                         Influential Citations: {this.state.current_s2_data["influential_citation_count"]}
-                    </CardText>
-                  </CardBody>
+                    </p>
                 </Card>
                 <Card>
-                  <CardBody>
-                    <CardTitle>
-                        <Button color="link" onClick={this.open_alma_primo}>
-                            Alma Primo
-                        </Button>
-                    </CardTitle>
-                    <CardText>Find Source through Library Discovery System</CardText>
-                  </CardBody>
+                    <Button onClick={this.open_alma_primo}>
+                        Alma Primo
+                    </Button>
+                    <p>Find Source through Library Discovery System</p>
                 </Card>
                 <Card>
-                  <CardBody>
-                    <CardTitle>
-                        <Button color="link" onClick={this.open_google_scholar}>
-                            Google Scholar
-                        </Button>
-                    </CardTitle>
-                    <CardText>Google Scholar Information</CardText>
-                  </CardBody>
+                    <Button onClick={this.open_google_scholar}>
+                        Google Scholar
+                    </Button>
+                    <p>Google Scholar Information</p>
                 </Card>
               </div>
         );

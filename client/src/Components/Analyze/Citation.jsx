@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardText, CardBody, CardTitle } from 'reactstrap';
+import { Card } from '@material-ui/core';
 
 class Citation extends Component {
     constructor(props) {
@@ -89,10 +89,9 @@ class Citation extends Component {
                         {dropDownItems}
                 </select>
                 <Card>
-                    <CardBody>
-                    <CardTitle>Citation</CardTitle>
-                    <CardText> {cardText}</CardText>
-                    </CardBody>
+                    <h6>Citation</h6>
+                    <p> {cardText}</p>
+
                 </Card>
             </div>
         );

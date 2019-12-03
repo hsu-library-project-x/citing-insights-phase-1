@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { GoogleLogin } from "react-google-login";
-import { Row, Col } from 'reactstrap';
 
 import config from "../../config.json";
-import './login.css';
 import picture from './library-image.jpg';
 
 class Login extends Component {
@@ -87,29 +85,23 @@ class Login extends Component {
 		return (
 			<div className="container">
 				<div id="login_page">
-					<Row>
-						<Col xs="6">
-							<div id="image_container">
-								<img id="welcome_img" alt="HSU library" src={picture} />
-							</div>
-						</Col>
-						<Col xs="6">
-							<div className="beside_picture">
-								<h1>Welcome Back!</h1>
-								<div className="googleLoginContainer" id="google">
-									<GoogleLogin
-										clientId={config.GOOGLE_CLIENT_ID}
-										render={renderProps => (
-											<button onClick={renderProps.onClick} disabled={renderProps.disabled}>Login with Google</button>
-										  )}
-										buttonText="Sign in with Google"
-										onSuccess={this.responseGoogle}
-										onFailure={this.onFailure}
-									/>
-								</div>
-							</div>
-						</Col>
-					</Row>
+					<div id="image_container">
+						<img id="welcome_img" alt="HSU library" src={picture} />
+					</div>
+					<div className="beside_picture">
+						<h1>Welcome Back!</h1>
+						<div className="googleLoginContainer" id="google">
+							<GoogleLogin
+								clientId={config.GOOGLE_CLIENT_ID}
+								render={renderProps => (
+									<button onClick={renderProps.onClick} disabled={renderProps.disabled}>Login with Google</button>
+									)}
+								buttonText="Sign in with Google"
+								onSuccess={this.responseGoogle}
+								onFailure={this.onFailure}
+							/>
+						</div>
+					</div>
 				</div >
 			</div >
 		);

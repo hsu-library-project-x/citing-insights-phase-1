@@ -33,7 +33,6 @@ class RubricAccordion extends Component {
 
                 return (
                     <div>
-
                         <AccordionItem>
                             <input id="radio" type="radio" name="radio" value={rubric["card" + index]["cardTitle"]} />
                             <AccordionItemHeading>

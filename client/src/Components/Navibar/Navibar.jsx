@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { Navbar, NavbarBrand, NavItem } from 'reactstrap';
-import { NavLink, withRouter } from 'react-router-dom';
+import {AppBar, Toolbar,Typography, Button } from "@material-ui/core";
+import { withRouter } from 'react-router-dom';
 import { GoogleLogout } from 'react-google-login';
 
 import config from '../../config.json';
 import Feedback from "../Feedback/Feedback.jsx";
-import logo from './CIHome.png';
-import "./Navibar.css";
 
 class Navibar extends Component {
     constructor(props) {
@@ -33,48 +31,35 @@ class Navibar extends Component {
     };
 
     render() {
-        let content = !!this.props.isAuthenticated ? (
-                <Navbar primary='true' expand="md">
-                    <NavbarBrand>
-                        <img  className="navBarLogo" src={logo} alt="Citing Insights logo"  />
-                    </NavbarBrand>
-                    {/* NavItem (Reactstrap) -- item in our navation bar*/}
-                    <NavItem>
-                        <Feedback email={this.props.user.email} user_id={this.props.user.id}/>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink to="/tasks">Tasks</NavLink>
-                    </NavItem>
-                    <NavItem onClick={this.responseGoogle}>
-                        <GoogleLogout
-                            clientId={config.GOOGLE_CLIENT_ID}
-                            render={renderProps => (
-                                <button className={"NavLinkButton"} onClick={renderProps.onClick} disabled={renderProps.disabled}>Logout</button>
-                            )}
-                            buttonText="Log Out"
-                            onLogoutSuccess={this.responseGoogle}
-                            onFailure={this.onFailure}
-                        />
-                    </NavItem>
-                    <NavItem color="light">
-                        {this.props.user.name}
-                    </NavItem>
-                </Navbar>
-                ) : (
-                <Navbar primary='true' expand="md">
-                    <NavbarBrand> <img className="navBarLogo" src={logo} alt="logo"  /></NavbarBrand>
-                    {/* NavItem (Reactstrap) -- item in our navation bar*/}
-                    <NavItem>
-                        <NavLink to="/login">Login</NavLink>
-                    </NavItem>
-                </Navbar>
-                );
         return (
-            <div>
-                {content}
-            </div>
-                )
-            }
+                <AppBar position="static">
+                    <Toolbar>
+                    <Typography variant="h6" >
+                        Citing Insights  {/*TODO: Add back in svg when ready */}
+                    </Typography>
+                        {this.props.isAuthenticated ?
+                            <div>
+                                <Feedback email={this.props.user.email} user_id={this.props.user.id}/>
+                                <Button onClick={this.responseGoogle}>
+                                    <GoogleLogout
+                                        clientId={config.GOOGLE_CLIENT_ID}
+                                        render={renderProps => (
+                                            <button className={"NavLinkButton"} onClick={renderProps.onClick}
+                                                    disabled={renderProps.disabled}>Logout</button>
+                                        )}
+                                        buttonText="Log Out"
+                                        onLogoutSuccess={this.responseGoogle}
+                                        onFailure={this.onFailure}
+                                    />
+                                </Button>
+                                {this.props.user.name}
+                            </div> :
+                            <div></div>
+                        }
+                    </Toolbar>
+                </AppBar>
+                );
         }
-        
-        export default withRouter(Navibar);
+    }
+
+    export default withRouter(Navibar);

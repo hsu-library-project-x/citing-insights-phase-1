@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
-import { Label, Input } from 'reactstrap';
-import { Row, Col } from 'reactstrap';
+import { Input } from 'reactstrap';
 
-import './Assignment.css';
 
 import Dropzone from './Dropzone.jsx';
 
@@ -173,18 +171,15 @@ class Assignment extends Component{
       <div className="classes-container assign-container" >
         <h1>Upload Files</h1>
         <p>Please upload papers as PDF</p>
-        <Row>
-          <Col xs="2">
-          </Col>
-          <Col xs="8">
+
             <div className="assignment_form">
               <form>
-                <Label for="selectClass">Class:</Label>
+                <label for="selectClass">Class:</label>
                 <Input onChange={this.handleClassSelection} type="select" id="selectClass" name="classId" required>
                   <option value="" disabled selected hidden >select a class</option>
                   {optionItems}
                 </Input>
-                <Label for="selectAssignment">Assignment:</Label>
+                <label for="selectAssignment">Assignment:</label>
                 <Input onChange={this.handleInputChange} type="select" id="selectAssignment" name="assignmentId" required>
                   <option value="" disabled selected hidden >select an assignment</option>
                   {optionAssignments}
@@ -210,10 +205,6 @@ class Assignment extends Component{
                 </div>
               </form>
             </div>
-          </Col>
-          <Col xs="2">
-          </Col>
-        </Row>
       </div>
     );
   }

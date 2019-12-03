@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import { Redirect } from "react-router-dom";
-import { Row, Col, Input } from "reactstrap";
 
-import './AnalyseSubMenu.css';
+import {Input} from 'reactstrap';
+
 
 class AnalyzeSubMenu extends Component {
 
@@ -93,8 +93,6 @@ class AnalyzeSubMenu extends Component {
     
     return (
       <div className="analyze-container ana-subcontainer" >
-        <Row>
-          <Col xs="12">
             <form className={`${!this.state.selectedAssignment ? "warnHighlight" : "safeHighlight"}`} onSubmit={this.handleSubmit}>
               <h1> Analyze an Assignment</h1>
               <label >Class:</label> {/*Investigate for attribute */}
@@ -109,8 +107,6 @@ class AnalyzeSubMenu extends Component {
               </Input>
               <Input type="submit" value="Submit" disabled={this.state.redirect} />
             </form>
-          </Col>
-        </Row>
       </div>
     );
   }

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Row, Col,  Input, Label} from 'reactstrap';
+import { Input} from 'reactstrap';
 import { withRouter } from 'react-router-dom';
-import './Classes.css';
 
 
 // Class to render our homepage
@@ -229,49 +228,37 @@ class Classes extends Component {
 
     return (
       <div className="classes-container">
-        <Row>
-          <Col xs="6">
+
             <h2> New Class </h2>
             <form id="addClassForm" onSubmit={this.handleSubmitClass}>
-              <Label for="className">Name: </Label>
+              <label for="className">Name: </label>
               <Input onChange={this.handleInputChange} type="text" id="className" name="ClassName" placeholder="Type class name here" required />
-              <Label for="classNotes">Notes: </Label>
+              <label for="classNotes">Notes: </label>
               <Input onChange={this.handleInputChange} type="textarea" id="classNotes" name="ClassNote" placeholder="Optional Notes on the class" />
               <Input type="submit" value="Submit" />
             </form>
-
-          </Col>
-          <Col xs="6">
             <h2> New Assignment </h2>
             <form id="addAssignmentForm" onSubmit={this.handleSubmitAssign}  >
-              <Label for="classAssign">Class:</Label>
+              <label for="classAssign">Class:</label>
               <Input onChange={this.handleInputChange} type="select" id="classAssign" name="ClassId" required>
                 <option value="" disabled selected hidden >Select a Class</option>
                 {optionItems}
               </Input><br /> <br />
-              <Label for="assignName">Name:</Label>
+              <label for="assignName">Name:</label>
               <Input onChange={this.handleInputChange} type="text" id="assignName" name="AssignName" placeholder="Type assignment name here" required /> <br />
-              <Label for="assignNotes">Notes:</Label>
+              <label for="assignNotes">Notes:</label>
               <Input onChange={this.handleInputChange} type="textarea" id="assignNotes" name="AssignNote" placeholder="Optional Notes on the assignment" />
               <Input type="submit" value="Submit" />
 
             </form>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs="6">
             <h3>Your Classes</h3>
             <ul className="currentClasses">
               {classList}
             </ul>
-          </Col>
-          <Col xs="6">
             <h3>Your Assignments</h3>
             <ul className="currentClasses">
               {assignList}
             </ul>
-          </Col>
-        </Row>
       </div>
 
     );

@@ -13,9 +13,6 @@ import Continue from './continue.svg';
 import download from './download.svg';
 import rubric from './rubric.svg';
 
-import './Tasks.css';
-// import { Button } from '@material-ui/core';
-
 // Collapses the big drop down of all sub components
 function CollapseMain() {
 	let sidebar = document.getElementById("SideBar");

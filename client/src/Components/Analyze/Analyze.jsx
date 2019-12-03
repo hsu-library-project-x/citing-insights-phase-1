@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Button, Input, Row, Col } from 'reactstrap';
-import RubricAccordion from '../Rubric/RubricAccordion.jsx';
+import { Button, Input, Grid } from '@material-ui/core';
+import RubricAccordion from './RubricAccordion.jsx';
 import RubricSubmit from '../Rubric/RubricSubmit.jsx';
 import PdfComponent from "./PdfComponent.jsx";
 import DiscoveryTool from './DiscoveryTool.jsx';
 import Citation from './Citation.jsx'
-import './Analyze.css';
 
 class Analyze extends Component {
   constructor(props) {
@@ -258,8 +257,8 @@ class Analyze extends Component {
     );
     return (
         <div className="DemoContents analyze-container">
-          <Row>
-            <Col xs="3">
+           <Grid container spacing={3}>
+            <Grid item xs="3">
               <p id="assignmentInfo">Current Assignment - {this.state.assignment.name} </p>
               {this.state.citations !== [] && this.state.current_citation_id !== 0 ? 
               <Citation 
@@ -274,13 +273,13 @@ class Analyze extends Component {
                   current_citation_id={this.state.current_citation_id}
                   current_s2_data={this.state.current_s2_data}
               /> : null}
-            </Col>
-            <Col xs="6">
+            </Grid>
+            <Grid xs="6">
               <div className="overflow-auto">
                 {pdf}
               </div>
-            </Col>
-            <Col xs="3">
+            </Grid>
+            <Grid xs="3">
               <Input type="select" id="rubricAssign" name="AssignRubric" onInput={this.handleGetRubric}>
                 <option value="" disabled selected hidden >Select a Rubric</option>
                 {rubricList}
@@ -292,12 +291,12 @@ class Analyze extends Component {
               <textarea id="annotation">
                 Make an optional annotation...
               </textarea>
-              <Button color="success" id="paperDone" onClick={this.handleSaveCitations}>Save Rubric Value </Button>
-              <Button id="nextPaper" onClick={() => { this.next_paper(1) }}> Next Paper </Button>
-              <Button id="nextPaper" onClick={() => { this.next_paper(-1) }}> Previous Paper </Button>
-            </Col>
-          </Row>
+              <button Gridor="success" id="paperDone" onClick={this.handleSaveCitations}>Save Rubric Value </button>
+              <button id="nextPaper" onClick={() => { this.next_paper(1) }}> Next Paper </button>
+              <button id="nextPaper" onClick={() => { this.next_paper(-1) }}> Previous Paper </button>
+            </Grid>
           {this.state.assessingRubric ? <RubricSubmit sourceText={this.state.sourceText} unmountMe={this.handleChildUnmount} curRubric={this.state.currentRubric} curPaper={this.state.curPaperId} /> : null}
+          </Grid>
         </div>
     );
   }

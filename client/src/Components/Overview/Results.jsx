@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Input, Button, Card, CardText, CardBody, CardTitle } from 'reactstrap';
-import { Row, Col } from 'reactstrap';
+import { Input } from 'reactstrap';
+import {Card} from '@material-ui/core';
 
 
 class Results extends Component {
@@ -27,7 +27,6 @@ class Results extends Component {
 
     //On mount, makes a call to retrieve all Classes for the user
     componentWillMount() {
-
         let that = this;
         //Grab the user's courses
         fetch('http://localhost:5000/courses/' + this.props.user.id)
@@ -93,8 +92,6 @@ class Results extends Component {
     }
 
     showCitations() {
-
-
         //Query for Citations where rubric value or annotation is not null
         function getAuthors(authors) {
             return authors.map((d) =>
@@ -106,21 +103,19 @@ class Results extends Component {
             return (
                 <div>
                     <Card>
-                        <CardBody>
-                            <CardTitle>Citation</CardTitle>
-                            <CardText>
-                                {getAuthors(citation.author)} ({citation.date}). {citation.title}
-                            </CardText>
-                            <CardText>
-                                Annotation: {citation.annotation}
-                            </CardText>
-                            <CardText>
-                                Rubric Value: {citation.rubricId}
-                            </CardText>
-                            <CardText>
-                                Rubric Score {citation.rubricScore}
-                            </CardText>
-                        </CardBody>
+                        <h6>Citation</h6>
+                        <p>
+                            {getAuthors(citation.author)} ({citation.date}). {citation.title}
+                        </p>
+                        <p>
+                            Annotation: {citation.annotation}
+                        </p>
+                        <p>
+                            Rubric Value: {citation.rubricId}
+                        </p>
+                        <p>
+                            Rubric Score {citation.rubricScore}
+                        </p>
                     </Card>
                 </div>
             );
@@ -169,35 +164,28 @@ class Results extends Component {
 
         return (
             <div className="download-container">
-
-                <Row>
-                    <Col xs="3">
-                        <label>Class:</label> {/*Investigate if it's for or form*/}
-                        <Input onChange={this.handleClassSelection} id="assignForAnalyze" type="select" name="className" required >
-                            <option value="" disabled selected hidden >Select a Class</option>
-                            {optionItems}
-                        </Input>
-                        <label>Assignment:</label>  {/*Investigate if it's for or form*/}
-                        <Input onChange={this.handleAssignmentSelection} id="assignForAnalyze2" type="select" name="selectedAssignmentId" required >
-                            <option value="" disabled selected hidden >Select an Assignment</option>
-                            {optionAssignments}
-                        </Input>
-                        <label>Paper:</label>  {/*Investigate if it's for or form*/}
-                        <Input onChange={this.handlePaperSelection} id="assignForAnalyze3" type="select" name="selectedPaperId" required >
-                            <option value="" disabled selected hidden >Select an Paper</option>
-                            {optionPapers}
-                        </Input>
-                    </Col>
-                    <Col xs="9">
-                        <div>
-                            <h1>Overview</h1>
-                            <Button id="showEvals" onClick={() => { this.showCitations() }}>
-                                Show Evaluations
-                            </Button>
-                        </div>
-                    </Col>
-                    <p1> {this.state.bigCitations}</p1>
-                </Row>
+                <label>Class:</label> {/*Investigate if it's for or form*/}
+                <Input onChange={this.handleClassSelection} id="assignForAnalyze" type="select" name="className" required >
+                    <option value="" disabled selected hidden >Select a Class</option>
+                    {optionItems}
+                </Input>
+                <label>Assignment:</label>  {/*Investigate if it's for or form*/}
+                <Input onChange={this.handleAssignmentSelection} id="assignForAnalyze2" type="select" name="selectedAssignmentId" required >
+                    <option value="" disabled selected hidden >Select an Assignment</option>
+                    {optionAssignments}
+                </Input>
+                <label>Paper:</label>  {/*Investigate if it's for or form*/}
+                <Input onChange={this.handlePaperSelection} id="assignForAnalyze3" type="select" name="selectedPaperId" required >
+                    <option value="" disabled selected hidden >Select an Paper</option>
+                    {optionPapers}
+                </Input>
+                <div>
+                    <h1>Overview</h1>
+                    <button id="showEvals" onClick={() => { this.showCitations() }}>
+                        Show Evaluations
+                    </button>
+                </div>
+            <p1> {this.state.bigCitations}</p1>
             </div>
         )
     }

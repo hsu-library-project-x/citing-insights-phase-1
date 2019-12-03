@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import {Label, Input, Card, CardText, CardBody, CardTitle} from 'reactstrap';
-import './RubricSubmit.css';
-
+import {Card} from '@material-ui/core';
+import {Input} from 'reactstrap';
 
 class RubricSubmit extends Component{
 	constructor () {
@@ -40,13 +39,11 @@ class RubricSubmit extends Component{
 				let curCard = item["card" + i];
 				this.state.cardData.push(curCard);
 				this.state.rubricCards.push(
-					<Card>
-			      <CardBody>
-			        <CardTitle>{curCard.cardTitle}</CardTitle>
-			        <CardText>{curCard.cardText}</CardText>
-			        <Label for="rubricValue">Score</Label>
+				<Card>
+			        <h6>{curCard.cardTitle}</h6>
+			        <p>{curCard.cardText}</p>
+			        <label for="rubricValue">Score</label>
 			        <Input type="number" placeholder="0-10" min="0" max="10" name={"score" + i} id={"rubricValue" + i} />
-			      </CardBody>
 			    </Card>
 		    );
 			}
