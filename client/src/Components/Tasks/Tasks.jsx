@@ -6,74 +6,115 @@ import Analyze from "../Analyze/Analyze.jsx";
 import RubricEditor from "../Rubric/RubricEditor.jsx";
 import AnalyzeSubMenu from "../Analyze/AnalyzeSubMenu.jsx";
 import Results from '../Overview/Results.jsx';
-
-import addClass from './class.svg';
-import addAssignment from './assignment.svg';
-import Continue from './continue.svg';
-import download from './download.svg';
-import rubric from './rubric.svg';
+import {Grid} from "@material-ui/core";
+import Fab from '@material-ui/core/Fab';
+import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
+import BackupOutlinedIcon from '@material-ui/icons/BackupOutlined';
+import SpellcheckOutlinedIcon from '@material-ui/icons/SpellcheckOutlined';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
+import useStyles from '../../styles';
+import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 
 // Class to render our homepage
 class Tasks extends Component {
+	constructor(props) {
+		super(props);
+		// this.classes = this.classes.bind(this);
+	}
+
+
 	render() {
+
+		const theme = createMuiTheme({
+			palette: {
+				primary: { main: '#25551b' }, // dk green
+				secondary: { main: '#5C8021' } // light green
+			},
+		});
+
+
 		return (
 			<div id="MainContainer">
-				<div className="sidebar" id="SideBar">
-					<Grid container spacing={3}>
-						<Grid item xs={12}>
-							<h1 className="head-1 head-2" id="headTitle">Tasks</h1>
+				<MuiThemeProvider theme={theme}>
+					<Grid
+						justify="space-between"
+						container
+						// spacing={20}
+						style={{marginTop: 20}}
+					>
+						<Grid item>
+							<Link to='/tasks/courses' >
+								<Fab
+									variant="extended"
+									color={'primary'}
+									size={"large"}
+									aria-label="manage-courses"
+								>
+									<AddCircleOutlineOutlinedIcon  style={{marginRight: theme.spacing(1)}} />
+									Manage Courses
+								</Fab>
+							</Link>
 						</Grid>
-						<Grid item xs={1} ></Grid>
-						<Grid item xs={2}>
-
-								<Link to='/tasks/courses' >
-										<img  alt="classesIcon" id="Class" src={addClass} />
-										Manage Courses
-
-								</Link>
+						<Grid item>
+							<Link to="/tasks/assignments">
+								<Fab
+									variant="extended"
+									color={'primary'}
+									size={"large"}
+									aria-label="upload"
+								>
+									<BackupOutlinedIcon style={{marginRight: theme.spacing(1)}} />
+									{/*<img  alt="assignmentIcon" id="Upload" src={addAssignment} />*/}
+									Upload Papers
+								</Fab>
+							</Link>
+						</Grid>
+						<Grid item>
+							<Link  to="/tasks/analyzemenu">
+								<Fab
+									variant="extended"
+									color={'primary'}
+									size={"large"}
+									aria-label="analyze"
+								>
+									<SpellcheckOutlinedIcon style={{marginRight: theme.spacing(1)}} />
+									{/*<img  alt="analyzeIcon" id="Analyze" src={Continue} />*/}
+									Analyze
+								</Fab>
+							</Link>
+						</Grid>
+						<Grid item>
+							<Link  to="/tasks/rubriceditor">
+								<Fab
+									variant="extended"
+									color={'primary'}
+									size={"large"}
+									aria-label="edit rubrics"
+								>
+									<EditOutlinedIcon style={{marginRight: theme.spacing(1)}} />
+									{/*<img  alt="rubricIcon" id="Rubric" src={rubric} />*/}
+									Edit Rubrics
+								</Fab>
+							</Link>
 
 						</Grid>
-						<Grid item xs={2}>
-
-								<Link to="/tasks/assignments">
-
-										<img  alt="assignmentIcon" id="Upload" src={addAssignment} />
-										Upload Papers
-
-								</Link>
-
-						</Grid>
-
-						<Grid item xs={2}>
-								<Link  to="/tasks/analyzemenu">
-
-										<img  alt="analyzeIcon" id="Analyze" src={Continue} />
-										Analyze
-
-								</Link>
-						</Grid>
-
-						<Grid item xs={2}>
-								<Link  to="/tasks/overview">
-
-										<img  alt="downloadIcon" id="Overview" src={download} />
-										Overview
-
-								</Link>
-						</Grid>
-
-						<Grid item xs={2}>
-								<Link  to="/tasks/rubriceditor">
-
-										<img  alt="rubricIcon" id="Rubric" src={rubric} />
-										Edit Rubrics
-
-								</Link>
+						<Grid item>
+							<Link  to="/tasks/overview">
+								<Fab
+									variant="extended"
+									color={'primary'}
+									size={"large"}
+									aria-label="download"
+								>
+									<CloudDownloadOutlinedIcon style={{marginRight: theme.spacing(1)}} />
+									{/*<img  alt="downloadIcon" id="Overview" src={download} />*/}
+									Overview
+								</Fab>
+							</Link>
 						</Grid>
 					</Grid>
-
-				</div>
-
+				</MuiThemeProvider>
 				<div id="mainContent">
 					<Switch>
 						<Route path="/tasks/courses"

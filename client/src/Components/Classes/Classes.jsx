@@ -1,5 +1,16 @@
 import React, { Component } from 'react';
-import {TextField} from "@material-ui/core";
+import {TextField, Typography, Paper, ListItemSecondaryAction, Tooltip} from "@material-ui/core";
+import ListSubheader from '@material-ui/core/ListSubheader';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Collapse from '@material-ui/core/Collapse';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import FolderIcon from '@material-ui/icons/Folder';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { withRouter } from 'react-router-dom';
 
 
@@ -14,7 +25,8 @@ class Classes extends Component {
       AssignName: '',
       AssignNote: '',
       AvailableCourses: [],
-      AvailableAssignments: []
+      AvailableAssignments: [],
+      open:false,
     };
     this.handleSubmitClass = this.handleSubmitClass.bind(this);
     this.handleSubmitAssign = this.handleSubmitAssign.bind(this);
@@ -24,12 +36,12 @@ class Classes extends Component {
     this.handleDeleteCourse = this.handleDeleteCourse.bind(this);
     this.getClasses = this.getClasses.bind(this);
     this.getAssignments = this.getAssignments.bind(this);
+    this.createList = this.createList.bind(this);
+    this.createClassForm = this.createClassForm.bind(this);
+    this.createAssignmentForm = this.createAssignmentForm.bind(this);
   }
 
   componentDidMount() {
-    console.log('mounted');
-    console.log(this.props);
-
     let that = this;
     that.getClasses();
   }
@@ -190,96 +202,116 @@ class Classes extends Component {
     this.setState({
       [name]: value
     });
-    console.log("in handle input change");
-    console.log(this.state);
+  }
+
+  handleChange = panel => (event, isExpanded) => {
+    this.setState({expanded:  panel});
+  };
+
+  createList(classList){
+
+    let generateSecondList = this.state.AvailableAssignments.map(d=> {
+      
+    })
+
+
+   let completeList = classList.map(d=>{
+     return(
+         <ListItem>
+           <ListItemIcon>
+             <FolderIcon />
+           </ListItemIcon>
+           <ListItemText
+               primary={d.name}
+               secondary={d.notes}
+           />
+           <ListItemSecondaryAction>
+             <Tooltip title='Delete Course' aria-label="delete course">
+               <IconButton onClick={this.handleDeleteCourse} edge="end" aria-label="delete">
+                 <DeleteIcon />
+               </IconButton>
+             </Tooltip>
+           </ListItemSecondaryAction>
+           {/*{this.state.open ? <ExpandLess /> : <ExpandMore />}*/}
+           {generateSecondList(d._id)}
+         </ListItem>
+     );
+   });
+
+    return (
+        <Paper>
+            <List
+                subheader={
+                  <ListSubheader component="div" id="nested-list-subheader">
+                    Manage Courses
+                  </ListSubheader>
+                }
+            >
+              {completeList}
+            </List>
+        </Paper>
+      );
+  }
+
+  createClassForm(){
+    return (
+        <form id="addClassForm" onSubmit={this.handleSubmitClass}>
+          <label htmlFor="className">Name: </label>
+          <TextField
+              onChange={this.handleInputChange}
+              id="className"
+              name="ClassName"
+              placeholder="Type class name here"
+              required/>
+          <label htmlFor="classNotes">Notes: </label>
+          <TextField
+              onChange={this.handleInputChange}
+              multiline
+              rowsMax="4"
+              id="classNotes"
+              name="ClassNote"
+              placeholder="Optional Notes on the class"/>
+          <button type="submit"> Submit</button>
+        </form>
+    );
+  }
+
+  createAssignmentForm(){
+    return (
+      <form id="addAssignmentForm" onSubmit={this.handleSubmitAssign}>
+        <label htmlFor="classAssign">Class:</label>
+        <select onChange={this.handleInputChange} id="classAssign" name="ClassId" required>
+          <option value="" disabled selected hidden>Select a Class</option>
+          {/*{optionItems}*/}
+        </select>
+        <label htmlFor="assignName">Name:</label>
+        <TextField
+            onChange={this.handleInputChange}
+            id="assignName"
+            name="AssignName"
+            placeholder="Type assignment name here"
+            required/>
+        <label htmlFor="assignNotes">Notes:</label>
+        <TextField
+            onChange={this.handleInputChange}
+            id="assignNotes"
+            name="AssignNote"
+            multiline
+            rowsMax="4"
+            placeholder="Optional Notes on the assignment"/>
+        <button type="submit"> Submit</button>
+      </form>
+    );
   }
 
   render() {
-
-    let courses = this.state.AvailableCourses;
-    let assignments = this.state.AvailableAssignments;
-    let optionItems = courses.map((course) =>
-      <option value={course._id}>{course.name}</option>
-    );
-    let classList = courses.map((course) =>
-      <div>
-        <li onClick={this.handleGetAssignment} className="classLi" id={course._id}>{course.name + ": " + course.course_note}</li>
-        <button className="deleteButton" onClick={this.handleDeleteCourse}>
-          <svg id={course._id} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path id={course._id} d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z" /></svg>
-        </button>
-      </div>
-    );
-    let assignList = assignments.map((assignment) =>
-      <div>
-        <li>{assignment.name + ": " + assignment.note}</li>
-        <button className="deleteButton" onClick={this.handleDeleteAssignment}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path id={assignment._id} d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z" /></svg>
-        </button>
-      </div>
-    );
-
-    if (assignList.length === 0) {
-      assignList = <li>Please Select a Class that has Assignments</li>;
-    }
-
-    if (classList.length === 0) {
-      classList = <li>Please Create a Class to get Started</li>;
-    }
-
+    console.log(this.state.AvailableCourses);
+    console.log(this.state.AvailableAssignments);
     return (
       <div className="classes-container">
+        <h1>Manage Coursework</h1>
+        {this.createList(this.state.AvailableCourses)}
 
-            <h2> New Class </h2>
-            <form id="addClassForm" onSubmit={this.handleSubmitClass}>
-              <label for="className">Name: </label>
-              <TextField
-                  onChange={this.handleInputChange}
-                  id="className"
-                  name="ClassName"
-                  placeholder="Type class name here"
-                  required />
-              <label for="classNotes">Notes: </label>
-              <TextField
-                  onChange={this.handleInputChange}
-                  multiline
-                  rowsMax="4"
-                  id="classNotes"
-                  name="ClassNote"
-                  placeholder="Optional Notes on the class" />
-              <button type="submit"> Submit </button>
-            </form>
-            <h2> New Assignment </h2>
-            <form id="addAssignmentForm" onSubmit={this.handleSubmitAssign}  >
-              <label for="classAssign">Class:</label>
-              <select onChange={this.handleInputChange} id="classAssign" name="ClassId" required>
-                <option value="" disabled selected hidden >Select a Class</option>
-                {optionItems}
-              </select>
-              <label for="assignName">Name:</label>
-              <TextField
-                  onChange={this.handleInputChange}
-                  id="assignName"
-                  name="AssignName"
-                  placeholder="Type assignment name here"
-                  required />
-              <label for="assignNotes">Notes:</label>
-              <TextField
-                  onChange={this.handleInputChange}
-                  id="assignNotes"
-                  name="AssignNote"
-                  multiline
-                  rowsMax="4"
-                  placeholder="Optional Notes on the assignment" />
-              <button type="submit"> Submit </button>
-            </form>
-            <h3>Your Classes</h3>
-            <ul className="currentClasses">
-              {classList}
-            </ul>
-            <h3>Your Assignments</h3>
-            <ul className="currentClasses">
-              {assignList}
-            </ul>
       </div>
 
     );

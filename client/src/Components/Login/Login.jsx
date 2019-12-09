@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { GoogleLogin } from "react-google-login";
-
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import config from "../../config.json";
 import picture from './library-image.jpg';
 
@@ -82,28 +82,37 @@ class Login extends Component {
 	};
 
 	render() {
+
+		const theme = createMuiTheme({
+			pallette: {
+				primary: '#274259',
+				secondary: '#FFAC1D',
+			}
+		});
+
 		return (
+			<MuiThemeProvider theme={theme}>
 			<div className="container">
 				<div id="login_page">
+
+					<h1> Your Opportunity To Change the Assessment World! </h1>
+					<div className="googleLoginContainer" id="google">
+						<GoogleLogin
+							clientId={config.GOOGLE_CLIENT_ID}
+							render={renderProps => (
+								<button onClick={renderProps.onClick} disabled={renderProps.disabled}>Login with Google</button>
+								)}
+							buttonText="Sign in with Google"
+							onSuccess={this.responseGoogle}
+							onFailure={this.onFailure}
+						/>
+					</div>
 					<div id="image_container">
 						<img id="welcome_img" alt="HSU library" src={picture} />
 					</div>
-					<div className="beside_picture">
-						<h1>Welcome Back!</h1>
-						<div className="googleLoginContainer" id="google">
-							<GoogleLogin
-								clientId={config.GOOGLE_CLIENT_ID}
-								render={renderProps => (
-									<button onClick={renderProps.onClick} disabled={renderProps.disabled}>Login with Google</button>
-									)}
-								buttonText="Sign in with Google"
-								onSuccess={this.responseGoogle}
-								onFailure={this.onFailure}
-							/>
-						</div>
-					</div>
-				</div >
+				</div>
 			</div >
+			</MuiThemeProvider>
 		);
 	}
 }
