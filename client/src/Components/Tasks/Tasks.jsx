@@ -13,6 +13,7 @@ import BackupOutlinedIcon from '@material-ui/icons/BackupOutlined';
 import SpellcheckOutlinedIcon from '@material-ui/icons/SpellcheckOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
+import Container from '@material-ui/core/Container';
 import useStyles from '../../styles';
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 
@@ -36,6 +37,7 @@ class Tasks extends Component {
 
 		return (
 			<div id="MainContainer">
+			<Container maxWidth={'md'}>
 				<MuiThemeProvider theme={theme}>
 					<Grid
 						justify="space-between"
@@ -115,6 +117,7 @@ class Tasks extends Component {
 						</Grid>
 					</Grid>
 				</MuiThemeProvider>
+			</Container>
 				<div id="mainContent">
 					<Switch>
 						<Route path="/tasks/courses"

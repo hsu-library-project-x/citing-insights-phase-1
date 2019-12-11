@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Card} from '@material-ui/core';
+import Container from "@material-ui/core/Container";
 
 
 class Results extends Component {
@@ -159,7 +160,7 @@ class Results extends Component {
         );
 
         return (
-            <div className="download-container">
+            <Container maxWidth={'md'}>
                 <label>Class:</label> {/*Investigate if it's for or form*/}
                 <select onChange={this.handleClassSelection} id="assignForAnalyze" name="className" required >
                     <option value="" disabled selected hidden >Select a Class</option>
@@ -182,7 +183,7 @@ class Results extends Component {
                     </button>
                 </div>
             <p1> {this.state.bigCitations}</p1>
-            </div>
+            </Container>
         )
     }
 }

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Card} from '@material-ui/core';
 import TextField from "@material-ui/core/TextField";
+import Container from "@material-ui/core/Container";
 
 class RubricSubmit extends Component{
 	constructor () {
@@ -92,7 +93,7 @@ class RubricSubmit extends Component{
 
 	render(){
 		return(
-			<div className="rubricSubmit">
+			<Container maxWidth={'md'}>
 				<button onClick={this.handleExitClick}>x</button>
 				<h2 className="rubricTitle">{this.state.currentRubric.name}</h2>
 				<p className="citationInfo">{this.props.sourceText}</p>
@@ -100,7 +101,7 @@ class RubricSubmit extends Component{
 					<div className="cardContainer">{this.renderActions()}</div>
 					<input type="submit" value="Submit Scores" />
 				</form>
-			</div>
+			</Container>
 		);
 	}
 }

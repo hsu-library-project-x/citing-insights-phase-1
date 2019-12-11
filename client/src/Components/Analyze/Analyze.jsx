@@ -6,6 +6,7 @@ import RubricSubmit from '../Rubric/RubricSubmit.jsx';
 import PdfComponent from "./PdfComponent.jsx";
 import DiscoveryTool from './DiscoveryTool.jsx';
 import Citation from './Citation.jsx'
+import Container from '@material-ui/core/Container';
 
 class Analyze extends Component {
   constructor(props) {
@@ -256,7 +257,7 @@ class Analyze extends Component {
       <option value={rubric._id}>{rubric.name}</option>
     );
     return (
-        <div className="DemoContents analyze-container">
+        <Container maxWidth={'md'}>
            <Grid container spacing={3}>
             <Grid item xs="3">
               <p id="assignmentInfo">Current Assignment - {this.state.assignment.name} </p>
@@ -297,7 +298,7 @@ class Analyze extends Component {
             </Grid>
           {this.state.assessingRubric ? <RubricSubmit sourceText={this.state.sourceText} unmountMe={this.handleChildUnmount} curRubric={this.state.currentRubric} curPaper={this.state.curPaperId} /> : null}
           </Grid>
-        </div>
+        </Container>
     );
   }
 }

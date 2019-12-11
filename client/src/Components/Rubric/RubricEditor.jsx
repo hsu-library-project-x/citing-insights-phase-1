@@ -3,6 +3,8 @@ import {Card} from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import TextField from "@material-ui/core/TextField";
 import uniqueId from 'react-html-id';
+import Container from "@material-ui/core/Container";
+
 
 import defaultRubricsJson from '../../default_rubrics/defaultRubric.json';
 
@@ -410,7 +412,7 @@ class RubricEditor extends Component {
 		);
 
 		return (
-			<div className={`rubricEdit-container`}>
+			<Container maxWidth={'md'}>
 				<h1>Rubric Selection</h1>
 				{(!this.state.isEditing) ?
 					<div className="numCardsSelector">
@@ -450,7 +452,7 @@ class RubricEditor extends Component {
 						<button id="saveCards" onClick={() => this.saveCard()}>Save Cards</button>
 					</div>
 				}
-			</div>
+			</Container>
 		);
 	}
 }

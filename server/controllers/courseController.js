@@ -1,5 +1,5 @@
-var courseModel = require('../models/courseModel.js');
-var assignmentModel = require('../models/assignmentModel.js');
+let courseModel = require('../models/courseModel.js');
+let assignmentModel = require('../models/assignmentModel.js');
 /**
  * courseController.js
  *
@@ -11,8 +11,9 @@ module.exports = {
      * courseController.list()
      * Lists BY USER ID
      */
+
     list: function (req, res) {
-        var id = req.params.id;
+        let id = req.params.id;
         courseModel.find({user_id: id}, function (err, courses) {
             if (err) {
                 return res.status(500).json({
@@ -20,7 +21,7 @@ module.exports = {
                     error: err
                 });
             }
-            return res.json(courses);
+          return res.json(courses);
         });
     },
 
@@ -28,7 +29,7 @@ module.exports = {
      * courseController.show()
      */
     show: function (req, res) {
-        var id = req.params.id;
+        let id = req.params.id;
         courseModel.findOne({_id: id}, function (err, course) {
             if (err) {
                 return res.status(500).json({
@@ -51,7 +52,7 @@ module.exports = {
     create: function (req, res) {
         console.log("test output");
         console.log(req.body);
-        var course = new courseModel({
+        let course = new courseModel({
 			name : req.body.name,
             course_note: req.body.note,
 			user_id : req.body.user_id
@@ -73,7 +74,7 @@ module.exports = {
      * courseController.update()
      */
     update: function (req, res) {
-        var id = req.params.id;
+        let id = req.params.id;
         courseModel.findOne({_id: id}, function (err, course) {
             if (err) {
                 return res.status(500).json({
@@ -107,7 +108,7 @@ module.exports = {
      * courseController.remove()
      */
     remove: function (req, res) {
-        var id = req.params.id;
+        let id = req.params.id;
         assignmentModel.deleteMany({"class_id": id}, function(err, assignments){
             if(err){
                 return res.status(500).json({

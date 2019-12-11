@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { GoogleLogin } from "react-google-login";
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import Container from "@material-ui/core/Container";
 import config from "../../config.json";
 import picture from './library-image.jpg';
 
@@ -92,7 +93,7 @@ class Login extends Component {
 
 		return (
 			<MuiThemeProvider theme={theme}>
-			<div className="container">
+			<Container maxWidth={'md'}>
 				<div id="login_page">
 
 					<h1> Your Opportunity To Change the Assessment World! </h1>
@@ -111,7 +112,7 @@ class Login extends Component {
 						<img id="welcome_img" alt="HSU library" src={picture} />
 					</div>
 				</div>
-			</div >
+			</Container>
 			</MuiThemeProvider>
 		);
 	}

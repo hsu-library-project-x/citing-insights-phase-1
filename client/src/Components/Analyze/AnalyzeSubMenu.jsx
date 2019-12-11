@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import Container from "@material-ui/core/Container";
 
 import { Redirect } from "react-router-dom";
 
@@ -89,7 +90,7 @@ class AnalyzeSubMenu extends Component {
     }
     
     return (
-      <div className="analyze-container ana-subcontainer" >
+      <Container maxWidth={'md'}>
             <form className={`${!this.state.selectedAssignment ? "warnHighlight" : "safeHighlight"}`} onSubmit={this.handleSubmit}>
               <h1> Analyze an Assignment</h1>
               <label >Class:</label> {/*Investigate for attribute */}
@@ -104,7 +105,7 @@ class AnalyzeSubMenu extends Component {
               </select>
               <button type="submit" disabled={this.state.redirect} > submit </button>
             </form>
-      </div>
+      </Container>
     );
   }
 }

@@ -1,20 +1,9 @@
 import React, { Component } from 'react';
-import {TextField, Typography, Paper, ListItemSecondaryAction, Tooltip} from "@material-ui/core";
-import ListSubheader from '@material-ui/core/ListSubheader';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Collapse from '@material-ui/core/Collapse';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import FolderIcon from '@material-ui/icons/Folder';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
+import {TextField, Container, Paper} from "@material-ui/core";
 import { withRouter } from 'react-router-dom';
 
+import CreateTree from "./CreateTree";
 
-// Class to render our homepage
 class Classes extends Component {
   constructor(props) {
     super(props);
@@ -34,47 +23,46 @@ class Classes extends Component {
     this.handleGetAssignment = this.handleGetAssignment.bind(this);
     this.handleDeleteAssignment = this.handleDeleteAssignment.bind(this);
     this.handleDeleteCourse = this.handleDeleteCourse.bind(this);
-    this.getClasses = this.getClasses.bind(this);
-    this.getAssignments = this.getAssignments.bind(this);
-    this.createList = this.createList.bind(this);
+    // this.getClasses = this.getClasses.bind(this);
+
     this.createClassForm = this.createClassForm.bind(this);
     this.createAssignmentForm = this.createAssignmentForm.bind(this);
   }
 
-  componentDidMount() {
-    let that = this;
-    that.getClasses();
-  }
+  // componentDidMount() {
+  //   let that = this;
+  //   that.getClasses();
+  // }
 
-  async getClasses() {
+  // async getClasses() {
+  //
+  //   let that = this;
+  //
+  //   fetch('http://localhost:5000/courses/' + this.props.user.id)
+  //     .then(function (response) {
+  //       return response.json();
+  //     })
+  //     .then(function (myJson) {
+  //       that.setState({
+  //         AvailableCourses: myJson
+  //       });
+  //     });
+  // }
 
-    let that = this;
-
-    fetch('http://localhost:5000/courses/' + this.props.user.id)
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (myJson) {
-        that.setState({
-          AvailableCourses: myJson
-        });
-      });
-  }
-
-  async getAssignments(class_id) {
-    let self = this;
-    console.log("class id:");
-    console.log(class_id);
-    fetch('http://localhost:5000/assignments/by_class_id/' + class_id)
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (myJson) {
-          self.setState({
-          AvailableAssignments: myJson
-        });
-      });
-  }
+  // async getAssignments(class_id) {
+  //   let self = this;
+  //   console.log("class id:");
+  //   console.log(class_id);
+  //   fetch('http://localhost:5000/assignments/by_class_id/' + class_id)
+  //     .then(function (response) {
+  //       return response.json();
+  //     })
+  //     .then(function (myJson) {
+  //         self.setState({
+  //         AvailableAssignments: myJson
+  //       });
+  //     });
+  // }
 
   handleGetAssignment(event) {
 
@@ -155,8 +143,6 @@ class Classes extends Component {
 
 
   handleDeleteAssignment(event) {
-
-
     let self = this;
     if (window.confirm("Are you sure you wish to delete this?")) {
       const target = event.target;
@@ -204,54 +190,6 @@ class Classes extends Component {
     });
   }
 
-  handleChange = panel => (event, isExpanded) => {
-    this.setState({expanded:  panel});
-  };
-
-  createList(classList){
-
-    let generateSecondList = this.state.AvailableAssignments.map(d=> {
-      
-    })
-
-
-   let completeList = classList.map(d=>{
-     return(
-         <ListItem>
-           <ListItemIcon>
-             <FolderIcon />
-           </ListItemIcon>
-           <ListItemText
-               primary={d.name}
-               secondary={d.notes}
-           />
-           <ListItemSecondaryAction>
-             <Tooltip title='Delete Course' aria-label="delete course">
-               <IconButton onClick={this.handleDeleteCourse} edge="end" aria-label="delete">
-                 <DeleteIcon />
-               </IconButton>
-             </Tooltip>
-           </ListItemSecondaryAction>
-           {/*{this.state.open ? <ExpandLess /> : <ExpandMore />}*/}
-           {generateSecondList(d._id)}
-         </ListItem>
-     );
-   });
-
-    return (
-        <Paper>
-            <List
-                subheader={
-                  <ListSubheader component="div" id="nested-list-subheader">
-                    Manage Courses
-                  </ListSubheader>
-                }
-            >
-              {completeList}
-            </List>
-        </Paper>
-      );
-  }
 
   createClassForm(){
     return (
@@ -305,14 +243,14 @@ class Classes extends Component {
   }
 
   render() {
-    console.log(this.state.AvailableCourses);
-    console.log(this.state.AvailableAssignments);
-    return (
-      <div className="classes-container">
-        <h1>Manage Coursework</h1>
-        {this.createList(this.state.AvailableCourses)}
 
-      </div>
+    return (
+        <Container maxWidth={'md'}>
+          <h1 className={'Title'}>Manage Coursework</h1>
+          <CreateTree
+              user_id={this.props.user.id}
+          />
+        </Container>
 
     );
   }

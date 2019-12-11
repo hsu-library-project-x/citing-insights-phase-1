@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
+import Container from "@material-ui/core/Container";
 
 
 import Dropzone from './Dropzone.jsx';
@@ -167,7 +168,7 @@ class Assignment extends Component{
     );
 
     return(
-      <div className="classes-container assign-container" >
+     <Container maxWidth={'md'}>
         <h1>Upload Files</h1>
         <p>Please upload papers as PDF</p>
 
@@ -204,7 +205,7 @@ class Assignment extends Component{
                 </div>
               </form>
             </div>
-      </div>
+     </Container>
     );
   }
 }
