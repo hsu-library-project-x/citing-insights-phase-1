@@ -3,30 +3,21 @@ import {TextField, Container, Paper} from "@material-ui/core";
 import { withRouter } from 'react-router-dom';
 
 import CreateTree from "./CreateTree";
+import CreateClass from "./CreateClass";
+import CreateAssignment from "./CreateAssignment";
 
 class Classes extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ClassName: '',
-      ClassNote: '',
-      ClassId: '',
-      AssignName: '',
-      AssignNote: '',
       AvailableCourses: [],
       AvailableAssignments: [],
       open:false,
     };
-    this.handleSubmitClass = this.handleSubmitClass.bind(this);
-    this.handleSubmitAssign = this.handleSubmitAssign.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
+
     this.handleGetAssignment = this.handleGetAssignment.bind(this);
     this.handleDeleteAssignment = this.handleDeleteAssignment.bind(this);
     this.handleDeleteCourse = this.handleDeleteCourse.bind(this);
-    // this.getClasses = this.getClasses.bind(this);
-
-    this.createClassForm = this.createClassForm.bind(this);
-    this.createAssignmentForm = this.createAssignmentForm.bind(this);
   }
 
   // componentDidMount() {
@@ -79,66 +70,40 @@ class Classes extends Component {
     target.classList.add("selected-class");
   }
 
-  async handleSubmitClass(event) {
-    event.preventDefault();
-    let self = this;
-    const data = {
-      "name": this.state.ClassName,
-      "note": this.state.ClassNote,
-      "user_id": this.props.user.id
-    };
 
-    let test = JSON.stringify(data);
-    fetch('http://localhost:5000/courses/', {
-      method: 'POST',
-      body: test,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-    }).then(() => { //unsed param response previously
-      self.getClasses()
-    });
 
-    this.setState({
-      ClassName: "",
-      ClassNote: ""
-    }, event.target.reset());
-
-  }
-
-  async handleSubmitAssign(event) {
-
-    event.preventDefault();
-    let self = this;
-
-    const data = {
-      "name": this.state.AssignName,
-      "note": this.state.AssignNote,
-      "class_id": this.state.ClassId
-    };
-
-    let dataString = JSON.stringify(data);
-
-    fetch('http://localhost:5000/assignments', {
-      method: 'POST',
-      body: dataString,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-    }).then(() => { // unused param response prev
-
-      self.getClasses();
-      self.getAssignments(data.class_id);
-    });
-
-    this.setState({
-      AssignName: "",
-      AssignNote: "",
-      ClassId: ""
-    }, event.target.reset());
-  }
+  // async handleSubmitAssign(event) {
+  //
+  //   event.preventDefault();
+  //   let self = this;
+  //
+  //   const data = {
+  //     "name": this.state.AssignName,
+  //     "note": this.state.AssignNote,
+  //     "class_id": this.state.ClassId
+  //   };
+  //
+  //   let dataString = JSON.stringify(data);
+  //
+  //   fetch('http://localhost:5000/assignments', {
+  //     method: 'POST',
+  //     body: dataString,
+  //     headers: {
+  //       'Accept': 'application/json',
+  //       'Content-Type': 'application/json'
+  //     },
+  //   }).then(() => { // unused param response prev
+  //
+  //     self.getClasses();
+  //     self.getAssignments(data.class_id);
+  //   });
+  //
+  //   this.setState({
+  //     AssignName: "",
+  //     AssignNote: "",
+  //     ClassId: ""
+  //   }, event.target.reset());
+  // }
 
 
 
@@ -180,73 +145,28 @@ class Classes extends Component {
     }
   }
 
-  //call when input changes to update the state
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
-    this.setState({
-      [name]: value
-    });
-  }
+  // //call when input changes to update the state
+  // handleInputChange(event) {
+  //   const target = event.target;
+  //   const value = target.value;
+  //   const name = target.name;
+  //   this.setState({
+  //     [name]: value
+  //   });
+  // }
 
 
-  createClassForm(){
-    return (
-        <form id="addClassForm" onSubmit={this.handleSubmitClass}>
-          <label htmlFor="className">Name: </label>
-          <TextField
-              onChange={this.handleInputChange}
-              id="className"
-              name="ClassName"
-              placeholder="Type class name here"
-              required/>
-          <label htmlFor="classNotes">Notes: </label>
-          <TextField
-              onChange={this.handleInputChange}
-              multiline
-              rowsMax="4"
-              id="classNotes"
-              name="ClassNote"
-              placeholder="Optional Notes on the class"/>
-          <button type="submit"> Submit</button>
-        </form>
-    );
-  }
 
-  createAssignmentForm(){
-    return (
-      <form id="addAssignmentForm" onSubmit={this.handleSubmitAssign}>
-        <label htmlFor="classAssign">Class:</label>
-        <select onChange={this.handleInputChange} id="classAssign" name="ClassId" required>
-          <option value="" disabled selected hidden>Select a Class</option>
-          {/*{optionItems}*/}
-        </select>
-        <label htmlFor="assignName">Name:</label>
-        <TextField
-            onChange={this.handleInputChange}
-            id="assignName"
-            name="AssignName"
-            placeholder="Type assignment name here"
-            required/>
-        <label htmlFor="assignNotes">Notes:</label>
-        <TextField
-            onChange={this.handleInputChange}
-            id="assignNotes"
-            name="AssignNote"
-            multiline
-            rowsMax="4"
-            placeholder="Optional Notes on the assignment"/>
-        <button type="submit"> Submit</button>
-      </form>
-    );
-  }
 
   render() {
 
     return (
         <Container maxWidth={'md'}>
           <h1 className={'Title'}>Manage Coursework</h1>
+          <CreateClass
+              user_id={this.props.user.id}
+          />
+          <CreateAssignment />
           <CreateTree
               user_id={this.props.user.id}
           />

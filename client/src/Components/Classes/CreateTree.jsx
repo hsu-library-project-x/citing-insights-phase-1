@@ -50,12 +50,12 @@ class CreateTree extends Component {
 
     nestItems(classes, assignments){
         return classes.map(d => {
-            let notes = d.course_note ? d.course_note : "";
+            let notes = d.course_note ? ": " + d.course_note : "";
             return (<TreeItem nodeId={d._id} label={d.name + " " + notes}>
                 {assignments.map(a => {
                     if (a.class_id === d._id) {
                         console.log(a);
-                        let a_notes = a.note ? a.note : "";
+                        let a_notes = a.note ? ": " + a.note : "";
                         return <TreeItem nodeId={a._id} label={a.name + " " + a_notes}/>;
                     }else return <TreeItem />;
                 })}
