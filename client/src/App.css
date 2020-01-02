@@ -8,4 +8,14 @@ body{
 
 .Title{
   margin-top: 1em;
+  text-align: center;
+}
+
+.FileInput{
+  border: #444444 0.05em dashed;
+  padding: 1em;
+}
+
+.paperContainer{
+  margin-bottom: 2em;
 }

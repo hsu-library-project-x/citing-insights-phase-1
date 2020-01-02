@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
-import Container from "@material-ui/core/Container";
+import {Container, FormControl, InputLabel, Select, FormHelperText, Paper, Button} from "@material-ui/core";
 
 
 import Dropzone from './Dropzone.jsx';
+import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 
 // Class to render our homepage
-class Assignment extends Component{
+class Upload extends Component{
   constructor(props) {
     super(props);
     this.state = {
@@ -83,11 +84,21 @@ class Assignment extends Component{
   renderActions() {
     if (this.state.successfullUploaded) {
       return (
-        <button onClick={() => this.setState({ files: [], successfullUploaded: false })}>Clear</button>
+        <Button
+            color="primary"
+            onClick={() => this.setState({ files: [], successfullUploaded: false })}
+            variant={"contained"}>
+          Clear
+        </Button>
       );
     } else {
       return (
-        <button disabled={this.state.files.length < 0 || this.state.uploading} onClick={this.uploadFiles}>Upload</button>
+        <Button
+            color="primary"
+            variant={"contained"}
+            disabled={this.state.files.length < 0 || this.state.uploading} onClick={this.uploadFiles}>
+          Upload
+        </Button>
       );
     }
   }
@@ -167,47 +178,74 @@ class Assignment extends Component{
       <option value={assignment._id}>{assignment.name}</option>
     );
 
+    const theme = createMuiTheme({
+      palette: {
+        primary: { main: '#25551b' }, // dk green
+        secondary: { main: '#5C8021' } // light green
+      },
+    });
+
     return(
-     <Container maxWidth={'md'}>
-        <h1>Upload Files</h1>
-        <p>Please upload papers as PDF</p>
+        <MuiThemeProvider theme={theme}>
+           <Container maxWidth={'md'}>
+             <Paper className={"paperContainer"}>
+               <h1 className={'Title'}>Upload Files</h1>
+               <p className={'Title'}>Please upload papers as PDF</p>
 
-            <div className="assignment_form">
-              <form>
-                <label for="selectClass">Class:</label>
-                <select onChange={this.handleClassSelection}  id="selectClass" name="classId" required>
-                  <option value="" disabled selected hidden >select a class</option>
-                  {optionItems}
-                </select>
-                <label for="selectAssignment">Assignment:</label>
-                <select onChange={this.handleInputChange}  id="selectAssignment" name="assignmentId" required>
-                  <option value="" disabled selected hidden >select an assignment</option>
-                  {optionAssignments}
-                </select>
+               <form  style={{textAlign:"center"}}>
+                 <FormControl style={{minWidth: 200}}>
+                     <InputLabel id="selectClasslabel">Select Class</InputLabel>
+                     <Select
+                         style={{textAlign:"center"}}
+                         labelId={"selectClasslabel"}
+                         required
+                         onChange={this.handleClassSelection}
+                         inputProps={{
+                           name: 'classId',
+                           id: 'selectClass',
+                         }}
+                     >
+                       <option value="" disabled selected hidden >select a class</option>
+                       {optionItems}
+                     </Select>
+                     <FormHelperText>Select a Class</FormHelperText>
+                 </FormControl>
+                  <br />
+                 <FormControl style={{minWidth: 200, marginBottom:"1em"}}>
+                     <InputLabel id="selectAssignmentLabel">Select Assignment</InputLabel>
+                     <Select
+                         style={{textAlign:"center"}}
+                         required
+                         onChange={this.handleInputChange}
+                         inputProps={{
+                           name: 'assignmentId',
+                           id: 'selectAssignment',
+                         }}
+                     >
+                       <option value="" disabled selected hidden >select an assignment</option>
+                       {optionAssignments}
+                     </Select>
+                     <FormHelperText>Select Assignment </FormHelperText>
+                 </FormControl>
 
-                <div className="Upload">
-                  <span className="Title">Upload:</span> 
-                  <div className="Content">
-                    <div>
-                      <Dropzone onFilesAdded={this.onFilesAdded} disabled={this.state.uploading || this.state.successfullUploaded}/>
-                    </div>
-                    <div className="Files">
-                      {this.state.files.map(file => {
-                        return (
-                          <div key={file.name} className="Row">
-                            <span className="Filename">{file.name}</span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                  <div className="Actions">{this.renderActions()}</div>
-                </div>
-              </form>
-            </div>
-     </Container>
+                 <br />
+                  <Dropzone onFilesAdded={this.onFilesAdded} disabled={this.state.uploading || this.state.successfullUploaded}/>
+                  <br />
+
+                  {this.state.files.map(file => {
+                    return (
+                      <div key={file.name}>
+                        <p className="Filename">{file.name}</p>
+                      </div>
+                    );
+                  })}
+                  {this.renderActions()}
+               </form>
+             </Paper>
+           </Container>
+        </MuiThemeProvider>
     );
   }
 }
 
-export default withRouter(Assignment);
+export default withRouter(Upload);

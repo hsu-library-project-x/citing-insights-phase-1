@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { GoogleLogin } from "react-google-login";
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import Container from "@material-ui/core/Container";
+import {Box, Grid, Button} from "@material-ui/core";
 import config from "../../config.json";
-import picture from './library-image.jpg';
+import picture from './lib1.jpg';
 
 class Login extends Component {
 	constructor(props) {
@@ -12,9 +12,11 @@ class Login extends Component {
 		this.state = {
 			isAuthenticated: false,
 			user: null,
-			token: ""
+			token: "",
 		};
 		this.getInfo = this.getInfo.bind(this);
+
+		this.height = window.innerHeight/1.29;
 	}
 
 	componentDidMount() {
@@ -85,34 +87,40 @@ class Login extends Component {
 	render() {
 
 		const theme = createMuiTheme({
-			pallette: {
-				primary: '#274259',
-				secondary: '#FFAC1D',
-			}
+			palette: {
+				primary: { main: '#25551b' }, // dk green
+				secondary: { main: '#5C8021' } // light green
+			},
+
 		});
 
 		return (
 			<MuiThemeProvider theme={theme}>
-			<Container maxWidth={'md'}>
-				<div id="login_page">
-
-					<h1> Your Opportunity To Change the Assessment World! </h1>
-					<div className="googleLoginContainer" id="google">
-						<GoogleLogin
-							clientId={config.GOOGLE_CLIENT_ID}
-							render={renderProps => (
-								<button onClick={renderProps.onClick} disabled={renderProps.disabled}>Login with Google</button>
+				<Grid container spacing={0}>
+					<Grid item xs={7}>
+						<Box style={{backgroundImage: `url(${picture})`, height: this.height}} />
+					</Grid>
+					<Grid item xs={5}>
+						<h1 style={{textAlign: "center", margin:"1em"}}> Your Opportunity To Change the Assessment World </h1>
+						<div style={{textAlign:"center", marginTop:"2em"}} id="google">
+							<GoogleLogin
+								clientId={config.GOOGLE_CLIENT_ID}
+								render={renderProps => (
+									<Button
+										color="primary"
+										variant="contained"
+										onClick={renderProps.onClick}
+										disabled={renderProps.disabled}>
+										Login with Google
+									</Button>
 								)}
-							buttonText="Sign in with Google"
-							onSuccess={this.responseGoogle}
-							onFailure={this.onFailure}
-						/>
-					</div>
-					<div id="image_container">
-						<img id="welcome_img" alt="HSU library" src={picture} />
-					</div>
-				</div>
-			</Container>
+								buttonText="Sign in with Google"
+								onSuccess={this.responseGoogle}
+								onFailure={this.onFailure}
+							/>
+						</div>
+					</Grid>
+				</Grid>
 			</MuiThemeProvider>
 		);
 	}

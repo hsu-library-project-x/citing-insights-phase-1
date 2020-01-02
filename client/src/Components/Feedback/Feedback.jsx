@@ -6,6 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import FeedbackIcon from '@material-ui/icons/Feedback';
 class Feedback extends Component {
   constructor(props){
     super(props);
@@ -67,9 +68,9 @@ class Feedback extends Component {
   render() {
     return (
       <div>
-        <button className={"NavLinkButton"} onClick={this.handleClickOpen}>
+        <Button size="small" variant={"contained"} startIcon={<FeedbackIcon color={"secondary"}  />} className={"NavLinkButton"} onClick={this.handleClickOpen}>
           Give Feedback
-          </button>
+          </Button>
         <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">Feedback</DialogTitle>
           <DialogContent>

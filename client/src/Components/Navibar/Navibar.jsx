@@ -7,6 +7,7 @@ import config from '../../config.json';
 import Feedback from "../Feedback/Feedback.jsx";
 import {createMuiTheme, MuiThemeProvider, makeStyles, styled } from "@material-ui/core/styles";
 
+import logo from "./logoCiting.svg";
 
 
 class Navibar extends Component {
@@ -14,6 +15,9 @@ class Navibar extends Component {
         super(props);
         this.responseGoogle = this.responseGoogle.bind(this);
         this.giveInfo = this.giveInfo.bind(this);
+        this.state={
+            institution: "Institution Name Goes Here",
+        }
     }
 
     giveInfo() {
@@ -28,7 +32,7 @@ class Navibar extends Component {
             props: {
                 isAuthenticated: false,
                 user: null,
-                token: ""
+                token: "",
             }
         });
     };
@@ -46,32 +50,42 @@ class Navibar extends Component {
             <MuiThemeProvider theme={theme}>
                 <AppBar color='primary' position="static">
                     <Toolbar>
-                        <Typography variant="h6" color="inherit" style={{ flex: 1 }}>
-                            Citing Insights  {/*TODO: Add back in svg when ready */}
-                        </Typography>
-
-
-                        {this.props.isAuthenticated ?
-                            <Feedback email={this.props.user.email} user_id={this.props.user.id}/> : null
-                        }
-
-                        {this.props.isAuthenticated ?
-                            <Tooltip title={this.props.isAuthenticated ? this.props.user.name : null} aria-label="username">
-                                <Button onClick={this.responseGoogle}  >
-                                    <GoogleLogout
-                                        clientId={config.GOOGLE_CLIENT_ID}
-                                        render={renderProps => (
-                                            <button className={"NavLinkButton"} onClick={renderProps.onClick}
-                                                    disabled={renderProps.disabled}>Logout</button>
-                                        )}
-                                        buttonText="Log Out"
-                                        onLogoutSuccess={this.responseGoogle}
-                                        onFailure={this.onFailure}
-                                    />
-                                </Button>
-                            </Tooltip>
-                            : null
-                        }
+                        <Grid container spacing={1}>
+                            <Grid item xs={4}>
+                                <Typography variant="h1" color="inherit" style={{ flex: 1, fontSize: "2vw" }}>
+                                   {this.state.institution}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <img alt={'citing-insights-logo'} src={logo} />
+                            </Grid>
+                            <Grid item xs={4}></Grid>
+                            <Grid item xs={1}>
+                                {this.props.isAuthenticated ?
+                                    <Tooltip title={this.props.isAuthenticated ? this.props.user.name : null} aria-label="username">
+                                        <Button onClick={this.responseGoogle}  >
+                                            <GoogleLogout
+                                                clientId={config.GOOGLE_CLIENT_ID}
+                                                render={renderProps => (
+                                                    <Button
+                                                        className={"NavLinkButton"}
+                                                        variant={"contained"}
+                                                        onClick={renderProps.onClick}
+                                                        disabled={renderProps.disabled}
+                                                    >
+                                                            Logout
+                                                    </Button>
+                                                )}
+                                                buttonText="Log Out"
+                                                onLogoutSuccess={this.responseGoogle}
+                                                onFailure={this.onFailure}
+                                            />
+                                        </Button>
+                                    </Tooltip>
+                                    : null
+                                }
+                            </Grid>
+                        </Grid>
                     </Toolbar>
                 </AppBar>
             </MuiThemeProvider>

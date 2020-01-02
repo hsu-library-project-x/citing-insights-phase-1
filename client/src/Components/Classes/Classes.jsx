@@ -162,14 +162,16 @@ class Classes extends Component {
 
     return (
         <Container maxWidth={'md'}>
-          <h1 className={'Title'}>Manage Coursework</h1>
-          <CreateClass
-              user_id={this.props.user.id}
-          />
-          <CreateAssignment />
-          <CreateTree
-              user_id={this.props.user.id}
-          />
+          <Paper className={"paperContainer"}>
+            <h1 className={'Title'}>Manage Coursework</h1>
+            <CreateClass
+                user_id={this.props.user.id}
+            />
+            <CreateAssignment />
+            <CreateTree
+                user_id={this.props.user.id}
+            />
+          </Paper>
         </Container>
 
     );

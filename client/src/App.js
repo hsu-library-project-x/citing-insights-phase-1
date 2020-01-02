@@ -8,6 +8,7 @@ import Tasks from "./Components/Tasks/Tasks.jsx";
 
 import Navibar from './Components/Navibar/Navibar.jsx';
 import './App.css';
+import BottomNavBar from "./Components/BottomNavBar/BottomNavBar";
 
 class App extends Component {
 
@@ -90,7 +91,13 @@ class App extends Component {
                 />
               </Switch>
             </div>
+            <BottomNavBar
+                isAuthenticated={this.state.isAuthenticated}
+                passInfoLogout={this.passInfoLogout}
+                user={this.state.user}
+            />
           </HashRouter>
+
         </div>
       </div>
     );

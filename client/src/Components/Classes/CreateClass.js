@@ -80,7 +80,7 @@ class CreateClass extends Component {
 
         return(
                 <MuiThemeProvider theme={theme}>
-                    <Button type="button" variant="contained" color={'secondary'} onClick={this.handleOpen}>
+                    <Button type="button" variant="contained" color={'primary'} onClick={this.handleOpen}>
                         Create New Class
                     </Button>
                     <Modal

@@ -1,20 +1,15 @@
 import React, { Component } from 'react';
-import { Switch, Route, Link, withRouter } from "react-router-dom";
 import Classes from "../Classes/Classes.jsx";
-import Assignments from "../Assignmnets/Assignments.jsx";
+import Assignments from "../Upload/Upload.jsx";
 import Analyze from "../Analyze/Analyze.jsx";
 import RubricEditor from "../Rubric/RubricEditor.jsx";
 import AnalyzeSubMenu from "../Analyze/AnalyzeSubMenu.jsx";
 import Results from '../Overview/Results.jsx';
-import {Grid, Fab, Container, Stepper, Step, StepButton, Button, Typography} from "@material-ui/core";
+import { withRouter } from 'react-router-dom';
+import {Grid, IconButton, Container, Stepper, Step, StepButton, Button, Typography} from "@material-ui/core";
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
-
-import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
-import BackupOutlinedIcon from '@material-ui/icons/BackupOutlined';
-import SpellcheckOutlinedIcon from '@material-ui/icons/SpellcheckOutlined';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 
 // Class to render our homepage
 class Tasks extends Component {
@@ -123,7 +118,7 @@ class Tasks extends Component {
 				<Container maxWidth={'md'}>
 					<Stepper nonLinear activeStep={this.state.ActiveStep}>
 						{this.steps.map((label, index) => (
-							<Step key={label}>
+							<Step  key={label}>
 								<StepButton onClick={this.handleStep(index)} completed={this.state.completed[index]}>
 									{label}
 								</StepButton>
@@ -140,11 +135,16 @@ class Tasks extends Component {
 							</div>
 						) : (
 							<div>
-								<Typography>{this.stepContent[this.state.ActiveStep]}</Typography>
-								<div>
-									<Button disabled={this.state.ActiveStep === 0} onClick={this.handleBack}>
-										Back
-									</Button>
+								<Typography align={"center"}>{this.stepContent[this.state.ActiveStep]}</Typography>
+								<div align={"right"}>
+									<IconButton
+										aria-label="back-button"
+										size="small"
+										disabled={this.state.ActiveStep === 0}
+										onClick={this.handleBack}
+									>
+										<ArrowBackIcon color={"primary"}/>
+									</IconButton>
 									<Button
 										variant="contained"
 										color="primary"
@@ -163,6 +163,7 @@ class Tasks extends Component {
 										</Button>
 									))}
 								</div>
+
 							</div>
 						)}
 						<div>
