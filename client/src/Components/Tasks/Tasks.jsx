@@ -1,15 +1,21 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+
+import {Tooltip, IconButton, Container, Stepper, Step, StepButton, Button, Typography, Fab, Grid} from "@material-ui/core";
+
 import Classes from "../Classes/Classes.jsx";
 import Assignments from "../Upload/Upload.jsx";
 import Analyze from "../Analyze/Analyze.jsx";
 import RubricEditor from "../Rubric/RubricEditor.jsx";
 import AnalyzeSubMenu from "../Analyze/AnalyzeSubMenu.jsx";
 import Results from '../Overview/Results.jsx';
-import { withRouter } from 'react-router-dom';
-import {Grid, IconButton, Container, Stepper, Step, StepButton, Button, Typography} from "@material-ui/core";
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import DoneIcon from '@material-ui/icons/Done';
 
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
+
 
 // Class to render our homepage
 class Tasks extends Component {
@@ -21,7 +27,7 @@ class Tasks extends Component {
 		}
 
 		this.steps= ['Manage Courses', 'Upload Papers','Edit Rubrics', 'Analyze', 'Overview'];
-		this.stepContent=[	'Step 1: Add/Remove/Edit Classes and Assignments',
+		this.stepContent=[	'Step 1: Add / Remove / Edit Classes and Assignments',
 		                   	'Step 2: Upload Student Papers',
 							'Step 3: Customize Rubrics or Use pre-loaded Rubrics. Either way add a rubric for Analyze Mode',
 							"Step 4: Assess Student's citations using rubric and our Discovery tools",
@@ -125,6 +131,7 @@ class Tasks extends Component {
 							</Step>
 						))}
 					</Stepper>
+
 					<div>
 						{this.allStepsCompleted() ? (
 							<div>
@@ -135,35 +142,52 @@ class Tasks extends Component {
 							</div>
 						) : (
 							<div>
-								<Typography align={"center"}>{this.stepContent[this.state.ActiveStep]}</Typography>
-								<div align={"right"}>
-									<IconButton
-										aria-label="back-button"
-										size="small"
-										disabled={this.state.ActiveStep === 0}
-										onClick={this.handleBack}
-									>
-										<ArrowBackIcon color={"primary"}/>
-									</IconButton>
-									<Button
-										variant="contained"
-										color="primary"
-										onClick={this.handleNext}
-									>
-										Next
-									</Button>
-									{this.state.ActiveStep !== this.steps.length &&
-									(this.state.completed[this.state.ActiveStep] ? (
-										<Typography variant="caption" >
-											Step {this.state.ActiveStep + 1} already completed
-										</Typography>
-									) : (
-										<Button variant="contained" color="primary" onClick={this.handleComplete}>
-											{this.completedSteps() === this.totalSteps() - 1 ? 'Finish' : 'Complete Step'}
-										</Button>
-									))}
-								</div>
-
+								<Grid container spacing={0}>
+									<Grid item xs={6}>
+										<Typography align={"center"} color="textSecondary">{this.stepContent[this.state.ActiveStep]}</Typography>
+									</Grid>
+									<Grid item xs={6}>
+										<div align={"right"}>
+											<Tooltip title="Back" aria-label="go back">
+												<IconButton
+													aria-label="back-button"
+													size="small"
+													disabled={this.state.ActiveStep === 0}
+													onClick={this.handleBack}
+												>
+													<ArrowBackIosIcon />
+												</IconButton>
+											</Tooltip>
+											<Tooltip title="Next" aria-label="go next">
+												<IconButton
+													aria-label="next-button"
+													size="small"
+													disabled={this.state.ActiveStep >= 4}
+													onClick={this.handleNext}
+												>
+													<ArrowForwardIosIcon />
+												</IconButton>
+											</Tooltip>
+											{this.state.ActiveStep !== this.steps.length &&
+											(this.state.completed[this.state.ActiveStep] ? (
+												<Typography variant="caption" >
+													Step {this.state.ActiveStep + 1} already completed
+												</Typography>
+											) : (
+												<Fab
+													variant="extended"
+													size="small"
+													color="primary"
+													aria-label="complete step"
+													onClick={this.handleComplete}
+												>
+													{this.completedSteps() === this.totalSteps() - 1 ? 'Finish' : 'Complete Step'}
+													<DoneIcon  />
+												</Fab>
+											))}
+										</div>
+									</Grid>
+								</Grid>
 							</div>
 						)}
 						<div>
@@ -172,7 +196,6 @@ class Tasks extends Component {
 					</div>
 				</Container>
 			</MuiThemeProvider>
-
 		);
 	}
 }
