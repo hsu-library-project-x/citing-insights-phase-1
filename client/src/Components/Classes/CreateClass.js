@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {TextField, Modal, Paper, Button, Fab} from "@material-ui/core";
+import {TextField, Modal, Paper, Button, Fab,  Typography} from "@material-ui/core";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import ClassIcon from '@material-ui/icons/Class';
 
@@ -82,6 +82,8 @@ class CreateClass extends Component {
                          variant="extended"
                          color={'primary'}
                          onClick={this.handleOpen}
+                         size={"small"}
+                         style={{float:"right", margin:"1em"}}
                     >
                         <ClassIcon />
                         Create Class
@@ -94,8 +96,8 @@ class CreateClass extends Component {
                         closeAfterTransition={true}
                         style={{marginTop:'5%', width:'50%', marginRight:'auto', marginLeft:'auto'}}
                     >
-                        <Paper >
-                            <h2 id={'create_class'}> Create Class </h2>
+                        <Paper>
+                            <Typography style={{paddingTop: "1em"}} align={"center"} variant={"h4"} component={"h2"} gutterBottom={true}> Create Class </Typography>
                             <form className={'modal_form'} onSubmit={this.handleSubmitClass}>
                                 <fieldset className={'modal_fieldset'}>
                                     <legend> Class Information </legend>

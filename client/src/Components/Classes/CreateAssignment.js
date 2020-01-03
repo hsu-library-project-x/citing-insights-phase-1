@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {TextField, Modal, Paper, Fab, Button} from "@material-ui/core";
+import {TextField, Modal, Paper, Fab, Button, Typography} from "@material-ui/core";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import AssignmentIcon from '@material-ui/icons/Assignment';
 
@@ -86,6 +86,9 @@ class CreateAssignment extends Component {
                      variant="extended"
                      color={'primary'}
                      onClick={this.handleOpen}
+                     size={"small"}
+                     style={{float:"right", margin:"1em"}}
+
                 >
                     <AssignmentIcon />
                     Create Assignment
@@ -99,10 +102,9 @@ class CreateAssignment extends Component {
                     style={{marginTop:'5%', width:'50%', marginRight:'auto', marginLeft:'auto'}}
                 >
                     <Paper>
-                        <h2 id={'create_assigment'}> Create Assignmnet  </h2>
+                        <Typography style={{paddingTop: "1em"}} align={"center"} variant={"h4"} component={"h2"} gutterBottom={true}> Create Assignmnet   </Typography>
                         <form className={'modal_form'} onSubmit={this.handleSubmitClass}>
                             <fieldset className={'modal_fieldset'}>
-                                <legend> Class </legend>
                                     <label htmlFor="classAssign"> Class </label>
                                     <select style={{marginLeft:'1em'}} onChange={this.handleInputChange} id="classAssign" name="ClassId" required>
                                         <option value="" disabled selected hidden>Select a Class</option>

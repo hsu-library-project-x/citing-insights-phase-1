@@ -19,3 +19,8 @@ body{
 .paperContainer{
   margin-bottom: 2em;
 }
+
+.modal_form{
+  text-align: center;
+  padding: 1em;
+}

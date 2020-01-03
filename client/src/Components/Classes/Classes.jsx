@@ -16,8 +16,7 @@ class Classes extends Component {
     };
 
     this.handleGetAssignment = this.handleGetAssignment.bind(this);
-    this.handleDeleteAssignment = this.handleDeleteAssignment.bind(this);
-    this.handleDeleteCourse = this.handleDeleteCourse.bind(this);
+
   }
 
   // componentDidMount() {
@@ -107,43 +106,43 @@ class Classes extends Component {
 
 
 
-  handleDeleteAssignment(event) {
-    let self = this;
-    if (window.confirm("Are you sure you wish to delete this?")) {
-      const target = event.target;
+  // handleDeleteAssignment(event) {
+  //   let self = this;
+  //   if (window.confirm("Are you sure you wish to delete this?")) {
+  //     const target = event.target;
+  //
+  //     fetch('http://localhost:5000/assignments/' + target.id, {
+  //       method: 'Delete',
+  //       headers: {
+  //         'Accept': 'application/json',
+  //         'Content-Type': 'application/json'
+  //       },
+  //     })
+  //     .then( () => { //unsued param response
+  //       self.getAssignments(this.state.ClassId);
+  //     });
+  //   }
+  // }
 
-      fetch('http://localhost:5000/assignments/' + target.id, {
-        method: 'Delete',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-      })
-      .then( () => { //unsued param response
-        self.getAssignments(this.state.ClassId);
-      });
-    }
-  }
-
-  handleDeleteCourse(event) {
-
-    let self = this;
-    if (window.confirm("Are you sure you wish to delete this course?")) {
-      if (window.confirm("WARNING!! You are about to delete this course, please click OK to proceed")) {
-
-        const target = event.target;
-        fetch('http://localhost:5000/courses/' + target.id, {
-          method: 'Delete',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-        }).then(() => {
-          self.getClasses();
-        });
-      }
-    }
-  }
+  // handleDeleteCourse(event) {
+  //
+  //   let self = this;
+  //   if (window.confirm("Are you sure you wish to delete this course?")) {
+  //     if (window.confirm("WARNING!! You are about to delete this course, please click OK to proceed")) {
+  //
+  //       const target = event.target;
+  //       fetch('http://localhost:5000/courses/' + target.id, {
+  //         method: 'Delete',
+  //         headers: {
+  //           'Accept': 'application/json',
+  //           'Content-Type': 'application/json'
+  //         },
+  //       }).then(() => {
+  //         self.getClasses();
+  //       });
+  //     }
+  //   }
+  // }
 
   // //call when input changes to update the state
   // handleInputChange(event) {
@@ -161,25 +160,16 @@ class Classes extends Component {
   render() {
 
     return (
+
         <Container maxWidth={'md'}>
           <Typography style={{marginTop: "1em"}} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}> Manage Coursework </Typography>
-          {/*<Grid container spacing={2}>*/}
-          {/*  <Grid item xs={6}>*/}
-              <CreateTree
-                  user_id={this.props.user.id}
-              />
-            {/*</Grid>*/}
-            {/*<Grid item xs={6} justify={"right"}>*/}
-              <CreateClass
-                  user_id={this.props.user.id}
-              />
-            {/*</Grid>*/}
-            {/*<Grid item xs={6} />*/}
-            {/*<Grid item xs={6}>*/}
-              <CreateAssignment />
-            {/*</Grid>*/}
-          {/*  <Grid item xs={12} />*/}
-          {/*</Grid>*/}
+          <CreateTree
+              user_id={this.props.user.id}
+          />
+          <CreateAssignment />
+          <CreateClass
+            user_id={this.props.user.id}
+          />
         </Container>
 
     );
