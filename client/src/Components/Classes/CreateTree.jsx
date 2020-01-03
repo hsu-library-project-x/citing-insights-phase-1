@@ -1,6 +1,7 @@
 import {TreeItem, TreeView} from '@material-ui/lab';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import { ListItem, List, ListItemAvatar, ListItemIcon, Typography, ListItemText  } from '@material-ui/core';
+import FolderIcon from '@material-ui/icons/Folder';
+
 
 import React, {Component} from 'react';
 
@@ -50,28 +51,39 @@ class CreateTree extends Component {
 
     nestItems(classes, assignments){
         return classes.map(d => {
-            let notes = d.course_note ? ": " + d.course_note : "";
-            return (<TreeItem nodeId={d._id} label={d.name + " " + notes}>
+            let notes = d.course_note ? d.course_note : "";
+            return (<ListItem nodeId={d._id}>
+                <ListItemIcon>
+                    <FolderIcon />
+                </ListItemIcon>
+                <ListItemText
+                    primary={d.name}
+                    secondary={notes}
+                />
                 {assignments.map(a => {
                     if (a.class_id === d._id) {
                         console.log(a);
-                        let a_notes = a.note ? ": " + a.note : "";
-                        return <TreeItem nodeId={a._id} label={a.name + " " + a_notes}/>;
-                    }else return <TreeItem />;
+                        let a_notes = a.note ? a.note : "";
+                        return <ListItem nodeId={a._id}>
+                            <ListItemText
+                                primary={a.name}
+                                secondary={a_notes}
+                            />
+                        </ListItem>;
+                    }else return null;
                 })}
-            </TreeItem>);
+            </ListItem>);
         });
     }
 
     render() {
         return(
-            <TreeView
-                defaultCollapseIcon={<ExpandMoreIcon />}
-                defaultExpandIcon={<ChevronRightIcon />}
+            <List
+                // defaultCollapseIcon={<ExpandMoreIcon />}
+                // defaultExpandIcon={<ChevronRightIcon />}
             >
                 {this.nestItems(this.state.classList, this.state.assignmentList)}
-
-            </TreeView>
+            </List>
         );
     }
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
-import {Tooltip, IconButton, Container, Stepper, Step, StepButton, Button, Typography, Fab, Grid} from "@material-ui/core";
+import {Tooltip, IconButton, Container, Stepper, Step, StepButton, Button, Typography, Fab, Grid, Toolbar} from "@material-ui/core";
 
 import Classes from "../Classes/Classes.jsx";
 import Assignments from "../Upload/Upload.jsx";
@@ -105,6 +105,8 @@ class Tasks extends Component {
 				return <AnalyzeSubMenu user={this.props.user} />;
 			case 4:
 				return <Results user={this.props.user} />;
+			case 5:
+				return <p align={"center"}> Click on the Reset Button to reset your progress or click on any step to go back </p>;
 			default:
 				return 'Unknown step';
 		}
@@ -134,11 +136,20 @@ class Tasks extends Component {
 
 					<div>
 						{this.allStepsCompleted() ? (
-							<div>
+							<div align={"center"}>
 								<Typography >
 									All steps completed - you&apos;re finished
 								</Typography>
-								<Button onClick={this.handleReset}>Reset</Button>
+								<Fab
+									// style={{float:"right"}}
+									variant="extended"
+									size="small"
+									color="primary"
+									aria-label="reset"
+									onClick={this.handleReset}
+									>
+									Reset
+								</Fab>
 							</div>
 						) : (
 							<div>

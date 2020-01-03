@@ -1,7 +1,7 @@
 import React, {Component} from "react";
-import {TextField, Modal, Paper, Button} from "@material-ui/core";
+import {TextField, Modal, Paper, Button, Fab} from "@material-ui/core";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
-import './Classes.css';
+import ClassIcon from '@material-ui/icons/Class';
 
 class CreateClass extends Component {
     constructor(props) {
@@ -76,13 +76,16 @@ class CreateClass extends Component {
             },
         });
 
-
-
         return(
                 <MuiThemeProvider theme={theme}>
-                    <Button type="button" variant="contained" color={'primary'} onClick={this.handleOpen}>
-                        Create New Class
-                    </Button>
+                    <Fab type="button"
+                         variant="extended"
+                         color={'primary'}
+                         onClick={this.handleOpen}
+                    >
+                        <ClassIcon />
+                        Create Class
+                    </Fab>
                     <Modal
                         aria-labelledby="create-class-modal"
                         aria-describedby="form-to-add-class-to-database"

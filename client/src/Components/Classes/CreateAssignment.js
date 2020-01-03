@@ -1,7 +1,8 @@
 import React, {Component} from "react";
-import {TextField, Modal, Paper, Button} from "@material-ui/core";
+import {TextField, Modal, Paper, Fab, Button} from "@material-ui/core";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
-import "./Classes.css"
+import AssignmentIcon from '@material-ui/icons/Assignment';
+
 
 class CreateAssignment extends Component {
     constructor(props) {
@@ -81,9 +82,14 @@ class CreateAssignment extends Component {
 
         return(
             <MuiThemeProvider theme={theme}>
-                <Button type="button" variant="contained" color={'primary'} onClick={this.handleOpen}>
-                    Create New Assignment
-                </Button>
+                <Fab type="button"
+                     variant="extended"
+                     color={'primary'}
+                     onClick={this.handleOpen}
+                >
+                    <AssignmentIcon />
+                    Create Assignment
+                </Fab>
                 <Modal
                     aria-labelledby="create-assignment-modal"
                     aria-describedby="add-assignment-to-class"

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {TextField, Container, Paper} from "@material-ui/core";
+import {Typography, Container, Grid} from "@material-ui/core";
 import { withRouter } from 'react-router-dom';
 
 import CreateTree from "./CreateTree";
@@ -162,16 +162,24 @@ class Classes extends Component {
 
     return (
         <Container maxWidth={'md'}>
-          <Paper className={"paperContainer"}>
-            <h1 className={'Title'}>Manage Coursework</h1>
-            <CreateClass
-                user_id={this.props.user.id}
-            />
-            <CreateAssignment />
-            <CreateTree
-                user_id={this.props.user.id}
-            />
-          </Paper>
+          <Typography style={{marginTop: "1em"}} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}> Manage Coursework </Typography>
+          {/*<Grid container spacing={2}>*/}
+          {/*  <Grid item xs={6}>*/}
+              <CreateTree
+                  user_id={this.props.user.id}
+              />
+            {/*</Grid>*/}
+            {/*<Grid item xs={6} justify={"right"}>*/}
+              <CreateClass
+                  user_id={this.props.user.id}
+              />
+            {/*</Grid>*/}
+            {/*<Grid item xs={6} />*/}
+            {/*<Grid item xs={6}>*/}
+              <CreateAssignment />
+            {/*</Grid>*/}
+          {/*  <Grid item xs={12} />*/}
+          {/*</Grid>*/}
         </Container>
 
     );
