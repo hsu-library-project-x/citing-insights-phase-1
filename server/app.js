@@ -9,7 +9,7 @@ const upload = require('./upload');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/test', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/test', { useNewUrlParser: true, useUnifiedTopology: true });
 
 var routes = require('./routes/index');
 var users = require('./routes/userRoutes');
@@ -42,9 +42,7 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static('/home/citing_insights/citing-insights-phase-1/client/build/'));
-
-
+app.use(express.static(path.join(__dirname,  'public')));
 
 app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -52,6 +50,7 @@ app.use(bodyParser.json());
 
 app.post('/upload', upload);
 
+app.use('/', routes);
 app.use('/users', users);
 app.use('/courses', courses);
 app.use('/assignments', assignments);
@@ -64,7 +63,7 @@ app.use('/feedback', feedback);
 app.get('/file_upload', function (req, res) {
   res.render('test.html');
 })
-
+  /*
 app.get('*', (req, res) => {
 
   console.log(req);
@@ -72,7 +71,7 @@ app.get('*', (req, res) => {
   console.log(path.join(__dirname + '../../client/build/index.html'));
   res.sendFile(path.join(__dirname + '../../client/build/index.html'));
 });
-
+*/
 
 module.exports = app;
 

@@ -3,11 +3,10 @@ const request = require('request');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 
-function Get(yourUrl){
-  var Httpreq = new XMLHttpRequest(); // a new request
-  Httpreq.open("GET",yourUrl,false);
-  Httpreq.send(null);
-  return Httpreq.responseText;
+async function Get(yourUrl){
+  await fetch(yourUrl).then(async (response) => { 
+  return await response.json();
+  });
 }
 
 

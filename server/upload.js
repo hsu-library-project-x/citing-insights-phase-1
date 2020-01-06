@@ -9,6 +9,9 @@ var chance = new Chance();
 var paperModel = require("./models/paperModel.js");
 var citationModel = require("./models/citationModel.js");
 
+//For use with CrossRef + SemanticScholar calls
+const controller = require("./controllers/webCallsController.js");
+
 var check = true;
 
 module.exports = function upload(req, res) {
@@ -70,7 +73,9 @@ module.exports = function upload(req, res) {
             });
 
 
-            //** citations start */
+            /* 
+            citations start 
+            */
 
             var json_path = "./tmp/json";
 
@@ -98,9 +103,7 @@ module.exports = function upload(req, res) {
                 ],
                 "paper_id": paper.id
             }
-
             let studentPaperCtitaion = new citationModel(defaultCitation);
-
             studentPaperCtitaion.save(function (err, studentPaperCtitaion) {
                 if (err) {
                     check = false;
@@ -108,10 +111,23 @@ module.exports = function upload(req, res) {
                 }
             });
 
+            //Assign all citations to the paper.
             for (index in json_file) {
                 var citation = new citationModel(json_file[index]);
+
+                //Give each citation the paper's id
                 citation.set({ "paper_id": paper.id });
 
+                //Do web calls here for Semantic Scholar MetaData
+                let author = controller.checkAuthor(citation.author);
+                let title = controller.checkTitle(citation.title);
+                let URL = "https://api.crossref.org/works?query.author=" + author + "&query.bibliographic=" + title +  "&mailto=citinginsightsheroku@gmail.com&rows=1&offset=0&select=DOI";
+
+                let data = controller.getData(URL).then((result) => {
+                    console.log("RESULLLLT: " + result);
+                })
+
+                //after creating a citation model, save to db
                 citation.save(function (err, citation) {
                     if (err) {
                         check = false;
@@ -126,7 +142,6 @@ module.exports = function upload(req, res) {
             shell.exec('rm ' + file.path);
             //  shell.exec('rm ' + txt_path);
 
-            //after creating a citation model, save to db
         })
         .on("end", () => {
             //we want to check a bool set in paper.save to see if we cool

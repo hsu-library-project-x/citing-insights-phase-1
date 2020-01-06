@@ -171,7 +171,6 @@ class Assignment extends Component{
       alert("Uploading...");
       alert("Upload Successful!");
     });
-
   }
 
   render(){	
