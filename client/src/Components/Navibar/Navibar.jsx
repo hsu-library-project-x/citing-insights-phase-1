@@ -9,7 +9,6 @@ import {createMuiTheme, MuiThemeProvider, makeStyles, styled } from "@material-u
 
 import logo from "./logoCiting.svg";
 
-
 class Navibar extends Component {
     constructor(props) {
         super(props);
@@ -57,7 +56,10 @@ class Navibar extends Component {
                                 </Typography>
                             </Grid>
                             <Grid item xs={3}>
-                                <img alt={'citing-insights-logo'} src={logo} />
+                                <object type="image/svg+xml" data={logo} className="logo">
+                                    Citing Insights Logo
+                                </object>
+                                {/*<img alt={'citing-insights-logo'} src={logo} />*/}
                             </Grid>
                             <Grid item xs={4}></Grid>
                             <Grid item xs={1}>

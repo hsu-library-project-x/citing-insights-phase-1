@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Typography, Container, Grid} from "@material-ui/core";
+import {Typography, Container} from "@material-ui/core";
 import { withRouter } from 'react-router-dom';
 
 import CreateTree from "./CreateTree";
