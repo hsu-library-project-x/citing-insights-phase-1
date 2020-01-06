@@ -15,6 +15,7 @@ class CreateClass extends Component {
         this.handleClose= this.handleClose.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmitClass = this.handleSubmitClass.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     handleOpen = () => {
@@ -53,18 +54,23 @@ class CreateClass extends Component {
             },
         })
             .then((response) => {
-            // self.getClasses()
-                this.setState({
-                    ClassName: "",
-                    ClassNote: ""
-                });
-        });
+                if (response.status === 201){
+                    alert("New Class Created!");
+                    this.setState({
+                        ClassName: "",
+                        ClassNote: "",
+                        open:false,
+                    });
+                }
+                else{
+                    alert("Error: could not create class");
+                    this.setState({open:false});
+                }
+        }).then(() => this.handleChange());
+    }
 
-        // this.setState({
-        //     ClassName: "",
-        //     ClassNote: ""
-        // }, event.target.reset());
-
+    handleChange(){
+        this.props.getClasses();
     }
 
 
@@ -115,7 +121,6 @@ class CreateClass extends Component {
                                         multiline
                                         rowsMax="4"
                                         name="ClassNote"
-                                        // variant="filled"
                                         style={{marginBottom: "1em"}} />
                                 </fieldset>
                                 <Button  variant="contained" type="submit" color="primary"> Submit </Button>

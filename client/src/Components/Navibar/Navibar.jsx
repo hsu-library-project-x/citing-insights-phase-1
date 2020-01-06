@@ -4,8 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { GoogleLogout } from 'react-google-login';
 
 import config from '../../config.json';
-import Feedback from "../Feedback/Feedback.jsx";
-import {createMuiTheme, MuiThemeProvider, makeStyles, styled } from "@material-ui/core/styles";
+import {createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
 import logo from "./logoCiting.svg";
 
@@ -62,7 +61,7 @@ class Navibar extends Component {
                             <Grid item xs={1}>
                                 {this.props.isAuthenticated ?
                                     <Tooltip title={this.props.isAuthenticated ? this.props.user.name : null} aria-label="username">
-                                        <Button onClick={this.responseGoogle}  >
+                                        {/*/!*<Button  >*!/  per react error removed button in button*/}
                                             <GoogleLogout
                                                 clientId={config.GOOGLE_CLIENT_ID}
                                                 render={renderProps => (
@@ -71,6 +70,7 @@ class Navibar extends Component {
                                                         variant={"contained"}
                                                         onClick={renderProps.onClick}
                                                         disabled={renderProps.disabled}
+                                                        onClick={this.responseGoogle}
                                                     >
                                                             Logout
                                                     </Button>
@@ -79,7 +79,7 @@ class Navibar extends Component {
                                                 onLogoutSuccess={this.responseGoogle}
                                                 onFailure={this.onFailure}
                                             />
-                                        </Button>
+                                        {/*</Button>*/}
                                     </Tooltip>
                                     : null
                                 }

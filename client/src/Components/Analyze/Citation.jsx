@@ -13,7 +13,6 @@ class Citation extends Component {
       this.getAuthors = this.getAuthors.bind(this);
       this.formatCitation = this.formatCitation.bind(this);
       this.handleCitationChange = this.handleCitationChange.bind(this);
-      this.passUpNewId = this.passUpNewId.bind(this);
       this.generateCitationCard = this.generateCitationCard.bind(this);
       this.generateDropDown = this.generateDropDown.bind(this);
     }
@@ -32,10 +31,6 @@ class Citation extends Component {
         );
       }
 
-    passUpNewId(){
-        this.props.updateCitationId(this.state.current_citation_id);
-    }
-      
     handleCitationChange(event) {
       this.props.updateCitationId(event.target.value);
     }
