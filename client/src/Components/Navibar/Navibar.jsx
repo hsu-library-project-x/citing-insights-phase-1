@@ -56,10 +56,7 @@ class Navibar extends Component {
                                 </Typography>
                             </Grid>
                             <Grid item xs={3}>
-                                <object type="image/svg+xml" data={logo} className="logo">
-                                    Citing Insights Logo
-                                </object>
-                                {/*<img alt={'citing-insights-logo'} src={logo} />*/}
+                                <img alt={'citing insights logo'} src={logo} />
                             </Grid>
                             <Grid item xs={4}></Grid>
                             <Grid item xs={1}>

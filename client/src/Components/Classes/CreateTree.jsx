@@ -52,40 +52,47 @@ class CreateTree extends Component {
                 });
     }
 
-    handleDeleteCourse(event) {
-
+    handleDeleteCourse(e,id) {
         let self = this;
         if (window.confirm("Are you sure you wish to delete this course?")) {
             if (window.confirm("WARNING!! You are about to delete this course, please click OK to proceed")) {
-
-                const target = event.target;
-                fetch('http://localhost:5000/courses/' + target.id, {
+                fetch('http://localhost:5000/courses/' + id, {
                     method: 'Delete',
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
-                }).then(() => {
-                    self.getClasses();
-                });
+                }).then((response) => {
+                        if (response.status === 204){
+                            alert("Class Deleted");
+                            this.getClasses();
+                        }
+                        else{
+                            alert("Something went wrong. Could not delete course");
+                        }
+                    }
+                );
             }
         }
     }
 
-    handleDeleteAssignment(event) {
+    handleDeleteAssignment(e, id) {
         let self = this;
         if (window.confirm("Are you sure you wish to delete this?")) {
-            const target = event.target;
-
-            fetch('http://localhost:5000/assignments/' + target.id, {
+            fetch('http://localhost:5000/assignments/' + id, {
                 method: 'Delete',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-            })
-                .then( () => { //unsued param response
-                    self.getAssignments(this.state.ClassId);
+            }).then((response) => {
+                    if (response.status === 204){
+                        alert("Assignment Deleted");
+                        this.getClasses();
+                    }
+                    else{
+                        alert("Something went wrong. Could not delete assignment");
+                    }
                 });
         }
     }
@@ -95,7 +102,7 @@ class CreateTree extends Component {
             let notes = d.course_note ? d.course_note : "";
             return (
                 <List dense={true} style={{padding:0, margin:0}}>
-                <ListItem id={d._id} >
+                <ListItem key={d._id} id={d._id} >
                     <ListItemAvatar>
                         <Avatar>
                             <FolderIcon />
@@ -108,7 +115,7 @@ class CreateTree extends Component {
                     />
                     <ListItemSecondaryAction>
                         <Tooltip title="Delete Course" aria-label="delete course">
-                            <IconButton edge="end" aria-label="delete" onClick={this.handleDeleteCourse}>
+                            <IconButton edge="end" aria-label="delete" onClick={(e) => this.handleDeleteCourse(e, d._id)}>
                                 <DeleteIcon />
                             </IconButton>
                         </Tooltip>
@@ -139,7 +146,7 @@ class CreateTree extends Component {
 
                                     <ListItemSecondaryAction>
                                         <Tooltip title="Delete Assignment" aria-label="delete assignment">
-                                            <IconButton edge="end" aria-label="delete" onClick={this.handleDeleteAssignment}>
+                                            <IconButton edge="end" aria-label="delete" onClick={ e => this.handleDeleteAssignment(e, a._id)}>
                                                 <DeleteIcon />
                                             </IconButton>
                                         </Tooltip>
