@@ -58,7 +58,7 @@ class Classes extends Component {
 
     handleDeleteCourse(e,id) {
         if (window.confirm("Are you sure you wish to delete this course?")) {
-            if (window.confirm("WARNING!! You are about to delete this course, please click OK to proceed")) {
+            if (window.confirm("WARNING!! If you delete this course all assignments associated will also be deleted")) {
                 fetch('http://localhost:5000/courses/' + id, {
                     method: 'Delete',
                     headers: {
@@ -127,7 +127,7 @@ class Classes extends Component {
                     <List
                         component={"div"}
                         disablePadding={true}
-                        style={{paddingLeft: "4em", paddingRight:"4em"}}
+                        style={{paddingLeft: "4em"}}
                         dense={true}
                     >
                         {assignments.map(a => {

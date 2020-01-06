@@ -54,7 +54,6 @@ class CreateAssignment extends Component {
         "class_id": this.state.ClassId
       };
 
-      console.log(data);
       let dataString = JSON.stringify(data);
 
       fetch('http://localhost:5000/assignments', {
@@ -65,7 +64,6 @@ class CreateAssignment extends Component {
           'Content-Type': 'application/json'
         },
       }).then((response) => {
-          console.log(response);
           if (response.status === 201) {
               alert("New Assignment Created!");
               this.setState({

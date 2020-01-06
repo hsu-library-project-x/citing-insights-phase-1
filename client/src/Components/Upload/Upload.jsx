@@ -1,182 +1,97 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
-import {Container, FormControl, InputLabel, Select, FormHelperText, Paper, Button} from "@material-ui/core";
 
-
-import Dropzone from './Dropzone.jsx';
+import {Container, FormControl, InputLabel, Select, MenuItem, Typography, Button} from "@material-ui/core";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 
-// Class to render our homepage
-class Upload extends Component{
+class Upload extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      files: [],
-      uploading: false,
-      uploadProgress: {},
-      successfullUploaded: false,
-      classId: '',
-      assignmentId: '',
-      AvailableCourses: [],
-      AvailableAssignments: []
+        classes:[],
+        assignments:[],
+        files: [],
+        classId: "",
+        assignmentId: "",
+    }
 
-    };
+    this.getClasses();
 
-    this.onFilesAdded = this.onFilesAdded.bind(this);
-    this.uploadFiles = this.uploadFiles.bind(this);
-    this.sendRequest = this.sendRequest.bind(this);
-    this.renderActions = this.renderActions.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
+    this.getClasses = this.getClasses.bind(this);
     this.handleClassSelection = this.handleClassSelection.bind(this);
+    this.createList = this.createList.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    // this.hanldeUploadFiles=this.hanldeUploadFiles.bind(this);
   }
 
-  onFilesAdded(files){
-    this.setState(prevState => ({
-      files: prevState.files.concat(files)
-    }));
+  createList(json, state){
+    let list=[];
+
+    for (let i=0; i<json.length;i++ ){
+        list.push(json[i]);
+    }
+    this.setState({[state]:list});
   }
 
-  componentWillMount() {
-    console.log('mounted');
-
-    let that = this;
-
-    fetch('http://localhost:5000/courses/' + this.props.user.id)
-      .then(function(response) {
-        return response.json();
+  getClasses() {
+      fetch('http://localhost:5000/courses/' + this.props.user.id)
+         .then(function (response) {
+              return response.json();
+         }).then((response)=>{
+             this.createList(response,'classes');
       })
-      .then(function(myJson) {
-        //console.log(JSON.stringify(myJson));
-        console.log(myJson);
-        that.setState({AvailableCourses: myJson});
+    }
+
+    handleClassSelection(event) {
+        let target = event.target;
+        fetch('http://localhost:5000/assignments/by_class_id/' + target.value)
+            .then(function(response) {
+                return response.json();
+            })
+            .then((response)=>{
+                 this.createList(response,'assignments');
+            });
+    }
+
+    handleInputChange(event){
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+        this.setState({
+            [name]: value
+        });
+
+    }
+
+    async handleUploadFiles( event){
+      const data={
+          "class":this.state.classId,
+          "assignment": this.state.assignmentId,
+          "files": this.state.files,
+      }
+
+      const promises=[];
+
+      data.files.forEach(f =>
+      {
+          promises.push(this.sendRequest(f))
       });
-  }
-
-  handleClassSelection(event) {
-    let that = this;
-    let target = event.target;
-    //incorrect
-    console.log('we just clicked');
-    fetch('http://localhost:5000/assignments/by_class_id/' + target.value)
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(myJson) {
-        //console.log(JSON.stringify(myJson));
-        console.log(myJson);
-        that.setState({AvailableAssignments: myJson});
-      });
-
-  }
-
-  handleInputChange(event){
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
-    //alert(name + ", " + value);
-    this.setState({
-      [name]: value
-    });
-
-  }
 
 
-  renderActions() {
-    if (this.state.successfullUploaded) {
-      return (
-        <Button
-            color="primary"
-            onClick={() => this.setState({ files: [], successfullUploaded: false })}
-            variant={"contained"}>
-          Clear
-        </Button>
+
+
+    }
+
+
+  render(){
+
+      let courses = this.state.classes.map((d) =>
+          <MenuItem key={d._id} value={d._id}>{d.name}</MenuItem>
       );
-    } else {
-      return (
-        <Button
-            color="primary"
-            variant={"contained"}
-            disabled={this.state.files.length < 0 || this.state.uploading} onClick={this.uploadFiles}>
-          Upload
-        </Button>
+
+      let assignments = this.state.assignments.map((d) =>
+          <MenuItem key={d._id} value={d._id}>{d.name}</MenuItem>
       );
-    }
-  }
-
-  async uploadFiles() {
-    let unit = document.getElementById("selectClass");
-    if(unit.value === ""){
-      alert('Select a Class Please');
-      return;
-    }
-
-    this.setState({ uploadProgress: {}, uploading: true });
-    const promises = [];
-    this.state.files.forEach(file => {
-      promises.push(this.sendRequest(file));
-    });
-    try {
-      await Promise.all(promises);
-      this.setState({ successfullUploaded: true, uploading: false });
-    } catch (e) {
-      // Not Production ready! Do some error handling here instead...
-      this.setState({ successfullUploaded: true, uploading: false });
-    }
-  }
-
-  sendRequest(file) {
-    return new Promise((resolve, reject) => {
-      const req = new XMLHttpRequest();
-
-      req.upload.addEventListener("progress", event => {
-        if (event.lengthComputable) {
-          const copy = { ...this.state.uploadProgress };
-          copy[file.name] = {
-            state: "pending",
-            percentage: (event.loaded / event.total) * 100
-          };
-          this.setState({ uploadProgress: copy });
-        }
-      });
-
-      req.upload.addEventListener("load", () => { //prev had unused var event
-        const copy = { ...this.state.uploadProgress };
-        copy[file.name] = { state: "done", percentage: 100 };
-        this.setState({ uploadProgress: copy });
-        resolve(req.response);
-      });
-
-      req.upload.addEventListener("error", () => {//prev had unused var event
-        const copy = { ...this.state.uploadProgress };
-        copy[file.name] = { state: "error", percentage: 0 };
-        this.setState({ uploadProgress: copy });
-        reject(req.response);
-      });
-
-      //let unit = document.getElementById("selectClass");
-      //check if document is a pdf.. if not go to catch statement
-      //continuing to get server error
-      const formData = new FormData();
-      formData.append(this.state.assignmentId, file, file.name);
-      req.open("POST", "http://localhost:5000/upload");
-      req.send(formData);
-      alert("Uploading...");
-      alert("Upload Successful")
-    });
-
-  }
-
-  render(){	
-
-    let courses = this.state.AvailableCourses;
-    let optionItems = courses.map((course) =>
-      <option value={course._id}>{course.name}</option>
-    );
-    
-    let assignments = this.state.AvailableAssignments;
-    let optionAssignments = assignments.map((assignment) =>
-      <option value={assignment._id}>{assignment.name}</option>
-    );
 
     const theme = createMuiTheme({
       palette: {
@@ -187,62 +102,60 @@ class Upload extends Component{
 
     return(
         <MuiThemeProvider theme={theme}>
-           <Container maxWidth={'md'}>
-             <Paper className={"paperContainer"}>
-               <h1 className={'Title'}>Upload Files</h1>
-               <p className={'Title'}>Please upload papers as PDF</p>
+          <Container maxWidth={'md'} className={"container"}>
+            <Typography style={{marginTop: "1em"}} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}>
+              Upload Files
+            </Typography>
+            <Typography align={"center"} variant={"p"} component={"p"} gutterBottom={true}> Please upload papers as PDF </Typography>
 
-               <form  style={{textAlign:"center"}}>
-                 <FormControl style={{minWidth: 200}}>
-                     <InputLabel id="selectClasslabel">Select Class</InputLabel>
-                     <Select
-                         style={{textAlign:"center"}}
-                         labelId={"selectClasslabel"}
-                         required
-                         onChange={this.handleClassSelection}
-                         inputProps={{
-                           name: 'classId',
-                           id: 'selectClass',
-                         }}
-                     >
-                       <option value="" disabled selected hidden >select a class</option>
-                       {optionItems}
-                     </Select>
-                     <FormHelperText>Select a Class</FormHelperText>
-                 </FormControl>
-                  <br />
-                 <FormControl style={{minWidth: 200, marginBottom:"1em"}}>
-                     <InputLabel id="selectAssignmentLabel">Select Assignment</InputLabel>
-                     <Select
-                         style={{textAlign:"center"}}
-                         required
-                         onChange={this.handleInputChange}
-                         inputProps={{
-                           name: 'assignmentId',
-                           id: 'selectAssignment',
-                         }}
-                     >
-                       <option value="" disabled selected hidden >select an assignment</option>
-                       {optionAssignments}
-                     </Select>
-                     <FormHelperText>Select Assignment </FormHelperText>
-                 </FormControl>
+            <Container maxWidth={"xs"}>
+                <form  style={{textAlign:"center"}} onSubmit={this.handleUploadFiles}>
+                    <FormControl style={{minWidth: 250}}>
+                        <InputLabel id="selectClasslabel">Select a Class</InputLabel>
+                        <Select
+                            style={{textAlign:"center"}}
+                            labelId={"selectClasslabel"}
+                            required
+                            onChange={this.handleClassSelection}
+                            inputProps={{
+                                name: 'classId',
+                                id: 'selectClass',
+                            }}
+                        >
+                            <MenuItem value="" disabled >select class</MenuItem>
+                            {courses}
+                        </Select>
+                    </FormControl>
+                    <br />
+                    <FormControl style={{minWidth: 250, marginBottom:"1em"}}>
+                        <InputLabel id="selectAssignmentLabel">Select an Assignment</InputLabel>
+                        <Select
+                            style={{textAlign:"center"}}
+                            required
+                            onChange={this.handleInputChange}
+                            inputProps={{
+                                name: 'assignmentId',
+                                id: 'selectAssignment',
+                            }}
+                        >
+                            <MenuItem value="" disabled> select assignment</MenuItem>
+                            {assignments}
+                        </Select>
+                    </FormControl>
 
-                 <br />
-                  <Dropzone onFilesAdded={this.onFilesAdded} disabled={this.state.uploading || this.state.successfullUploaded}/>
-                  <br />
+                    {this.state.files.map(file => {
+                      return (
+                          <div key={file.name}>
+                            <p className="Filename">{file.name}</p>
+                          </div>
+                      );
+                    })}
+                    <br />
+                    <Button type='submit' variant='contained' color='primary' > Upload </Button>
+                </form>
+            </Container>
 
-                  {this.state.files.map(file => {
-                    return (
-                      <div key={file.name}>
-                        <p className="Filename">{file.name}</p>
-                      </div>
-                    );
-                  })}
-                  {this.renderActions()}
-               </form>
-             </Paper>
-           </Container>
+          </Container>
         </MuiThemeProvider>
     );
   }

@@ -7,6 +7,7 @@ class Dropzone extends Component {
 		this.state = {
 			highlight: false
 		};
+
 	    this.fileInputRef = React.createRef();
 	    this.openFileDialog = this.openFileDialog.bind(this);
 	    this.onFilesAdded = this.onFilesAdded.bind(this);
@@ -66,7 +67,7 @@ class Dropzone extends Component {
 
     render() {
 	    return (
-			<div className={`Dropzone ${this.state.hightlight ? "Highlight" : ""}`}
+			<div className={'FileInput'}
 				onDragOver={this.onDragOver}
 				onDragLeave={this.onDragLeave}
 				onDrop={this.onDrop}
