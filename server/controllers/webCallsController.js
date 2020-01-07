@@ -4,16 +4,20 @@ const citationModel = require("../models/citationModel.js");
 
 function checkAuthor(author) {
     var author_name = "";
-    if (author.length > 0 && "given" in author[0] && "family" in author[0]) {
+    if(author !== undefined) {
+       if (author.length > 0 && "given" in author[0] && "family" in author[0]) {
         author_name = author[0]["family"] + "+" + author[0]["given"];
+       }
     }
     return author_name;
 }
 
 function checkTitle(title) {
     var title_name = "";
-    if (title.length > 0) {
+    if(title !== undefined) {
+      if (title.length > 0) {
         title_name = title[0];
+      }
     }
     return title;
 }

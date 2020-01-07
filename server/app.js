@@ -40,7 +40,7 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname,  'public')));
+app.use(express.static('/home/citing_insights/citing-beta/uploadTestRepo/client/build'));
 
 app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -48,7 +48,7 @@ app.use(bodyParser.json());
 
 app.post('/upload', upload);
 
-app.use('/', routes);
+
 app.use('/users', users);
 app.use('/courses', courses);
 app.use('/assignments', assignments);
@@ -61,16 +61,10 @@ app.use('/feedback', feedback);
 app.get('/file_upload', function (req, res) {
   res.render('test.html');
 })
-  /*
-app.get('*', (req, res) => {
 
-  console.log(req);
-  console.log(res);
-  console.log(path.join(__dirname + '../../client/build/index.html'));
-  res.sendFile(path.join(__dirname + '../../client/build/index.html'));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/../client/build/index.html'));
 });
-*/
+
 
 module.exports = app;
-
-
