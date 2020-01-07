@@ -1,4 +1,6 @@
 const fetch = require('node-fetch');
+const citationModel = require("../models/citationModel.js");
+
 
 function checkAuthor(author) {
     var author_name = "";
@@ -29,12 +31,35 @@ async function s2(data) {
     return metaData;
 }
 
+async function buildCitation(metaData, citation) {
+
+    const builtCitation = new citationModel(citation);
+    builtCitation.set({
+        "doi" : await metaData.doi,
+        "citationVelocity" : await metaData.citationVelocity,
+        "influentialCitationCount" : await metaData.influentialCitationCount
+     
+    });
+    return builtCitation;
+}
+
+async function saveCitation(finalCitation) {
+    finalCitation.save(function (err, citation) {
+        if (err) {
+            console.log(err);
+        }
+    });
+    return await finalCitation;
+}
+
 module.exports = {
     checkAuthor,
     checkTitle,
-    getData: async (url) => {
+    getData: async (url, citation) => {
         let data = await crossRef(url)
         let metaData = await s2(data)
-        return metaData.doi;
+        let finalCitation = await buildCitation(metaData, citation)
+        let saved = await saveCitation(finalCitation)
+        return saved;
     }
 }

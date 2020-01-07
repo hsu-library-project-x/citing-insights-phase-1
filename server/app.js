@@ -24,8 +24,6 @@ var app = express();
 var router = express.Router();
 
 
-
-
 //this line is just for the file uypload test
 app.engine('html', require('ejs').renderFile);
 

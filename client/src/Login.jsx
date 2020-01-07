@@ -111,7 +111,7 @@ class Login extends Component {
 									<GoogleLogin
 										clientId={config.GOOGLE_CLIENT_ID}
 										render={renderProps => (
-											<button onClick={renderProps.onClick} disabled={renderProps.disabled}>Login with Google</button>
+											<button id="loginButton" onClick={renderProps.onClick} disabled={renderProps.disabled}>Login with Google</button>
 										  )}
 										buttonText="Sign in with Google"
 										onSuccess={this.responseGoogle}

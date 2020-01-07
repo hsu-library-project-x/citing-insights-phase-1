@@ -2,14 +2,6 @@ var citationModel = require('../models/citationModel.js');
 const request = require('request');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
-
-async function Get(yourUrl){
-  await fetch(yourUrl).then(async (response) => { 
-  return await response.json();
-  });
-}
-
-
 /**
  * citationController.js
  *
@@ -60,54 +52,9 @@ module.exports = {
   },
 
   s2: function (req, res) {
-    var id = req.params.id;
+    
     console.log('s2');
-    citationModel.findOne({_id: id}, function (err, citation) {
-      if (err) {
-        return res.status(500).json({
-          message: 'Error when getting citation.',
-          error: err
-        });
-      }
-      if (!citation) {
-        return res.status(404).json({
-          message: 'No such citation'
-        });
-      }
-
-      var author_name = "";
-      if (citation.author.length > 0 && "given" in citation.author[0] && "family" in citation.author[0]) {
-        author_name = citation.author[0]["family"] + "+" + citation.author[0]["given"];
-      }
-      var title_name = "";
-      if (citation.title.length > 0) {
-        title_name = citation.title[0];
-      }
-
-      console.log(author_name);
-      console.log(title_name);
-	
-      var json_obj = JSON.parse(Get("https://api.crossref.org/works?query.author=" + author_name + "&query.bibliographic=" + title_name + '&mailto=citinginsightsheroku@gmail.com' ));
-
-      //console.log("this is the DOI: "+ json_obj.message.items[0].DOI);
-
-      if (json_obj.message.items != undefined) {
-        var doi = json_obj.message.items[0].DOI;
-
-        var final_var = JSON.parse(Get("http://api.semanticscholar.org/v1/paper/" + doi));
-
-        console.log(final_var.citationVelocity);
-        if (final_var.citationVelocity != undefined) {
-          return res.json({ "citation_velocity": final_var.citationVelocity, "influential_citation_count": final_var.influentialCitationCount})
-        } else {
-          return res.json({ "error": "citation not found"  });
-        }
-      } else {
-        return res.json({ "error": "citation not found"  });
-      }
-      return res.json(citation); 
-    });
-  },
+ },
 
 
   by_paper_id: function (req, res) {

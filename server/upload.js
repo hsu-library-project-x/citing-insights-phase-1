@@ -40,17 +40,6 @@ module.exports = function upload(req, res) {
                 pool: "abcdefghijklmnopqrstuvwxyz",
                 length: 10
             });
-            console.log('attempting to print field');
-            console.log(field);
-
-            //Ghostscript strips pdf into raw text
-            //var txt_path = __dirname + "/tmp/txt/" + file_name + ".txt"
-            //console.log(txt_path);
-
-            //shell.exec("gs -sDEVICE=txtwrite -o " + txt_path + " " + file.path);
-
-
-            //the replace functions just get rid of carriage returns
 
             var textByLine = fs.readFileSync(file.path);
 
@@ -61,6 +50,7 @@ module.exports = function upload(req, res) {
                 "name": null,
                 "assignment_id": field
             };
+
             // we actually want to set a variable to see whether or not things happenned successfully
             // instantiate the paper and save to db
             var paper = new paperModel(raw_text);
@@ -71,7 +61,6 @@ module.exports = function upload(req, res) {
                     console.log(err);
                 }
             });
-
 
             /* 
             citations start 
@@ -113,27 +102,21 @@ module.exports = function upload(req, res) {
 
             //Assign all citations to the paper.
             for (index in json_file) {
-                var citation = new citationModel(json_file[index]);
+                var citation = json_file[index];
 
                 //Give each citation the paper's id
-                citation.set({ "paper_id": paper.id });
+                citation.paper_id = paper.id;
 
                 //Do web calls here for Semantic Scholar MetaData
                 let author = controller.checkAuthor(citation.author);
                 let title = controller.checkTitle(citation.title);
                 let URL = "https://api.crossref.org/works?query.author=" + author + "&query.bibliographic=" + title +  "&mailto=citinginsightsheroku@gmail.com&rows=1&offset=0&select=DOI";
 
-                let data = controller.getData(URL).then((result) => {
-                    console.log("RESULLLLT: " + result);
+                let dummy = controller.getData(URL, citation).then((result) => {
+                    //console.log("RESULLLLT: " + result);
                 })
-
-                //after creating a citation model, save to db
-                citation.save(function (err, citation) {
-                    if (err) {
-                        check = false;
-                        console.log(err);
-                    }
-                })
+                //console.log(data);
+            
             }
 
             console.log(full_json_path + '\n' + file.path);
