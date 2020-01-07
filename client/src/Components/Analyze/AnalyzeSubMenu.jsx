@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import Container from "@material-ui/core/Container";
+import {Container,Typography, Button, FormControl, MenuItem, Select, InputLabel} from "@material-ui/core";
 
 import { Redirect } from "react-router-dom";
+import Analyze from "./Analyze";
 
 class AnalyzeSubMenu extends Component {
 
@@ -82,7 +83,7 @@ class AnalyzeSubMenu extends Component {
 
     if (this.state.redirect) {
       return <Redirect to={{
-        pathname: '/tasks/analyze',
+        pathname: '/analyze',
         state: {id: this.state.selectedAssignmentId},
         props: { ...this.props }
       }} />
@@ -91,20 +92,46 @@ class AnalyzeSubMenu extends Component {
     
     return (
       <Container maxWidth={'md'}>
-            <form className={`${!this.state.selectedAssignment ? "warnHighlight" : "safeHighlight"}`} onSubmit={this.handleSubmit}>
-              <h1> Analyze an Assignment</h1>
-              <label >Class:</label> {/*Investigate for attribute */}
-              <select onChange={this.handleClassSelection} id="assignForAnalyze" name="className" required >
-                <option value="" disabled selected hidden >Select a Class</option>
+
+        <Typography style={{marginTop: "1em"}} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}>
+          Analyze an Assignment
+        </Typography>
+
+        <form style={{textAlign:"center", margin:"1em"}} onSubmit={this.handleSubmit}>
+          <FormControl required={true} style={{minWidth: 250, marginBottom:"1em"}}>
+              <InputLabel>Select a Class</InputLabel>
+              <Select
+                  style={{textAlign:"center"}}
+                  labelId={"selectClasslabel"}
+                  onChange={this.handleClassSelection}
+                  inputProps={{
+                    name: 'className',
+                    id: 'assignForAnalyze',
+                  }}
+              >
+                <MenuItem value="" disabled >select class</MenuItem>
                 {optionItems}
-              </select>
-              <label >Assignment:</label> {/*Investigate for attribute */}
-              <select onChange={this.handleInputChange} id="assignForAnalyze2"  name="selectedAssignmentId" required >
-                <option value="" disabled selected hidden >Select an Assignment</option>
+              </Select>
+          </FormControl>
+            <br />
+          <FormControl required={true} style={{minWidth: 250, marginBottom:"1em"}}>
+              <InputLabel>Select an Assignment </InputLabel>
+              <Select
+                  style={{textAlign:"center"}}
+                  labelId={"selectClasslabel"}
+                  onChange={this.handleInputChange}
+                  inputProps={{
+                    name: 'selectedAssignmentId',
+                    id: 'assignForAnalyze',
+                  }}
+              >
+                <MenuItem value="" disabled >select an assignment </MenuItem>
                 {optionAssignments}
-              </select>
-              <button type="submit" disabled={this.state.redirect} > submit </button>
-            </form>
+            </Select>
+          </FormControl>
+            <br />
+          <Button type="submit" color={"primary"} variant={"contained"}> Submit </Button>
+        </form>
       </Container>
     );
   }
