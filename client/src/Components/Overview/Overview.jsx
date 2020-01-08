@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import {Card} from '@material-ui/core';
 import Container from "@material-ui/core/Container";
 
-
-class Results extends Component {
+class Overview extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -188,4 +187,4 @@ class Results extends Component {
     }
 }
 
-export default Results;
+export default Overview;

@@ -8,7 +8,7 @@ import Assignments from "../Upload/Upload.jsx";
 import Analyze from "../Analyze/Analyze.jsx";
 import RubricEditor from "../Rubric/RubricEditor.jsx";
 import AnalyzeSubMenu from "../Analyze/AnalyzeSubMenu.jsx";
-import Results from '../Overview/Results.jsx';
+import Overview from '../Overview/Overview.jsx';
 
 
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
@@ -118,7 +118,7 @@ class Tasks extends Component {
 					/>;
 				}
 			case 4:
-				return <Results user={this.props.user} />;
+				return <Overview user={this.props.user} />;
 			case 5:
 				return <p align={"center"}> Click on the Reset Button to reset your progress or click on any step to go back </p>;
 			default:
