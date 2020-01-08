@@ -108,7 +108,7 @@ class Tasks extends Component {
 				if(this.state.selectedAssignmentId) {
 					return <Analyze
 						user={this.props.user}
-						id={this.state.selectedAssignmentId}
+						selectedAssignmentId={this.state.selectedAssignmentId}
 					/>;
 				}else
 				{

@@ -46,13 +46,13 @@ class Analyze extends Component {
   }
 
   get_paper_info(paper_id) {
-    let that = this;
+    console.log("PAPER ID: " + paper_id);
     fetch('http://localhost:5000/papers/' + paper_id)
       .then(function (response) {
         return response.json();
       })
       .then(function (myJson) {
-        that.setState({ current_pdf_data: myJson["pdf"]["data"] });
+        this.setState({ current_pdf_data: myJson["pdf"]["data"] });
       });
   }
 
@@ -65,7 +65,7 @@ class Analyze extends Component {
     } else {
       let that = this;
       //Grab info about the assignment
-      fetch('http://localhost:5000/assignments/' + this.props.id)
+      fetch('http://localhost:5000/assignments/' + this.props.selectedAssignmentId)
         .then(function (response) {
           return response.json();
         })
@@ -106,10 +106,10 @@ class Analyze extends Component {
 
   componentWillMount() {
     let that = this;
-    if (this.props.location.state !== undefined) {
-      this.setState({ assignmentId: this.props.id });
+    if (this.props.selectedAssignmentId !== undefined) {
+      this.setState({ assignmentId: this.props.selectedAssignmentId });
 
-      fetch('http://localhost:5000/papers/by_assignment_id/' + this.props.id)
+      fetch('http://localhost:5000/papers/by_assignment_id/' + this.props.selectedAssignmentId)
         .then(function (response) {
           return response.json();
         })
@@ -227,7 +227,7 @@ class Analyze extends Component {
     if (direction === 1 && index > this.state.paper_ids.length) {
       check = false;
     }
-    check = true; //redundancy?
+
     if (check) {
       this.setState((prevState, props) => ({
         current_paper_id_index: prevState.current_paper_id_index + direction
@@ -247,6 +247,7 @@ class Analyze extends Component {
 
   render() {
     console.log("HREE");
+    console.log("Assignment ID "+ this.state.assignmentId);
     let pdf;
     if (this.state.current_pdf_data === "this must get set") {
       pdf = <p> we dont have data yet </p>;
@@ -276,12 +277,12 @@ class Analyze extends Component {
                   current_s2_data={this.state.current_s2_data}
               /> : null}
             </Grid>
-            <Grid xs="6">
+            <Grid item xs="6">
               <div className="overflow-auto">
                 {pdf}
               </div>
             </Grid>
-            <Grid xs="3">
+            <Grid item xs="3">
               <select name="AssignRubric" onChange={this.handleGetRubric}>
                 <option value="" disabled selected hidden >Select a Rubric</option>
                 {rubricList}
