@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { ListItem, List, ListItemAvatar, Divider , ListItemText,ListItemSecondaryAction,
-    Container, Avatar, IconButton, Tooltip, Typography  } from '@material-ui/core';
+import {
+    ListItem, List, ListItemAvatar, Divider, ListItemText, ListItemSecondaryAction,
+    Container, Avatar, IconButton, Tooltip, Typography
+} from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 
 import CreateClass from "./CreateClass";
@@ -10,23 +12,23 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 
 class Classes extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-        classList:[],
-        assignmentList:[],
-        open:false,
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            classList: [],
+            assignmentList: [],
+            open: false,
+        };
 
-      this.getClasses();
-      this.getAssignments();
-      this.nestItems = this.nestItems.bind(this);
-      this.getClasses = this.getClasses.bind(this);
-      this.getAssignments = this.getAssignments.bind(this);
-      this.createTreeItems = this.createTreeItems.bind(this);
-      this.handleDeleteCourse = this.handleDeleteCourse.bind(this);
-      this.handleDeleteAssignment = this.handleDeleteAssignment.bind(this);
-  }
+        this.getClasses();
+        this.getAssignments();
+        this.nestItems = this.nestItems.bind(this);
+        this.getClasses = this.getClasses.bind(this);
+        this.getAssignments = this.getAssignments.bind(this);
+        this.createTreeItems = this.createTreeItems.bind(this);
+        this.handleDeleteCourse = this.handleDeleteCourse.bind(this);
+        this.handleDeleteAssignment = this.handleDeleteAssignment.bind(this);
+    }
 
     getClasses() {
         fetch('http://localhost:5000/courses/' + this.props.user.id)
@@ -46,17 +48,17 @@ class Classes extends Component {
             });
     }
 
-    createTreeItems(json, state){
-        let list=[];
+    createTreeItems(json, state) {
+        let list = [];
 
-        for (let i=0; i<json.length;i++ ){
+        for (let i = 0; i < json.length; i++) {
             list.push(json[i]);
         }
 
-        this.setState({[state]:list});
+        this.setState({ [state]: list });
     }
 
-    handleDeleteCourse(e,id) {
+    handleDeleteCourse(e, id) {
         if (window.confirm("Are you sure you wish to delete this course?")) {
             if (window.confirm("WARNING!! If you delete this course all assignments associated will also be deleted")) {
                 fetch('http://localhost:5000/courses/' + id, {
@@ -66,14 +68,14 @@ class Classes extends Component {
                         'Content-Type': 'application/json'
                     },
                 }).then((response) => {
-                        if (response.status === 204){
-                            alert("Class Deleted");
-                            this.getClasses();
-                        }
-                        else{
-                            alert("Something went wrong. Could not delete course");
-                        }
+                    if (response.status === 204) {
+                        alert("Class Deleted");
+                        this.getClasses();
                     }
+                    else {
+                        alert("Something went wrong. Could not delete course");
+                    }
+                }
                 );
             }
         }
@@ -88,22 +90,22 @@ class Classes extends Component {
                     'Content-Type': 'application/json'
                 },
             }).then((response) => {
-                if (response.status === 204){
+                if (response.status === 204) {
                     alert("Assignment Deleted");
                     this.getAssignments();
                 }
-                else{
+                else {
                     alert("Something went wrong. Could not delete assignment");
                 }
             });
         }
     }
 
-    nestItems(classes, assignments){
+    nestItems(classes, assignments) {
         return classes.map(d => {
             let notes = d.course_note ? d.course_note : "";
             return (
-                <List key={d._id} dense={true} style={{padding:0, margin:0}}>
+                <List key={d._id} dense={true} style={{ padding: 0, margin: 0 }}>
                     <ListItem key={d._id} id={d._id} >
                         <ListItemAvatar>
                             <Avatar>
@@ -111,7 +113,7 @@ class Classes extends Component {
                             </Avatar>
                         </ListItemAvatar>
                         <ListItemText
-                            style={{padding:0, margin:0}}
+                            style={{ padding: 0, margin: 0 }}
                             primary={d.name}
                             secondary={notes}
                         />
@@ -123,19 +125,19 @@ class Classes extends Component {
                             </Tooltip>
                         </ListItemSecondaryAction>
                     </ListItem>
-                    <Divider variant="inset"/>
+                    <Divider variant="inset" />
                     <List
                         component={"div"}
                         disablePadding={true}
-                        style={{paddingLeft: "4em"}}
+                        style={{ paddingLeft: "4em" }}
                         dense={true}
                     >
                         {assignments.map(a => {
                             if (a.class_id === d._id) {
                                 let a_notes = a.note ? a.note : "";
-                                return(
+                                return (
                                     <div >
-                                        <ListItem id={a._id} style={{margin:0}} key={a._id}>
+                                        <ListItem id={a._id} style={{ margin: 0 }} key={a._id}>
                                             <ListItemAvatar>
                                                 <Avatar>
                                                     <AssignmentIcon />
@@ -147,15 +149,15 @@ class Classes extends Component {
                                             />
                                             <ListItemSecondaryAction>
                                                 <Tooltip title="Delete Assignment" aria-label="delete assignment">
-                                                    <IconButton edge="end" aria-label="delete" onClick={ e => this.handleDeleteAssignment(e, a._id)}>
+                                                    <IconButton edge="end" aria-label="delete" onClick={e => this.handleDeleteAssignment(e, a._id)}>
                                                         <DeleteIcon />
                                                     </IconButton>
                                                 </Tooltip>
                                             </ListItemSecondaryAction>
                                         </ListItem>
-                                        <Divider variant="inset"/>
+                                        <Divider variant="inset" />
                                     </div>);
-                            }else return null;
+                            } else return null;
                         })}
                     </List>
                 </List>
@@ -163,33 +165,34 @@ class Classes extends Component {
         });
     }
 
-  render() {
+    render() {
 
-    return (
-        <Container maxWidth={'md'}>
-          <Typography style={{marginTop: "1em"}} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}>
-              Manage Coursework
+        return (
+            <Container maxWidth={'md'}>
+                <Typography style={{ marginTop: "1em" }} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}>
+                    Manage Coursework
           </Typography>
 
-           <Container maxWidth={"sm"}>
-                <List dense={true} style={{padding:0}}>
-                    {this.nestItems(this.state.classList, this.state.assignmentList)}
-                </List>
-           </Container>
+                <Container maxWidth={"sm"}>
+                    <List dense={true} style={{ padding: 0 }}>
+                        {this.nestItems(this.state.classList, this.state.assignmentList)}
+                    </List>
+                </Container>
 
-          <CreateAssignment
-              classList={this.state.classList}
-              getAssignments={this.getAssignments}
-          />
+                <CreateAssignment
+                    user_id={this.props.user.id}
+                    classList={this.state.classList}
+                    getAssignments={this.getAssignments}
+                />
 
-          <CreateClass
-            user_id={this.props.user.id}
-            getClasses={this.getClasses}
-          />
-        </Container>
+                <CreateClass
+                    user_id={this.props.user.id}
+                    getClasses={this.getClasses}
+                />
+            </Container>
 
-    );
-  }
+        );
+    }
 }
 
 export default withRouter(Classes);

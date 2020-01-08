@@ -41,8 +41,8 @@ async function buildCitation(metaData, citation) {
   builtCitation.set({
     "doi" : await metaData.doi,
     "citationVelocity" : await metaData.citationVelocity,
-    "influentialCitationCount" : await metaData.influentialCitationCount
-
+    "influentialCitationCount" : await metaData.influentialCitationCount,
+    "s2PaperUrl": await metaData.url
   });
   return builtCitation;
 }

@@ -56,7 +56,7 @@ class CreateAssignment extends Component {
 
       let dataString = JSON.stringify(data);
 
-      fetch('http://localhost:5000/assignments', {
+      fetch(`http://localhost:5000/assignments/${this.props.user_id}`, {
         method: 'POST',
         body: dataString,
         headers: {

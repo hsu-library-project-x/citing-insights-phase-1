@@ -124,7 +124,7 @@ class Analyze extends Component {
               .then(function (myJson) {
                 that.setState({ current_pdf_data: myJson["pdf"]["data"] });
                 that.get_citation_info(myJson["_id"])
-                  .then(() =>  {
+                  .then(() => {
                     that.get_s2_info(that.state.citations[1]["_id"]);
                   });
               });
@@ -191,7 +191,7 @@ class Analyze extends Component {
       .then(function (response) {
         return response.json();
       })
-      .then( () =>  {
+      .then(() => {
         alert('citation saved');
       });
 
@@ -238,16 +238,15 @@ class Analyze extends Component {
     }
   }
 
-  updateCitationId(new_id){
+  updateCitationId(new_id) {
     this.setState({
       current_citation_id: new_id,
     });
-
   }
 
   render() {
     console.log("HREE");
-    console.log("Assignment ID "+ this.state.assignmentId);
+    console.log("Assignment ID " + this.state.assignmentId);
     let pdf;
     if (this.state.current_pdf_data === "this must get set") {
       pdf = <p> we dont have data yet </p>;
@@ -258,49 +257,51 @@ class Analyze extends Component {
     let rubricList = rubrics.map((rubric) =>
       <option value={rubric._id}>{rubric.name}</option>
     );
+
     return (
-        <Container maxWidth={'md'}>
-           <Grid container spacing={3}>
-            <Grid item xs="3">
-              <p id="assignmentInfo">Current Assignment - {this.state.assignment.name} </p>
-              {this.state.citations !== [] && this.state.current_citation_id !== 0 ? 
-              <Citation 
+      <Container maxWidth={'md'}>
+        <Grid container spacing={3}>
+          <Grid item xs="3">
+            <p id="assignmentInfo">Current Assignment - {this.state.assignment.name} </p>
+            {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
+              <Citation
                 citations={this.state.citations}
                 current_citation_id={this.state.current_citation_id}
                 updateCitationId={this.updateCitationId}
               /> : null
-               }
-              {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
+            }
+            {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
               <DiscoveryTool
-                  citations={this.state.citations}
-                  current_citation_id={this.state.current_citation_id}
-                  current_s2_data={this.state.current_s2_data}
+                citation={this.state.citations[this.state.current_citation_id]}
+                citations={this.state.citations}
+                current_citation_id={this.state.current_citation_id}
+                current_s2_data={this.state.current_s2_data}
               /> : null}
-            </Grid>
-            <Grid item xs="6">
-              <div className="overflow-auto">
-                {pdf}
-              </div>
-            </Grid>
-            <Grid item xs="3">
-              <select name="AssignRubric" onChange={this.handleGetRubric}>
-                <option value="" disabled selected hidden >Select a Rubric</option>
-                {rubricList}
-              </select>
-              <RubricAccordion
-                currentRubric={this.state.currentRubric}
-                allowZeroExpanded={true}
-              />
-              <textarea id="annotation">
-                Make an optional annotation...
-              </textarea>
-              <button Gridor="success" id="paperDone" onClick={this.handleSaveCitations}>Save Rubric Value </button>
-              <button id="nextPaper" onClick={() => { this.next_paper(1) }}> Next Paper </button>
-              <button id="nextPaper" onClick={() => { this.next_paper(-1) }}> Previous Paper </button>
-            </Grid>
-          {this.state.assessingRubric ? <RubricSubmit sourceText={this.state.sourceText} unmountMe={this.handleChildUnmount} curRubric={this.state.currentRubric} curPaper={this.state.curPaperId} /> : null}
           </Grid>
-        </Container>
+          <Grid item xs="6">
+            <div className="overflow-auto">
+              {pdf}
+            </div>
+          </Grid>
+          <Grid item xs="3">
+            <select name="AssignRubric" onChange={this.handleGetRubric}>
+              <option value="" disabled selected hidden >Select a Rubric</option>
+              {rubricList}
+            </select>
+            <RubricAccordion
+              currentRubric={this.state.currentRubric}
+              allowZeroExpanded={true}
+            />
+            <textarea id="annotation">
+              Make an optional annotation...
+              </textarea>
+            <button Gridor="success" id="paperDone" onClick={this.handleSaveCitations}>Save Rubric Value </button>
+            <button id="nextPaper" onClick={() => { this.next_paper(1) }}> Next Paper </button>
+            <button id="nextPaper" onClick={() => { this.next_paper(-1) }}> Previous Paper </button>
+          </Grid>
+          {this.state.assessingRubric ? <RubricSubmit sourceText={this.state.sourceText} unmountMe={this.handleChildUnmount} curRubric={this.state.currentRubric} curPaper={this.state.curPaperId} /> : null}
+        </Grid>
+      </Container>
     );
   }
 }
