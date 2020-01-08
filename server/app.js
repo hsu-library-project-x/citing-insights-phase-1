@@ -3,7 +3,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
-require('dotenv').config({ path: `${__dirname}/../.env` })
+require('dotenv').config({ path: `${__dirname}/../.env` });
 const config = require("./config.js");
 
 const upload = require('./upload');

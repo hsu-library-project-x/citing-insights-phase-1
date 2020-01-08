@@ -39,7 +39,7 @@ class Classes extends Component {
     }
 
     getAssignments() {
-        fetch('http://localhost:5000/assignments')
+        fetch('http://localhost:5000/assignments/by_user_id/' + this.props.user.id)
             .then(function (response) {
                 return response.json();
             })
@@ -136,7 +136,7 @@ class Classes extends Component {
                             if (a.class_id === d._id) {
                                 let a_notes = a.note ? a.note : "";
                                 return (
-                                    <div >
+                                    <div key={`divider-${a._id}`}>
                                         <ListItem id={a._id} style={{ margin: 0 }} key={a._id}>
                                             <ListItemAvatar>
                                                 <Avatar>
@@ -149,14 +149,18 @@ class Classes extends Component {
                                             />
                                             <ListItemSecondaryAction>
                                                 <Tooltip title="Delete Assignment" aria-label="delete assignment">
-                                                    <IconButton edge="end" aria-label="delete" onClick={e => this.handleDeleteAssignment(e, a._id)}>
+                                                    <IconButton edge="end"
+                                                                aria-label="delete"
+                                                                onClick={e => this.handleDeleteAssignment(e, a._id)}
+                                                    >
                                                         <DeleteIcon />
                                                     </IconButton>
                                                 </Tooltip>
                                             </ListItemSecondaryAction>
                                         </ListItem>
                                         <Divider variant="inset" />
-                                    </div>);
+                                    </div>
+                                    );
                             } else return null;
                         })}
                     </List>
