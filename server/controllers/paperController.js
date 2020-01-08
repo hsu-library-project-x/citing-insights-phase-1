@@ -1,5 +1,6 @@
 var paperModel = require('../models/paperModel.js');
 
+
 /**
  * paperController.js
  *
@@ -68,8 +69,7 @@ module.exports = {
         var paper = new paperModel({
 			title : req.body.title,
 			name : req.body.name,
-			assignment_id : req.body.assignment_id
-
+			assignment_id : req.body.assignment_id,
         });
 
         paper.save(function (err, paper) {

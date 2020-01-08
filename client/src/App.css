@@ -12,8 +12,10 @@ body{
 }
 
 .FileInput{
-  border: #444444 0.05em dashed;
-  padding: 1em;
+
+  background: lightgray;
+  padding: 1em 1em 1em 0;
+  margin-bottom: 1em;
 }
 
 .container{

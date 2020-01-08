@@ -65,7 +65,7 @@ class Analyze extends Component {
     } else {
       let that = this;
       //Grab info about the assignment
-      fetch('http://localhost:5000/assignments/' + this.props.location.state.id)
+      fetch('http://localhost:5000/assignments/' + this.props.id)
         .then(function (response) {
           return response.json();
         })
@@ -107,9 +107,9 @@ class Analyze extends Component {
   componentWillMount() {
     let that = this;
     if (this.props.location.state !== undefined) {
-      this.setState({ assignmentId: this.props.location.state.id });
+      this.setState({ assignmentId: this.props.id });
 
-      fetch('http://localhost:5000/papers/by_assignment_id/' + this.props.location.state.id)
+      fetch('http://localhost:5000/papers/by_assignment_id/' + this.props.id)
         .then(function (response) {
           return response.json();
         })
@@ -246,6 +246,7 @@ class Analyze extends Component {
   }
 
   render() {
+    console.log("HREE");
     let pdf;
     if (this.state.current_pdf_data === "this must get set") {
       pdf = <p> we dont have data yet </p>;

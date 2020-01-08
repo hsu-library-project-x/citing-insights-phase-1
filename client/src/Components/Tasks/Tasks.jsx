@@ -10,6 +10,7 @@ import RubricEditor from "../Rubric/RubricEditor.jsx";
 import AnalyzeSubMenu from "../Analyze/AnalyzeSubMenu.jsx";
 import Results from '../Overview/Results.jsx';
 
+
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import DoneIcon from '@material-ui/icons/Done';
@@ -24,6 +25,7 @@ class Tasks extends Component {
 		this.state={
 			ActiveStep: 0,
 			completed:{},
+			selectedAssignmentId: null,
 		}
 
 		this.steps= ['Manage Courses', 'Upload Papers','Edit Rubrics', 'Analyze', 'Overview'];
@@ -43,6 +45,7 @@ class Tasks extends Component {
 		this.handleComplete = this.handleComplete.bind(this);
 		this.handleReset = this.handleReset.bind(this);
 		this.renderPage = this.renderPage.bind(this);
+		this.updateSelectedId = this.updateSelectedId.bind(this);
 
 	}
 
@@ -102,7 +105,18 @@ class Tasks extends Component {
 			case 2:
 				return <RubricEditor user={this.props.user} />;
 			case 3:
-				return <AnalyzeSubMenu user={this.props.user} />;
+				if(this.state.selectedAssignmentId) {
+					return <Analyze
+						user={this.props.user}
+						id={this.state.selectedAssignmentId}
+					/>;
+				}else
+				{
+					return <AnalyzeSubMenu
+						user={this.props.user}
+						updateSelectedId={this.updateSelectedId}
+					/>;
+				}
 			case 4:
 				return <Results user={this.props.user} />;
 			case 5:
@@ -110,6 +124,10 @@ class Tasks extends Component {
 			default:
 				return 'Unknown step';
 		}
+	}
+
+	updateSelectedId(newId){
+		this.setState({selectedAssignmentId: newId});
 	}
 
 	render() {

@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 
-import {Container, FormControl, InputLabel, Select, MenuItem, Typography, Button} from "@material-ui/core";
+import {Container, FormControl, InputLabel, Select, MenuItem, Typography, Button, Grid, Card, CardContent} from "@material-ui/core";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
+
+import Dropzone from "./Dropzone";
 
 class Upload extends Component {
   constructor(props) {
@@ -13,7 +15,8 @@ class Upload extends Component {
         files: [],
         classId: "",
         assignmentId: "",
-    }
+        uploading:false,
+    };
 
     this.getClasses();
 
@@ -21,8 +24,16 @@ class Upload extends Component {
     this.handleClassSelection = this.handleClassSelection.bind(this);
     this.createList = this.createList.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
-    // this.hanldeUploadFiles=this.hanldeUploadFiles.bind(this);
+    this.onFilesAdded = this.onFilesAdded.bind(this);
+    this.handleSubmitFiles = this.handleSubmitFiles.bind(this);
+
   }
+
+    onFilesAdded(files){
+        this.setState(prevState => ({
+            files: prevState.files.concat(files)
+        }));
+    }
 
   createList(json, state){
     let list=[];
@@ -50,7 +61,7 @@ class Upload extends Component {
             })
             .then((response)=>{
                  this.createList(response,'assignments');
-            });
+            }).then(()=> this.handleInputChange(event));
     }
 
     handleInputChange(event){
@@ -63,27 +74,34 @@ class Upload extends Component {
 
     }
 
-    async handleUploadFiles( event){
-      const data={
-          "class":this.state.classId,
-          "assignment": this.state.assignmentId,
-          "files": this.state.files,
-      }
+    async handleSubmitFiles(event) {
+      event.preventDefault();
 
-      const promises=[];
+      const data= {
+          class_id: this.state.classId,
+          assignment_id: this.state.assignmentId,
+          files: this.state.files,
+      };
 
-      data.files.forEach(f =>
-      {
-          promises.push(this.sendRequest(f))
-      });
+       if(data.classId === "" || data.assignment_id === "" || data.files === []){
+          alert('Cannot upload without a file, class, or assignment');
+          return;
+       }
 
+        data.files.forEach(file => {
+            const formData = new FormData();
+            formData.append(data.assignment_id, file, file.name);
 
-
-
+            fetch('http://localhost:5000/upload/',{
+                method: 'POST',
+                body: formData,
+            }).then((response =>{
+                console.log(response);
+            }))
+        });
     }
 
-
-  render(){
+    render(){
 
       let courses = this.state.classes.map((d) =>
           <MenuItem key={d._id} value={d._id}>{d.name}</MenuItem>
@@ -102,59 +120,68 @@ class Upload extends Component {
 
     return(
         <MuiThemeProvider theme={theme}>
-          <Container maxWidth={'md'} className={"container"}>
-            <Typography style={{marginTop: "1em"}} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}>
-              Upload Files
-            </Typography>
-            <Typography align={"center"} variant={"p"} component={"p"} gutterBottom={true}> Please upload papers as PDF </Typography>
 
-            <Container maxWidth={"xs"}>
-                <form  style={{textAlign:"center"}} onSubmit={this.handleUploadFiles}>
-                    <FormControl style={{minWidth: 250}}>
-                        <InputLabel id="selectClasslabel">Select a Class</InputLabel>
-                        <Select
-                            style={{textAlign:"center"}}
-                            labelId={"selectClasslabel"}
-                            required
-                            onChange={this.handleClassSelection}
-                            inputProps={{
-                                name: 'classId',
-                                id: 'selectClass',
-                            }}
-                        >
-                            <MenuItem value="" disabled >select class</MenuItem>
-                            {courses}
-                        </Select>
-                    </FormControl>
-                    <br />
-                    <FormControl style={{minWidth: 250, marginBottom:"1em"}}>
-                        <InputLabel id="selectAssignmentLabel">Select an Assignment</InputLabel>
-                        <Select
-                            style={{textAlign:"center"}}
-                            required
-                            onChange={this.handleInputChange}
-                            inputProps={{
-                                name: 'assignmentId',
-                                id: 'selectAssignment',
-                            }}
-                        >
-                            <MenuItem value="" disabled> select assignment</MenuItem>
-                            {assignments}
-                        </Select>
-                    </FormControl>
+              <Typography style={{marginTop: "1em"}} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}>
+                  Upload Files
+              </Typography>
+              <Typography align={"center"} variant={"subtitle1"} component={"p"} gutterBottom={true}> Please upload papers as PDF </Typography>
+            <Container maxWidth={'md'} className={"container"}>
+              {/*<Grid container>*/}
+              {/*    <Grid item xs={10}>*/}
+                      <form style={{textAlign:"center", margin:"1em"}} onSubmit={this.handleSubmitFiles}>
+                          <FormControl required={true} style={{minWidth: 250}}>
+                              <InputLabel id="selectClasslabel">Select a Class</InputLabel>
+                              <Select
+                                  style={{textAlign:"center"}}
+                                  labelId={"selectClasslabel"}
+                                  onChange={this.handleClassSelection}
+                                  inputProps={{
+                                      name: 'classId',
+                                      id: 'selectClass',
+                                  }}
+                              >
+                                  <MenuItem value="" disabled >select class</MenuItem>
+                                  {courses}
+                              </Select>
+                          </FormControl>
+                          <br />
+                          <FormControl  required={true} style={{minWidth: 250, marginBottom:"1em"}}>
+                              <InputLabel id="selectAssignmentLabel">Select an Assignment</InputLabel>
+                              <Select
+                                  style={{textAlign:"center"}}
+                                  onChange={this.handleInputChange}
+                                  inputProps={{
+                                      name: 'assignmentId',
+                                      id: 'selectAssignment',
+                                  }}
+                              >
+                                  <MenuItem value="" disabled> select assignment</MenuItem>
+                                  {assignments}
+                              </Select>
+                          </FormControl>
+                          <br />
+                          <Dropzone
+                              onFilesAdded={this.onFilesAdded}
+                              disabled={this.state.uploading}
+                          />
+                          <br />
 
-                    {this.state.files.map(file => {
-                      return (
-                          <div key={file.name}>
-                            <p className="Filename">{file.name}</p>
-                          </div>
-                      );
-                    })}
-                    <br />
-                    <Button type='submit' variant='contained' color='primary' > Upload </Button>
-                </form>
-            </Container>
+                                  <Typography align={"center"} variant={"h6"} component={"h1"} gutterBottom={true}>
+                                      Files to Upload
+                                  </Typography>
+                                  {this.state.files.map(file => {
+                                      return (
+                                          <p key={file.name}>{file.name}</p>
+                                      );
+                                  })}
+                            <br />
+                          <Button type='submit' variant='contained' color='primary' > Upload </Button>
+                      </form>
+                  {/*</Grid>*/}
+                  {/*<Grid item xs={2}>*/}
 
+              {/*    </Grid>*/}
+              {/*</Grid>*/}
           </Container>
         </MuiThemeProvider>
     );

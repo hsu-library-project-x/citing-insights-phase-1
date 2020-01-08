@@ -65,7 +65,7 @@ class AnalyzeSubMenu extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    this.setState({ redirect: true });
+    this.props.updateSelectedId(this.state.selectedAssignmentId);
   }
 
   //In each render, map out Courses and Assignments into letiables so we can place them in a drop down
@@ -73,22 +73,22 @@ class AnalyzeSubMenu extends Component {
 
     let courses = this.state.AvailableCourses;
     let optionItems = courses.map((course) =>
-      <option value={course._id}>{course.name}</option>
+      <MenuItem value={course._id}>{course.name}</MenuItem>
     );
 
     let assignments = this.state.AvailableAssignments;
     let optionAssignments = assignments.map((assignment) =>
-      <option value={assignment._id}>{assignment.name}</option>
+      <MenuItem value={assignment._id}>{assignment.name}</MenuItem>
     );
 
-    if (this.state.redirect) {
-      return <Redirect to={{
-        pathname: '/analyze',
-        state: {id: this.state.selectedAssignmentId},
-        props: { ...this.props }
-      }} />
-
-    }
+    // if (this.state.redirect) {
+    //   return <Redirect to={{
+    //     pathname: '/analyze',
+    //     state: {id: this.state.selectedAssignmentId},
+    //     props: { ...this.props }
+    //   }} />
+    //
+    // }
     
     return (
       <Container maxWidth={'md'}>
@@ -99,7 +99,7 @@ class AnalyzeSubMenu extends Component {
 
         <form style={{textAlign:"center", margin:"1em"}} onSubmit={this.handleSubmit}>
           <FormControl required={true} style={{minWidth: 250, marginBottom:"1em"}}>
-              <InputLabel>Select a Class</InputLabel>
+              <InputLabel id={"selectClasslabel"}>Select a Class</InputLabel>
               <Select
                   style={{textAlign:"center"}}
                   labelId={"selectClasslabel"}
@@ -115,10 +115,10 @@ class AnalyzeSubMenu extends Component {
           </FormControl>
             <br />
           <FormControl required={true} style={{minWidth: 250, marginBottom:"1em"}}>
-              <InputLabel>Select an Assignment </InputLabel>
+              <InputLabel id={'selectAssignmentlabel'}>Select an Assignment </InputLabel>
               <Select
                   style={{textAlign:"center"}}
-                  labelId={"selectClasslabel"}
+                  labelId={"selectAssignmentlabel"}
                   onChange={this.handleInputChange}
                   inputProps={{
                     name: 'selectedAssignmentId',
