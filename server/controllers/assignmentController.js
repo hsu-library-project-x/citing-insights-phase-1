@@ -24,9 +24,9 @@ module.exports = {
 
     //assignmentController.by_class_id
 
-    by_class_id: function (req, res) {
+    by_user_id: function (req, res) {
         var id = req.params.id;
-        assignmentModel.find({class_id: id}, function (err, assignment) {
+        assignmentModel.find({user_id: id}, function (err, assignment) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when getting assignment.',
