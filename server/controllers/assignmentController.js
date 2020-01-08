@@ -29,7 +29,7 @@ module.exports = {
         assignmentModel.find({user_id: id}, function (err, assignment) {
             if (err) {
                 return res.status(500).json({
-                    message: 'Error when getting assignment.',
+                    message: 'Error when getting assignments.',
                     error: err
                 });
             }
@@ -72,7 +72,8 @@ module.exports = {
         var assignment = new assignmentModel({
 			name : req.body.name,
             note : req.body.note,
-			class_id : req.body.class_id
+			class_id : req.body.class_id,
+            user_id: req.body.user_id,
 
         });
 
