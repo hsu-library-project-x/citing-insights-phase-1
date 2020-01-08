@@ -42,6 +42,24 @@ module.exports = {
         });
     },
 
+    by_class_id: function (req, res) {
+        var id = req.params.id;
+        assignmentModel.find({class_id: id}, function (err, assignment) {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Error when getting assignment.',
+                    error: err
+                });
+            }
+            if (!assignment) {
+                return res.status(404).json({
+                    message: 'No such assignment'
+                });
+            }
+            return res.json(assignment);
+        });
+    },
+
 
 
     /**
