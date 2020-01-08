@@ -17,7 +17,7 @@ router.get('/by_class_id/:id', assignmentController.by_class_id);
 /*
  * POST
  */
-router.post('/', assignmentController.create);
+router.post('/:user_id', assignmentController.create);
 
 /*
  * PUT

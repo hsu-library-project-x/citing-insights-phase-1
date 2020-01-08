@@ -30,6 +30,7 @@ var citationSchema = new Schema({
 	'doi':String,
 	'citationVelocity': String,
 	'influentialCitationCount': String,
+	's2PaperUrl': String,
 	'rubricId': { type: Schema.Types.ObjectId, ref: 'rubric' },
 	'rubricTitle': String,
 	'rubricScore': String,

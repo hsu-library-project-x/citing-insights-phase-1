@@ -63,6 +63,8 @@ typings/
 .next
 
 
-/server/fileUpload/* 
+/server/fileUpload/*
+
+/server/config.js
 
 #test
