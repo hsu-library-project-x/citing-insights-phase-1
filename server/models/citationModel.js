@@ -27,10 +27,11 @@ var citationSchema = new Schema({
 		String
 	],
 	'annotation': String,
-	'doi': [
-		String
-	],
+	'doi':String,
+	'citationVelocity': String,
+	'influentialCitationCount': String,
 	'rubricId': { type: Schema.Types.ObjectId, ref: 'rubric' },
+	'rubricTitle': String,
 	'rubricScore': String,
 	'intextCitations': Array,
 	'arxivid': String,

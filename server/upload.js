@@ -1,7 +1,7 @@
 const IncomingForm = require("formidable").IncomingForm;
 const mongoose = require("mongoose");
 const fs = require("fs");
-const shell = require("shelljs");
+const shell = require("shelljs")
 
 var Chance = require("chance");
 var chance = new Chance();
@@ -9,16 +9,10 @@ var chance = new Chance();
 var paperModel = require("./models/paperModel.js");
 var citationModel = require("./models/citationModel.js");
 
+//For use with CrossRef + SemanticScholar calls
+const controller = require("./controllers/webCallsController.js");
+
 var check = true;
-
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-
-function Get(yourUrl){
-    var Httpreq = new XMLHttpRequest(); // a new request
-    Httpreq.open("GET",yourUrl,false);
-    Httpreq.send(null);
-    return Httpreq.responseText;
-  }
 
 module.exports = function upload(req, res) {
 
@@ -46,17 +40,6 @@ module.exports = function upload(req, res) {
                 pool: "abcdefghijklmnopqrstuvwxyz",
                 length: 10
             });
-            console.log('attempting to print field');
-            console.log(field);
-
-            //Ghostscript strips pdf into raw text
-            //var txt_path = __dirname + "/tmp/txt/" + file_name + ".txt"
-            //console.log(txt_path);
-
-            //shell.exec("gs -sDEVICE=txtwrite -o " + txt_path + " " + file.path);
-
-
-            //the replace functions just get rid of carriage returns
 
             var textByLine = fs.readFileSync(file.path);
 
@@ -67,6 +50,7 @@ module.exports = function upload(req, res) {
                 "name": null,
                 "assignment_id": field
             };
+
             // we actually want to set a variable to see whether or not things happenned successfully
             // instantiate the paper and save to db
             var paper = new paperModel(raw_text);
@@ -78,8 +62,9 @@ module.exports = function upload(req, res) {
                 }
             });
 
-
-            //** citations start */
+            /* 
+            citations start 
+            */
 
             var json_path = "./tmp/json";
 
@@ -97,34 +82,41 @@ module.exports = function upload(req, res) {
                 .replace("fileUpload", "")
                 .replace(".pdf", ".json");
 
-
-            for (index in json_file) {
-                var citation = new citationModel(json_file[index]);
-                console.log(citation);
-                citation.set({ "paper_id": paper.id });
-
-                //// This section has been moved from citationController /////
-                var author_name = "";
-                if (citation.author.length > 0 && "given" in citation.author[0] && "family" in citation.author[0]) {
-                    author_name = citation.author[0]["family"] + "+" + citation.author[0]["given"];
-                }
-                var title_name = "";
-                if (citation.title.length > 0) {
-                    title_name = citation.title[0];
-                }
-
-                console.log(author_name);
-                console.log(title_name);
-
-                var json_obj = JSON.parse(Get("https://api.crossref.org/works?query.author=" + author_name + "&query.bibliographic=" + title_name + '&mailto=citinginsightsheroku@gmail.com'));
-                ///////////////////////////////////////////////////////////
-                console.log(json_obj);
-                citation.save(function (err, citation) {
-                    if (err) {
-                        check = false;
-                        console.log(err);
+            //Need a default citation that will represent the entire paper, to be envaluated with a rubric later
+            //(Overall Student Paper)
+            let defaultCitation = {
+                "author": [
+                    {
+                        "family": "Overall Student Paper"
                     }
+                ],
+                "paper_id": paper.id
+            }
+            let studentPaperCtitaion = new citationModel(defaultCitation);
+            studentPaperCtitaion.save(function (err, studentPaperCtitaion) {
+                if (err) {
+                    check = false;
+                    console.log(err);
+                }
+            });
+
+            //Assign all citations to the paper.
+            for (index in json_file) {
+                var citation = json_file[index];
+
+                //Give each citation the paper's id
+                citation.paper_id = paper.id;
+
+                //Do web calls here for Semantic Scholar MetaData
+                let author = controller.checkAuthor(citation.author);
+                let title = controller.checkTitle(citation.title);
+                let URL = "https://api.crossref.org/works?query.author=" + author + "&query.bibliographic=" + title +  "&mailto=citinginsightsheroku@gmail.com&rows=1&offset=0&select=DOI";
+
+                let dummy = controller.getData(URL, citation).then((result) => {
+                    //console.log("RESULLLLT: " + result);
                 })
+                //console.log(data);
+            
             }
 
             console.log(full_json_path + '\n' + file.path);
@@ -133,7 +125,6 @@ module.exports = function upload(req, res) {
             shell.exec('rm ' + file.path);
             //  shell.exec('rm ' + txt_path);
 
-            //after creating a citation model, save to db
         })
         .on("end", () => {
             //we want to check a bool set in paper.save to see if we cool

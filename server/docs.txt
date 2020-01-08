@@ -6,7 +6,7 @@ For the following, <collection> can be any of the following:
 users, courses, assignments, papers, citations
 
 Example: 
-http://localhost:5000/papers/5d0aab0cf43d790f49ed2b6b
+/papers/5d0aab0cf43d790f49ed2b6b
 
 If sent a GET request, this URL will show the contents of the paper with the corresponding 
 id: 5d0aab0cf43d790f49ed2b6b.

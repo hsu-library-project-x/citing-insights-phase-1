@@ -24,8 +24,6 @@ var app = express();
 var router = express.Router();
 
 
-
-
 //this line is just for the file uypload test
 app.engine('html', require('ejs').renderFile);
 
@@ -42,9 +40,7 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-
+app.use(express.static(path.join(__dirname,  'public')));
 
 app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -65,13 +61,15 @@ app.use('/feedback', feedback);
 app.get('/file_upload', function (req, res) {
   res.render('test.html');
 })
+  /*
+app.get('*', (req, res) => {
 
-/* this code is deprecated
-// we want to ultimately call CitationsController.show
-app.get('/get_citations/:prof/:name', function (req, res) {
-  const data = require('./json/' + req.params.prof + '/' + req.params.name + '.json')
-  res.json(data);
-}); */
+  console.log(req);
+  console.log(res);
+  console.log(path.join(__dirname + '../../client/build/index.html'));
+  res.sendFile(path.join(__dirname + '../../client/build/index.html'));
+});
+*/
 
 module.exports = app;
 
