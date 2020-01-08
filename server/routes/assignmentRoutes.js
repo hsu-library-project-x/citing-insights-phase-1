@@ -13,6 +13,7 @@ router.get('/', assignmentController.list);
 router.get('/:id', assignmentController.show);
 
 router.get('/by_user_id/:id', assignmentController.by_user_id);
+
 router.get('/by_class_id/:id', assignmentController.by_class_id);
 
 /*

@@ -24,6 +24,16 @@ class DiscoveryTool extends Component {
 
 
     getCurrentCitation() {
+        // let current = {};
+        // this.state.citations.forEach(c => {
+        //     if (c["_id"] === this.props.current_citation_id) {
+        //         current = c["id"];
+        //         this.setState({
+        //             citation: current
+        //         });
+        //     }
+        // });
+        
         var that = this;
         fetch(`/citations/${this.state.current_citation_id}`)
             .then(function (response) {

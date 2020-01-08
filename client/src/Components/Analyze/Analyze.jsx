@@ -90,15 +90,8 @@ class Analyze extends Component {
   }
 
   get_s2_info(citation_id) {
-    let that = this;
-    that.setState({ current_citation_id: citation_id });
-    fetch('http://localhost:5000/citations/s2/' + citation_id)
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (myJson) {
-        that.setState({ current_s2_data: myJson });
-      });
+    this.setState({ 
+      current_citation_id: citation_id });
   }
 
   //Here we populate citation source information and meta data
