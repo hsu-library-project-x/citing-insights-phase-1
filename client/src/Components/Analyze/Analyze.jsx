@@ -232,14 +232,17 @@ class Analyze extends Component {
   }
 
   updateCitationId(new_id) {
+    console.log("sup")
+    console.log(new_id);
     this.setState({
       current_citation_id: new_id,
+      function() {
+        console.log(this.state.current_citation_id);
+    }
     });
   }
 
   render() {
-    console.log("HREE");
-    console.log("Assignment ID " + this.state.assignmentId);
     let pdf;
     if (this.state.current_pdf_data === "this must get set") {
       pdf = <p> we dont have data yet </p>;
@@ -250,7 +253,7 @@ class Analyze extends Component {
     let rubricList = rubrics.map((rubric) =>
       <option value={rubric._id}>{rubric.name}</option>
     );
-
+    
     return (
       <Container maxWidth={'md'}>
         <Grid container spacing={3}>
@@ -265,10 +268,9 @@ class Analyze extends Component {
             }
             {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
               <DiscoveryTool
-                citation={this.state.citations[this.state.current_citation_id]}
                 citations={this.state.citations}
                 current_citation_id={this.state.current_citation_id}
-                current_s2_data={this.state.current_s2_data}
+                key={this.state.current_citation_id}
               /> : null}
           </Grid>
           <Grid item xs="6">
