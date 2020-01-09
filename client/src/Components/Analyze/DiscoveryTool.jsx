@@ -39,21 +39,26 @@ class DiscoveryTool extends Component {
     }
 
     open_s2() {
-
-        // if (this.state.citation.s2PaperUrl !== undefined) {
-        let win = window.open(this.state.citation.s2PaperUrl);
-        win.focus(); 
+        let citation = this.state.citation;
+        if (citation.s2PaperUrl !== undefined) {
+            let win = window.open(citation.s2PaperUrl);
+            win.focus();
+        } else {
+            var query = encodeURI(citation["author"][0]["family"] + " " + citation["title"][0]);
+            var win = window.open("https://www.semanticscholar.org/search?q=" + query, '_blank');
+            win.focus();
+        }
     }
 
     open_alma_primo() {
 
-        let query = encodeURI( this.state.citation["title"][0]);
+        let query = encodeURI(this.state.citation["title"][0]);
         let win = window.open("https://humboldt-primo.hosted.exlibrisgroup.com/primo-explore/search?query=title,begins_with," + query + ",AND&tab=everything&search_scope=EVERYTHING&sortby=title&vid=01CALS_HUL&lang=en_US&mode=advanced&offset=0&pcAvailability=true", '_blank');
         win.focus();
     }
 
     open_google_scholar() {
-        let query = encodeURI( this.state.citation["author"][0]["family"] + " " +  this.state.citation["title"][0]);
+        let query = encodeURI(this.state.citation["author"][0]["family"] + " " + this.state.citation["title"][0]);
         let win = window.open("https://scholar.google.com/scholar?q=" + query, '_blank');
         win.focus();
     }
