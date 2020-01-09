@@ -17,44 +17,56 @@ class Overview extends Component {
             bigCitations: []
         };
 
+        this.getCourses();
+        this.getRubrics();
+
+        this.getCourses = this.getCourses.bind(this);
+        this.getRubrics = this.getRubrics.bind(this);
         this.handleClassSelection = this.handleClassSelection.bind(this);
         this.handleAssignmentSelection = this.handleAssignmentSelection.bind(this);
         this.showCitations = this.showCitations.bind(this);
-        this.handlePaperSelection = this.handlePaperSelection.bind(this)
+        this.handlePaperSelection = this.handlePaperSelection.bind(this);
+        this.formatCitation = this.formatCitation.bind(this);
+        this.getAuthors = this.getAuthors.bind(this);
     }
 
-    //On mount, makes a call to retrieve all Classes for the user
-    componentWillMount() {
+
+    getCourses(){
         let that = this;
-        //Grab the user's courses
-        fetch('http://localhost:5000/courses/' + this.props.user.id)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (myJson) {
-                that.setState({ AvailableCourses: myJson });
-            });
-
-        //Grab the user's rubrics
-        fetch('http://localhost:5000/rubrics/' + this.props.user.id)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (myJson) {
-                that.setState({ rubrics: myJson })
-            });
+        return(
+            fetch('http://localhost:5000/courses/' + this.props.user.id)
+                .then(response => {
+                    return response.json();
+                })
+                .then(myJson => {
+                    that.setState({ AvailableCourses: myJson });
+                })
+        );
     }
+
+    getRubrics(){
+        let that = this;
+        return(
+            fetch('http://localhost:5000/rubrics/' + this.props.user.id)
+                .then(response => {
+                    return response.json();
+                })
+                .then(myJson => {
+                    that.setState({ rubrics: myJson })
+                })
+        );
+    }
+
 
     //Given a Class, this function makes a call to get all assignments in that class.
     handleClassSelection(event) {
         let that = this;
         let target = event.target;
         fetch('http://localhost:5000/assignments/by_class_id/' + target.value)
-            .then(function (response) {
+            .then(response =>  {
                 return response.json();
             })
-            .then(function (myJson) {
-
+            .then(myJson => {
                 that.setState({ AvailableAssignments: myJson });
             });
     }
@@ -67,7 +79,6 @@ class Overview extends Component {
                 return response.json();
             })
             .then(function (myJson) {
-
                 that.setState({ AvailablePapers: myJson });
             });
     }
@@ -76,53 +87,55 @@ class Overview extends Component {
         let that = this;
         let target = event.target;
         fetch('http://localhost:5000/citations/find_evaluations/' + target.value)
-            .then(function (response) {
+            .then(response => {
+                console.log("!");
                 return response.json();
             })
-            .then(function (myJson) {
+            .then(myJson => {
+                console.log(myJson);
+
                 that.setState({ paper_id: target.value, citations: myJson });
             });
+    }
 
+    getAuthors(authors) {
+        return authors.map((d) =>
+            d.family + ", " + d.given + "\n"
+        );
+    }
+
+    formatCitation(citation) {
+        return (
+            <div>
+                <Card>
+                    <h6>Citation</h6>
+                    <p>
+                        {this.getAuthors(citation.author)} ({citation.date}). {citation.title}
+                    </p>
+                    <p>
+                        Annotation: {citation.annotation}
+                    </p>
+                    <p>
+                        Rubric Value: {citation.rubricId}
+                    </p>
+                    <p>
+                        Rubric Score {citation.rubricScore}
+                    </p>
+                </Card>
+            </div>
+        );
     }
 
     showCitations() {
         //Query for Citations where rubric value or annotation is not null
-        function getAuthors(authors) {
-            return authors.map((d) =>
-                d.family + ", " + d.given + "\n"
-            );
-        }
-
-        function formatCitation(citation) {
-            return (
-                <div>
-                    <Card>
-                        <h6>Citation</h6>
-                        <p>
-                            {getAuthors(citation.author)} ({citation.date}). {citation.title}
-                        </p>
-                        <p>
-                            Annotation: {citation.annotation}
-                        </p>
-                        <p>
-                            Rubric Value: {citation.rubricId}
-                        </p>
-                        <p>
-                            Rubric Score {citation.rubricScore}
-                        </p>
-                    </Card>
-                </div>
-            );
-        }
-
         let citations = this.state.citations;
-
+    console.log(citations);
         let bigCitation;
 
         if (citations !== []) {
             bigCitation = citations.map((citation) => {
-                if (citation.evaluated === true) {
-                    return (formatCitation(citation));
+                if (citation.evaluated === true) { //fetch call also checks this
+                    return (this.formatCitation(citation));
                 } else {
                     return ("");
                 }
@@ -209,12 +222,9 @@ class Overview extends Component {
                         </Select>
                     </FormControl>
                     <br />
-                    <div>
-                        <Button variant={"contained"} color={'primary'} id="showEvals" onClick={() => { this.showCitations() }}>
-                            Show Evaluations
-                        </Button>
-                    </div>
-                     <p> {this.state.bigCitations}</p>
+                    <Button variant={"contained"} color={'primary'} type={'submit'}>
+                        Show Evaluations
+                    </Button>
                 </form>
             </Container>
         )
