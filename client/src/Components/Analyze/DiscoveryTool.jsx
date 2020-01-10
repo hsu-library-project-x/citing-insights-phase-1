@@ -6,14 +6,9 @@ class DiscoveryTool extends Component {
         super(props);
         this.state = {
             citation: '',
-            citations: this.props.citations,
-            current_s2_data: this.props.current_s2_data,
+            citations: '',
             current_citation_id: this.props.current_citation_id,
-            velocity: '',
-            influenctial: ''
         };
-
-        this.getCurrentCitation();
 
         this.getCurrentCitation = this.getCurrentCitation.bind(this);
         this.open_s2 = this.open_s2.bind(this);
@@ -22,78 +17,64 @@ class DiscoveryTool extends Component {
     }
 
 
-
-    getCurrentCitation() {
-        // let current = {};
-        // this.state.citations.forEach(c => {
-        //     if (c["_id"] === this.props.current_citation_id) {
-        //         current = c["id"];
-        //         this.setState({
-        //             citation: current
-        //         });
-        //     }
-        // });
-        
-        var that = this;
-        fetch(`/citations/${this.state.current_citation_id}`)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (JSON) {
-                that.setState({
-                    citation: JSON
-                });
-            });
+    componentDidMount() {
+        this.getCurrentCitation();
+        console.log(this.state);
     }
 
 
+    getCurrentCitation() {
+        let current = {};
+        this.props.citations.forEach(c => {
+            if (c["_id"] === this.props.current_citation_id) {
+                current = c;
+                this.setState({
+                    citation: current,
+                    function() {
+                        console.log(this.state.citation);
+                    }
+                });
+            }
+        });
+    }
+
     open_s2() {
-        // let current_citation = this.getCurrentCitation(this.state.citations);
-        // if (current_citation.s2PaperUrl !== undefined) {
-        //     let win = window.open(current_citation.s2PaperUrl);
-        //     win.focus();
-        // } else {
-        //     let query = encodeURI(current_citation["author"][0]["family"] + " " + current_citation["title"][0]);
-        //     let win = window.open("https://www.semanticscholar.org/search?q=" + query, '_blank');
-        //     win.focus();
-        // } 
-        this.getCurrentCitation();
-        if (this.state.citation.s2PaperUrl !== undefined) {
-            let win = window.open(this.state.citation.s2PaperUrl);
+        let citation = this.state.citation;
+        if (citation.s2PaperUrl !== undefined) {
+            let win = window.open(citation.s2PaperUrl);
             win.focus();
         } else {
-            let query = encodeURI(this.state.citation["author"][0]["family"] + " " + this.state.citation["title"][0]);
-            let win = window.open("https://www.semanticscholar.org/search?q=" + query, '_blank');
+            var query = encodeURI(citation["author"][0]["family"] + " " + citation["title"][0]);
+            var win = window.open("https://www.semanticscholar.org/search?q=" + query, '_blank');
             win.focus();
         }
     }
 
     open_alma_primo() {
-        let current_citation = this.getCurrentCitation(this.state.citations);
-        let query = encodeURI(current_citation["title"][0]);
+
+        let query = encodeURI(this.state.citation["title"][0]);
         let win = window.open("https://humboldt-primo.hosted.exlibrisgroup.com/primo-explore/search?query=title,begins_with," + query + ",AND&tab=everything&search_scope=EVERYTHING&sortby=title&vid=01CALS_HUL&lang=en_US&mode=advanced&offset=0&pcAvailability=true", '_blank');
         win.focus();
     }
 
     open_google_scholar() {
-        let current_citation = this.getCurrentCitation(this.state.citations);
-        let query = encodeURI(current_citation["author"][0]["family"] + " " + current_citation["title"][0]);
+        let query = encodeURI(this.state.citation["author"][0]["family"] + " " + this.state.citation["title"][0]);
         let win = window.open("https://scholar.google.com/scholar?q=" + query, '_blank');
         win.focus();
     }
 
     render() {
         return (
-            <div className="discoveryTool">
+            <div className="discoveryTool" >
                 <h4>Discovery Tool</h4>
                 <Card>
                     <button onClick={this.open_s2}>
                         Semantic Scholar
                     </button>
                     <p>
-                        Citation Velocity: {this.state.current_s2_data["citation_velocity"]}
+                        Citation Velocity: {this.state.citation.citationVelocity}
                         <br />
-                        Influential Citations: {this.state.current_s2_data["influential_citation_count"]}
+                        Influential Citations: {this.state.citation.influentialCitationCount}
                     </p>
                 </Card>
                 <Card>

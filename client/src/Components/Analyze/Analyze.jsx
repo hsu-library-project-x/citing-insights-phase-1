@@ -65,8 +65,7 @@ class Analyze extends Component {
     } else {
       let that = this;
       //Grab info about the assignment
-      fetch('http://localhost:5000/assignments/' + this.props.selectedAssignmentId
-      )
+      fetch('http://localhost:5000/assignments/' + this.props.selectedAssignmentId)
         .then(function (response) {
           return response.json();
         })
@@ -236,12 +235,13 @@ class Analyze extends Component {
   updateCitationId(new_id) {
     this.setState({
       current_citation_id: new_id,
+      function() {
+        console.log(this.state.current_citation_id);
+    }
     });
   }
 
   render() {
-    console.log("HREE");
-    console.log("Assignment ID " + this.state.assignmentId);
     let pdf;
     if (this.state.current_pdf_data === "this must get set") {
       pdf = <p> we dont have data yet </p>;
@@ -256,7 +256,7 @@ class Analyze extends Component {
     return (
       <Container maxWidth={'md'}>
         <Grid container spacing={0}>
-          <Grid item xs="2">
+          <Grid item xs="3">
             <p id="assignmentInfo">Current Assignment - {this.state.assignment.name} </p>
             {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
               <Citation
@@ -267,21 +267,19 @@ class Analyze extends Component {
             }
             {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
               <DiscoveryTool
-                citation={this.state.citations[this.state.current_citation_id]}
                 citations={this.state.citations}
                 current_citation_id={this.state.current_citation_id}
-                current_s2_data={this.state.current_s2_data}
                 key={this.state.current_citation_id}
               /> : null}
           </Grid>
-          <Grid item xs="8">
+          <Grid item xs="6">
             <div className="overflow-auto">
               <Paper>
                 {pdf}
               </Paper>
             </div>
           </Grid>
-          <Grid item xs="2">
+          <Grid item xs="3">
             <FormControl required={true} style={{minWidth: 200, marginBottom:"1em"}}>
               <InputLabel id={"AssignRubriclabel"}>Select a Rubric</InputLabel>
               <Select
