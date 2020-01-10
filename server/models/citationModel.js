@@ -27,7 +27,7 @@ var citationSchema = new Schema({
 		String
 	],
 	'annotation': String,
-	'doi':[String],
+	'doi': {type: String, default:""},
 	'citationVelocity': String,
 	'influentialCitationCount': String,
 	's2PaperUrl': String,
