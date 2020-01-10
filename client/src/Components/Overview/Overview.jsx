@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import {Card} from '@material-ui/core';
-import Container from "@material-ui/core/Container";
+import {Card, Button, Select, MenuItem, Container, Typography, FormControl, InputLabel} from '@material-ui/core';
 
 class Overview extends Component {
     constructor(props) {
@@ -18,47 +17,56 @@ class Overview extends Component {
             bigCitations: []
         };
 
+        this.getCourses();
+        this.getRubrics();
+
+        this.getCourses = this.getCourses.bind(this);
+        this.getRubrics = this.getRubrics.bind(this);
         this.handleClassSelection = this.handleClassSelection.bind(this);
         this.handleAssignmentSelection = this.handleAssignmentSelection.bind(this);
         this.showCitations = this.showCitations.bind(this);
-        this.handlePaperSelection = this.handlePaperSelection.bind(this)
+        this.handlePaperSelection = this.handlePaperSelection.bind(this);
+        this.formatCitation = this.formatCitation.bind(this);
+        this.getAuthors = this.getAuthors.bind(this);
     }
 
-    //On mount, makes a call to retrieve all Classes for the user
-    componentWillMount() {
+
+    getCourses(){
         let that = this;
-        //Grab the user's courses
-        fetch('http://localhost:5000/courses/' + this.props.user.id)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (myJson) {
-                that.setState({ AvailableCourses: myJson });
-            });
-
-        //Grab the user's rubrics
-        fetch('http://localhost:5000/rubrics/' + this.props.user.id)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (myJson) {
-                that.setState({ rubrics: myJson })
-            });
-            console.log("rubrics");
-            console.log(this.state.rubrics);
+        return(
+            fetch('http://localhost:5000/courses/' + this.props.user.id)
+                .then(response => {
+                    return response.json();
+                })
+                .then(myJson => {
+                    that.setState({ AvailableCourses: myJson });
+                })
+        );
     }
+
+    getRubrics(){
+        let that = this;
+        return(
+            fetch('http://localhost:5000/rubrics/' + this.props.user.id)
+                .then(response => {
+                    return response.json();
+                })
+                .then(myJson => {
+                    that.setState({ rubrics: myJson })
+                })
+        );
+    }
+
 
     //Given a Class, this function makes a call to get all assignments in that class.
     handleClassSelection(event) {
         let that = this;
         let target = event.target;
-        console.log(target);
         fetch('http://localhost:5000/assignments/by_class_id/' + target.value)
-            .then(function (response) {
+            .then(response =>  {
                 return response.json();
             })
-            .then(function (myJson) {
-
+            .then(myJson => {
                 that.setState({ AvailableAssignments: myJson });
             });
     }
@@ -66,13 +74,11 @@ class Overview extends Component {
     handleAssignmentSelection(event) {
         let that = this;
         let target = event.target;
-        console.log(target);
         fetch('http://localhost:5000/papers/by_assignment_id/' + target.value)
             .then(function (response) {
                 return response.json();
             })
             .then(function (myJson) {
-
                 that.setState({ AvailablePapers: myJson });
             });
     }
@@ -80,55 +86,56 @@ class Overview extends Component {
     handlePaperSelection(event) {
         let that = this;
         let target = event.target;
-        console.log(target.value);
         fetch('http://localhost:5000/citations/find_evaluations/' + target.value)
-            .then(function (response) {
+            .then(response => {
+                console.log("!");
                 return response.json();
             })
-            .then(function (myJson) {
+            .then(myJson => {
+                console.log(myJson);
+
                 that.setState({ paper_id: target.value, citations: myJson });
             });
     }
 
+    getAuthors(authors) {
+        return authors.map((d) =>
+            d.family + ", " + d.given + "\n"
+        );
+    }
+
+    formatCitation(citation) {
+        return (
+            <div>
+                <Card>
+                    <h6>Citation</h6>
+                    <p>
+                        {this.getAuthors(citation.author)} ({citation.date}). {citation.title}
+                    </p>
+                    <p>
+                        Annotation: {citation.annotation}
+                    </p>
+                    <p>
+                        Rubric Value: {citation.rubricId}
+                    </p>
+                    <p>
+                        Rubric Score {citation.rubricScore}
+                    </p>
+                </Card>
+            </div>
+        );
+    }
+
     showCitations() {
         //Query for Citations where rubric value or annotation is not null
-        function getAuthors(authors) {
-            return authors.map((d) =>
-                d.family + ", " + d.given + "\n"
-            );
-        }
-
-        function formatCitation(citation) {
-            return (
-                <div>
-                    <Card>
-                        <h6>Citation</h6>
-                        <p>
-                            {getAuthors(citation.author)} ({citation.date}). {citation.title}
-                        </p>
-                        <p>
-                            Annotation: {citation.annotation}
-                        </p>
-                        <p>
-                            Rubric Value: {citation.rubricId}
-                        </p>
-                        <p>
-                            Rubric Score {citation.rubricScore}
-                        </p>
-                    </Card>
-                </div>
-            );
-        }
-
         let citations = this.state.citations;
-
+    console.log(citations);
         let bigCitation;
-        console.log(citations);
 
         if (citations !== []) {
             bigCitation = citations.map((citation) => {
-                if (citation.evaluated === true) {
-                    return (formatCitation(citation));
+                if (citation.evaluated === true) { //fetch call also checks this
+                    return (this.formatCitation(citation));
                 } else {
                     return ("");
                 }
@@ -145,43 +152,80 @@ class Overview extends Component {
     render() {
         let courses = this.state.AvailableCourses;
         let optionItems = courses.map((course) =>
-            <option value={course._id}>{course.name}</option>
+            <MenuItem value={course._id}>{course.name}</MenuItem>
         );
 
         let assignments = this.state.AvailableAssignments;
         let optionAssignments = assignments.map((assignment) =>
-            <option value={assignment._id}>{assignment.name}</option>
+            <MenuItem value={assignment._id}>{assignment.name}</MenuItem>
         );
 
         let papers = this.state.AvailablePapers;
         let optionPapers = papers.map((paper) =>
-            <option value={paper._id}>{paper.title}</option>
+            <MenuItem value={paper._id}>{paper.title}</MenuItem>
         );
 
         return (
             <Container maxWidth={'md'}>
-                <label>Class:</label> {/*Investigate if it's for or form*/}
-                <select onChange={this.handleClassSelection} id="assignForAnalyze" name="className" required >
-                    <option value="" disabled selected hidden >Select a Class</option>
-                    {optionItems}
-                </select>
-                <label>Assignment:</label>  {/*Investigate if it's for or form*/}
-                <select onChange={this.handleAssignmentSelection} id="assignForAnalyze2" name="selectedAssignmentId" required >
-                    <option value="" disabled selected hidden >Select an Assignment</option>
-                    {optionAssignments}
-                </select>
-                <label>Paper:</label>  {/*Investigate if it's for or form*/}
-                <select onChange={this.handlePaperSelection} id="assignForAnalyze3"  name="selectedPaperId" required >
-                    <option value="" disabled selected hidden >Select an Paper</option>
-                    {optionPapers}
-                </select>
-                <div>
-                    <h1>Overview</h1>
-                    <button id="showEvals" onClick={() => { this.showCitations() }}>
+                <Typography style={{ marginTop: "1em" }} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}>
+                    Overview
+                </Typography>
+
+                <Typography align={"center"} variant={"subtitle1"} component={"p"} gutterBottom={true}>
+                    Please select the paper you want an overview for.
+                </Typography>
+
+                <form style={{textAlign:"center", margin:"1em"}} onSubmit={this.showCitations}>
+                    <FormControl required={true} style={{minWidth: 250}}>
+                        <InputLabel id="selectClasslabelOverview">Select a Class</InputLabel>
+                        <Select
+                            style={{textAlign:"center"}}
+                            labelId={"selectClasslabelOverview"}
+                            onChange={this.handleClassSelection}
+                            inputProps={{
+                                name: 'className',
+                                id: 'assignForAnalyze',
+                            }}
+                        >
+                            <MenuItem value="" disabled >select class</MenuItem>
+                            {optionItems}
+                        </Select>
+                    </FormControl>
+                    <br />
+                    <FormControl  required={true} style={{minWidth: 250}}>
+                        <InputLabel id="selectAssignmentLabelOverview">Select an Assignment</InputLabel>
+                        <Select
+                            style={{textAlign:"center"}}
+                            onChange={this.handleAssignmentSelection}
+                            inputProps={{
+                                name: 'selectedAssignmentId',
+                                id: 'assignForAnalyze',
+                            }}
+                        >
+                            <MenuItem value="" disabled> select assignment</MenuItem>
+                            {optionAssignments}
+                        </Select>
+                    </FormControl>
+                    <br />
+                    <FormControl  required={true} style={{minWidth: 250, marginBottom:"1em"}}>
+                        <InputLabel id="selectAssignmentLabelOverview">Select a Paper</InputLabel>
+                        <Select
+                            style={{textAlign:"center"}}
+                            onChange={this.handlePaperSelection}
+                            inputProps={{
+                                name: 'selectedPaperId',
+                                id: 'assignForAnalyze',
+                            }}
+                        >
+                            <MenuItem value="" disabled> select paper </MenuItem>
+                            {optionPapers}
+                        </Select>
+                    </FormControl>
+                    <br />
+                    <Button variant={"contained"} color={'primary'} type={'submit'}>
                         Show Evaluations
-                    </button>
-                </div>
-            <p1> {this.state.bigCitations}</p1>
+                    </Button>
+                </form>
             </Container>
         )
     }

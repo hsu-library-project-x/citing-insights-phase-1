@@ -149,8 +149,6 @@ module.exports = {
 
   save_citation_grade: function (req, res) {
     var id = req.params.id;
-    console.log('SAVING CITATION GRADE');
-    console.log(id);
     citationModel.findOne({_id: id}, function (err, citation) {
       if (err) {
         return res.status(500).json({
@@ -177,7 +175,7 @@ module.exports = {
             error: err
           });
         }
-        return res.json(citation);
+        return res.status(201).json(citation);
       });
     });
   },

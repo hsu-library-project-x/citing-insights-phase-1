@@ -27,9 +27,7 @@ var citationSchema = new Schema({
 		String
 	],
 	'annotation': String,
-	'doi':[
-		String
-	],
+	'doi':String,
 	'citationVelocity': String,
 	'influentialCitationCount': String,
 	's2PaperUrl': String,
@@ -38,7 +36,6 @@ var citationSchema = new Schema({
 	'rubricScore': String,
 	'intextCitations': Array,
 	'arxivid': String,
-	'annotation': String,
 	'paper_id': {
 		type: Schema.Types.ObjectId,
 		ref: 'paper'
