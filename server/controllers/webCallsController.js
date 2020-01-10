@@ -39,7 +39,7 @@ async function buildCitation(metaData, citation) {
 
   const builtCitation = new citationModel(citation);
   builtCitation.set({
-    "doi" : await metaData.doi,
+    "doi": await metaData.doi,
     "citationVelocity" : await metaData.citationVelocity,
     "influentialCitationCount" : await metaData.influentialCitationCount,
     "s2PaperUrl": await metaData.url

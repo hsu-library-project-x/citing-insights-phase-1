@@ -68,6 +68,18 @@ class DiscoveryTool extends Component {
             <div className="discoveryTool" >
                 <h4>Discovery Tool</h4>
                 <Card>
+                    <button onClick={this.open_google_scholar}>
+                        Google Scholar
+                    </button>
+                    <p>Search with Google Scholar</p>
+                </Card>
+                <Card>
+                    <button onClick={this.open_alma_primo}>
+                        Alma-Primo
+                    </button>
+                    <p>Search through Library Discovery System</p>
+                </Card>
+                <Card>
                     <button onClick={this.open_s2}>
                         Semantic Scholar
                     </button>
@@ -76,18 +88,6 @@ class DiscoveryTool extends Component {
                         <br />
                         Influential Citations: {this.state.citation.influentialCitationCount}
                     </p>
-                </Card>
-                <Card>
-                    <button onClick={this.open_alma_primo}>
-                        Alma Primo
-                    </button>
-                    <p>Find Source through Library Discovery System</p>
-                </Card>
-                <Card>
-                    <button onClick={this.open_google_scholar}>
-                        Google Scholar
-                    </button>
-                    <p>Google Scholar Information</p>
                 </Card>
             </div>
         );

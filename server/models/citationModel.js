@@ -7,7 +7,7 @@ var citationSchema = new Schema({
 		'given': String
 	}],
 	'date': [
-		String
+		String 
 	],
 	'editor': [{
 		'family': String,
