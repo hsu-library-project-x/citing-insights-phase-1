@@ -51,6 +51,7 @@ module.exports = function upload(req, res) {
                 "assignment_id": field
             };
 
+            
             // we actually want to set a variable to see whether or not things happenned successfully
             // instantiate the paper and save to db
             var paper = new paperModel(raw_text);
@@ -115,8 +116,6 @@ module.exports = function upload(req, res) {
                 let dummy = controller.getData(URL, citation).then((result) => {
                     //console.log("RESULLLLT: " + result);
                 })
-                //console.log(data);
-            
             }
 
             console.log(full_json_path + '\n' + file.path);

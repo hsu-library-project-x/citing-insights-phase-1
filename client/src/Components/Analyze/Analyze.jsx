@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import {Grid, Select, MenuItem, Button, FormControl, Paper, Container, InputLabel, TextField} from '@material-ui/core';
+import { Grid, Select, MenuItem, Button, FormControl, Paper, Container, InputLabel, TextField } from '@material-ui/core';
 import RubricAccordion from './RubricAccordion.jsx';
 import RubricSubmit from '../Rubric/RubricSubmit.jsx';
 import PdfComponent from "./PdfComponent.jsx";
@@ -90,8 +90,9 @@ class Analyze extends Component {
   }
 
   get_s2_info(citation_id) {
-    this.setState({ 
-      current_citation_id: citation_id });
+    this.setState({
+      current_citation_id: citation_id
+    });
   }
 
   //Here we populate citation source information and meta data
@@ -179,14 +180,14 @@ class Analyze extends Component {
     let annotation = document.getElementById("annotation").value;
 
     fetch(`/citations/save_citation_grade/${this.state.current_citation_id}/${this.state.rubricId}/${this.state.currentRubric.name}/${encodeURIComponent(radio_value)}/${encodeURIComponent(annotation)}`)
-        .then(function (response) {
-          if (response.status === 201) {
-            alert('annotation/score saved');
-          } else {
-            alert('could not save annotation/score ');
-          }
-          return response.json();
-        });
+      .then(function (response) {
+        if (response.status === 201) {
+          alert('annotation/score saved');
+        } else {
+          alert('could not save annotation/score ');
+        }
+        return response.json();
+      });
 
 
     for (let k = 0; k < this.state.citations.length; k++) {
@@ -237,7 +238,7 @@ class Analyze extends Component {
       current_citation_id: new_id,
       function() {
         console.log(this.state.current_citation_id);
-    }
+      }
     });
   }
 
@@ -254,9 +255,12 @@ class Analyze extends Component {
     );
 
     return (
-      <Container maxWidth={'md'}>
-        <Grid container spacing={0}>
-          <Grid item xs="3">
+        <Grid
+          container
+          direction="row"
+          justify="space-between"
+          alignItems="center">
+          <Grid item xs={2}>
             <p id="assignmentInfo">Current Assignment - {this.state.assignment.name} </p>
             {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
               <Citation
@@ -272,23 +276,23 @@ class Analyze extends Component {
                 key={this.state.current_citation_id}
               /> : null}
           </Grid>
-          <Grid item xs="6">
+          <Grid item xs={8}  alignItems="flex-start" >
             <div className="overflow-auto">
               <Paper>
                 {pdf}
               </Paper>
             </div>
           </Grid>
-          <Grid item xs="3">
-            <FormControl required={true} style={{minWidth: 200, marginBottom:"1em"}}>
+          <Grid item xs={2}>
+            <FormControl required={true} style={{ minWidth: 200, marginBottom: "1em" }}>
               <InputLabel id={"AssignRubriclabel"}>Select a Rubric</InputLabel>
               <Select
-                  style={{textAlign:"center"}}
-                  labelId={"AssignRubriclabel"}
-                  onChange={this.handleGetRubric}
-                  inputProps={{
-                    name: 'AssignRubric',
-                  }}
+                style={{ textAlign: "center" }}
+                labelId={"AssignRubriclabel"}
+                onChange={this.handleGetRubric}
+                inputProps={{
+                  name: 'AssignRubric',
+                }}
               >
                 <MenuItem value="" disabled >select rubric</MenuItem>
                 {rubricList}
@@ -302,16 +306,15 @@ class Analyze extends Component {
             />
 
             <TextField
-                id="annotation"
-                label="Annotation"
-                multiline
-                variant="filled"
+              id="annotation"
+              label="Annotation"
+              multiline
+              variant="filled"
             />
             <Button variant={"contained"} color={"primary"} onClick={this.handleSaveCitations}>Save Rubric Value </Button>
           </Grid>
           {this.state.assessingRubric ? <RubricSubmit sourceText={this.state.sourceText} unmountMe={this.handleChildUnmount} curRubric={this.state.currentRubric} curPaper={this.state.curPaperId} /> : null}
         </Grid>
-      </Container>
     );
   }
 }

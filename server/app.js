@@ -9,6 +9,7 @@ const config = require("./config.js");
 const upload = require('./upload');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const fs = require('fs');
 
 const url = `mongodb://${config.db.host}:${config.db.port}/${config.db.name}`;
 
