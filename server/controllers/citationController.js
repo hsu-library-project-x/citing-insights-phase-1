@@ -1,6 +1,6 @@
 var citationModel = require('../models/citationModel.js');
-const request = require('request');
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+// const request = require('request');
+// var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 /**
  * citationController.js

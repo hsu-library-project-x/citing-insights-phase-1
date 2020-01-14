@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card } from '@material-ui/core';
+import {Card, FormControl, InputLabel, MenuItem, Select} from '@material-ui/core';
 
 class Citation extends Component {
     constructor(props) {
@@ -58,7 +58,7 @@ class Citation extends Component {
             // eslint-disable-next-line array-callback-return
             drop = citations.map(c => {
                 if (c.author[0] !== undefined) {
-                    return (<option value={c._id}> {c.author[0].family} </option>);
+                    return (<MenuItem value={c._id}> {c.author[0].family} </MenuItem>);
                 }
             });
         } else {
@@ -75,18 +75,24 @@ class Citation extends Component {
 
         return (
             <div>
-                <h4 id="CitationLabel">Citation (with style): </h4>
-                <select
-                    value={this.state.current_citation_id}
-                    onChange={this.handleCitationChange}
-                >
-                    <option value="" disabled selected hidden >Select a Citation</option>
-                    {dropDownItems}
-                </select>
+                <FormControl required={true} style={{minWidth: 200, marginBottom:"1em"}}>
+                    <InputLabel id={"selectCitationlabel"}>Select a Citation</InputLabel>
+                    <Select
+                        style={{textAlign:"center"}}
+                        labelId={"selectCitationlabel"}
+                        value={this.state.current_citation_id}
+                        onChange={this.handleCitationChange}
+                        inputProps={{
+                            name: 'className',
+                            id: 'assignForAnalyze',
+                        }}
+                    >
+                        <MenuItem value="" disabled >select citation</MenuItem>
+                        {dropDownItems}
+                    </Select>
+                </FormControl>
                 <Card>
-                    <h6>Citation</h6>
-                    <p> {cardText}</p>
-
+                    {cardText}
                 </Card>
             </div>
         );

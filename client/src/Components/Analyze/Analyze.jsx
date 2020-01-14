@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Grid, Select, MenuItem, Button, FormControl, Paper, Container, InputLabel, TextField } from '@material-ui/core';
+import { Grid, Select, MenuItem, Button, FormControl, Paper, InputLabel, TextField } from '@material-ui/core';
 import RubricAccordion from './RubricAccordion.jsx';
 import RubricSubmit from '../Rubric/RubricSubmit.jsx';
 import PdfComponent from "./PdfComponent.jsx";
@@ -36,6 +36,7 @@ class Analyze extends Component {
     this.componentWillMount = this.componentWillMount.bind(this);
     this.handleGetRubric = this.handleGetRubric.bind(this);
     this.handleChildUnmount = this.handleChildUnmount.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSaveCitations = this.handleSaveCitations.bind(this);
     this.get_citation_info = this.get_citation_info.bind(this);
     this.get_s2_info = this.get_s2_info.bind(this);
@@ -46,7 +47,6 @@ class Analyze extends Component {
   }
 
   get_paper_info(paper_id) {
-    console.log("PAPER ID: " + paper_id);
     fetch('http://localhost:5000/papers/' + paper_id)
       .then(function (response) {
         return response.json();
@@ -108,7 +108,6 @@ class Analyze extends Component {
           return response.json();
         })
         .then(function (myJson) {
-
           that.setState({ paper_ids: myJson });
           try {
             fetch('http://localhost:5000/papers/' + myJson[0]["_id"])
@@ -211,6 +210,18 @@ class Analyze extends Component {
     }
   }
 
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+    //alert(name + ", " + value);
+    this.setState({
+          [name]: value
+        },
+    );
+
+  }
+
   next_paper(direction) {
     let check = true;  //THis is redunant?
     let index = this.state.current_paper_id_index;
@@ -254,6 +265,12 @@ class Analyze extends Component {
       <MenuItem value={rubric._id}>{rubric.name}</MenuItem>
     );
 
+    let papers = this.state.paper_ids;
+    let paperList = papers.map(p =>{
+       return  <MenuItem value={p._id}> {p.title} </MenuItem>}
+    );
+
+
     return (
         <Grid
           container
@@ -261,7 +278,22 @@ class Analyze extends Component {
           justify="space-between"
           alignItems="center">
           <Grid item xs={2}>
-            <p id="assignmentInfo">Current Assignment - {this.state.assignment.name} </p>
+            <FormControl required={true} style={{minWidth: 200, marginBottom:"1em"}}>
+              <InputLabel id={"selectPaperlabel"}>Select a Paper</InputLabel>
+              <Select
+                  style={{textAlign:"center"}}
+                  labelId={"selectPaperlabel"}
+                  onChange={this.handleInputChange}
+                  value={this.state.curPaperId}
+                  inputProps={{
+                    name: 'curPaperId',
+                  }}
+              >
+                <MenuItem value="" disabled >select paper </MenuItem>
+                {paperList}
+              </Select>
+            </FormControl>
+
             {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
               <Citation
                 citations={this.state.citations}
@@ -269,6 +301,7 @@ class Analyze extends Component {
                 updateCitationId={this.updateCitationId}
               /> : null
             }
+
             {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
               <DiscoveryTool
                 citations={this.state.citations}
