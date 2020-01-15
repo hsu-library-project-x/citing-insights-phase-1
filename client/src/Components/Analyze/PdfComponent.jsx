@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Document, Page, Outline, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
-
+import "./pdfComponent.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc =
   `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -44,15 +44,12 @@ class PdfComponent extends Component {
       numPages: null,
       pageNumber: 1,
       searchText: '',
-      pdf: new Blob([this.props.data], { type: "application/pdf;base64" })
-      //will put paper here, passed in as prop
-      //paper: this.props.paper (or something)
+      pdf: new Blob([this.props.data], { type: "application/pdf;base64" }),
+      scale: 1.0
     }
-
-
   }
 
-  
+
   componentWillReceiveProps(nextProps) {
 
     let bytes = new Uint8Array(nextProps.data);
@@ -79,36 +76,55 @@ class PdfComponent extends Component {
     pageNumber: prevState.pageNumber + offset,
   }));
 
+  changeScale = offset => this.setState(prevState => ({
+    scale: prevState.scale + offset,
+  })); 
+
   previousPage = () => this.changePage(-1);
 
   nextPage = () => this.changePage(1);
 
+  zoomIn = () => this.changeScale(0.25);
+  
+  zoomOut = () => this.changeScale(-0.25);
+
+
   render() {
-    const { numPages, pageNumber, searchText } = this.state;
+    const { numPages, pageNumber, searchText, scale } = this.state;
 
     return (
-      <div>
-        <div className="pdfInfo">
-          <p className="pdfPage">
-            Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
-          </p>
-{/* 
-          <form role="search">
-            <label htmlFor="search">Search:</label>
-            <input placeholder="Begin typing..." className="pdfSearch" type="search" id="search" value={searchText} onChange={this.onChange} />
-          </form> */}
-          <button className="pdfButtons" type="button" disabled={pageNumber <= 1} onClick={this.previousPage}>Previous</button>
-          <button className="pdfButtons" type="button" disabled={pageNumber >= numPages} onClick={this.nextPage}>Next</button>
-        </div>
+      <div className="document-wrapper">
         <Document
           file={this.state.pdf}
-          onLoadSuccess={this.onDocumentLoadSuccess}  >
-          <Outline onItemClick={this.onItemClick} />
+          onLoadSuccess={this.onDocumentLoadSuccess}
+        >
+           <div className="zoom-controls">
+            <button disabled={scale <= 0.1} onClick={this.zoomOut} type="button">
+             -
+            </button>
+            Zoom
+            <button disabled={scale >= 6.0} onClick={this.zoomIn} type="button" >
+             +
+           </button>
+          </div>
+          <div className="page-controls">
+            <button disabled={pageNumber <= 1} onClick={this.previousPage} type="button">
+              Previous
+            </button>
+            {` Page ${pageNumber || (numPages ? 1 : '--')} of ${numPages || '--'} `}
+            <button disabled={pageNumber >= numPages} onClick={this.nextPage} type="button" >
+              Next
+           </button>
+          </div>
           <Page
+            className="pdf-viewer"
             onLoadSuccess={removeTextLayerOffset}
             pageNumber={pageNumber}
             customTextRenderer={this.makeTextRenderer(searchText)}
+            scale={scale}
           />
+
+          <Outline className="outline-list" onItemClick={this.onItemClick} />
         </Document>
       </div>
     );

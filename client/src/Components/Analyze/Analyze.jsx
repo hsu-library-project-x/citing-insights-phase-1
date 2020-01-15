@@ -44,6 +44,7 @@ class Analyze extends Component {
     this.refresh = this.refresh.bind(this);
     this.get_paper_info = this.get_paper_info.bind(this);
     this.updateCitationId = this.updateCitationId.bind(this);
+    this.passOutlineInfo = this.passOutlineInfo.bind(this);
   }
 
   get_paper_info(paper_id) {
@@ -253,12 +254,16 @@ class Analyze extends Component {
     });
   }
 
+  passOutlineInfo(){
+
+  }
+  
   render() {
     let pdf;
     if (this.state.current_pdf_data === "this must get set") {
       pdf = <p> we dont have data yet </p>;
     } else {
-      pdf = <PdfComponent data={this.state.current_pdf_data} />;
+      pdf = <PdfComponent data={this.state.current_pdf_data} passOutlineInfo={this.passOutlineInfo} />;
     }
     let rubrics = this.state.AvailableRubrics;
     let rubricList = rubrics.map((rubric) =>
@@ -270,14 +275,14 @@ class Analyze extends Component {
        return  <MenuItem value={p._id}> {p.title} </MenuItem>}
     );
 
-
     return (
         <Grid
-          container
+          container="true"
           direction="row"
           justify="space-between"
           alignItems="center">
           <Grid item xs={2}>
+            <h3>Paper</h3>
             <FormControl required={true} style={{minWidth: 200, marginBottom:"1em"}}>
               <InputLabel id={"selectPaperlabel"}>Select a Paper</InputLabel>
               <Select
@@ -293,7 +298,7 @@ class Analyze extends Component {
                 {paperList}
               </Select>
             </FormControl>
-
+            <h3>Citations</h3>
             {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
               <Citation
                 citations={this.state.citations}
@@ -301,7 +306,7 @@ class Analyze extends Component {
                 updateCitationId={this.updateCitationId}
               /> : null
             }
-
+            <br/>
             {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
               <DiscoveryTool
                 citations={this.state.citations}
@@ -309,7 +314,7 @@ class Analyze extends Component {
                 key={this.state.current_citation_id}
               /> : null}
           </Grid>
-          <Grid item xs={8}  alignItems="flex-start" >
+          <Grid item xl={8} >
             <div className="overflow-auto">
               <Paper>
                 {pdf}
