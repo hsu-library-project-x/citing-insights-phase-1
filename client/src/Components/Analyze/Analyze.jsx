@@ -34,7 +34,7 @@ class Analyze extends Component {
       current_citation_id: 0,
       pageNumber: null,
       pdfScale: null,
-
+      scale: null
     };
 
     this.componentWillMount = this.componentWillMount.bind(this);
@@ -49,6 +49,7 @@ class Analyze extends Component {
     this.get_paper_info = this.get_paper_info.bind(this);
     this.updateCitationId = this.updateCitationId.bind(this);
     this.passPageInfo = this.passPageInfo.bind(this);
+    this.passScaleInfo = this.passScaleInfo.bind(this);
   }
 
   get_paper_info(paper_id) {
@@ -264,10 +265,17 @@ class Analyze extends Component {
   }));
   };
 
+  passScaleInfo(offset) {
+    this.setState(prevState => ({
+      scale: offset,
+    }));
+  }
+
   render() {
     let pdf, pdfControls;
 
    let pageNum = this.state.pageNumber === null ? 1 : this.state.pageNumber;
+   let scale = this.state.scale === null ? 1.0 : this.state.scale;
 
     console.log("curent page: " + pageNum);
     if (this.state.current_pdf_data === "this must get set") {
@@ -277,11 +285,14 @@ class Analyze extends Component {
       pdf = <PdfComponent
         data={this.state.current_pdf_data}
         pageNumber={pageNum}
+        scale={scale}
       />;
       pdfControls = <PdfControls
         data={this.state.current_pdf_data}
         passPageInfo={this.passPageInfo}
         pageNumber={pageNum}
+        passScaleInfo={this.passScaleInfo}
+        scale={scale}
       />
 
     }

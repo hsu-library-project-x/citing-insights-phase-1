@@ -14,7 +14,7 @@ class PdfControls extends Component {
             numPages: null,
             pageNumber: null,
             searchText: '',
-            scale: 1.0
+            scale: null
         }
     }
 
@@ -48,9 +48,11 @@ class PdfControls extends Component {
         this.props.passPageInfo(newNum);
     };
 
-    changeScale = offset => this.setState(prevState => ({
-        scale: prevState.scale + offset,
-    }));
+    changeScale(offset) {
+        let scale = this.props.scale === null ? 1.0 : this.props.scale;
+        scale = scale + offset;
+        this.props.passScaleInfo(scale);
+    };
 
     previousPage = () => this.changePage(-1);
 
@@ -62,23 +64,20 @@ class PdfControls extends Component {
 
 
     render() {
-        const { numPages, searchText, scale } = this.state;
-        const { pageNumber } = this.props;
+        const { numPages, searchText } = this.state;
+        const { pageNumber, scale } = this.props;
 
         return (
             <div className="document-wrapper">
                 <Document
                     file={this.state.pdf}
-                    onLoadSuccess={this.onDocumentLoadSuccess}
-                >
+                    onLoadSuccess={this.onDocumentLoadSuccess}>
                     <div className="zoom-controls">
                         <button disabled={scale <= 0.1} onClick={this.zoomOut} type="button">
-                            -
-                </button>
+                            - </button>
                         Zoom
-                <button disabled={scale >= 6.0} onClick={this.zoomIn} type="button" >
-                            +
-               </button>
+                        <button disabled={scale >= 6.0} onClick={this.zoomIn} type="button" >
+                            + </button>
                     </div>
                     <div className="page-controls">
                         <button disabled={pageNumber <= 1} onClick={this.previousPage} type="button">
