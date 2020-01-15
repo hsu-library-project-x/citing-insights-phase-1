@@ -155,7 +155,7 @@ class RubricEditor extends Component {
 
 							this.state.cards.push(curCard["card" + i]);
 
-
+							
 							this.state.rubricArray.push(
 								<div className={`cardContainer`}>
 									<Card>
