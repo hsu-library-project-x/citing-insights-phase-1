@@ -42,7 +42,7 @@ class PdfComponent extends Component {
     super(props);
     this.state = {
       numPages: null,
-      pageNumber: 1,
+      pageNumber: this.props.pageNumber,
       searchText: '',
       pdf: new Blob([this.props.data], { type: "application/pdf;base64" }),
       scale: 1.0
@@ -55,14 +55,10 @@ class PdfComponent extends Component {
     let bytes = new Uint8Array(nextProps.data);
     let blob = new Blob([bytes], { type: "application/pdf;base64" });
 
-    this.setState({ pdf: blob })
+    this.setState({ 
+      pdf: blob 
+    })
   }
-
-  makeTextRenderer = searchText => textItem => highlightPattern(textItem.str, searchText);
-
-  onChange = event => this.setState({ searchText: event.target.value });
-
-  onItemClick = ({ pageNumber }) => this.setState({ pageNumber });
 
   onDocumentLoadSuccess = (document) => {
     const { numPages } = document;
@@ -72,25 +68,9 @@ class PdfComponent extends Component {
     });
   };
 
-  changePage = offset => this.setState(prevState => ({
-    pageNumber: prevState.pageNumber + offset,
-  }));
-
-  changeScale = offset => this.setState(prevState => ({
-    scale: prevState.scale + offset,
-  })); 
-
-  previousPage = () => this.changePage(-1);
-
-  nextPage = () => this.changePage(1);
-
-  zoomIn = () => this.changeScale(0.25);
-  
-  zoomOut = () => this.changeScale(-0.25);
-
-
   render() {
-    const { numPages, pageNumber, searchText, scale } = this.state;
+    const { numPages } = this.state;
+    const { pageNumber, searchText, scale } = this.props;
 
     return (
       <div className="document-wrapper">
@@ -98,33 +78,12 @@ class PdfComponent extends Component {
           file={this.state.pdf}
           onLoadSuccess={this.onDocumentLoadSuccess}
         >
-           <div className="zoom-controls">
-            <button disabled={scale <= 0.1} onClick={this.zoomOut} type="button">
-             -
-            </button>
-            Zoom
-            <button disabled={scale >= 6.0} onClick={this.zoomIn} type="button" >
-             +
-           </button>
-          </div>
-          <div className="page-controls">
-            <button disabled={pageNumber <= 1} onClick={this.previousPage} type="button">
-              Previous
-            </button>
-            {` Page ${pageNumber || (numPages ? 1 : '--')} of ${numPages || '--'} `}
-            <button disabled={pageNumber >= numPages} onClick={this.nextPage} type="button" >
-              Next
-           </button>
-          </div>
           <Page
             className="pdf-viewer"
             onLoadSuccess={removeTextLayerOffset}
             pageNumber={pageNumber}
-            customTextRenderer={this.makeTextRenderer(searchText)}
             scale={scale}
           />
-
-          <Outline className="outline-list" onItemClick={this.onItemClick} />
         </Document>
       </div>
     );

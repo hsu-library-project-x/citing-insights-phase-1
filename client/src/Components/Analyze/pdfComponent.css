@@ -2,7 +2,7 @@
     display: block;
     overflow-y: scroll;
     height: 100px;
-    width: 20%;
+    width: auto;
     border: 1px solid black;
     justify-content: center;
     margin: 1em;
@@ -30,6 +30,6 @@
 }
 
 .document-wrapper {
-    max-height: 700px;
+    max-height: 800px;
     overflow-y: auto;
 }
