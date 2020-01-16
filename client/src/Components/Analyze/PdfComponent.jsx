@@ -77,12 +77,14 @@ class PdfComponent extends Component {
         <Document
           file={this.state.pdf}
           onLoadSuccess={this.onDocumentLoadSuccess}
+          className="pdf-container"
         >
           <Page
-            className="pdf-viewer"
             onLoadSuccess={removeTextLayerOffset}
             pageNumber={pageNumber}
             scale={scale}
+            className="pdf-viewer"
+
           />
         </Document>
       </div>

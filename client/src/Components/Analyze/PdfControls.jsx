@@ -81,12 +81,10 @@ class PdfControls extends Component {
                     </div>
                     <div className="page-controls">
                         <button disabled={pageNumber <= 1} onClick={this.previousPage} type="button">
-                            Previous
-                </button>
+                            Previous </button>
                         {` Page ${pageNumber || (numPages ? 1 : '--')} of ${numPages || '--'} `}
                         <button disabled={pageNumber >= numPages} onClick={this.nextPage} type="button" >
-                            Next
-               </button>
+                            Next </button>
                     </div>
                     <Outline className="outline-list" onItemClick={this.onItemClick} />
                 </Document>

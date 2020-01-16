@@ -145,7 +145,7 @@ class Tasks extends Component {
 
 		return (
 			<MuiThemeProvider theme={theme}>
-				<Container maxWidth={'lg'}>
+				<Container>
 					<Container maxWidth={'md'}>
 						<Stepper nonLinear activeStep={this.state.ActiveStep}>
 							{this.steps.map((label, index) => (
@@ -177,10 +177,12 @@ class Tasks extends Component {
 						) : (
 								<div>
 									<Grid container spacing={0}>
-										<Grid item xs={6}>
-											<Typography align={"center"} color="textSecondary">{this.stepContent[this.state.ActiveStep]}</Typography>
+										<Grid item xs={8}>
+											<Typography 
+											align={"right"} 
+											 color="textSecondary">{this.stepContent[this.state.ActiveStep]}</Typography>
 										</Grid>
-										<Grid item xs={6}>
+										<Grid item xs={4}>
 											<div align={"right"}>
 												<Tooltip title="Back" aria-label="go back">
 													<IconButton
