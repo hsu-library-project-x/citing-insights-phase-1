@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Grid, Select, MenuItem, Button, FormControl, Paper, InputLabel, TextField } from '@material-ui/core';
 import RubricAccordion from './RubricAccordion.jsx';
-import RubricSubmit from '../Rubric/RubricSubmit.jsx';
+import RubricSubmit from './RubricSubmit.jsx';
 import PdfComponent from "./PdfComponent.jsx";
 import DiscoveryTool from './DiscoveryTool.jsx';
 import Citation from './Citation.jsx'
