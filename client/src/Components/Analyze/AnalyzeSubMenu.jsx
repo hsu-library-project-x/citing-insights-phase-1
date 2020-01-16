@@ -63,6 +63,7 @@ class AnalyzeSubMenu extends Component {
 
   }
 
+
   async handleSubmit(event) {
     event.preventDefault();
     this.props.updateSelectedId(this.state.selectedAssignmentId);

@@ -1,253 +1,257 @@
 import React, { Component } from 'react';
-import {Card} from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
-import {Container, Grid, TextField} from "@material-ui/core";
-import uniqueId from 'react-html-id';
-
-
-
+import {
+	Container, Grid, TextField, InputLabel, Select, MenuItem, List, ListItem, Card, FormControl, Typography,
+	Button, IconButton, Checkbox, Tooltip, Toolbar, Link, ListItemSecondaryAction, CardContent
+} from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
 import defaultRubricsJson from '../../default_rubrics/defaultRubric.json';
 
 class RubricEditor extends Component {
-
 	constructor(props) {
 		super(props);
 		this.state = {
-			rubricSize: 0,
-			rubricArray: [],
 			rubricData: [],
-			rubricList: [],
+			rubricElements: null,
+			rubricTitle: "",
 			isEditing: false,
-			isSelecting: true,
-			needsSaving: true,
-			uploading: false,
-			idArray: [],
 			AvailableRubrics: [],
 			rubricExists: false,
-			currentRubric: "",
-			editingTitle: "",
-			cards: [],
+			selectedRubric: "",
 			currentlyEditing: false,
-			editPopulated: false,
-			curId: ""
+			checked: [],
 		};
 
-		uniqueId.enableUniqueIds(this);
-		this.buildEditor = this.buildEditor.bind(this);
-		this.buildRubric = this.buildRubric.bind(this);
-		this.renderActions = this.renderActions.bind(this);
+		this.getRubrics();
+
+		this.handleEditState = this.handleEditState.bind(this);
+		this.handleStandardInputChange = this.handleStandardInputChange.bind(this);
+		this.buildCards = this.buildCards.bind(this);
 		this.reset = this.reset.bind(this);
 		this.sendRequest = this.sendRequest.bind(this);
 		this.updateRequest = this.updateRequest.bind(this);
-		this.saveCard = this.saveCard.bind(this);
-		this.onInput = this.onInput.bind(this);
-		this.fillbuttonText = this.fillbuttonText.bind(this);
+		this.handleRubricSubmit = this.handleRubricSubmit.bind(this);
+		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleEditRubric = this.handleEditRubric.bind(this);
 		this.handleDeleteRubric = this.handleDeleteRubric.bind(this);
 		this.handleDefaultRubric = this.handleDefaultRubric.bind(this);
+		this.handleToggle = this.handleToggle.bind(this);
 	}
 
-	//handles change of button text
-	fillbuttonText() {
-		if (this.state.needsSaving) {
-			return ("Please Save Data before Building");
-		}
-		else {
-			return ("Build Rubric");
-		}
-	}
-
-	//ensures that the rubric is saved before submitting
-	onInput() {
+	handleInputChange(event) {
+		const target = event.target;
+		const value = target.value;
+		const name = target.name;
+		let rubricData = this.state.rubricData;
+		rubricData[name] = value;
 		this.setState({
-			needsSaving: true
+			rubricData:rubricData
 		});
 	}
-	
+
+	handleStandardInputChange(event){
+		const target = event.target;
+		const value = target.value;
+		const name = target.name;
+		this.setState({
+			[name]:value
+		});
+	}
 
 	handleDefaultRubric(event) {
 		let that = this;
-		//Grab the desired rubric from our json
-		let default_rubric = defaultRubricsJson[event.target.value];
-		default_rubric.user_id = this.props.user.id;
 
-		const default_to_string = JSON.stringify(default_rubric);
+		let defaultRubric = defaultRubricsJson[event.target.value];
+		defaultRubric.user_id = this.props.user.id;
+
+		const defaultString = JSON.stringify(defaultRubric);
 		fetch('/rubrics/', {
 			method: 'POST',
-			body: default_to_string,
+			body: defaultString,
 			mode: 'cors',
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json'
 			}
-		}).then(function (response) {
-			that.getRubrics();
-		});
+		}).then(function (response)  {
+			if (response.status === 201 ){
+				alert("Rubric Added");
+			}
+			else {
+				alert("could not add rubric");
+			}
+		}).then(()=> that.getRubrics())
 
 	}
+
 	//called when clicking on the rubric list
 	handleEditRubric(event) {
-		event.preventDefault();
-		const curRubrics = this.state.AvailableRubrics;
 		const target = event.target;
 		const curId = target.id;
-		for (let i = 0; i < curRubrics.length; i++) {
-			if (curRubrics[i]._id === curId) {
-				this.setState({
-					rubricExists: true,
-					currentRubric: curId,
-					isEditing: true,
-					editingTitle: curRubrics[i].name
-				});
+		let rubric = null;
+
+		this.state.AvailableRubrics.forEach( function(r) {
+			if (r._id === curId){
+				rubric = r;
 			}
-		}
+		});
+
+		let rubricData = {};
+
+		rubric.cards.forEach(c=>{
+			rubricData[`cardTitle-${rubric.cards.indexOf(c)}`] = c.cardTitle;
+			rubricData[`cardText-${rubric.cards.indexOf(c)}`] = c.cardText;
+		});
+
+
+		this.setState({
+			rubricExists: true,
+			selectedRubric: curId,
+			isEditing: true,
+			rubricTitle: rubric.name,
+			rubricData: rubricData
+		});
+
 	}
 
 	//handles deleting a rubric
 	handleDeleteRubric(event) {
-		const curRubrics = this.state.AvailableRubrics;
-		const target = event.target;
-		const curId = target.id;
+		event.preventDefault();
+		let toDelete = this.state.checked;
 		let that = this;
 
-		for (let i = 0; i < curRubrics.length; i++) {
-			if (curRubrics[i]._id === curId) {
-				fetch('/rubrics/' + curId, {
+		for (let i = 0; i < toDelete.length; i++) {    //TODO: OPTOMIZE FOR LOOP CALLS
+				fetch('/rubrics/' + toDelete[i] , {
 					method: 'Delete',
 					headers: {
 						'Accept': 'application/json',
 						'Content-Type': 'application/json'
 					},
-				})
-					.then(function () {
-						that.getRubrics()
-					});
+				}).then(function (response)  {
+					if (response.status === 201 || response.ok ){
+						alert("Rubric Deleted");
+						that.setState({
+							checked:[],
+						});
+					}
+					else {
+						alert("could not delete rubric");
+					}
+				}).then(()=> that.getRubrics());
 			}
-		}
 	}
+
 
 	//calls when the isEditing state is changed
-	renderActions() {
-		if (this.state.isEditing) {
+	buildCards() {
+		let cards = [];
+		let that=this;
 			if (this.state.rubricExists && !this.state.currentlyEditing) {
-				const getRubric = this.state.AvailableRubrics;
-				let curCards = [];
-				for (let j = 0; j < getRubric.length; j++) {
-					if (getRubric[j]._id === this.state.currentRubric) {
-						this.setState({
-							curId: getRubric[j]._id
-						});
-						curCards = getRubric[j].cards;
-						for (let i = 0; i < curCards.length; i++) {
-
-							let newId = this.nextUniqueId();
-
-							//CHANGE THIS ************************************************************************************
-							this.state.idArray[i] = newId;
-
-							// this.setState({
-							// 	idArray: update(this.state.idArray, {
-							// 		[i]: { $set: newId }
-							// 	})
-							// });
-
-							let curCard = curCards[i];
-
-							this.state.cards.push(curCard["card" + i]);
-
-							
-							this.state.rubricArray.push(
-								<div className={`cardContainer`}>
-									<Card>
-										{/* <CardTitle for={"Title-"+newId}>Rubric Item Title</CardTitle> */}
-										<TextField name={i} onInput={this.onInput} type="text" id={"Title-" + newId} class="rubricTitles" />
-										{/* <CardText for={"Text-"+newId}>Rubric Descriptions</CardText> */}
-										<TextField name={i} onInput={this.onInput} type="textarea" id={"Text-" + newId} class="rubricDescriptions" />
-									</Card>
-								</div>
-							);
-						}
+				let rubric = null;
+				that.state.AvailableRubrics.forEach( function(r) {
+					if (r._id === that.state.selectedRubric){
+						rubric = r;
 					}
-				}
-
-				this.setState({
-					currentlyEditing: true
 				});
+
+				cards = rubric ? rubric.cards.map(c => {
+						return(
+							<Card key={`card number ${rubric.cards.indexOf(c)}`}>
+								<CardContent>
+									<TextField
+										variant={"outlined"}
+										margin={'normal'}
+										fullWidth={true}
+										required
+										name={`cardTitle-${rubric.cards.indexOf(c)}`}
+										onChange={this.handleInputChange}
+										type={'text'}
+										label={'Rubric Item Title'}
+										defaultValue={c.cardTitle}
+									/>
+									<TextField
+										variant={"outlined"}
+										margin={'normal'}
+										required
+										fullWidth={true}
+										multiline={true}
+										rowsMax={4}
+										name={`cardText-${rubric.cards.indexOf(c)}`}
+										onChange={this.handleInputChange}
+										type={'text'}
+										label={'Rubric Item Description'}
+										defaultValue={c.cardText}
+
+									/>
+								</CardContent>
+							</Card>
+						);
+				}):null;
+
+				return cards;
+
 			} else {
 				//loop the value of rubric Size building a card for each one
-				let loop = this.state.rubricSize;
-				for (let i = 0; i < loop; i++) {
-					let newId = this.nextUniqueId();
+				for (let i = 0; i < that.state.rubricElements ; i++) {
 
-					//CHANGE THIS ************************************************************************************
-					this.state.idArray[i] = newId;
-
-					// this.setState({
-					// 	idArray: update(this.state.idArray, {
-					// 		[i]: { $set: newId }
-					// 	})
-					// });
-
-					this.state.rubricArray.push(
-						<div className={`cardContainer `}>
-							<Card>
-								{/* <CardTitle for={"Title-"+newId}>Rubric Item Title</CardTitle> */}
-								<TextField placeholder="Enter Rubric Item Name ...." onInput={this.onInput}  id={"Title-" + newId} class="rubricTitles" />
-								{/* <CardText for={"Text-"+newId}>Rubric Descriptions</CardText> */}
-								<TextField placeholder="Enter Rubric Item Description ...." onInput={this.onInput} id={"Text-" + newId} class="rubricDescriptions" />
-							</Card>
-						</div>
+					cards.push(
+						<Card key={`card number ${i}`}>
+							<CardContent>
+								<label id={'Rubric Item Title'}> Rubric Item Title </label>
+								<TextField
+									variant={"outlined"}
+									fullWidth={true}
+									required
+									name={`cardTitle-${i}`}
+									onChange={this.handleInputChange}
+									type={'text'}
+									label={'Rubric Item Title'}
+									placeholder={"Rubric Item Title"}
+									margin={'normal'}
+								/>
+								<TextField
+									variant={"outlined"}
+									required
+									multiline={true}
+									rowsMax={4}
+									fullWidth={true}
+									name={`cardText-${i}`}
+									onChange={this.handleInputChange}
+									type={'text'}
+									label={'Rubric Item Description'}
+									placeholder={"Rubric Item Description"}
+									margin={'normal'}
+								/>
+							</CardContent>
+						</Card>
 					);
 				}
+				return cards;
 			}
-			//Create Add new Card clickable here... 
-			//think how we are implementing cards here
-			let array = this.state.rubricArray;
-			return (array);
-		}
+
 	}
 
-	//after cards are built, if editing, will populate the values with the selected rubric's values
-	populateEdit() {
-		let that = this;
-		if (that.state.currentlyEditing && !that.state.editPopulated) {
-			document.getElementById("rubricTitle").value = that.state.editingTitle;
-			for (let i = 0; i < that.state.idArray.length; i++) {
-				let title = "Title-" + that.state.idArray[i];
-				let text = "Text-" + that.state.idArray[i];
-				document.getElementById(title).value = that.state.cards[i].cardTitle;
-				document.getElementById(text).value = that.state.cards[i].cardText;
-			}
-			that.setState({
-				editPopulated: true
-			});
-		}
-	}
-
-	async getRubrics() {
+	getRubrics() {
 		let that = this;
 
-		//replace hardcoded number with userID from login
 		fetch('/rubrics/' + this.props.user._id)
-			.then(function (response) {
-				return response.json();
-			})
-			.then(function (myJson) {
+			.then(function (response)  {
+				if (response.ok || response.status === 201){
+					return response.json();
+				}
+				else {
+					alert("could get rubrics");
+				}}
+			).then(function (myJson) {
 				that.setState({ AvailableRubrics: myJson });
 			});
 	}
 
-	//checks before the component mounts
-	componentDidMount() {
-		this.getRubrics();
-	}
 
 	//toggles editor enabling editing or adding new rubrics
-	buildEditor() {
-		let numCards = document.getElementById("rubricChoice").value;
-		this.setState({ rubricSize: numCards });
-		//CHANGE THIS ************************************************************************************
-		this.state.isEditing = !this.state.isEditing;
+	handleEditState() {
+		this.setState({
+			isEditing: !this.state.isEditing });
 	}
 
 	//called when user wants to back out without saving
@@ -256,105 +260,44 @@ class RubricEditor extends Component {
 			isEditing: false,
 			rubricExists: false,
 			currentlyEditing: false,
-			editPopulated: false,
-			currentRubric: "",
-			editingTitle: "",
-			curId: "",
-			cards: [],
-			rubricArray: []
+			selectedRubric: "",
+			rubricTitle: "",
+			checked: [],
+			rubricData:[],
 		})
 	}
 
-	//Saves the Current Information in the Card
-	saveCard() {
-		//grabs information in the card and stores it in the Rubric Array state
-		let rubricTitle = document.getElementById("rubricTitle");
-		if (rubricTitle.value === "") {
-			alert("Please enter a title for your rubric");
-			return;
-		}
+	handleRubricSubmit() {
+		const keys = Object.keys(this.state.rubricData);
+		let newData =[];
 
-		for (let i = 0; i < this.state.idArray.length; i++) {
-			let id = this.state.idArray[i];
-			let cardNum = i;
-			let titleid = "Title-" + id;
-			let textid = "Text-" + id;
+		keys.forEach(k => {
+			let name = k.split('-');
+			let title = name[0];
+			let index = name[1];
+			let words = this.state.rubricData[k];
 
-			let title = document.getElementById(titleid).value;
-			let text = document.getElementById(textid).value;
-
-			//If any of them are empty, run an error
-			if (title === "" || text === "") {
-				//error Handling
-				alert("Please Enter a Value for either the title or text");
-				return;
-			}
-			else {
-				let dummyArray = this.state.rubricData;
-				if (dummyArray.length === 0 || dummyArray[cardNum] === null) {
-
-					const cardInfo = {
-						"cardTitle": title,
-						"cardText": text
-					};
-
-					let cardIdentifier = "card" + cardNum;
-
-					const cardData = {};
-					cardData[cardIdentifier] = cardInfo;
-					console.log(cardData);
-
-					this.state.rubricData.push(cardData);
+			if (newData[index]){
+				let oldKey = Object.keys(newData[index])[0];
+				let oldValue= newData[index][oldKey];
+				newData[index]= {
+					[oldKey] : oldValue,
+					[title]:words
 				}
-				else {
-					const cardInfo = {
-						"cardTitle": title,
-						"cardText": text
-					};
-
-					let cardIdentifier = "card" + cardNum;
-
-					const cardData = {};
-					cardData[cardIdentifier] = cardInfo;
-					console.log(cardData);
-
-					// CHANGE THIS *******************************************
-					this.state.rubricData[cardNum] = cardData;
-				}
+			} else{
+				newData[index] = {
+					[title]:words
+				};
 			}
-		}
-		this.setState({
-			needsSaving: false
+
 		});
-	}
 
-	//sends data to the server
-	buildRubric() {
-		let rubricTitle = document.getElementById("rubricTitle");
-		//Grab all the information from the Rubric Data Array
-		//Compile this information into a JSON File
-		this.setState.uploading = true;
-
-		const promise = [];
-		//Start the HTTP Requests with promises
 		if (this.state.rubricExists) {
-			promise.push(this.updateRequest(rubricTitle.value, this.state.rubricData));
+			this.updateRequest(this.state.rubricTitle, newData);
 		} else {
-			promise.push(this.sendRequest(rubricTitle.value, this.state.rubricData));
+			this.sendRequest(this.state.rubricTitle, newData);
 		}
-		try {
-			this.props.history.push({
-				pathname: "/tasks/",
-				props: { ...this.state }
-			});
-			alert("Rubric Successfuly Built");
-		}
-		catch (e) {
-			//errorcatching here
-			this.setState({
-				uploading: false
-			});
-		}
+
 	}
 
 	//adding a new rubric
@@ -375,12 +318,20 @@ class RubricEditor extends Component {
 					'Accept': 'application/json',
 					'Content-Type': 'application/json'
 				},
-			}, that.getRubrics());
+			}).then(function (response)  {
+				if (response.status === 201 || response.ok ){
+					alert("Rubric Added");
+				}
+				else {
+					alert("could not add rubric");
+				}
+			}).then(()=> that.getRubrics());
 		});
 	}
 
 	//updating an existing rubric
 	updateRequest(rubricTitle, data) {
+		let that = this;
 		return new Promise(() => {
 			const newdata = {
 				"name": rubricTitle,
@@ -388,72 +339,177 @@ class RubricEditor extends Component {
 				"user_id": this.props.user._id
 			};
 			let dataString = JSON.stringify(newdata);
-			fetch('/rubrics/' + this.state.curId, {
+			fetch('/rubrics/' + this.state.selectedRubric, {
 				method: 'PUT',
 				body: dataString,
 				headers: {
 					'Accept': 'application/json',
 					'Content-Type': 'application/json'
 				},
-			});
+			}).then(function (response)  {
+				if (response.status === 201 || response.ok ){
+					alert("Rubric Updated");
+				}
+				else {
+					alert("could not update rubric");
+				}
+			}).then(()=> that.getRubrics());
 		});
 	}
+
+
+	handleToggle = value => () => {
+		const currentIndex = this.state.checked.indexOf(value);
+		const newChecked = [...this.state.checked];
+
+		if (currentIndex === -1) {
+			newChecked.push(value);
+		} else {
+			newChecked.splice(currentIndex, 1);
+		}
+
+		this.setState({checked: newChecked});
+	};
 
 	//renders the page
 	render() {
 		let rubrics = this.state.AvailableRubrics;
-		let rubricList = rubrics.map((rubric) =>
-			<div>
-				<li onClick={this.handleEditRubric} className="classLi" id={rubric._id}>{rubric.name}</li>
-				{/*<button className="deletebutton" onClick={this.handleDeleteRubric}>*/}
-				{/*	/!*<svg id={rubric._id} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path id={rubric._id} d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z" /></svg>*!/*/}
-				{/*</button>*/}
-			</div>
-		);
+		let rubricList = <List 	dense={true}>
+			{rubrics.map((rubric) =>{
+				const labelId = `rubric-list-label-${rubric._id}`;
+				return(
+						<ListItem
+							dense={true}
+							button
+							onClick={this.handleToggle(rubric._id)}
+							key={labelId}
+						>
+							<Link style={{textAlign:"left", color: 'blue'}}
+								  id={rubric._id}
+								  component={'button'}
+								  onClick={this.handleEditRubric}
+							>
+								{rubric.name}
+							</Link>
+							<ListItemSecondaryAction>
+								<Checkbox
+									edge={'end'}
+									checked={this.state.checked.indexOf(rubric._id) !== -1}
+									tabIndex={-1}
+									inputProps={{'aria-labelledby': labelId}}
+									onClick={this.handleToggle(rubric._id)}
+									value={"delete"}
+								/>
+							</ListItemSecondaryAction>
+						</ListItem>
+				);
+
+			}
+			)}
+		</List>;
 
 		return (
 			<Container maxWidth={'md'}>
-				<h1 className={'Title'}>Rubric Selection</h1>
-				<p className={"Title"}> You can us AAC&U Rubrics,Edit an Existing Rubric , or Create your own Rubric </p>
-				{/*<p className={"Title"}> Please select a rubric from the list or create a new one to get started.</p>*/}
-				{(!this.state.isEditing) ?
-					<div className="numCardsSelector">
-						<Grid spacing={2} container >
-							<Grid item xs>
-								<h3 className="rubricEditHeader"> Use AAC&U Rubric Values </h3>
-								<br />
-								<button id="rubDefaultbutton" value="default_1" onClick={this.handleDefaultRubric}>Determine the Extent of Information Needed</button>
-								<button id="rubDefaultbutton" value="default_2" onClick={this.handleDefaultRubric}>Evaluate Information and its Sources Critically</button>
-								<button id="rubDefaultbutton" value="default_3" onClick={this.handleDefaultRubric}>Use Information Effectively to Accomplish a Specific Purpose</button>
-								<button id="rubDefaultbutton" value="default_4" onClick={this.handleDefaultRubric}>Access and Use Information Ethically and Legally</button>
-								<button id="rubDefaultbutton" value="default_5" onClick={this.handleDefaultRubric}>Sources and Evidence</button>
-							</Grid>
-							<Grid item xs>
-								<h3 className="rubricEditHeader">Edit Existing:</h3>
-									{rubricList}
-							</Grid>
-							<Grid item xs>
-								<h3 className="rubricEditHeader">Create New:</h3>
-								{/* <p> Number of Rubric Elements</p> */}
-								<TextField type="number" placeholder="Number of Rubric Elements from 1-5" name="rubricElements" id="rubricChoice" min="1" max="5">
-								</TextField>
-								<button id="rubEditbutton" onClick={this.buildEditor}>Submit</button>
-							</Grid>
-						</Grid>
-					</div> :
-					<div className={`${this.state.needsSaving ? "warnHighlight" : "safeHighlight"}`} id="cardStorage">
-						<TextField id="rubricTitle" placeholder="Type Rubric Title Here" />
-						<hr />
-						{this.renderActions()}
-						{this.populateEdit()}
-					</div>
-				}
+				<Typography style={{marginTop: "1em"}} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}>
+					Edit Rubrics
+				</Typography>
 
-				{(!this.state.isEditing) ? null :
-					<div className="rubricbuttonContainer">
-						<button id="backSelect" onClick={this.reset}>Back</button>
-						<button id="rubBuildbutton" disabled={this.state.needsSaving} onClick={this.buildRubric}>{this.fillbuttonText()}</button>
-						<button id="saveCards" onClick={() => this.saveCard()}>Save Cards</button>
+				<Typography align={"center"} variant={"subtitle1"} component={"p"} gutterBottom={true}>
+					You can add AAC&U Rubrics,Edit an Existing Rubric , or Create your own Rubric
+				</Typography>
+
+				{(!this.state.isEditing) ?
+					<Grid container spacing={3}>
+						<Grid item xs={7}>
+							<Typography align={"left"} variant={"h6"} component={"h3"} gutterBottom={true}>
+								Use AAC&U Rubrics
+							</Typography>
+
+							<Typography align={"left"} variant={"subtitle2"} component={"p"} gutterBottom={true}>
+								Select AAC&U Rubric to add to Existing
+							</Typography>
+
+							<FormControl style={{minWidth: 200, marginBottom:"1em"}}>
+								<InputLabel id={'selectRubriclabel'}> Select a Rubric </InputLabel>
+								<Select
+									labelId={"selectRubriclabel"}
+									onChange={this.handleDefaultRubric}
+									inputProps={{
+										name: 'rubDefaultbutton',
+									}}
+								>
+									<MenuItem  value="" disabled >select rubric </MenuItem>
+									<MenuItem  value={0}> Determine the Extent of Information Needed </MenuItem>
+									<MenuItem  value={1}>Evaluate Information and its Sources Critically</MenuItem>
+									<MenuItem  value={2}>Use Information Effectively to Accomplish a Specific Purpose</MenuItem>
+									<MenuItem  value={3}>Access and Use Information Ethically and Legally</MenuItem>
+									<MenuItem  value={4}>Sources and Evidence</MenuItem>
+									<MenuItem  value={5}>Evidence</MenuItem>
+								</Select>
+							</FormControl>
+							<Typography align={"left"} variant={"h6"} component={"h3"} gutterBottom={true}>
+								Edit Existing
+							</Typography>
+							{this.state.checked.length > 0 ?
+							<Toolbar>
+									<Typography align={"right"} variant={"subtitle2"} component={"p"} >
+										{this.state.checked.length} selected
+									</Typography>
+
+									<Tooltip title="Delete">
+										<IconButton edge={'end'} aria-label="delete" onClick={this.handleDeleteRubric}>
+											<DeleteIcon edge={'end'} />
+										</IconButton>
+									</Tooltip>
+							</Toolbar> : null }
+							{rubricList}
+						</Grid>
+						<Grid item xs={4}>
+							<Typography align={"left"} variant={"h6"} component={"h3"}>
+								Create New
+							</Typography>
+								<FormControl fullWidth>
+								<TextField
+									onChange={this.handleStandardInputChange}
+									type="number"
+									label={"Number of Elements (1-5)"}
+									helperText={"Number of Elements (1-5)"}
+									placeholder="Rubric Elements"
+									name="rubricElements"
+									inputProps={{
+										min: "1", max: "5", step: "1"
+									}} />
+								</FormControl>
+								<br />
+								<Button style={{float:'right'}}
+										color='primary'
+										variant={'contained'}
+										onClick={this.handleEditState}>
+									Go
+								</Button>
+						</Grid>
+					</Grid>
+					 :<div>
+						<Button color='primary' variant='contained' onClick={this.reset}>Back</Button>
+						<Button style={{float:'right'}}
+								color='primary'
+								variant='contained'
+								onClick={this.handleRubricSubmit}>
+							Save
+						</Button>
+						<Container maxWidth={"sm"}>
+						<FormControl fullWidth={true} required={true}>
+								<TextField
+									name="rubricTitle"
+									onChange={this.handleStandardInputChange}
+									label={"Rubric Title"}
+									defaultValue={this.state.rubricTitle}
+									variant={'filled'}
+									margin={'dense'}
+								/>
+							</FormControl>
+							{this.buildCards()}
+						</Container>
 					</div>
 				}
 			</Container>

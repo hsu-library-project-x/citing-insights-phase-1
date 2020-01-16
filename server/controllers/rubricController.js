@@ -15,7 +15,7 @@ module.exports = {
                     error: err
                 });
             }
-            return res.json(rubrics);
+            return res.status(200).json(rubrics);
         });
     },
     /**
