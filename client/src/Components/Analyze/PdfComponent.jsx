@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Document, Page, Outline, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
-
+import "./pdfComponent.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc =
   `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -42,30 +42,23 @@ class PdfComponent extends Component {
     super(props);
     this.state = {
       numPages: null,
-      pageNumber: 1,
+      pageNumber: this.props.pageNumber,
       searchText: '',
-      pdf: new Blob([this.props.data], { type: "application/pdf;base64" })
-      //will put paper here, passed in as prop
-      //paper: this.props.paper (or something)
+      pdf: new Blob([this.props.data], { type: "application/pdf;base64" }),
+      scale: 1.0
     }
-
-
   }
 
-  
+
   componentWillReceiveProps(nextProps) {
 
     let bytes = new Uint8Array(nextProps.data);
     let blob = new Blob([bytes], { type: "application/pdf;base64" });
 
-    this.setState({ pdf: blob })
+    this.setState({ 
+      pdf: blob 
+    })
   }
-
-  makeTextRenderer = searchText => textItem => highlightPattern(textItem.str, searchText);
-
-  onChange = event => this.setState({ searchText: event.target.value });
-
-  onItemClick = ({ pageNumber }) => this.setState({ pageNumber });
 
   onDocumentLoadSuccess = (document) => {
     const { numPages } = document;
@@ -75,39 +68,21 @@ class PdfComponent extends Component {
     });
   };
 
-  changePage = offset => this.setState(prevState => ({
-    pageNumber: prevState.pageNumber + offset,
-  }));
-
-  previousPage = () => this.changePage(-1);
-
-  nextPage = () => this.changePage(1);
-
   render() {
-    const { numPages, pageNumber, searchText } = this.state;
+    const { numPages } = this.state;
+    const { pageNumber, searchText, scale } = this.props;
 
     return (
-      <div>
-        <div className="pdfInfo">
-          <p className="pdfPage">
-            Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
-          </p>
-{/* 
-          <form role="search">
-            <label htmlFor="search">Search:</label>
-            <input placeholder="Begin typing..." className="pdfSearch" type="search" id="search" value={searchText} onChange={this.onChange} />
-          </form> */}
-          <button className="pdfButtons" type="button" disabled={pageNumber <= 1} onClick={this.previousPage}>Previous</button>
-          <button className="pdfButtons" type="button" disabled={pageNumber >= numPages} onClick={this.nextPage}>Next</button>
-        </div>
+      <div className="document-wrapper">
         <Document
           file={this.state.pdf}
-          onLoadSuccess={this.onDocumentLoadSuccess}  >
-          <Outline onItemClick={this.onItemClick} />
+          onLoadSuccess={this.onDocumentLoadSuccess}
+        >
           <Page
+            className="pdf-viewer"
             onLoadSuccess={removeTextLayerOffset}
             pageNumber={pageNumber}
-            customTextRenderer={this.makeTextRenderer(searchText)}
+            scale={scale}
           />
         </Document>
       </div>

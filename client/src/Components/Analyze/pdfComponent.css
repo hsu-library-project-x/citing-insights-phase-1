@@ -1,0 +1,35 @@
+.outline-list {
+    display: block;
+    overflow-y: scroll;
+    height: 100px;
+    width: auto;
+    border: 1px solid black;
+    justify-content: center;
+    margin: 1em;
+    align-items: center;
+}
+
+.pdf-viewer {
+    display: block;
+    width: min-content;
+    border: 1px solid black;
+    max-width: calc("100% - 2em");
+    box-shadow: 0 0 8px rgba(0, 0, 0, .5);
+    margin: 1em;
+    justify-content: center;
+    overflow-y: scroll;
+    overflow-x: scroll;
+}
+
+.page-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    margin: 1em
+}
+
+.document-wrapper {
+    max-height: 800px;
+    overflow-y: auto;
+}

@@ -4,6 +4,7 @@ import { Grid, Select, MenuItem, Button, FormControl, Paper, InputLabel, TextFie
 import RubricAccordion from './RubricAccordion.jsx';
 import RubricSubmit from './RubricSubmit.jsx';
 import PdfComponent from "./PdfComponent.jsx";
+import PdfControls from "./PdfControls.jsx";
 import DiscoveryTool from './DiscoveryTool.jsx';
 import Citation from './Citation.jsx'
 
@@ -31,6 +32,9 @@ class Analyze extends Component {
       paper_ids: [],
       current_paper_id_index: 0,
       current_citation_id: 0,
+      pageNumber: null,
+      pdfScale: null,
+      scale: null
     };
 
     this.componentWillMount = this.componentWillMount.bind(this);
@@ -44,6 +48,8 @@ class Analyze extends Component {
     this.refresh = this.refresh.bind(this);
     this.get_paper_info = this.get_paper_info.bind(this);
     this.updateCitationId = this.updateCitationId.bind(this);
+    this.passPageInfo = this.passPageInfo.bind(this);
+    this.passScaleInfo = this.passScaleInfo.bind(this);
   }
 
   get_paper_info(paper_id) {
@@ -216,8 +222,8 @@ class Analyze extends Component {
     const name = target.name;
     //alert(name + ", " + value);
     this.setState({
-          [name]: value
-        },
+      [name]: value
+    },
     );
 
   }
@@ -253,101 +259,137 @@ class Analyze extends Component {
     });
   }
 
+  passPageInfo(offset) {
+    this.setState(prevState => ({
+      pageNumber: offset,
+  }));
+  };
+
+  passScaleInfo(offset) {
+    this.setState(prevState => ({
+      scale: offset,
+    }));
+  }
+
   render() {
-    let pdf;
+    let pdf, pdfControls;
+
+   let pageNum = this.state.pageNumber === null ? 1 : this.state.pageNumber;
+   let scale = this.state.scale === null ? 1.0 : this.state.scale;
+
+    console.log("curent page: " + pageNum);
     if (this.state.current_pdf_data === "this must get set") {
-      pdf = <p> we dont have data yet </p>;
+      pdf = <p> No Pdf Data found </p>;
+      pdfControls = <p> Can't Control what we don't have!</p>
     } else {
-      pdf = <PdfComponent data={this.state.current_pdf_data} />;
+      pdf = <PdfComponent
+        data={this.state.current_pdf_data}
+        pageNumber={pageNum}
+        scale={scale}
+      />;
+      pdfControls = <PdfControls
+        data={this.state.current_pdf_data}
+        passPageInfo={this.passPageInfo}
+        pageNumber={pageNum}
+        passScaleInfo={this.passScaleInfo}
+        scale={scale}
+      />
+
     }
+
+
     let rubrics = this.state.AvailableRubrics;
     let rubricList = rubrics.map((rubric) =>
       <MenuItem value={rubric._id}>{rubric.name}</MenuItem>
     );
 
     let papers = this.state.paper_ids;
-    let paperList = papers.map(p =>{
-       return  <MenuItem value={p._id}> {p.title} </MenuItem>}
+    let paperList = papers.map(p => {
+      return <MenuItem value={p._id}> {p.title} </MenuItem>
+    }
     );
 
-
     return (
-        <Grid
-          container
-          direction="row"
-          justify="space-between"
-          alignItems="center">
-          <Grid item xs={2}>
-            <FormControl required={true} style={{minWidth: 200, marginBottom:"1em"}}>
-              <InputLabel id={"selectPaperlabel"}>Select a Paper</InputLabel>
-              <Select
-                  style={{textAlign:"center"}}
-                  labelId={"selectPaperlabel"}
-                  onChange={this.handleInputChange}
-                  value={this.state.curPaperId}
-                  inputProps={{
-                    name: 'curPaperId',
-                  }}
-              >
-                <MenuItem value="" disabled >select paper </MenuItem>
-                {paperList}
-              </Select>
-            </FormControl>
-
-            {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
-              <Citation
-                citations={this.state.citations}
-                current_citation_id={this.state.current_citation_id}
-                updateCitationId={this.updateCitationId}
-              /> : null
-            }
-
-            {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
-              <DiscoveryTool
-                citations={this.state.citations}
-                current_citation_id={this.state.current_citation_id}
-                key={this.state.current_citation_id}
-              /> : null}
-          </Grid>
-          <Grid item xs={8}  alignItems="flex-start" >
-            <div className="overflow-auto">
-              <Paper>
-                {pdf}
-              </Paper>
-            </div>
-          </Grid>
-          <Grid item xs={2}>
-            <FormControl required={true} style={{ minWidth: 200, marginBottom: "1em" }}>
-              <InputLabel id={"AssignRubriclabel"}>Select a Rubric</InputLabel>
-              <Select
-                style={{ textAlign: "center" }}
-                labelId={"AssignRubriclabel"}
-                onChange={this.handleGetRubric}
-                inputProps={{
-                  name: 'AssignRubric',
-                }}
-              >
-                <MenuItem value="" disabled >select rubric</MenuItem>
-                {rubricList}
-              </Select>
-            </FormControl>
-
-
-            <RubricAccordion
-              currentRubric={this.state.currentRubric}
-              allowZeroExpanded={true}
-            />
-
-            <TextField
-              id="annotation"
-              label="Annotation"
-              multiline
-              variant="filled"
-            />
-            <Button variant={"contained"} color={"primary"} onClick={this.handleSaveCitations}>Save Rubric Value </Button>
-          </Grid>
-          {this.state.assessingRubric ? <RubricSubmit sourceText={this.state.sourceText} unmountMe={this.handleChildUnmount} curRubric={this.state.currentRubric} curPaper={this.state.curPaperId} /> : null}
+      <Grid
+        container="true"
+        direction="row"
+        justify="space-between"
+        alignItems="center">
+        <Grid item xs={2}>
+          <h3>Paper</h3>
+          <FormControl required={true} style={{ minWidth: 200, marginBottom: "1em" }}>
+            <InputLabel id={"selectPaperlabel"}>Select a Paper</InputLabel>
+            <Select
+              style={{ textAlign: "center" }}
+              labelId={"selectPaperlabel"}
+              onChange={this.handleInputChange}
+              value={this.state.curPaperId}
+              inputProps={{
+                name: 'curPaperId',
+              }}
+            >
+              <MenuItem value="" disabled >select paper </MenuItem>
+              {paperList}
+            </Select>
+          </FormControl>
+          <h3>Citations</h3>
+          {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
+            <Citation
+              citations={this.state.citations}
+              current_citation_id={this.state.current_citation_id}
+              updateCitationId={this.updateCitationId}
+            /> : null
+          }
+          <br />
+          {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
+            <DiscoveryTool
+              citations={this.state.citations}
+              current_citation_id={this.state.current_citation_id}
+              key={this.state.current_citation_id}
+            /> : null}
         </Grid>
+        <Grid item xl={8} >
+          <div className="overflow-auto">
+            <Paper>
+              {pdf}
+            </Paper>
+          </div>
+        </Grid>
+        <Grid item xs={2}>
+          <Paper elevation={5}>
+            {pdfControls}
+          </Paper>
+          <FormControl required={true} style={{ minWidth: 200, marginBottom: "1em" }}>
+            <InputLabel id={"AssignRubriclabel"}>Select a Rubric</InputLabel>
+            <Select
+              style={{ textAlign: "center" }}
+              labelId={"AssignRubriclabel"}
+              onChange={this.handleGetRubric}
+              inputProps={{
+                name: 'AssignRubric',
+              }}
+            >
+              <MenuItem value="" disabled >select rubric</MenuItem>
+              {rubricList}
+            </Select>
+          </FormControl>
+
+
+          <RubricAccordion
+            currentRubric={this.state.currentRubric}
+            allowZeroExpanded={true}
+          />
+
+          <TextField
+            id="annotation"
+            label="Annotation"
+            multiline
+            variant="filled"
+          />
+          <Button variant={"contained"} color={"primary"} onClick={this.handleSaveCitations}>Save Rubric Value </Button>
+        </Grid>
+        {this.state.assessingRubric ? <RubricSubmit sourceText={this.state.sourceText} unmountMe={this.handleChildUnmount} curRubric={this.state.currentRubric} curPaper={this.state.curPaperId} /> : null}
+      </Grid>
     );
   }
 }
