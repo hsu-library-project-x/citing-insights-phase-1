@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { Route, withRouter } from "react-router-dom";
 
-import { Tooltip, IconButton, Container, Stepper, Step, StepButton, Button, Typography, Fab, Grid, Toolbar } from "@material-ui/core";
+import { Tooltip, IconButton, Container, Stepper, Step,
+	StepButton, Typography, Fab, Grid } from "@material-ui/core";
 
 import Classes from "../Classes/Classes.jsx";
 import Assignments from "../Upload/Upload.jsx";
@@ -26,7 +27,7 @@ class Tasks extends Component {
 			ActiveStep: 0,
 			completed: {},
 			selectedAssignmentId: null,
-		}
+		};
 
 		this.steps = ['Manage Courses', 'Upload Papers', 'Edit Rubrics', 'Analyze', 'Overview'];
 		this.stepContent = ['Step 1: Add / Remove / Edit Classes and Assignments',
@@ -34,6 +35,8 @@ class Tasks extends Component {
 			'Step 3: Customize Rubrics or Use pre-loaded Rubrics. Either way add a rubric for Analyze Mode',
 			"Step 4: Assess Student's citations using rubric and our Discovery tools",
 			"Step 5: See how you rated a student's citations"];
+
+		this.renderPage();
 
 		this.totalSteps = this.totalSteps.bind(this);
 		this.completedSteps = this.completedSteps.bind(this);
@@ -73,15 +76,16 @@ class Tasks extends Component {
 				// find the first step that has been completed
 				this.steps.findIndex((step, i) => !(i in this.state.completed))
 				: this.state.ActiveStep + 1;
-		this.setState({ ActiveStep: newActiveStep });
+		this.setState({ ActiveStep: newActiveStep },this.renderPage);
 	};
 
 	handleBack = () => {
-		this.setState({ ActiveStep: this.state.ActiveStep - 1 });
+		this.setState(prevState => ({ ActiveStep: prevState.ActiveStep - 1 }), this.renderPage);
+
 	};
 
 	handleStep = step => () => {
-		this.setState({ ActiveStep: step });
+		this.setState({ ActiveStep: step },this.renderPage);
 	};
 
 	handleComplete = () => {
@@ -92,41 +96,42 @@ class Tasks extends Component {
 	};
 
 	handleReset = () => {
-		this.setState({ ActiveStep: 0 });
+		this.setState({ ActiveStep: 0 }, this.renderPage);
 		this.setState({ completed: {} });
 	};
 
-	renderPage = (step) => {
-		switch (step) {
+	renderPage = () => {
+		console.log('ID');
+		console.log(this.state.selectedAssignmentId);
+		switch (this.state.ActiveStep) {
 			case 0:
-				return <Classes user={this.props.user} />;
+				this.props.history.push('/tasks/courses');
+				return;
 			case 1:
-				return <Assignments user={this.props.user} />;
+				this.props.history.push('/tasks/assignments');
+				return;
 			case 2:
-				return <RubricEditor user={this.props.user} />;
+				this.props.history.push('/tasks/rubriceditor');
+				return;
 			case 3:
-				if (this.state.selectedAssignmentId) {
-					return <Analyze
-						user={this.props.user}
-						selectedAssignmentId={this.state.selectedAssignmentId}
-					/>;
+				if (this.state.selectedAssignmentId !== null) {
+					this.props.history.push('/tasks/analyze');
 				} else {
-					return <AnalyzeSubMenu
-						user={this.props.user}
-						updateSelectedId={this.updateSelectedId}
-					/>;
+					this.props.history.push('/tasks/analyzemenu');
 				}
+				return;
 			case 4:
-				return <Overview user={this.props.user} />;
+				 this.props.history.push('/tasks/overview');
+				return;
 			case 5:
 				return <p align={"center"}> Click on the Reset Button to reset your progress or click on any step to go back </p>;
 			default:
 				return 'Unknown step';
 		}
-	}
+	};
 
 	updateSelectedId(newId) {
-		this.setState({ selectedAssignmentId: newId });
+		this.setState({ selectedAssignmentId: newId }, this.renderPage);
 	}
 
 	render() {
@@ -160,7 +165,6 @@ class Tasks extends Component {
 									All steps completed - you&apos;re finished
 								</Typography>
 								<Fab
-									// style={{float:"right"}}
 									variant="extended"
 									size="small"
 									color="primary"
@@ -220,9 +224,39 @@ class Tasks extends Component {
 									</Grid>
 								</div>
 							)}
-						<div>
-							{this.renderPage(this.state.ActiveStep)}
-						</div>
+						<Route path="/tasks/courses"
+							   render={(props) =>
+								   <Classes
+									   user={this.props.user}
+									   {...props} />}
+						/>
+						<Route path="/tasks/assignments" render={(props) =>
+								<Assignments
+									user={this.props.user}
+									{...props} />}
+						/>
+						<Route path="/tasks/rubriceditor" render={(props) =>
+							<RubricEditor
+								user={this.props.user}
+								{...props} />}
+						/>
+						<Route path="/tasks/analyze" render={(props) =>
+							<Analyze
+								user={this.props.user}
+								selectedAssignmentId={this.state.selectedAssignmentId}
+								{...props} />}
+						/>
+						<Route path="/tasks/analyzemenu" render={(props) =>
+								<AnalyzeSubMenu
+									user={this.props.user}
+									updateSelectedId={this.updateSelectedId}
+									{...props} />}
+						/>
+						<Route path="/tasks/overview" render={(props) =>
+								<Overview
+									user={this.props.user}
+									{...props} />}
+						/>
 					</div>
 				</Container>
 			</MuiThemeProvider>

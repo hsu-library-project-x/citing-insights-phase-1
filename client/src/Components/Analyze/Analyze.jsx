@@ -124,6 +124,8 @@ class Analyze extends Component {
                 that.setState({ current_pdf_data: myJson["pdf"]["data"] });
                 that.get_citation_info(myJson["_id"])
                   .then(() => {
+                    console.log("DIE HERE");
+                    console.log(that.state.citations);
                     that.get_s2_info(that.state.citations[1]["_id"]);
                   });
               });

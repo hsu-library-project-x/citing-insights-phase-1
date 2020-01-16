@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route, HashRouter} from "react-router-dom";
+import { Route, HashRouter} from "react-router-dom";
 import { ProtectedRoute } from "./ProtectedRoute.jsx";
 
 import Analyze from "./Components/Analyze/Analyze.jsx";
@@ -63,7 +63,6 @@ class App extends Component {
               user={this.state.user}
             />
             <div id="id01" className="pop content">
-              <Switch>
                 <Route
                   exact path="/login"
                   render={
@@ -84,12 +83,12 @@ class App extends Component {
                   component={Tasks}
                   {...this.state}
                 />
-                <ProtectedRoute
-                  path="/analyze"
-                  component={Analyze}
-                  {...this.state}
-                />
-              </Switch>
+                {/*<ProtectedRoute*/}
+                {/*  path="/analyze"*/}
+                {/*  component={Analyze}*/}
+                {/*  {...this.state}*/}
+                {/*/>*/}
+
             </div>
             <BottomNavBar
                 isAuthenticated={this.state.isAuthenticated}

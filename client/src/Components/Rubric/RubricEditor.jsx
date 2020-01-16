@@ -420,7 +420,7 @@ class RubricEditor extends Component {
 
 				{(!this.state.isEditing) ?
 					<Grid container spacing={3}>
-						<Grid item xs={7}>
+						<Grid item>
 							<Typography align={"left"} variant={"h6"} component={"h3"} gutterBottom={true}>
 								Use AAC&U Rubrics
 							</Typography>
@@ -464,16 +464,17 @@ class RubricEditor extends Component {
 							</Toolbar> : null }
 							{rubricList}
 						</Grid>
-						<Grid item xs={4}>
+						<Grid item style={{marginTop:'4em'}}> OR </Grid>
+						<Grid item>
 							<Typography align={"left"} variant={"h6"} component={"h3"}>
 								Create New
 							</Typography>
-								<FormControl fullWidth>
+								<FormControl fullWidth style={{minWidth: 250, marginBottom:"1em"}}>
 								<TextField
 									onChange={this.handleStandardInputChange}
 									type="number"
 									label={"Number of Elements (1-5)"}
-									helperText={"Number of Elements (1-5)"}
+									// helperText={"Number of Elements (1-5)"}
 									placeholder="Rubric Elements"
 									name="rubricElements"
 									inputProps={{
