@@ -5,7 +5,6 @@ import {
 	Button, IconButton, Checkbox, Tooltip, Toolbar, Link, ListItemSecondaryAction, CardContent
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import uniqueId from 'react-html-id';
 import defaultRubricsJson from '../../default_rubrics/defaultRubric.json';
 
 class RubricEditor extends Component {
@@ -16,22 +15,15 @@ class RubricEditor extends Component {
 			rubricElements: null,
 			rubricTitle: "",
 			isEditing: false,
-			needsSaving: true,
-			uploading: false, //TODO: Replace with User Feedback
-			idArray: [],
 			AvailableRubrics: [],
 			rubricExists: false,
 			selectedRubric: "",
-			cards: [],
 			currentlyEditing: false,
-			editPopulated: false,  //TODO: Remove
-			curId: "",
 			checked: [],
 		};
 
 		this.getRubrics();
 
-		uniqueId.enableUniqueIds(this);
 		this.handleEditState = this.handleEditState.bind(this);
 		this.handleStandardInputChange = this.handleStandardInputChange.bind(this);
 		this.buildCards = this.buildCards.bind(this);
@@ -104,7 +96,7 @@ class RubricEditor extends Component {
 			}
 		});
 
-		let rubricData = new Object();
+		let rubricData = {};
 
 		rubric.cards.forEach(c=>{
 			rubricData[`cardTitle-${rubric.cards.indexOf(c)}`] = c.cardTitle;
@@ -153,7 +145,6 @@ class RubricEditor extends Component {
 	//calls when the isEditing state is changed
 	buildCards() {
 		let cards = [];
-		let fetchBody=[];
 		let that=this;
 			if (this.state.rubricExists && !this.state.currentlyEditing) {
 				let rubric = null;
@@ -164,7 +155,6 @@ class RubricEditor extends Component {
 				});
 
 				cards = rubric ? rubric.cards.map(c => {
-					fetchBody.push({cardTitle:c.cardTitle, cardText:c.cardText});
 						return(
 							<Card key={`card number ${rubric.cards.indexOf(c)}`}>
 								<CardContent>
@@ -270,11 +260,8 @@ class RubricEditor extends Component {
 			isEditing: false,
 			rubricExists: false,
 			currentlyEditing: false,
-			editPopulated: false,
 			selectedRubric: "",
 			rubricTitle: "",
-			curId: "",
-			cards: [],
 			checked: [],
 			rubricData:[],
 		})
@@ -304,8 +291,6 @@ class RubricEditor extends Component {
 			}
 
 		});
-
-		console.log(newData);
 
 		if (this.state.rubricExists) {
 			this.updateRequest(this.state.rubricTitle, newData);
