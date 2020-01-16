@@ -36,6 +36,9 @@ class Tasks extends Component {
 			"Step 4: Assess Student's citations using rubric and our Discovery tools",
 			"Step 5: See how you rated a student's citations"];
 
+		this.pathnames = {'/tasks/courses' : 0, '/tasks/assignments' : 1, '/tasks/rubric' :2,
+			'/tasks/analyzemenu':3, '/tasks/analyze':3, '/tasks/overview':4};
+
 		this.renderPage();
 
 		this.totalSteps = this.totalSteps.bind(this);
@@ -101,8 +104,6 @@ class Tasks extends Component {
 	};
 
 	renderPage = () => {
-		console.log('step ' + this.state.ActiveStep);
-		console.log(`selectedAssingmnetId ${this.state.selectedAssignmentId}`);
 		switch (this.state.ActiveStep) {
 			case 0:
 				this.props.history.push('/tasks/courses');
@@ -148,10 +149,13 @@ class Tasks extends Component {
 			<MuiThemeProvider theme={theme}>
 				<Container>
 					<Container maxWidth={'md'}>
-						<Stepper nonLinear activeStep={this.state.ActiveStep}>
+						<Stepper nonLinear activeStep={this.pathnames[this.props.location.pathname]}>
 							{this.steps.map((label, index) => (
 								<Step key={label}>
-									<StepButton onClick={this.handleStep(index)} completed={this.state.completed[index]}>
+									<StepButton
+										onClick={this.handleStep(index)}
+										completed={this.state.completed[index]}
+									>
 										{label}
 									</StepButton>
 								</Step>
