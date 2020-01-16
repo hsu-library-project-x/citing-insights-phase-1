@@ -63,12 +63,6 @@ class Analyze extends Component {
   }
 
   componentDidMount() {
-    if (this.props.location.state === undefined) {
-      this.props.history.push({
-        pathname: "/",
-        props: { ...this.state }
-      });
-    } else {
       let that = this;
       //Grab info about the assignment
       fetch('http://localhost:5000/assignments/' + this.props.selectedAssignmentId)
@@ -80,19 +74,20 @@ class Analyze extends Component {
             assignment: myJson
           });
         });
-    }
+
   }
 
   get_citation_info(paper_id) {
     let that = this;
-    let answer = fetch('http://localhost:5000/citations/by_paper_id/' + paper_id)
+    return fetch('http://localhost:5000/citations/by_paper_id/' + paper_id)
       .then(function (response) {
         return response.json();
       })
       .then(function (myJson) {
         that.setState({ citations: myJson });
+        return (myJson);
       });
-    return (answer);
+
   }
 
   get_s2_info(citation_id) {
@@ -105,9 +100,10 @@ class Analyze extends Component {
   //Do this call every time a new Paper is loaded into the  component
 
   componentWillMount() {
+    console.log("HERE2");
     let that = this;
     if (this.props.selectedAssignmentId !== undefined) {
-      this.setState({ assignmentId: this.props.selectedAssignmentId });
+      // this.setState({ assignmentId: this.props.selectedAssignmentId });
 
       fetch('http://localhost:5000/papers/by_assignment_id/' + this.props.selectedAssignmentId)
         .then(function (response) {
@@ -123,10 +119,8 @@ class Analyze extends Component {
               .then(function (myJson) {
                 that.setState({ current_pdf_data: myJson["pdf"]["data"] });
                 that.get_citation_info(myJson["_id"])
-                  .then(() => {
-                    console.log("DIE HERE");
-                    console.log(that.state.citations);
-                    that.get_s2_info(that.state.citations[1]["_id"]);
+                  .then((citations) => {
+                    that.get_s2_info(citations[1]["_id"]);
                   });
               });
           } catch (e) {

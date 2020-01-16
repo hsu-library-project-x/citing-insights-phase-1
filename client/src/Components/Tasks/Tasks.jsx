@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, withRouter } from "react-router-dom";
+import { Switch, Route, withRouter } from "react-router-dom";
 
 import { Tooltip, IconButton, Container, Stepper, Step,
 	StepButton, Typography, Fab, Grid } from "@material-ui/core";
@@ -7,7 +7,7 @@ import { Tooltip, IconButton, Container, Stepper, Step,
 import Classes from "../Classes/Classes.jsx";
 import Assignments from "../Upload/Upload.jsx";
 import Analyze from "../Analyze/Analyze.jsx";
-import RubricEditor from "../Rubric/RubricEditor.jsx";
+import Rubric from "../Rubric/Rubric.jsx";
 import AnalyzeSubMenu from "../Analyze/AnalyzeSubMenu.jsx";
 import Overview from '../Overview/Overview.jsx';
 
@@ -101,8 +101,8 @@ class Tasks extends Component {
 	};
 
 	renderPage = () => {
-		console.log('ID');
-		console.log(this.state.selectedAssignmentId);
+		console.log('step ' + this.state.ActiveStep);
+		console.log(`selectedAssingmnetId ${this.state.selectedAssignmentId}`);
 		switch (this.state.ActiveStep) {
 			case 0:
 				this.props.history.push('/tasks/courses');
@@ -111,17 +111,18 @@ class Tasks extends Component {
 				this.props.history.push('/tasks/assignments');
 				return;
 			case 2:
-				this.props.history.push('/tasks/rubriceditor');
+				this.props.history.push('/tasks/rubric');
 				return;
 			case 3:
 				if (this.state.selectedAssignmentId !== null) {
 					this.props.history.push('/tasks/analyze');
+					return;
 				} else {
 					this.props.history.push('/tasks/analyzemenu');
+					return;
 				}
-				return;
 			case 4:
-				 this.props.history.push('/tasks/overview');
+				this.props.history.push('/tasks/overview');
 				return;
 			case 5:
 				return <p align={"center"}> Click on the Reset Button to reset your progress or click on any step to go back </p>;
@@ -226,39 +227,46 @@ class Tasks extends Component {
 									</Grid>
 								</div>
 							)}
-						<Route path="/tasks/courses"
-							   render={(props) =>
-								   <Classes
-									   user={this.props.user}
-									   {...props} />}
-						/>
-						<Route path="/tasks/assignments" render={(props) =>
-								<Assignments
+						<Switch>
+							<Route path="/tasks/courses"
+								   render={(props) =>
+									   <Classes
+										   user={this.props.user}
+										   {...props} />}
+							/>
+							<Route path="/tasks/assignments" render={(props) =>
+									<Assignments
+										user={this.props.user}
+										{...props} />}
+							/>
+							<Route path="/tasks/rubric" render={(props) =>
+								<Rubric
 									user={this.props.user}
 									{...props} />}
-						/>
-						<Route path="/tasks/rubriceditor" render={(props) =>
-							<RubricEditor
-								user={this.props.user}
-								{...props} />}
-						/>
-						<Route path="/tasks/analyze" render={(props) =>
-							<Analyze
-								user={this.props.user}
-								selectedAssignmentId={this.state.selectedAssignmentId}
-								{...props} />}
-						/>
-						<Route path="/tasks/analyzemenu" render={(props) =>
+							/>
+							{/*<Route path={"tasks/rubriceditor"} render={(props) =>*/}
+							{/*	<RubricEditor*/}
+							{/*		user={this.props.user}*/}
+							{/*		{...props} />}*/}
+							{/*/>*/}
+							<Route path="/tasks/analyzemenu" render={(props) =>
 								<AnalyzeSubMenu
 									user={this.props.user}
 									updateSelectedId={this.updateSelectedId}
 									{...props} />}
-						/>
-						<Route path="/tasks/overview" render={(props) =>
-								<Overview
+							/>
+							<Route path="/tasks/analyze" render={(props) =>
+								<Analyze
 									user={this.props.user}
+									selectedAssignmentId={this.state.selectedAssignmentId}
 									{...props} />}
-						/>
+							/>
+							<Route path="/tasks/overview" render={(props) =>
+									<Overview
+										user={this.props.user}
+										{...props} />}
+							/>
+						</Switch>
 					</div>
 				</Container>
 			</MuiThemeProvider>

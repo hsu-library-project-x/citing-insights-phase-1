@@ -83,12 +83,6 @@ class App extends Component {
                   component={Tasks}
                   {...this.state}
                 />
-                {/*<ProtectedRoute*/}
-                {/*  path="/analyze"*/}
-                {/*  component={Analyze}*/}
-                {/*  {...this.state}*/}
-                {/*/>*/}
-
             </div>
             <BottomNavBar
                 isAuthenticated={this.state.isAuthenticated}
