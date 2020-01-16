@@ -316,6 +316,10 @@ class Analyze extends Component {
         <Grid item xs={12} sm={4} md={2}>
 
           <Paper variant="outlined">
+            <Button variant={'contained'} color={'primary'}
+                    onClick={()=> this.props.history.push('/tasks/analyzemenu')} >
+              Analyze Different Assignment
+            </Button>
           <h3>Paper</h3>
           <FormControl required={true} style={{ minWidth: 200, marginBottom: "1em" }}>
             <InputLabel id={"selectPaperlabel"}>Select a Paper</InputLabel>
