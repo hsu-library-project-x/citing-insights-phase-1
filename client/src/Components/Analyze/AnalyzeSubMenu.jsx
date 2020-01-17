@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import {Container,Typography, Button, FormControl, MenuItem, Select, InputLabel} from "@material-ui/core";
 
-import { Redirect } from "react-router-dom";
-import Analyze from "./Analyze";
-
 class AnalyzeSubMenu extends Component {
 
   constructor(props) {
@@ -82,15 +79,6 @@ class AnalyzeSubMenu extends Component {
       <MenuItem value={assignment._id}>{assignment.name}</MenuItem>
     );
 
-    // if (this.state.redirect) {
-    //   return <Redirect to={{
-    //     pathname: '/analyze',
-    //     state: {id: this.state.selectedAssignmentId},
-    //     props: { ...this.props }
-    //   }} />
-    //
-    // }
-    
     return (
       <Container maxWidth={'md'}>
 

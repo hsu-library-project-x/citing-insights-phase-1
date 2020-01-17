@@ -1,0 +1,101 @@
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import {Button, Typography, Table , TableBody, TableCell, TableHead, TableRow} from '@material-ui/core';
+import { CSVLink } from "react-csv";
+
+class OverviewTable extends Component {
+    constructor(props) {
+        super(props);
+
+        this.showCitations = this.showCitations.bind(this);
+        this.formatCitation = this.formatCitation.bind(this);
+        this.getAuthors = this.getAuthors.bind(this);
+    };
+
+    getAuthors(authors) {
+        return authors.map((d) => {
+            return d.family + ", " + d.given + "\n"
+        });
+    }
+
+    formatCitation(citation) {
+        return (
+            {
+                'author':  `${this.getAuthors(citation.author)} ${citation.date}. ${citation.title}`,
+                'title': citation.title,
+                'comments': citation.annotation,
+                'rubric_title': citation.rubricTitle,
+                'rubric_value' : citation.rubricScore,
+            }
+        );
+    }
+
+    showCitations() {
+        //Query for Citations where rubric value or annotation is not null
+        let data = [];
+
+        if (this.props.citations !== []) {
+            this.props.citations.forEach((citation) => {
+                if (citation.evaluated === true) { //fetch call also checks this
+                    data.push(this.formatCitation(citation));
+                }
+            });
+        }
+
+        return data;
+    }
+
+    render(){
+        let rows = this.showCitations();
+        return(
+            <div>
+                <Typography align={"center"} variant={"subtitle1"} component={"p"} gutterBottom={true}>
+                    Download PDF Comming Soon
+                </Typography>
+
+                <Button color={'primary'}
+                        variant={'contained'}
+                        onClick={() => this.props.history.push('/tasks/overview')}>
+                    Back to Overview Selection
+                </Button>
+
+                <CSVLink data={rows} filename={"overview.csv"}>
+                    <Button color={'primary'} variant={'contained'} >
+                        Download CSV
+                    </Button>
+                </CSVLink>
+
+                <Button disabled={true} variant={'contained'}>
+                    Download PDF
+                </Button>
+
+                <Table aria-label="overview table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell  align="left">Author(s)</TableCell>
+                            <TableCell align="left">Title</TableCell>
+                            <TableCell align="left">Comments</TableCell>
+                            <TableCell align="left">Rubric Used</TableCell>
+                            <TableCell align="left">Rubric Value</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {rows.map(row => (
+                            <TableRow key={row.author}>
+                                <TableCell component={"th"} scope={"row"}>
+                                    {row.author}
+                                </TableCell>
+                                <TableCell aligh={"left"}> {row.title}</TableCell>
+                                <TableCell aligh={"left"}> {row.comments}</TableCell>
+                                <TableCell aligh={"left"}> {row.rubric_title}</TableCell>
+                                <TableCell aligh={"left"}> {row.rubric_value} </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </div>
+        );
+    }
+}
+
+export default withRouter(OverviewTable);

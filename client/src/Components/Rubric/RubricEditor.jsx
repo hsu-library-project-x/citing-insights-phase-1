@@ -53,7 +53,6 @@ class RubricEditor extends Component {
 
     //adding a new rubric
     sendRequest(rubricTitle, data) {
-        let that = this;
         return new Promise(() => {
             const newdata = {
                 "name": rubricTitle,
@@ -82,7 +81,6 @@ class RubricEditor extends Component {
 
     //updating an existing rubric
     updateRequest(rubricTitle, data) {
-        let that = this;
         return new Promise(() => {
             const newdata = {
                 "name": rubricTitle,
@@ -181,7 +179,6 @@ class RubricEditor extends Component {
                 cards.push(
                     <Card key={`card number ${i}`}>
                         <CardContent>
-                            <label id={'Rubric Item Title'}> Rubric Item Title </label>
                             <TextField
                                 variant={"outlined"}
                                 fullWidth={true}

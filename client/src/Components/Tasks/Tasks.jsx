@@ -1,24 +1,22 @@
 import React, { Component } from 'react';
 import { Switch, Route, withRouter } from "react-router-dom";
 
-import { Tooltip, IconButton, Container, Stepper, Step,
-	StepButton, Typography, Fab, Grid } from "@material-ui/core";
+import { Tooltip, IconButton, Container, Stepper, Step, StepButton, Typography, Fab, Grid } from "@material-ui/core";
 
 import Classes from "../Classes/Classes.jsx";
-import Assignments from "../Upload/Upload.jsx";
+import Upload from "../Upload/Upload.jsx";
 import Analyze from "../Analyze/Analyze.jsx";
 import Rubric from "../Rubric/Rubric.jsx";
 import RubricEditor from "../Rubric/RubricEditor";
 import AnalyzeSubMenu from "../Analyze/AnalyzeSubMenu.jsx";
 import Overview from '../Overview/Overview.jsx';
-
+import OverviewTable from "../Overview/OverviewTable";
 
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import DoneIcon from '@material-ui/icons/Done';
 
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-
 
 // Class to render our homepage
 class Tasks extends Component {
@@ -35,6 +33,8 @@ class Tasks extends Component {
 			selectedRubric:"",
 			AvailableRubrics: [],
 			rubricData:{},
+			citations:[],
+			overviewPage: null,
 		};
 
 		this.steps = ['Manage Courses', 'Upload Papers', 'Edit Rubrics', 'Analyze', 'Overview'];
@@ -44,7 +44,7 @@ class Tasks extends Component {
 			"Step 4: Assess Student's citations using rubric and our Discovery tools",
 			"Step 5: See how you rated a student's citations"];
 
-		this.pathnames = {'/tasks/courses' : 0, '/tasks/assignments' : 1, '/tasks/rubric' :2, '/tasks/rubriceditor' :2,
+		this.pathnames = {'/tasks/courses' : 0, '/tasks/upload' : 1, '/tasks/rubric' :2, '/tasks/rubriceditor' :2,
 			'/tasks/analyzemenu':3, '/tasks/analyze':3, '/tasks/overview':4};
 
 		this.renderPage();
@@ -61,6 +61,7 @@ class Tasks extends Component {
 		this.renderPage = this.renderPage.bind(this);
 		this.updateSelectedId = this.updateSelectedId.bind(this);
 		this.updateisEditing = this.updateisEditing.bind(this);
+		this.updateOverviewPage = this.updateOverviewPage.bind(this);
 
 	}
 
@@ -116,6 +117,12 @@ class Tasks extends Component {
 		this.setState({ selectedAssignmentId: newId }, this.renderPage);
 	}
 
+	updateOverviewPage(citations){
+		console.log("BBB");
+		console.log(citations);
+		this.setState({citations: citations, overviewPage:true}, this.renderPage);
+	}
+
 	updateisEditing = (rubricExists, rubricTitle, rubricElements, selectedRubric, availableRubrics, rubricData) => {
 		this.setState({
 			isEditing: true,
@@ -129,12 +136,13 @@ class Tasks extends Component {
 	};
 
 	renderPage = () => {
+		console.log(this.state.citations);
 		switch (this.state.ActiveStep) {
 			case 0:
 				this.props.history.push('/tasks/courses');
 				return;
 			case 1:
-				this.props.history.push('/tasks/assignments');
+				this.props.history.push('/tasks/upload');
 				return;
 			case 2:
 				if (this.state.isEditing !== null){
@@ -153,8 +161,14 @@ class Tasks extends Component {
 					return;
 				}
 			case 4:
-				this.props.history.push('/tasks/overview');
-				return;
+				if (this.state.overviewPage !== null){
+					this.props.history.push('/tasks/overviewtable');
+					return;
+				}else{
+					this.props.history.push('/tasks/overview');
+					return;
+				}
+
 			case 5:
 				return <p align={"center"}> Click on the Reset Button to reset your progress or click on any step to go back </p>;
 			default:
@@ -266,8 +280,8 @@ class Tasks extends Component {
 										   user={this.props.user}
 										   {...props} />}
 							/>
-							<Route path="/tasks/assignments" render={(props) =>
-									<Assignments
+							<Route path="/tasks/upload" render={(props) =>
+									<Upload
 										user={this.props.user}
 										{...props} />}
 							/>
@@ -301,9 +315,16 @@ class Tasks extends Component {
 									{...props} />}
 							/>
 							<Route path="/tasks/overview" render={(props) =>
-									<Overview
-										user={this.props.user}
-										{...props} />}
+								<Overview
+									user={this.props.user}
+									updateOverviewPage={this.updateOverviewPage}
+									{...props} />}
+							/>
+							<Route path="/tasks/overviewtable" render={(props) =>
+								<OverviewTable
+									user={this.props.user}
+									citations={this.state.citations}
+									{...props} />}
 							/>
 						</Switch>
 					</div>

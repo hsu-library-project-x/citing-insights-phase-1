@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 
-import {Container, FormControl, InputLabel, Select, MenuItem, Typography, Button, Grid, Card, CardContent} from "@material-ui/core";
-import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
-
+import {Container, FormControl, InputLabel, Select, MenuItem, Typography, Button} from "@material-ui/core";
 import Dropzone from "./Dropzone";
 
 class Upload extends Component {
@@ -111,23 +109,16 @@ class Upload extends Component {
           <MenuItem key={d._id} value={d._id}>{d.name}</MenuItem>
       );
 
-    const theme = createMuiTheme({
-      palette: {
-        primary: { main: '#25551b' }, // dk green
-        secondary: { main: '#5C8021' } // light green
-      },
-    });
-
     return(
-        <MuiThemeProvider theme={theme}>
-
+        <div>
               <Typography style={{marginTop: "1em"}} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}>
                   Upload Files
               </Typography>
-              <Typography align={"center"} variant={"subtitle1"} component={"p"} gutterBottom={true}> Please upload papers as PDF </Typography>
-            <Container maxWidth={'md'} className={"container"}>
-              {/*<Grid container>*/}
-              {/*    <Grid item xs={10}>*/}
+              <Typography align={"center"} variant={"subtitle1"} component={"p"} gutterBottom={true}>
+                  Please upload papers as PDF
+              </Typography>
+
+                <Container maxWidth={'md'} className={"container"}>
                       <form style={{textAlign:"center", margin:"1em"}} onSubmit={this.handleSubmitFiles}>
                           <FormControl required={true} style={{minWidth: 250}}>
                               <InputLabel id="selectClasslabel">Select a Class</InputLabel>
@@ -177,13 +168,8 @@ class Upload extends Component {
                             <br />
                           <Button type='submit' variant='contained' color='primary' > Upload </Button>
                       </form>
-                  {/*</Grid>*/}
-                  {/*<Grid item xs={2}>*/}
-
-              {/*    </Grid>*/}
-              {/*</Grid>*/}
           </Container>
-        </MuiThemeProvider>
+        </div>
     );
   }
 }

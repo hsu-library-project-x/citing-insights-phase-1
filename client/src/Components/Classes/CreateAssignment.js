@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import {TextField, Modal, Paper, Fab, Button, Typography, Select, MenuItem, InputLabel, FormControl} from "@material-ui/core";
-import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
+import {TextField, Modal, Paper, Fab, Button, Typography, Select,
+    MenuItem, InputLabel, FormControl} from "@material-ui/core";
 import AssignmentIcon from '@material-ui/icons/Assignment';
 
 
@@ -81,12 +81,6 @@ class CreateAssignment extends Component {
 
     render() {
 
-        const theme = createMuiTheme({
-        palette: {
-            primary: { main: '#25551b' }, // dk green
-            secondary: { main: '#5C8021' } // light green
-        },
-        });
 
         let classes = this.props.classList.map(d => {
             return (
@@ -98,7 +92,7 @@ class CreateAssignment extends Component {
         });
 
         return(
-            <MuiThemeProvider theme={theme}>
+           <div>
                 <Fab type="button"
                      variant="extended"
                      color={'primary'}
@@ -156,7 +150,7 @@ class CreateAssignment extends Component {
                         </form>
                     </Paper>
                 </Modal>
-            </MuiThemeProvider>
+           </div>
 
         );
     }
