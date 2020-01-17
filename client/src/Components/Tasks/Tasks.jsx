@@ -8,6 +8,7 @@ import Classes from "../Classes/Classes.jsx";
 import Assignments from "../Upload/Upload.jsx";
 import Analyze from "../Analyze/Analyze.jsx";
 import Rubric from "../Rubric/Rubric.jsx";
+import RubricEditor from "../Rubric/RubricEditor";
 import AnalyzeSubMenu from "../Analyze/AnalyzeSubMenu.jsx";
 import Overview from '../Overview/Overview.jsx';
 
@@ -27,6 +28,13 @@ class Tasks extends Component {
 			ActiveStep: 0,
 			completed: {},
 			selectedAssignmentId: null,
+			isEditing:null,
+			rubricExists: null,
+			rubricTitle: "",
+			rubricElements:"",
+			selectedRubric:"",
+			AvailableRubrics: [],
+			rubricData:{},
 		};
 
 		this.steps = ['Manage Courses', 'Upload Papers', 'Edit Rubrics', 'Analyze', 'Overview'];
@@ -36,7 +44,7 @@ class Tasks extends Component {
 			"Step 4: Assess Student's citations using rubric and our Discovery tools",
 			"Step 5: See how you rated a student's citations"];
 
-		this.pathnames = {'/tasks/courses' : 0, '/tasks/assignments' : 1, '/tasks/rubric' :2,
+		this.pathnames = {'/tasks/courses' : 0, '/tasks/assignments' : 1, '/tasks/rubric' :2, '/tasks/rubriceditor' :2,
 			'/tasks/analyzemenu':3, '/tasks/analyze':3, '/tasks/overview':4};
 
 		this.renderPage();
@@ -52,6 +60,7 @@ class Tasks extends Component {
 		this.handleReset = this.handleReset.bind(this);
 		this.renderPage = this.renderPage.bind(this);
 		this.updateSelectedId = this.updateSelectedId.bind(this);
+		this.updateisEditing = this.updateisEditing.bind(this);
 
 	}
 
@@ -103,6 +112,22 @@ class Tasks extends Component {
 		this.setState({ completed: {} });
 	};
 
+	updateSelectedId(newId) {
+		this.setState({ selectedAssignmentId: newId }, this.renderPage);
+	}
+
+	updateisEditing = (rubricExists, rubricTitle, rubricElements, selectedRubric, availableRubrics, rubricData) => {
+		this.setState({
+			isEditing: true,
+			rubricExists: rubricExists,
+			rubricTitle:rubricTitle,
+			rubricElements: rubricElements,
+			selectedRubric: selectedRubric,
+			AvailableRubrics: availableRubrics,
+			rubricData: rubricData,
+		}, this.renderPage);
+	};
+
 	renderPage = () => {
 		switch (this.state.ActiveStep) {
 			case 0:
@@ -112,8 +137,13 @@ class Tasks extends Component {
 				this.props.history.push('/tasks/assignments');
 				return;
 			case 2:
-				this.props.history.push('/tasks/rubric');
-				return;
+				if (this.state.isEditing !== null){
+					this.props.history.push('/tasks/rubriceditor');
+					return;
+				}else{
+					this.props.history.push('/tasks/rubric');
+					return;
+				}
 			case 3:
 				if (this.state.selectedAssignmentId !== null) {
 					this.props.history.push('/tasks/analyze');
@@ -132,9 +162,7 @@ class Tasks extends Component {
 		}
 	};
 
-	updateSelectedId(newId) {
-		this.setState({ selectedAssignmentId: newId }, this.renderPage);
-	}
+
 
 	render() {
 
@@ -246,13 +274,20 @@ class Tasks extends Component {
 							<Route path="/tasks/rubric" render={(props) =>
 								<Rubric
 									user={this.props.user}
+									updateisEditing={this.updateisEditing}
 									{...props} />}
 							/>
-							{/*<Route path={"tasks/rubriceditor"} render={(props) =>*/}
-							{/*	<RubricEditor*/}
-							{/*		user={this.props.user}*/}
-							{/*		{...props} />}*/}
-							{/*/>*/}
+							<Route path="/tasks/rubriceditor" render={(props) =>
+								<RubricEditor
+									user={this.props.user}
+									rubricExists={this.state.rubricExists}
+									rubricElements={this.state.rubricElements}
+									rubricTitle={this.state.rubricTitle}
+									selectedRubric={this.state.selectedRubric}
+									AvailableRubrics={this.state.AvailableRubrics}
+									rubricData={this.state.rubricData}
+									{...props} />}
+							/>
 							<Route path="/tasks/analyzemenu" render={(props) =>
 								<AnalyzeSubMenu
 									user={this.props.user}
