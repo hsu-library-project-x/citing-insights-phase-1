@@ -126,6 +126,7 @@ class Upload extends Component {
                                   style={{textAlign:"center"}}
                                   labelId={"selectClasslabel"}
                                   onChange={this.handleClassSelection}
+                                  defaultValue={""}
                                   inputProps={{
                                       name: 'classId',
                                       id: 'selectClass',
@@ -141,6 +142,7 @@ class Upload extends Component {
                               <Select
                                   style={{textAlign:"center"}}
                                   onChange={this.handleInputChange}
+                                  defaultValue={""}
                                   inputProps={{
                                       name: 'assignmentId',
                                       id: 'selectAssignment',

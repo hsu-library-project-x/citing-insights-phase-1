@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Switch, Route, withRouter } from "react-router-dom";
-
 import { Tooltip, IconButton, Container, Stepper, Step, StepButton, Typography, Fab, Grid } from "@material-ui/core";
 
 import Classes from "../Classes/Classes.jsx";
@@ -18,7 +17,6 @@ import DoneIcon from '@material-ui/icons/Done';
 
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
-// Class to render our homepage
 class Tasks extends Component {
 	constructor(props) {
 		super(props);
@@ -118,8 +116,6 @@ class Tasks extends Component {
 	}
 
 	updateOverviewPage(citations){
-		console.log("BBB");
-		console.log(citations);
 		this.setState({citations: citations, overviewPage:true}, this.renderPage);
 	}
 
@@ -136,7 +132,6 @@ class Tasks extends Component {
 	};
 
 	renderPage = () => {
-		console.log(this.state.citations);
 		switch (this.state.ActiveStep) {
 			case 0:
 				this.props.history.push('/tasks/courses');
@@ -176,10 +171,7 @@ class Tasks extends Component {
 		}
 	};
 
-
-
 	render() {
-
 		const theme = createMuiTheme({
 			palette: {
 				primary: { main: '#25551b' }, // dk green
@@ -232,24 +224,28 @@ class Tasks extends Component {
 										<Grid item xs={4}>
 											<div align={"right"}>
 												<Tooltip title="Back" aria-label="go back">
-													<IconButton
-														aria-label="back-button"
-														size="small"
-														disabled={this.state.ActiveStep === 0}
-														onClick={this.handleBack}
-													>
-														<ArrowBackIosIcon />
-													</IconButton>
+													<span>
+														<IconButton
+															aria-label="back-button"
+															size="small"
+															disabled={this.state.ActiveStep === 0}
+															onClick={this.handleBack}
+														>
+															<ArrowBackIosIcon />
+														</IconButton>
+													</span>
 												</Tooltip>
 												<Tooltip title="Next" aria-label="go next">
-													<IconButton
-														aria-label="next-button"
-														size="small"
-														disabled={this.state.ActiveStep >= 4}
-														onClick={this.handleNext}
-													>
-														<ArrowForwardIosIcon />
-													</IconButton>
+													<span>
+														<IconButton
+															aria-label="next-button"
+															size="small"
+															disabled={this.state.ActiveStep >= 4}
+															onClick={this.handleNext}
+														>
+															<ArrowForwardIosIcon />
+														</IconButton>
+													</span>
 												</Tooltip>
 												{this.state.ActiveStep !== this.steps.length &&
 													(this.state.completed[this.state.ActiveStep] ? (
@@ -274,8 +270,7 @@ class Tasks extends Component {
 								</div>
 							)}
 						<Switch>
-							<Route path="/tasks/courses"
-								   render={(props) =>
+							<Route path="/tasks/courses" render={(props) =>
 									   <Classes
 										   user={this.props.user}
 										   {...props} />}

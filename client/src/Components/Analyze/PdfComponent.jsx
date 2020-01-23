@@ -1,29 +1,29 @@
 import React, { Component } from "react";
-import { Document, Page, Outline, pdfjs } from "react-pdf";
+import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "./pdfComponent.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc =
   `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-//Highlights what was searched
-const highlightPattern = (text, pattern) => {
-  const splitText = text.split(pattern);
-
-  if (splitText.length <= 1) {
-    return text;
-  }
-
-  const matches = text.match(pattern);
-
-  return splitText.reduce((arr, element, index) => (matches[index] ? [
-    ...arr,
-    element,
-    <mark>
-      {matches[index]}
-    </mark>,
-  ] : [...arr, element]), []);
-};
+//Highlights what was searched -- commented out as it is not used
+// const highlightPattern = (text, pattern) => {
+//   const splitText = text.split(pattern);
+//
+//   if (splitText.length <= 1) {
+//     return text;
+//   }
+//
+//   const matches = text.match(pattern);
+//
+//   return splitText.reduce((arr, element, index) => (matches[index] ? [
+//     ...arr,
+//     element,
+//     <mark>
+//       {matches[index]}
+//     </mark>,
+//   ] : [...arr, element]), []);
+// };
 
 //Fixes the offset for text highlighting
 function removeTextLayerOffset() {
@@ -69,8 +69,8 @@ class PdfComponent extends Component {
   };
 
   render() {
-    const { numPages } = this.state;
-    const { pageNumber, searchText, scale } = this.props;
+    // const { numPages } = this.state;
+    const { pageNumber, /*searchText,*/ scale } = this.props;
 
     return (
       <div className="document-wrapper">

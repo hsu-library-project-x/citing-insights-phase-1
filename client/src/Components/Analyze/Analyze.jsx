@@ -100,7 +100,6 @@ class Analyze extends Component {
   //Do this call every time a new Paper is loaded into the  component
 
   componentWillMount() {
-    console.log("HERE2");
     let that = this;
     if (this.props.selectedAssignmentId !== undefined) {
       // this.setState({ assignmentId: this.props.selectedAssignmentId });
@@ -237,7 +236,7 @@ class Analyze extends Component {
     }
 
     if (check) {
-      this.setState((prevState, props) => ({
+      this.setState((prevState) => ({
         current_paper_id_index: prevState.current_paper_id_index + direction
       }
       ), () => this.refresh(this.state.current_paper_id_index));
@@ -273,7 +272,6 @@ class Analyze extends Component {
     let pageNum = this.state.pageNumber === null ? 1 : this.state.pageNumber;
     let scale = this.state.scale === null ? 1.0 : this.state.scale;
 
-    console.log("curent page: " + pageNum);
     if (this.state.current_pdf_data === "this must get set") {
       pdf = <p> No Pdf Data found </p>;
       pdfControls = <p> Can't Control what we don't have!</p>
@@ -296,18 +294,18 @@ class Analyze extends Component {
 
     let rubrics = this.state.AvailableRubrics;
     let rubricList = rubrics.map((rubric) =>
-      <MenuItem value={rubric._id}>{rubric.name}</MenuItem>
+      <MenuItem value={rubric._id} key={rubric._id}>{rubric.name}</MenuItem>
     );
 
     let papers = this.state.paper_ids;
     let paperList = papers.map(p => {
-      return <MenuItem value={p._id}> {p.title} </MenuItem>
+      return <MenuItem value={p._id} key={p._id}> {p.title} </MenuItem>
     }
     );
 
     return (
       <Grid
-        container="true"
+        container={true}
         direction="row"
         justify="space-evenly"
         alignItems="center"
@@ -327,6 +325,7 @@ class Analyze extends Component {
               style={{ textAlign: "center" }}
               labelId={"selectPaperlabel"}
               onChange={this.handleInputChange}
+              defaultValue={""}
               value={this.state.curPaperId}
               inputProps={{
                 name: 'curPaperId',
@@ -379,6 +378,7 @@ class Analyze extends Component {
               <Select
                 style={{ textAlign: "center" }}
                 labelId={"AssignRubriclabel"}
+                defaultValue={""}
                 onChange={this.handleGetRubric}
                 inputProps={{
                   name: 'AssignRubric',

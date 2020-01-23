@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Route, HashRouter} from "react-router-dom";
 import { ProtectedRoute } from "./ProtectedRoute.jsx";
 
-import Analyze from "./Components/Analyze/Analyze.jsx";
 import Login from "./Components/Login/Login.jsx";
 import Tasks from "./Components/Tasks/Tasks.jsx";
 

@@ -71,12 +71,12 @@ class AnalyzeSubMenu extends Component {
 
     let courses = this.state.AvailableCourses;
     let optionItems = courses.map((course) =>
-      <MenuItem value={course._id}>{course.name}</MenuItem>
+      <MenuItem value={course._id} key={course._id}>{course.name}</MenuItem>
     );
 
     let assignments = this.state.AvailableAssignments;
     let optionAssignments = assignments.map((assignment) =>
-      <MenuItem value={assignment._id}>{assignment.name}</MenuItem>
+      <MenuItem value={assignment._id} key={assignment._id}>{assignment.name}</MenuItem>
     );
 
     return (
@@ -93,6 +93,7 @@ class AnalyzeSubMenu extends Component {
                   style={{textAlign:"center"}}
                   labelId={"selectClasslabel"}
                   onChange={this.handleClassSelection}
+                  defaultValue={""}
                   inputProps={{
                     name: 'className',
                     id: 'assignForAnalyze',
@@ -109,6 +110,7 @@ class AnalyzeSubMenu extends Component {
                   style={{textAlign:"center"}}
                   labelId={"selectAssignmentlabel"}
                   onChange={this.handleInputChange}
+                  defaultValue={""}
                   inputProps={{
                     name: 'selectedAssignmentId',
                     id: 'assignForAnalyze',

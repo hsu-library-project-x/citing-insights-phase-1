@@ -8,6 +8,7 @@ import {createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
 import logo from "./logoCiting.svg";
 
+
 class Navibar extends Component {
     constructor(props) {
         super(props);
@@ -36,12 +37,12 @@ class Navibar extends Component {
     };
 
     render() {
+
         const theme = createMuiTheme({
             palette: {
                 primary: { main: '#25551b' }, // dk green
                 secondary: { main: '#5C8021' } // light green
             },
-
         });
 
         return (
@@ -51,7 +52,7 @@ class Navibar extends Component {
                         <Grid container spacing={1}>
                             <Grid item xs={4}>
                                 <Typography variant="h1" color="inherit" style={{ flex: 1, fontSize: "2vw" }}>
-                                   {this.state.institution}
+                                   {process.env.REACT_APP_INST_NAME}
                                 </Typography>
                             </Grid>
                             <Grid item xs={3}>
@@ -61,7 +62,7 @@ class Navibar extends Component {
                             <Grid item xs={1}>
                                 {this.props.isAuthenticated ?
                                     <Tooltip title={this.props.isAuthenticated ? this.props.user.name : null} aria-label="username">
-                                        {/*/!*<Button  >*!/  per react error removed button in button*/}
+                                        <span>
                                             <GoogleLogout
                                                 clientId={config.GOOGLE_CLIENT_ID}
                                                 render={renderProps => (
@@ -70,7 +71,7 @@ class Navibar extends Component {
                                                         variant={"contained"}
                                                         onClick={renderProps.onClick}
                                                         disabled={renderProps.disabled}
-                                                        onClick={this.responseGoogle}
+                                                        // onClick={this.responseGoogle}
                                                     >
                                                             Logout
                                                     </Button>
@@ -79,7 +80,7 @@ class Navibar extends Component {
                                                 onLogoutSuccess={this.responseGoogle}
                                                 onFailure={this.onFailure}
                                             />
-                                        {/*</Button>*/}
+                                        </span>
                                     </Tooltip>
                                     : null
                                 }

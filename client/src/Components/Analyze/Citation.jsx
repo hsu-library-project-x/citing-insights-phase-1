@@ -25,7 +25,7 @@ class Citation extends Component {
 
     formatCitation(citation) {
         return (
-            <div>
+            <div key={`${citation.title}-${citation.date}`}>
                 {this.getAuthors(citation.author)} ({citation.date}). {citation.title}
             </div>
         );
@@ -58,7 +58,7 @@ class Citation extends Component {
             // eslint-disable-next-line array-callback-return
             drop = citations.map(c => {
                 if (c.author[0] !== undefined) {
-                    return (<MenuItem value={c._id}> {c.author[0].family} </MenuItem>);
+                    return (<MenuItem value={c._id} key={c._id}> {c.author[0].family} </MenuItem>);
                 }
             });
         } else {
@@ -81,6 +81,7 @@ class Citation extends Component {
                         style={{textAlign:"center"}}
                         labelId={"selectCitationlabel"}
                         value={this.state.current_citation_id}
+                        defaultValue={""}
                         onChange={this.handleCitationChange}
                         inputProps={{
                             name: 'className',

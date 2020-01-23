@@ -221,6 +221,7 @@ class Rubric extends Component {
 							<Select
 								labelId={"selectRubriclabel"}
 								onChange={this.handleDefaultRubric}
+								defaultValue={""}
 								inputProps={{
 									name: 'rubDefaultbutton',
 								}}

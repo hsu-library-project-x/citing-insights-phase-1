@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Toolbar, Modal, Button, AppBar, Paper, Container, Card,CardContent, CardHeader, Typography} from "@material-ui/core";
+import {Toolbar, Modal, Button, AppBar,Container, Card,CardContent, Typography} from "@material-ui/core";
 import {createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import InfoIcon from '@material-ui/icons/Info';
 import ContactMailIcon from '@material-ui/icons/ContactMail';
@@ -14,7 +14,7 @@ class BottomNavBar extends Component {
             value:null,
             aboutOpen: false,
             contactOpen: false,
-        }
+        };
 
         this.handleAboutOpen = this.handleAboutOpen.bind(this);
         this.handleContactOpen = this.handleContactOpen.bind(this);
@@ -56,7 +56,7 @@ class BottomNavBar extends Component {
                 </Card>
             </Container>
         );
-    }
+    };
 
     contactModal = () => {
         return(
@@ -73,7 +73,7 @@ class BottomNavBar extends Component {
                 </Card>
             </Container>
         );
-    }
+    };
 
     render() {
         const theme = createMuiTheme({

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Document, Page, Outline, pdfjs } from "react-pdf";
+import { Document, Outline, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "./pdfComponent.css";
 
@@ -44,7 +44,7 @@ class PdfControls extends Component {
 
     changePage(offset) {
         let newNum = this.props.pageNumber === null ? 1 : this.props.pageNumber;
-        newNum = newNum + offset
+        newNum = newNum + offset;
         this.props.passPageInfo(newNum);
     };
 
@@ -64,7 +64,7 @@ class PdfControls extends Component {
 
 
     render() {
-        const { numPages, searchText } = this.state;
+        const { numPages,  /*searchText*/} = this.state;
         const { pageNumber, scale } = this.props;
 
         return (

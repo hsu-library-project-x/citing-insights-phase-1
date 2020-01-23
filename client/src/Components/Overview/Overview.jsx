@@ -98,17 +98,17 @@ class Overview extends Component {
     render() {
         let courses = this.state.AvailableCourses;
         let optionItems = courses.map((course) =>
-            <MenuItem value={course._id}>{course.name}</MenuItem>
+            <MenuItem value={course._id} key={course._id}>{course.name}</MenuItem>
         );
 
         let assignments = this.state.AvailableAssignments;
         let optionAssignments = assignments.map((assignment) =>
-            <MenuItem value={assignment._id}>{assignment.name}</MenuItem>
+            <MenuItem value={assignment._id} key={assignment._id}>{assignment.name}</MenuItem>
         );
 
         let papers = this.state.AvailablePapers;
         let optionPapers = papers.map((paper) =>
-            <MenuItem value={paper._id}>{paper.title}</MenuItem>
+            <MenuItem value={paper._id} key={paper._id}>{paper.title}</MenuItem>
         );
 
         return (
@@ -127,6 +127,7 @@ class Overview extends Component {
                         <Select
                             style={{textAlign:"center"}}
                             labelId={"selectClasslabelOverview"}
+                            defaultValue={""}
                             onChange={this.handleClassSelection}
                             inputProps={{
                                 name: 'className',
@@ -142,6 +143,7 @@ class Overview extends Component {
                         <InputLabel id="selectAssignmentLabelOverview">Select an Assignment</InputLabel>
                         <Select
                             style={{textAlign:"center"}}
+                            defaultValue={""}
                             onChange={this.handleAssignmentSelection}
                             inputProps={{
                                 name: 'selectedAssignmentId',
@@ -158,6 +160,7 @@ class Overview extends Component {
                         <Select
                             style={{textAlign:"center"}}
                             onChange={this.handlePaperSelection}
+                            defaultValue={""}
                             inputProps={{
                                 name: 'selectedPaperId',
                                 id: 'assignForAnalyze',
