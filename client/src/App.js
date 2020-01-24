@@ -25,6 +25,7 @@ class App extends Component {
     this.getConfigurations = this.getConfigurations.bind(this);
     this.passInfoLogin = this.passInfoLogin.bind(this);
     this.passInfoLogout = this.passInfoLogout.bind(this);
+    this.handleConfigurationChange = this.handleConfigurationChange.bind(this);
   }
 
   getConfigurations = () => {
@@ -42,7 +43,6 @@ class App extends Component {
         alert("Could not access database");
       }
     }).then(json => {
-      console.log(json);
       this.setState({configurations: json[0]});
     });
   };
@@ -65,6 +65,10 @@ class App extends Component {
     });
     localStorage.clear();
   };
+
+  handleConfigurationChange(){
+    this.getConfigurations();
+  }
 
   componentDidMount() {
     const persistedState = localStorage.getItem("user");
@@ -116,9 +120,11 @@ class App extends Component {
                 </HashRouter>
              </div> );
           }
-            else return <SplashScreen />;
+          else {return (
+              <SplashScreen
+                  handleConfigurationChange={this.handleConfigurationChange}/>);
+          }
 
-        }
-
+      }
 }
 export default App;
