@@ -74,6 +74,7 @@ module.exports = {
       return res.json(citation);
     });
   },
+  
   /**
    * citationController.create()
    */
@@ -166,6 +167,8 @@ module.exports = {
       citation.rubricTitle = req.params.rubricTitle;
       citation.rubricScore = req.params.grade;
       citation.annotation = req.params.annotation;
+      
+
       citation.evaluated = true;
 
       citation.save(function (err, citation) {

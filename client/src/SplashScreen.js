@@ -31,6 +31,7 @@ class SplashScreen extends Component {
             [name]: value
         });
     }
+    
     renderSplash() {
         return(
             <form className={'modal_form'} onSubmit={this.handleSubmit} >
@@ -84,7 +85,7 @@ class SplashScreen extends Component {
                         required
                         style={{marginBottom: "1em"}}/>
                 </fieldset>
-                <Button  variant="contained" type="submit" color="primary"> Submit </Button>
+                <Button variant="contained" type="submit" color="primary"> Submit </Button>
             </form>
         )
     }

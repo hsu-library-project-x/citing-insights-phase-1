@@ -21,6 +21,7 @@ let citations = require('./routes/citationRoutes');
 let rubrics = require('./routes/rubricRoutes');
 let feedback = require("./routes/feedbackRoutes");
 let configurations = require("./routes/configurationsRoutes");
+let assessments = require("./routes/assessmentRoutes");
 
 let app = express();
 
@@ -61,7 +62,7 @@ app.use('/citations', citations);
 app.use('/rubrics', rubrics);
 app.use('/feedback', feedback);
 app.use('/configurations', configurations);
-
+app.use('/assessments', assessments);
 
 if (app.get('env') === 'production') {
   app.get('/*', (req, res) => {
