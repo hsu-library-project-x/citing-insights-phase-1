@@ -15,6 +15,25 @@ module.exports = {
             }
             return res.json(configurations);
         });
+    },
+
+    create: function(req,res){
+        let  configuration = new configurationsModel({
+        primaryColor : req.body.primaryColor,
+        secondaryColor : req.body.secondaryColor,
+        institutionName : req.body.institutionName,
+        oneSearchUrl: req.params.oneSearchUrl
+        });
+
+        configuration.save(function (err, configuration) {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Error when creating assignment',
+                    error: err
+                });
+            }
+            return res.status(201).json(configuration);
+        });
     }
 
 };

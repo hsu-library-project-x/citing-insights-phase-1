@@ -5,6 +5,7 @@ let configurationsSchema = new Schema({
     'primaryColor' : String,
     'secondaryColor' : String,
     'institutionName': String,
+    'oneSearchUrl':String,
 });
 
 module.exports = mongoose.model('configurations', configurationsSchema);
