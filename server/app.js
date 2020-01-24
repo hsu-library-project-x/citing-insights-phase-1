@@ -20,6 +20,7 @@ let papers = require('./routes/paperRoutes');
 let citations = require('./routes/citationRoutes');
 let rubrics = require('./routes/rubricRoutes');
 let feedback = require("./routes/feedbackRoutes");
+let configurations = require("./routes/configurationsRoutes");
 
 let app = express();
 
@@ -59,6 +60,7 @@ app.use('/papers', papers);
 app.use('/citations', citations);
 app.use('/rubrics', rubrics);
 app.use('/feedback', feedback);
+app.use('/configurations', configurations);
 
 
 if (app.get('env') === 'production') {

@@ -9,6 +9,7 @@
     "@material-ui/lab": "^4.0.0-alpha.39",
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.0",
+    "browserify-fs": "^1.0.0",
     "classnames": "^2.2.6",
     "immutability-helper": "^3.0.1",
     "less": "^3.10.3",

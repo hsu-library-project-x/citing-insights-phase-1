@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
 
-var in-text-citationSchema = new Schema({
+var inTextCitationSchema = new Schema({
 	'body' : String,
 	'annotation' : String,
 	'citation_id' : {
@@ -10,4 +10,4 @@ var in-text-citationSchema = new Schema({
 	}
 });
 
-module.exports = mongoose.model('in-text-citation', in-text-citationSchema);
+module.exports = mongoose.model('in-text-citation', inTextCitationSchema);

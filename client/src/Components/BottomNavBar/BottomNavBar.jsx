@@ -78,10 +78,9 @@ class BottomNavBar extends Component {
     render() {
         const theme = createMuiTheme({
             palette: {
-                primary: { main: '#25551b' }, // dk green
-                secondary: { main: '#5C8021' } // light green
+                primary: { main: this.props.configurations.primaryColor }, // dk green
+                secondary: { main: this.props.configurations.secondaryColor } // light green
             },
-
         });
 
         return (

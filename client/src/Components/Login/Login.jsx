@@ -4,7 +4,8 @@ import { GoogleLogin } from "react-google-login";
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import {Box, Grid, Button} from "@material-ui/core";
 import config from "../../config.json";
-import picture from './lib1.jpg';
+
+import picture from './lib1.jpg';   // eventually replace with props
 
 class Login extends Component {
 	constructor(props) {
@@ -15,7 +16,6 @@ class Login extends Component {
 			token: "",
 		};
 		this.getInfo = this.getInfo.bind(this);
-
 		this.height = window.innerHeight/1.29;
 	}
 
@@ -54,7 +54,7 @@ class Login extends Component {
 			headers: {
 				'Content-Type': 'application/json',
 				'Accept': 'application/json',
-				'Access-Control-Allow': true
+				'Access-Control-Allow': true,
 			}
 		};
 
@@ -88,10 +88,9 @@ class Login extends Component {
 
 		const theme = createMuiTheme({
 			palette: {
-				primary: { main: '#25551b' }, // dk green
-				secondary: { main: '#5C8021' } // light green
+				primary: { main: this.props.configurations.primaryColor }, // dk green
+				secondary: { main: this.props.configurations.secondaryColor } // light green
 			},
-
 		});
 
 		return (

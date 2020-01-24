@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Switch, Route, withRouter } from "react-router-dom";
 import { Tooltip, IconButton, Container, Stepper, Step, StepButton, Typography, Fab, Grid } from "@material-ui/core";
-
+// import configuration from "../../configuration.json";
 import Classes from "../Classes/Classes.jsx";
 import Upload from "../Upload/Upload.jsx";
 import Analyze from "../Analyze/Analyze.jsx";
@@ -174,8 +174,8 @@ class Tasks extends Component {
 	render() {
 		const theme = createMuiTheme({
 			palette: {
-				primary: { main: '#25551b' }, // dk green
-				secondary: { main: '#5C8021' } // light green
+				primary: { main: this.props.configurations.primaryColor }, // dk green
+				secondary: { main: this.props.configurations.secondaryColor } // light green
 			},
 		});
 

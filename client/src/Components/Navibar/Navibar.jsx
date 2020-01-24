@@ -14,9 +14,6 @@ class Navibar extends Component {
         super(props);
         this.responseGoogle = this.responseGoogle.bind(this);
         this.giveInfo = this.giveInfo.bind(this);
-        this.state={
-            institution: "Institution Name Goes Here",
-        }
     }
 
     giveInfo() {
@@ -38,10 +35,11 @@ class Navibar extends Component {
 
     render() {
 
+        // console.log(this.props.configurations);
         const theme = createMuiTheme({
             palette: {
-                primary: { main: '#25551b' }, // dk green
-                secondary: { main: '#5C8021' } // light green
+                primary: { main: this.props.configurations.primaryColor }, // dk green
+                secondary: { main: this.props.configurations.secondaryColor } // light green
             },
         });
 
@@ -51,8 +49,8 @@ class Navibar extends Component {
                     <Toolbar>
                         <Grid container spacing={1}>
                             <Grid item xs={4}>
-                                <Typography variant="h1" color="inherit" style={{ flex: 1, fontSize: "2vw" }}>
-                                   {process.env.REACT_APP_INST_NAME}
+                                <Typography variant="h5" component="h1" color="inherit" align={'left'}>
+                                   {this.props.configurations.institutionName}
                                 </Typography>
                             </Grid>
                             <Grid item xs={3}>
