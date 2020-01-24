@@ -111,7 +111,6 @@ class SplashScreen extends Component {
                         label={'Login Screen Image'}
                         onChange={this.fileChangedHandler}
                         name="loginScreen"
-                        required
                         style={{marginBottom: "1em"}} />
                 </fieldset>
                 <Button variant="contained" type="submit" color="primary"> Submit </Button>
