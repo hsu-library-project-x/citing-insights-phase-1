@@ -153,6 +153,7 @@ class Analyze extends Component {
         });
       }
     }
+    
     this.setState({
       rubricSelected: false,
       rubricId: id
@@ -181,7 +182,7 @@ class Analyze extends Component {
 
 
     fetch(`/assessments/${this.props.user._id}/${this.state.current_citation_id}/${this.state.rubricId}/${encodeURIComponent(radio_value)}/${encodeURIComponent(annotation)}`)
-    .theb(function(response){
+    .then(function(response){
       if(response.status === 201){
         alert('Assessment saved!');
       }else{
@@ -314,6 +315,7 @@ class Analyze extends Component {
     }
     );
 
+    console.log(this.state);
     return (
       <Grid
         container={true}
