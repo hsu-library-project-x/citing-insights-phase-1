@@ -9,30 +9,34 @@ class SplashScreen extends Component {
             secondaryColor:"",
             institutionName:"",
             oneSearchUrl:"",
-            homeImg:null
+            image: null,
         };
         this.handleSubmit=this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.renderSplash = this.renderSplash.bind(this);
-        this.fileChangedHandler = this.fileChangedHandler.bind(this);
+        this.uploadImage = this.uploadImage.bind(this);
         this.handleConfigurations=this.handleConfigurations.bind(this);
     }
 
-    fileChangedHandler = (event) =>{
-        this.setState({ homeImg: event.target.files[0] });
-    }
+    uploadImage = (event) =>{
+        event.preventDefault();
+        let imageObj = {};
+        let imageFormObj = new FormData();
+        imageFormObj.append('imageName', 'multer-image-'+Date.now());
+        imageFormObj.append('imageData', event.target.files[0] )
+        this.setState({ image: URL.createObjectURL(event.target.files[0])});
+    };
 
-    handleConfigurations(configurations){
+    handleConfigurations(){
         const data={
-            'primaryColor': configurations.primaryColor,
-            'secondaryColor': configurations.secondaryColor,
-            'institutionName': configurations.institutionName,
-            'oneSearchUrl': configurations.oneSearchUrl,
+            'primaryColor': this.state.primaryColor,
+            'secondaryColor':  this.state.secondaryColor,
+            'institutionName':  this.state.institutionName,
+            'oneSearchUrl':  this.state.oneSearchUrl,
+            'image':this.state.image,
         };
 
-        console.log(data);
         let dataString = JSON.stringify(data);
-
          fetch('/configurations/', {
             method: 'POST',
             body: dataString,
@@ -50,8 +54,8 @@ class SplashScreen extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        this.handleConfigurations(this.state);
-    }
+        this.handleConfigurations();
+    };
 
     handleInputChange(event) {
         const target = event.target;
@@ -61,6 +65,7 @@ class SplashScreen extends Component {
             [name]: value
         });
     }
+
     renderSplash() {
         return(
             <form className={'modal_form'} onSubmit={this.handleSubmit} >
@@ -108,9 +113,10 @@ class SplashScreen extends Component {
                     <Input
                         type={'file'}
                         label={'Login Screen Image'}
-                        onChange={this.fileChangedHandler}
+                        onChange={this.uploadImage}
                         name="loginScreen"
                         style={{marginBottom: "1em"}} />
+                        <img src={this.state.image} alt={'upload image'} />
                 </fieldset>
                 <Button  variant="contained" type="submit" color="primary"> Submit </Button>
             </form>
