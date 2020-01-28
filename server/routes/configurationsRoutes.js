@@ -7,6 +7,5 @@ let configurationsController = require('../controllers/configurationsController'
  */
 router.get('/', configurationsController.list);
 
-router.post('/', configurationsController.create);
 
 module.exports = router;

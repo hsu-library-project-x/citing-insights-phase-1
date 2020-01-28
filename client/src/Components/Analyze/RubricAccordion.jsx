@@ -20,28 +20,21 @@ class RubricAccordion extends Component {
     render() {
 
         let rubrics = this.props.currentRubric.cards;
-
         let rubricList = <p> Please select a rubric </p>;
 
         if (rubrics !== undefined && rubrics !== []) {
             rubricList = rubrics.map(function (rubric, index) {
-
-
-                console.log('printing rubrics');
-                console.log(rubric["card" + index]);
-                console.log(index);
-
                 return (
                     <div>
                         <AccordionItem>
-                            <input id="radio" type="radio" name="radio" value={rubric["card" + index]["cardTitle"]} />
+                            <input id="radio" type="radio" name="radio" value={rubric["cardTitle"]} />
                             <AccordionItemHeading>
                                 <AccordionItemButton>
-                                    {rubric["card" + index]["cardTitle"]}                        
+                                    {rubric["cardTitle"]}                        
                                 </AccordionItemButton>
                             </AccordionItemHeading>
                             <AccordionItemPanel>
-                                <p> {rubric["card" + index]["cardText"]}</p>
+                                <p> {rubric["cardText"]}</p>
                             </AccordionItemPanel>
                         </AccordionItem>
                     </div>

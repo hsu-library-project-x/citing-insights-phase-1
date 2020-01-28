@@ -153,6 +153,7 @@ class Analyze extends Component {
         });
       }
     }
+    
     this.setState({
       rubricSelected: false,
       rubricId: id
@@ -179,15 +180,26 @@ class Analyze extends Component {
     }
     let annotation = document.getElementById("annotation").value;
 
-    fetch(`/citations/save_citation_grade/${this.state.current_citation_id}/${this.state.rubricId}/${this.state.currentRubric.name}/${encodeURIComponent(radio_value)}/${encodeURIComponent(annotation)}`)
-      .then(function (response) {
-        if (response.status === 201) {
-          alert('annotation/score saved');
-        } else {
-          alert('could not save annotation/score ');
-        }
-        return response.json();
-      });
+
+    fetch(`/assessments/${this.props.user._id}/${this.state.current_citation_id}/${this.state.rubricId}/${encodeURIComponent(radio_value)}/${encodeURIComponent(annotation)}`)
+    .then(function(response){
+      if(response.status === 201){
+        alert('Assessment saved!');
+      }else{
+        alert('Could not save assessment.');
+      }
+      return response.json();
+    })
+
+    // fetch(`/citations/save_citation_grade/${this.state.current_citation_id}/${this.state.rubricId}/${this.state.currentRubric.name}/${encodeURIComponent(radio_value)}/${encodeURIComponent(annotation)}`)
+    //   .then(function (response) {
+    //     if (response.status === 201) {
+    //       alert('annotation/score saved');
+    //     } else {
+    //       alert('could not save annotation/score ');
+    //     }
+    //     return response.json();
+    //   });
 
 
     for (let k = 0; k < this.state.citations.length; k++) {
@@ -303,6 +315,7 @@ class Analyze extends Component {
     }
     );
 
+    console.log(this.state);
     return (
       <Grid
         container={true}
