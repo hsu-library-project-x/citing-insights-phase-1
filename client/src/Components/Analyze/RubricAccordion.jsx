@@ -23,7 +23,7 @@ class RubricAccordion extends Component {
         let rubricList = <p> Please select a rubric </p>;
 
         if (rubrics !== undefined && rubrics !== []) {
-            rubricList = rubrics.map(function (rubric, index) {
+            rubricList = rubrics.map(function (rubric) {
                 return (
                     <div>
                         <AccordionItem>
