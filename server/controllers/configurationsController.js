@@ -22,8 +22,8 @@ module.exports = {
         secondaryColor : req.body.secondaryColor,
         institutionName : req.body.institutionName,
         oneSearchUrl: req.body.oneSearchUrl,
-        imageName:req.body.imageName,
-        imageData: req.file.path,
+        imageName:req.body.image.imageName,
+        imageData: req.body.image.imageData,
         });
 
         configuration.save(function (err, configuration) {
