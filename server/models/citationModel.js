@@ -36,6 +36,15 @@ var citationSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'paper'
 	},
+	'assessments': [{
+		'rubric_id':
+		{
+			type: Schema.Types.ObjectId,
+			ref: 'rubric'
+		},
+		'rubric_index': Number,
+		'annotation': String
+	}],
 	'evaluated': Boolean
 });
 

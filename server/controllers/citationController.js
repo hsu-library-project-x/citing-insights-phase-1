@@ -51,11 +51,6 @@ module.exports = {
     citationModel.findOne({ _user_id})
   },
 
-  s2: function (req, res) {
-    
-    console.log('s2');
- },
-
 
   by_paper_id: function (req, res) {
     var id = req.params.id;
@@ -148,9 +143,9 @@ module.exports = {
     });
   },
 
-  save_citation_grade: function (req, res) {
+  add_assessment: function (req, res) {
     var id = req.params.id;
-    citationModel.findOne({_id: id}, function (err, citation) {
+    citationModel.findById({_id: id}, function (err, citation) {
       if (err) {
         return res.status(500).json({
           message: 'Error when getting citation',
@@ -162,13 +157,16 @@ module.exports = {
           message: 'No such citation'
         });
       }
-
-      citation.rubricId = req.params.rubricId;
-      citation.rubricTitle = req.params.rubricTitle;
-      citation.rubricScore = req.params.grade;
-      citation.annotation = req.params.annotation;
       
+      //TODO: Check to see if assessment has already been made for this rubric
 
+
+      let new_assessment = {
+        'rubric_id': req.body.rubric_id,
+        'rubric_index': req.body.rubric_index,
+        'annotation': req.body.annotation
+      }
+      citation.assessments.push(new_assessment);
       citation.evaluated = true;
 
       citation.save(function (err, citation) {
@@ -202,99 +200,6 @@ module.exports = {
     })
   },
 
-  //called by Rubric Submit, sets empty array to correct Scores
-  add_rubric_score: function(req, res){
-    console.log(req.body);
-    var id = req.params.id;
-    citationModel.findOne({_id: id}, function (err, citation) {
-      if (err) {
-        return res.status(500).json({
-          message: 'Error when getting citation',
-          error: err
-        });
-      }
-      if (!citation) {
-        return res.status(404).json({
-          message: 'No such citation'
-        });
-      }
-
-      citation.rubricScore = req.body.rubricScore ? req.body.rubricScore : citation.rubricScore;
-
-      citation.save(function (err, citation) {
-        if (err) {
-          return res.status(500).json({
-            message: 'Error when updating citation.',
-            error: err
-          });
-        }
-
-        return res.json(citation);
-      });
-    });
-  },
-
-  add_intext_citations: function(req, res){
-    console.log(req.body);
-    var id = req.params.id;
-    citationModel.findOne({_id: id}, function (err, citation) {
-      if (err) {
-        return res.status(500).json({
-          message: 'Error when getting citation',
-          error: err
-        });
-      }
-      if (!citation) {
-        return res.status(404).json({
-          message: 'No such citation'
-        });
-      }
-
-      citation.intextCitations = req.body.intextCitations ? req.body.intextCitations : citation.intextCitations;
-
-      citation.save(function (err, citation) {
-        if (err) {
-          return res.status(500).json({
-            message: 'Error when updating citation.',
-            error: err
-          });
-        }
-
-        return res.json(citation);
-      });
-    });
-  },
-
-  add_annotation: function(req, res){
-    console.log(req.body);
-    var id = req.params.id;
-    citationModel.findOne({_id: id}, function (err, citation) {
-      if (err) {
-        return res.status(500).json({
-          message: 'Error when getting citation',
-          error: err
-        });
-      }
-      if (!citation) {
-        return res.status(404).json({
-          message: 'No such citation'
-        });
-      }
-
-      citation.annotation = req.body.annotation ? req.body.annotation : citation.annotation;
-
-      citation.save(function (err, citation) {
-        if (err) {
-          return res.status(500).json({
-            message: 'Error when updating citation.',
-            error: err
-          });
-        }
-
-        return res.json(citation);
-      });
-    });
-  },
   /**
    * citationController.remove()
    */
