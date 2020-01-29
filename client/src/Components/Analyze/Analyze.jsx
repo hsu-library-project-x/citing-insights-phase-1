@@ -31,6 +31,7 @@ class Analyze extends Component {
       paper_ids: [],
       current_paper_id_index: 0,
       current_citation_id: 0,
+      annotation: "",
       pageNumber: null,
       scale: null
     };
@@ -61,17 +62,17 @@ class Analyze extends Component {
   }
 
   componentDidMount() {
-      let that = this;
-      //Grab info about the assignment
-      fetch('http://localhost:5000/assignments/' + this.props.selectedAssignmentId)
-        .then(function (response) {
-          return response.json();
-        })
-        .then(function (myJson) {
-          that.setState({
-            assignment: myJson
-          });
+    let that = this;
+    //Grab info about the assignment
+    fetch('http://localhost:5000/assignments/' + this.props.selectedAssignmentId)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (myJson) {
+        that.setState({
+          assignment: myJson
         });
+      });
 
   }
 
@@ -150,7 +151,7 @@ class Analyze extends Component {
         });
       }
     }
-    
+
     this.setState({
       rubricSelected: false,
       rubricId: id
@@ -178,12 +179,11 @@ class Analyze extends Component {
         radio_index = i;
       }
     }
-    let annotation = document.getElementById("annotation").value;
 
     const assessment = {
       rubric_id: this.state.rubricId,
       rubric_index: radio_index,
-      annotation: annotation
+      annotation: this.state.annotation
     }
 
     fetch(`/citations/add_assessment/${this.state.current_citation_id}`, {
@@ -193,14 +193,21 @@ class Analyze extends Component {
       },
       body: JSON.stringify(assessment)
     })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log('Assessment Saved:', assessment);
-    })
-    .catch((error) => {
-      console.error('Error saving Assessment:', error);
-    });
-    
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Assessment Saved:', assessment);
+      })
+      .catch((error) => {
+        console.error('Error saving Assessment:', error);
+
+        if (window.confirm('Rewrite existing assessment?')) {
+          //  User chose to rewrite
+        
+        } else {
+          //User declined
+        }
+      });
+
   }
 
   refresh(index) {
@@ -317,46 +324,46 @@ class Analyze extends Component {
 
           <Paper variant="outlined">
             <Button variant={'contained'} color={'primary'}
-                    onClick={()=> this.props.history.push('/tasks/analyzemenu')} >
+              onClick={() => this.props.history.push('/tasks/analyzemenu')} >
               Analyze Different Assignment
             </Button>
-          <h3>Paper</h3>
-          <FormControl required={true} style={{ minWidth: 200, marginBottom: "1em" }}>
-            <InputLabel id={"selectPaperlabel"}>Select a Paper</InputLabel>
-            <Select
-              style={{ textAlign: "center" }}
-              labelId={"selectPaperlabel"}
-              onChange={this.handleInputChange}
-              defaultValue={""}
-              value={this.state.curPaperId}
-              inputProps={{
-                name: 'curPaperId',
-              }}
-            >
-              <MenuItem value="" disabled >select paper </MenuItem>
-              {paperList}
-            </Select>
-          </FormControl>
-          <h3>Citations</h3>
-          {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
-            <Citation
-              citations={this.state.citations}
-              current_citation_id={this.state.current_citation_id}
-              updateCitationId={this.updateCitationId}
-            /> : null
-          }
+            <h3>Paper</h3>
+            <FormControl required={true} style={{ minWidth: 200, marginBottom: "1em" }}>
+              <InputLabel id={"selectPaperlabel"}>Select a Paper</InputLabel>
+              <Select
+                style={{ textAlign: "center" }}
+                labelId={"selectPaperlabel"}
+                onChange={this.handleInputChange}
+                defaultValue={""}
+                value={this.state.curPaperId}
+                inputProps={{
+                  name: 'curPaperId',
+                }}
+              >
+                <MenuItem value="" disabled >select paper </MenuItem>
+                {paperList}
+              </Select>
+            </FormControl>
+            <h3>Citations</h3>
+            {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
+              <Citation
+                citations={this.state.citations}
+                current_citation_id={this.state.current_citation_id}
+                updateCitationId={this.updateCitationId}
+              /> : null
+            }
           </Paper>
           <br />
           <Paper variant="outlined">
-          {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
-            <DiscoveryTool
-              citations={this.state.citations}
-              current_citation_id={this.state.current_citation_id}
-              key={this.state.current_citation_id}
-            /> : null}
-            </Paper>
+            {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
+              <DiscoveryTool
+                citations={this.state.citations}
+                current_citation_id={this.state.current_citation_id}
+                key={this.state.current_citation_id}
+              /> : null}
+          </Paper>
         </Grid>
-        
+
         {/* PDF Viewer */}
         <Grid item xs={12} sm={4} md={8}>
 
@@ -399,6 +406,10 @@ class Analyze extends Component {
               label="Annotation"
               multiline
               variant="filled"
+              onChange={this.handleInputChange}
+              inputProps={{
+                name: 'annotation',
+              }}
             />
             <Button variant={"contained"} color={"primary"} onClick={this.handleSaveCitations}>Save Rubric Value </Button>
           </Paper>

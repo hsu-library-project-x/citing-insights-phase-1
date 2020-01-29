@@ -29,7 +29,7 @@ module.exports = {
    */
   show: function (req, res) {
     var id = req.params.id;
-    citationModel.findOne({_id: id}, function (err, citation) {
+    citationModel.findOne({ _id: id }, function (err, citation) {
       if (err) {
         return res.status(500).json({
           message: 'Error when getting citation.',
@@ -48,13 +48,13 @@ module.exports = {
   by_user_id: function (req, res) {
 
     var user_id = req.parans.user_id;
-    citationModel.findOne({ _user_id})
+    citationModel.findOne({ _user_id })
   },
 
 
   by_paper_id: function (req, res) {
     var id = req.params.id;
-    citationModel.find({paper_id: id}, function (err, citation) {
+    citationModel.find({ paper_id: id }, function (err, citation) {
       if (err) {
         return res.status(500).json({
           message: 'Error when getting citation.',
@@ -69,23 +69,23 @@ module.exports = {
       return res.json(citation);
     });
   },
-  
+
   /**
    * citationController.create()
    */
   create: function (req, res) {
     var citation = new citationModel({
-      author : req.body.author,
-      date : req.body.date,
-      editor : req.body.editor,
-      edition : req.body.edition,
-      volume : req.body.volume,
-      pages : req.body.pages,
-      type : req.body.type,
-      title : req.body.title,
-      annotation : req.body.annotation,
-      doi : req.body.doi,
-      paper_id : req.body.paper_id
+      author: req.body.author,
+      date: req.body.date,
+      editor: req.body.editor,
+      edition: req.body.edition,
+      volume: req.body.volume,
+      pages: req.body.pages,
+      type: req.body.type,
+      title: req.body.title,
+      annotation: req.body.annotation,
+      doi: req.body.doi,
+      paper_id: req.body.paper_id
 
     });
 
@@ -105,7 +105,7 @@ module.exports = {
    */
   update: function (req, res) {
     var id = req.params.id;
-    citationModel.findOne({_id: id}, function (err, citation) {
+    citationModel.findOne({ _id: id }, function (err, citation) {
       if (err) {
         return res.status(500).json({
           message: 'Error when getting citation',
@@ -145,7 +145,7 @@ module.exports = {
 
   add_assessment: function (req, res) {
     var id = req.params.id;
-    citationModel.findById({_id: id}, function (err, citation) {
+    citationModel.findById(id, function (err, citation) {
       if (err) {
         return res.status(500).json({
           message: 'Error when getting citation',
@@ -157,35 +157,72 @@ module.exports = {
           message: 'No such citation'
         });
       }
-      
-      //TODO: Check to see if assessment has already been made for this rubric
 
+      // Check to see if assessment has already been made for this rubric
+      let assessments = citation.assessments;
 
       let new_assessment = {
         'rubric_id': req.body.rubric_id,
         'rubric_index': req.body.rubric_index,
         'annotation': req.body.annotation
       }
-      citation.assessments.push(new_assessment);
-      citation.evaluated = true;
 
-      citation.save(function (err, citation) {
-        if (err) {
-          return res.status(500).json({
-            message: 'Error when updating citation.',
-            error: err
+      //Test for empty array
+      if (citation.assessments.length === 0) {
+        console.log(`array was empty, citation: ${citation}`)
+        citation.assessments.push(new_assessment);
+        citation.evaluated = true;
+
+        citation.save(function (err, citation) {
+          if (err) {
+            return res.status(500).json({
+              message: 'Error when updating citation.',
+              error: err
+            });
+          }
+          return res.status(201).json(citation);
+        });
+      } else {
+
+        let check = '';
+
+        //Test to see if rubric has already been used for this citation
+        for (index in assessments) {
+          if (assessments[index].rubric_id.equals(req.body.rubric_id)) {
+            check = 'exists';
+          } else {
+            check = 'does not exist';
+          }
+        }
+        if (check === 'exists') {
+          return res.status(304).json({
+            message: 'Rubric assessment already exists.'
+          });
+        } else {
+
+          citation.assessments.push(new_assessment);
+
+          citation.evaluated = true;
+
+          citation.save(function (err, citation) {
+            if (err) {
+              return res.status(500).json({
+                message: 'Error when updating citation.',
+                error: err
+              });
+            }
+            return res.status(201).json(citation);
           });
         }
-        return res.status(201).json(citation);
-      });
+      }
     });
   },
 
-  find_evaluations: function (req,res){ 
+  find_evaluations: function (req, res) {
 
     var paper_id = req.params.paper_id;
-    citationModel.find({paper_id: paper_id, evaluated: true}, function(err, citation) {
-      if(err){
+    citationModel.find({ paper_id: paper_id, evaluated: true }, function (err, citation) {
+      if (err) {
         return res.status(500).json({
           message: 'Error when getting citation',
           error: err
