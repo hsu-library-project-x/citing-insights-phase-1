@@ -18,6 +18,12 @@ body{
   margin-bottom: 1em;
 }
 
+.splash_screen{
+  width:50%;
+  text-align: center;
+  padding: 1em;
+}
+
 .container{
   margin-bottom: 2em;
 }

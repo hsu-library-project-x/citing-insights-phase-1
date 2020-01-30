@@ -1,7 +1,7 @@
 const IncomingForm = require("formidable").IncomingForm;
 const mongoose = require("mongoose");
 const fs = require("fs");
-const shell = require("shelljs")
+const shell = require("shelljs");
 
 var Chance = require("chance");
 var chance = new Chance();
@@ -17,6 +17,7 @@ var check = true;
 module.exports = function upload(req, res) {
 
     console.log("goin into it");
+
     var form = new IncomingForm();
 
     //Set the directory where uploads will be placed
