@@ -6,15 +6,12 @@ let configurationsSchema = new Schema({
     'secondaryColor' : String,
     'institutionName': String,
     'oneSearchUrl':String,
-    'imageName': {
-        type: String,
-        default:"none",
-        required: true
+    'images': {
+        name:String,
+        contentType:String,
+        size: String,
+        img: Buffer
     },
-    'imageData':{
-        type:String,
-        required:true
-    }
 });
 
 module.exports = mongoose.model('configurations', configurationsSchema);

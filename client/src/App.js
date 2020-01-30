@@ -43,7 +43,6 @@ class App extends Component {
         alert("Could not access database");
       }
     }).then(json => {
-      console.log(json);
       this.setState({configurations: json[0]});
     });
   };

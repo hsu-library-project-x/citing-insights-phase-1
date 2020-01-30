@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {Button, Input, TextField, Paper} from "@material-ui/core";
+import ImageUploader from 'react-images-upload';
+import {Button, TextField, Paper} from "@material-ui/core";
 
 class SplashScreen extends Component {
     constructor(props) {
@@ -9,7 +10,7 @@ class SplashScreen extends Component {
             secondaryColor:"",
             institutionName:"",
             oneSearchUrl:"",
-            image: null,
+            images: [],
         };
         this.handleSubmit=this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -18,37 +19,36 @@ class SplashScreen extends Component {
         this.handleConfigurations=this.handleConfigurations.bind(this);
     }
 
-    uploadImage = (event) =>{
-        event.preventDefault();;
+    uploadImage = (picture) => {
+        console.log(picture);
         this.setState({
-            image: {imageData: URL.createObjectURL(event.target.files[0]),
-                    imageName: event.target.files[0].name}
+            images: this.state.images.concat(picture)
         });
     };
 
     handleConfigurations(){
-        const data={
-            'primaryColor': this.state.primaryColor,
-            'secondaryColor':  this.state.secondaryColor,
-            'institutionName':  this.state.institutionName,
-            'oneSearchUrl':  this.state.oneSearchUrl,
-        };
+        let data = new FormData();
+        data.append('primaryColor', this.state.primaryColor);
+        data.append('secondaryColor',  this.state.secondaryColor);
+        data.append( 'institutionName',  this.state.institutionName);
+        data.append('oneSearchUrl', this.state.oneSearchUrl);
+        data.append('images', this.state.images[0],this.state.images[0]['name']);
 
-        let dataString = JSON.stringify(data);
-         fetch('/configurations/', {
+        for (var value of data.values()) {
+            console.log(value);
+        }
+
+        fetch('/configurations/', {
             method: 'POST',
-            body: dataString,
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },}).then(response=> {
+            body: data,
+            }).then(response=> {
             if (response.status === 201 || response.ok) {
                 alert("Configuration Submitted!");
             } else {
                 alert("Error: could not submit configuration");
             }
         }).then(() => this.props.handleConfigurationChange());
-    }
+    };
 
     handleSubmit = (event) => {
         event.preventDefault();
@@ -62,7 +62,7 @@ class SplashScreen extends Component {
         this.setState({
             [name]: value
         });
-    }
+    };
 
     renderSplash() {
         return(
@@ -109,13 +109,15 @@ class SplashScreen extends Component {
                     </fieldset>
                     <fieldset className={'modal_fieldset'}>
                         <legend> Image to Display (recommended dimensions about 800x530) </legend>
-                        <Input
-                            type={'file'}
-                            label={'Login Screen Image'}
+                        <ImageUploader
+                            withIcon={true}
+                            buttonText='Choose images'
                             onChange={this.uploadImage}
-                            name="loginScreen"
-                            style={{marginBottom: "1em"}} />
-                            <img src={this.state.image} alt={'login screen image'} />
+                            imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                            maxFileSize={5242880}
+                            singleImage={true}
+                            withPreview={true}
+                        />
                     </fieldset>
                     <Button  variant="contained" type="submit" color="primary"> Submit </Button>
                 </form>

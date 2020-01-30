@@ -1,4 +1,7 @@
 let configurationsModel = require('../models/configurationsModel');
+const IncomingForm = require("formidable").IncomingForm;
+const fs = require("fs");
+
 module.exports = {
 
     /**
@@ -17,23 +20,57 @@ module.exports = {
     },
 
     create: function(req,res){
-        let  configuration = new configurationsModel({
-        primaryColor : req.body.primaryColor,
-        secondaryColor : req.body.secondaryColor,
-        institutionName : req.body.institutionName,
-        oneSearchUrl: req.body.oneSearchUrl,
-        imageName:req.body.image.imageName,
-        imageData: req.body.image.imageData,
+        let form = new IncomingForm();
+        form.uploadDir = "./fileUpload";
+        form.keepExtensions = true;
+        form.type = "multipart";
+        form.parse(req);
+
+        let newData= {};
+        let newItem={};
+
+        form.on('field', function(name, value) {
+            newData[name] = value;
+
         });
 
-        configuration.save(function (err, configuration) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when configuring',
-                    error: err
-                });
-            }
-            return res.status(201).json(configuration);
+        form.on('file', function(name, file) {
+            console.log("file");
+            console.log(file);
+            let newImg = fs.readFileSync(file.path);
+            let encImg = newImg.toString('base64');
+
+            newItem = {
+                name:`${file.name}.jpg`,
+                contentType: file.mimetype,
+                size: file.size,
+                img: Buffer(encImg, 'base64')
+            };
+        });
+
+        form.on('error', function(err) {
+            console.log('error');
+            console.log(err);
+        });
+
+        form.on("end", () => {
+            let  configuration = new configurationsModel({
+                primaryColor : newData['primaryColor'],
+                secondaryColor : newData['secondaryColor'],
+                institutionName : newData['institutionName'],
+                oneSearchUrl: newData['oneSearchUrl'],
+                images: newItem,
+            });
+
+            configuration.save(function (err, configuration) {
+                if (err) {
+                    return res.status(500).json({
+                        message: 'Error when configuring',
+                        error: err
+                    });
+                }
+                return res.status(201).json(configuration);
+            });
         });
     }
 
