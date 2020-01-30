@@ -89,7 +89,7 @@ class BottomNavBar extends Component {
                         <Toolbar>
                                 {this.props.isAuthenticated ?
                                     <div style={{margin: '0 auto'}} >
-                                        <Feedback email={this.props.user.email} user_id={this.props.user.id}/>
+                                        <Feedback />
                                     </div>
                                     : null
                                 }

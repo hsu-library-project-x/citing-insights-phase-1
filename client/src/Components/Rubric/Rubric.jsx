@@ -127,7 +127,7 @@ class Rubric extends Component {
 	getRubrics() {
 		let that = this;
 
-		fetch('/rubrics/' + this.props.user._id)
+		fetch('/rubrics/' + this.props.user.id)
 			.then(function (response)  {
 				if (response.ok || response.status === 201){
 					return response.json();

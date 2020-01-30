@@ -85,7 +85,7 @@ class RubricEditor extends Component {
             const newdata = {
                 "name": rubricTitle,
                 "cards": data,
-                "user_id": this.props.user._id
+                "user_id": this.props.user.id
             };
             let dataString = JSON.stringify(newdata);
             fetch('/rubrics/' + this.props.selectedRubric, {

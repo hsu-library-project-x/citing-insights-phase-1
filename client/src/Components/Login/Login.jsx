@@ -88,8 +88,8 @@ class Login extends Component {
 
 		const theme = createMuiTheme({
 			palette: {
-				primary: { main: this.props.configurations.primaryColor }, // dk green
-				secondary: { main: this.props.configurations.secondaryColor } // light green
+				primary: { main: this.props.configurations.primaryColor },
+				secondary: { main: this.props.configurations.secondaryColor }
 			},
 		});
 

@@ -13,7 +13,8 @@ class Feedback extends Component {
 
     this.state={
       open: false,
-      message: ""
+      message: "",
+      email: ""
     };
 
     this.handleClickOpen = this.handleClickOpen.bind(this);
@@ -31,22 +32,26 @@ class Feedback extends Component {
   handleClose() {
     this.setState({
       message: "",
+      email: "",
       open: false
     });
   }
 
-  handleInput(e) {
+  handleInput(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+    //alert(name + ", " + value);
     this.setState({
-      message: e.target.value
-    })
+      [name]: value
+    },
+    );
   }
 
   handleSubmit() {
-    let that = this;
     let data = {
       message: this.state.message,
-      email: that.props.email,
-      user_id: that.props.user_id
+      email: this.state.email,
     };
 
     let json = JSON.stringify(data);
@@ -87,6 +92,20 @@ class Feedback extends Component {
               fullWidth
               placeholder="Give Feedback....."
               onChange={this.handleInput}
+              inputProps={{
+                name: 'message',
+              }}
+            />
+            <TextField
+              autoFocus
+              margin="none"
+              id="contact"
+              type="text"
+              placeholder="[Optional] Email: "
+              onChange={this.handleInput}
+              inputProps={{
+                name: 'email',
+              }}
             />
           </DialogContent>
           <DialogActions>

@@ -8,12 +8,6 @@ var Schema = mongoose.Schema;
 //TODO: only pass what we need
 var userSchema = new Schema({
 	'name': String,
-	'email': {
-		type: String,
-		required: true,
-		trim: true,
-		unique: true
-	},
 	googleProvider: {
 		type: {
 			id: String,
@@ -38,7 +32,6 @@ userSchema.statics.upsertGoogleUser = function (accessToken, refreshToken, profi
 		if (!user) {
 			var newUser = new that({
 				name: profile.displayName,
-				email: profile.emails[0].value,
 				googleProvider: {
 					id: profile.id,
 					token: accessToken

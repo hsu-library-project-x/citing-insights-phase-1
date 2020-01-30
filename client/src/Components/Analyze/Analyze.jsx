@@ -131,7 +131,7 @@ class Analyze extends Component {
     } else {
       this.setState({ assignmentId: "no assignment selected" });
     }
-    fetch('http://localhost:5000/rubrics/' + this.props.user._id)
+    fetch('http://localhost:5000/rubrics/' + this.props.user.id)
       .then(function (response) {
         return response.json();
       })
@@ -202,7 +202,7 @@ class Analyze extends Component {
 
         if (window.confirm('Rewrite existing assessment?')) {
           //  User chose to rewrite
-        
+
         } else {
           //User declined
         }
@@ -228,7 +228,6 @@ class Analyze extends Component {
       [name]: value
     },
     );
-
   }
 
   next_paper(direction) {
