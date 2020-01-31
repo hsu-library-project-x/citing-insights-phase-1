@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ImageUploader from 'react-images-upload';
-import {Button, TextField, Paper} from "@material-ui/core";
+import {Button, TextField, Paper, Typography} from "@material-ui/core";
 
 class SplashScreen extends Component {
     constructor(props) {
@@ -34,20 +34,22 @@ class SplashScreen extends Component {
         data.append('oneSearchUrl', this.state.oneSearchUrl);
         data.append('images', this.state.images[0],this.state.images[0]['name']);
 
-        for (var value of data.values()) {
-            console.log(value);
-        }
-
         fetch('/configurations/', {
             method: 'POST',
             body: data,
             }).then(response=> {
             if (response.status === 201 || response.ok) {
                 alert("Configuration Submitted!");
+                return true;
             } else {
                 alert("Error: could not submit configuration");
+                return false
             }
-        }).then(() => this.props.handleConfigurationChange());
+        }).then((bool) =>{
+            if (bool){
+                this.props.handleConfigurationChange();
+            }
+        });
     };
 
     handleSubmit = (event) => {
@@ -66,10 +68,26 @@ class SplashScreen extends Component {
 
     renderSplash() {
         return(
-            <Paper  elevation={3}>
-                <form className={'splash_screen'} onSubmit={this.handleSubmit} >
-                    <fieldset className={'modal_fieldset'}>
-                        <legend> User Interface Colors in HEX </legend>
+            <div className={"config_background"}>
+                <form  className={'splash_screen'} onSubmit={this.handleSubmit} >
+                    <Paper elevation={10}>
+                        <Typography
+                            style={{paddingTop: "1em"}}
+                            align={"center"}
+                            variant={"h3"}
+                            component={"h1"}
+                            gutterBottom={true}>
+                        Application Configuration
+                        </Typography>
+
+                        <fieldset className={'modal_fieldset'}>
+                        <Typography
+                            align={"left"}
+                            variant={"h6"}
+                            component={"body1"}
+                           >
+                            User Interface Colors in HEX
+                        </Typography>
                         <TextField
                             label={'Primary Color'}
                             helperText={"This color should be dark"}
@@ -77,7 +95,8 @@ class SplashScreen extends Component {
                             onChange={this.handleInputChange}
                             name="primaryColor"
                             required
-                            style={{marginBottom: "1em"}}/>
+                            fullWidth={true}
+                        />
                         <br />
                         <TextField
                             label={'Secondary Color'}
@@ -85,30 +104,57 @@ class SplashScreen extends Component {
                             onChange={this.handleInputChange}
                             placeholder={'#ffffff'}
                             name="secondaryColor"
-                            style={{marginBottom: "1em"}} />
+                            required
+                            fullWidth={true}
+                        />
                     </fieldset>
+
                     <fieldset className={'modal_fieldset'}>
-                        <legend> Institution Name </legend>
+                        <Typography
+                            align={"left"}
+                            variant={"h6"}
+                            component={"body1"}
+                            style={{marginTop: '1em', paddingTop: '1em'}}
+                            >
+                            Institution Name
+                        </Typography>
                         <TextField
                             label={'Institution Name'}
                             placeholder={'Humboldt State University'}
                             onChange={this.handleInputChange}
                             name="institutionName"
                             required
-                            style={{marginBottom: "1em"}}/>
+                           fullWidth={true}
+                        />
                     </fieldset>
+
                     <fieldset className={'modal_fieldset'}>
-                        <legend> Library Discovery Tool Information (OneSearch Information) </legend>
+                        <Typography
+                            align={"left"}
+                            variant={"h6"}
+                            component={"body1"}
+                        >
+                            Library Discovery Tool Information (OneSearch Information)
+                        </Typography>
                         <TextField
                             label={'OneSearch Information'}
                             placeholder={'url'}
                             onChange={this.handleInputChange}
                             name="oneSearchUrl"
                             required
-                            style={{marginBottom: "1em"}}/>
+                            fullWidth={true}
+                          />
                     </fieldset>
+
                     <fieldset className={'modal_fieldset'}>
-                        <legend> Image to Display (recommended dimensions about 800x530) </legend>
+                        <Typography
+                            align={"left"}
+                            variant={"h6"}
+                            component={"body1"}
+                        >
+                            Image to Display (recommended dimensions about 800x530)
+                        </Typography>
+
                         <ImageUploader
                             withIcon={true}
                             buttonText='Choose images'
@@ -119,9 +165,20 @@ class SplashScreen extends Component {
                             withPreview={true}
                         />
                     </fieldset>
-                    <Button  variant="contained" type="submit" color="primary"> Submit </Button>
-                </form>
-            </Paper>
+
+                    <Button
+                        aria-label='submit'
+                        size='large'
+                        variant="contained"
+                        type="submit"
+                        color="primary"
+                        fullWidth={true}>
+                        Submit
+                    </Button>
+                </Paper>
+            </form>
+            </div>
+
         )
     }
 
