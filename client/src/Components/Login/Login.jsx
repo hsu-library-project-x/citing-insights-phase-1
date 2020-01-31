@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { GoogleLogin } from "react-google-login";
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import {Box, Grid, Button} from "@material-ui/core";
+import Base64Image from './Base64Image.jsx';
 import config from "../../config.json";
 
 import picture from './lib1.jpg';   // eventually replace with props
@@ -93,11 +94,16 @@ class Login extends Component {
 			},
 		});
 
+		const imageBase64String = this.props.configurations.images.img.data;
+		
+		console.log('herrr' + JSON.stringify(imageBase64String));
+
 		return (
 			<MuiThemeProvider theme={theme}>
 				<Grid container spacing={0}>
 					<Grid item xs={7}>
-						<Box style={{backgroundImage: `url(${picture})`, height: this.height}} />
+						<Base64Image imageBase64String={imageBase64String} />
+						{/* <Box style={{backgroundImage: `url(${`data:image/jpeg;base64,${img}`} )`, height: this.height}} /> */}
 					</Grid>
 					<Grid item xs={5}>
 						<h1 style={{textAlign: "center", margin:"1em"}}> Your Opportunity To Change the Assessment World </h1>

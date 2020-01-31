@@ -19,45 +19,45 @@ module.exports = {
         });
     },
 
-    create: function(req,res){
+    create: function (req, res) {
         let form = new IncomingForm();
         form.uploadDir = "./fileUpload";
         form.keepExtensions = true;
         form.type = "multipart";
         form.parse(req);
 
-        let newData= {};
-        let newItem={};
+        let newData = {};
+        let newItem = {};
 
-        form.on('field', function(name, value) {
+        form.on('field', function (name, value) {
             newData[name] = value;
 
         });
 
-        form.on('file', function(name, file) {
+        form.on('file', function (name, file) {
             console.log("file");
             console.log(file);
             let newImg = fs.readFileSync(file.path);
             let encImg = newImg.toString('base64');
 
             newItem = {
-                name:`${file.name}.jpg`,
+                name: file.name,
                 contentType: file.mimetype,
                 size: file.size,
                 img: Buffer(encImg, 'base64')
             };
         });
 
-        form.on('error', function(err) {
+        form.on('error', function (err) {
             console.log('error');
             console.log(err);
         });
 
         form.on("end", () => {
-            let  configuration = new configurationsModel({
-                primaryColor : newData['primaryColor'],
-                secondaryColor : newData['secondaryColor'],
-                institutionName : newData['institutionName'],
+            let configuration = new configurationsModel({
+                primaryColor: newData['primaryColor'],
+                secondaryColor: newData['secondaryColor'],
+                institutionName: newData['institutionName'],
                 oneSearchUrl: newData['oneSearchUrl'],
                 images: newItem,
             });
