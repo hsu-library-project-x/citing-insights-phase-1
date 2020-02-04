@@ -8,6 +8,7 @@ import PdfControls from "./PdfControls.jsx";
 import DiscoveryTool from './DiscoveryTool.jsx';
 import Citation from './Citation.jsx'
 
+import Viewer from '../PdfComponents/Viewer';
 
 class Analyze extends Component {
   constructor(props) {
@@ -283,11 +284,16 @@ class Analyze extends Component {
       pdf = <p> No Pdf Data found </p>;
       pdfControls = <p> Can't Control what we don't have!</p>
     } else {
-      pdf = <PdfComponent
-        data={this.state.current_pdf_data}
-        pageNumber={pageNum}
-        scale={scale}
-      />;
+      //Former
+      // pdf = <PdfComponent
+      //   data={this.state.current_pdf_data}
+      //   pageNumber={pageNum}
+      //   scale={scale}
+      // />;
+      
+      //New
+      pdf = <Viewer file={this.state.current_pdf_data} />;
+      console.log(pdf);
       pdfControls = <PdfControls
         data={this.state.current_pdf_data}
         passPageInfo={this.passPageInfo}
@@ -379,6 +385,8 @@ class Analyze extends Component {
           <Paper variant="outlined">
             {pdfControls}
           </Paper>
+
+
           <br />
           <Paper variant="outlined">
             <FormControl required={true} style={{ minWidth: 200, marginBottom: "1em" }}>

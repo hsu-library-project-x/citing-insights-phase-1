@@ -84,8 +84,7 @@ class PdfComponent extends Component {
             pageNumber={pageNumber}
             scale={scale}
             className="pdf-viewer"
-
-          />
+        />
         </Document>
       </div>
     );
