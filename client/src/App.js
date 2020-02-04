@@ -5,10 +5,11 @@ import { ProtectedRoute } from "./ProtectedRoute.jsx";
 import Login from "./Components/Login/Login.jsx";
 import Tasks from "./Components/Tasks/Tasks.jsx";
 import Navibar from './Components/Navibar/Navibar.jsx';
+import SplashScreen from './SplashScreen';
 import BottomNavBar from "./Components/BottomNavBar/BottomNavBar";
 
 import './App.css';
-import SplashScreen from "./SplashScreen";
+import ConfigurationForm from "./ConfigurationForm";
 
 class App extends Component {
 
@@ -19,6 +20,7 @@ class App extends Component {
       user: null,
       token: "",
       configurations:null,
+      loading: true,
     };
     this.getConfigurations();
 
@@ -43,7 +45,7 @@ class App extends Component {
         alert("Could not access database");
       }
     }).then(json => {
-      this.setState({configurations: json[0]});
+      this.setState({configurations: json[0], loading:false});
     });
   };
 
@@ -79,52 +81,58 @@ class App extends Component {
   }
 
   render() {
-        if(this.state.configurations){
+        if(this.state.loading){
+          return <SplashScreen />;
+        }
+        else{
+          if(this.state.configurations){
             return( <div className="head">
-                <HashRouter>
-                  <Navibar
-                      isAuthenticated={this.state.isAuthenticated}
-                      passInfoLogout={this.passInfoLogout}
-                      user={this.state.user}
-                      configurations={this.state.configurations}
+              <HashRouter>
+                <Navibar
+                    isAuthenticated={this.state.isAuthenticated}
+                    passInfoLogout={this.passInfoLogout}
+                    user={this.state.user}
+                    configurations={this.state.configurations}
+                />
+                <div id="id01" className="pop content">
+                  <Route
+                      exact path="/login"
+                      render={
+                        () =>
+                            <Login
+                                passInfoLogin={this.passInfoLogin}
+                                isAuthenticated={this.state.isAuthenticated}
+                                configurations={this.state.configurations}
+                            />
+                      }
                   />
-                  <div id="id01" className="pop content">
-                    <Route
-                        exact path="/login"
-                        render={
-                          () =>
-                              <Login
-                                  passInfoLogin={this.passInfoLogin}
-                                  isAuthenticated={this.state.isAuthenticated}
-                                  configurations={this.state.configurations}
-                              />
-                        }
-                    />
-                    <ProtectedRoute
-                        exact path="/"
-                        component={Tasks}
-                        {...this.state}
-                    />
-                    <ProtectedRoute
-                        path="/tasks"
-                        component={Tasks}
-                        {...this.state}
-                    />
-                  </div>
-                  <BottomNavBar
-                      isAuthenticated={this.state.isAuthenticated}
-                      passInfoLogout={this.passInfoLogout}
-                      user={this.state.user}
-                      configurations={this.state.configurations}
+                  <ProtectedRoute
+                      exact path="/"
+                      component={Tasks}
+                      {...this.state}
                   />
-                </HashRouter>
-             </div> );
+                  <ProtectedRoute
+                      path="/tasks"
+                      component={Tasks}
+                      {...this.state}
+                  />
+                </div>
+                <BottomNavBar
+                    isAuthenticated={this.state.isAuthenticated}
+                    passInfoLogout={this.passInfoLogout}
+                    user={this.state.user}
+                    configurations={this.state.configurations}
+                />
+              </HashRouter>
+            </div> );
           }
-          else {return (
-              <SplashScreen
-                  handleConfigurationChange={this.handleConfigurationChange}/>);
+          else {
+            return (
+              <ConfigurationForm
+                  handleConfigurationChange={this.handleConfigurationChange}
+              />);
           }
-
+        }
       }
 }
 export default App;

@@ -3,9 +3,7 @@ import React from 'react'
 class Base64Image extends React.Component {
   constructor(props) {
     super(props);
-
     this.arrayBufferToBase64 = this.arrayBufferToBase64.bind(this);
-
   }
 
   arrayBufferToBase64(buffer) {
@@ -18,8 +16,7 @@ class Base64Image extends React.Component {
 
   render() {
     let imageStr = this.arrayBufferToBase64( this.props.imageBase64String);
-    console.log(imageStr);
-    return (<img
+    return (<img width={750} height={500}
       src={"data:image/jpeg;base64, " +
         imageStr}
     />)
