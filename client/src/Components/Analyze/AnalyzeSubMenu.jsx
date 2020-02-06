@@ -25,7 +25,7 @@ class AnalyzeSubMenu extends Component {
 
     let that = this;
 
-    fetch('http://localhost:5000/courses/' + this.props.user.id)
+    fetch('/courses/' + this.props.user.id)
       .then(function (response) {
         return response.json();
       })
@@ -38,7 +38,7 @@ class AnalyzeSubMenu extends Component {
   handleClassSelection(event) {
     let that = this;
     let target = event.target;
-    fetch('http://localhost:5000/assignments/by_class_id/' + target.value)
+    fetch('/assignments/by_class_id/' + target.value)
       .then(function (response) {
         return response.json();
       })
