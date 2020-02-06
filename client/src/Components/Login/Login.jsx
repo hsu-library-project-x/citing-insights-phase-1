@@ -92,8 +92,6 @@ class Login extends Component {
 
 		const imageBase64String = this.props.configurations.images.img.data;
 		
-		console.log('herrr' + JSON.stringify(imageBase64String));
-
 		return (
 			<MuiThemeProvider theme={theme}>
 				<Grid container spacing={0}>

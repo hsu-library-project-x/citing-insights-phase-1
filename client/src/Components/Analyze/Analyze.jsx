@@ -284,23 +284,23 @@ class Analyze extends Component {
       pdf = <p> No Pdf Data found </p>;
       pdfControls = <p> Can't Control what we don't have!</p>
     } else {
-      //Former
-      // pdf = <PdfComponent
-      //   data={this.state.current_pdf_data}
-      //   pageNumber={pageNum}
-      //   scale={scale}
-      // />;
-      
-      //New
-      pdf = <Viewer file={this.state.current_pdf_data} />;
-      console.log(pdf);
-      pdfControls = <PdfControls
+      // Former
+      pdf = <PdfComponent
         data={this.state.current_pdf_data}
-        passPageInfo={this.passPageInfo}
         pageNumber={pageNum}
-        passScaleInfo={this.passScaleInfo}
         scale={scale}
-      />
+      />;
+      
+      // //New
+      // pdf = <Viewer file={this.state.current_pdf_data} />;
+      // console.log(pdf);
+      // pdfControls = <PdfControls
+      //   data={this.state.current_pdf_data}
+      //   passPageInfo={this.passPageInfo}
+      //   pageNumber={pageNum}
+      //   passScaleInfo={this.passScaleInfo}
+      //   scale={scale}
+      // />
 
     }
 
