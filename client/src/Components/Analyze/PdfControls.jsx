@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Document, Outline, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
-import "./pdfComponent.css";
+//import "./pdfComponent.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc =
     `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;

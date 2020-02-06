@@ -8,7 +8,7 @@ import PdfControls from "./PdfControls.jsx";
 import DiscoveryTool from './DiscoveryTool.jsx';
 import Citation from './Citation.jsx'
 
-import Viewer from '../PdfComponents/Viewer';
+
 
 class Analyze extends Component {
   constructor(props) {
