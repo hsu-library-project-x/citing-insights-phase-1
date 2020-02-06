@@ -290,17 +290,17 @@ class Analyze extends Component {
         pageNumber={pageNum}
         scale={scale}
       />;
-      
+            pdfControls = <PdfControls
+        data={this.state.current_pdf_data}
+        passPageInfo={this.passPageInfo}
+        pageNumber={pageNum}
+        passScaleInfo={this.passScaleInfo}
+        scale={scale}
+      />
       // //New
       // pdf = <Viewer file={this.state.current_pdf_data} />;
       // console.log(pdf);
-      // pdfControls = <PdfControls
-      //   data={this.state.current_pdf_data}
-      //   passPageInfo={this.passPageInfo}
-      //   pageNumber={pageNum}
-      //   passScaleInfo={this.passScaleInfo}
-      //   scale={scale}
-      // />
+
 
     }
 

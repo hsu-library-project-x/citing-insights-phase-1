@@ -67,9 +67,8 @@ class Navibar extends Component {
                                                     <Button
                                                         className={"NavLinkButton"}
                                                         variant={"contained"}
-                                                        onClick={renderProps.onClick}
                                                         disabled={renderProps.disabled}
-                                                        // onClick={this.responseGoogle}
+                                                        onClick={this.responseGoogle}
                                                     >
                                                             Logout
                                                     </Button>
