@@ -8,6 +8,8 @@ yarn-error.log*
 .idea
 .vscode
 
+build
+
 # Runtime data
 pids
 *.pid
