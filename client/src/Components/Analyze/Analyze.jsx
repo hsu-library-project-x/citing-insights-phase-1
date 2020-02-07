@@ -8,7 +8,6 @@ import PdfControls from "./PdfControls.jsx";
 import DiscoveryTool from './DiscoveryTool.jsx';
 import Citation from './Citation.jsx'
 
-import Viewer from '../PdfComponents/Viewer';
 
 class Analyze extends Component {
   constructor(props) {
@@ -185,7 +184,7 @@ class Analyze extends Component {
       rubric_id: this.state.rubricId,
       rubric_index: radio_index,
       annotation: this.state.annotation
-    }
+    };
 
     fetch(`/citations/add_assessment/${this.state.current_citation_id}`, {
       method: "PUT",
@@ -311,7 +310,6 @@ class Analyze extends Component {
     );
 
     return (
-        <div>
       <Grid
         container={true}
         direction="row"
@@ -366,13 +364,12 @@ class Analyze extends Component {
 
         {/* PDF Viewer */}
         <Grid item xs={12} sm={4} md={8}>
-
-
+          {/*<Paper>*/}
+            {pdf}
+          {/*</Paper>*/}
         </Grid>
-
         {/* Pdf Controls; Rubric Assessment */}
         <Grid item xs={12} sm={4} md={2}>
-
           <Paper variant="outlined">
             {pdfControls}
           </Paper>
@@ -412,12 +409,7 @@ class Analyze extends Component {
         </Grid>
         {this.state.assessingRubric ? <RubricSubmit sourceText={this.state.sourceText} unmountMe={this.handleChildUnmount} curRubric={this.state.currentRubric} curPaper={this.state.curPaperId} /> : null}
       </Grid>
-          {/*<div className="overflow-auto">*/}
-            <Paper>
-              {pdf}
-            </Paper>
-          {/*</div>*/}
-        </div>
+
     );
   }
 }

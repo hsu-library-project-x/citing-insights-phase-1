@@ -1,31 +1,45 @@
 import React, { Component } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-import { FixedSizeList } from "react-window";
-import InfiniteLoader from "react-window-infinite-loader";
+import { FixedSizeList  } from "react-window";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "./pdfComponent.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc =
   `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-//Highlights what was searched -- commented out as it is not used
-// const highlightPattern = (text, pattern) => {
-//   const splitText = text.split(pattern);
+// function getPages(numPages, scale){
+//   console.log("HIIIII");
+//   const height = window.innerHeight/2;
+//   console.log(height);
+//   const rowHeights = new Array(numPages)
+//       .fill(true)
+//       .map(()=> height);
 //
-//   if (splitText.length <= 1) {
-//     return text;
-//   }
+//   const getItemSize = index => rowHeights[index];
 //
-//   const matches = text.match(pattern);
+//   const Row =({index, style}) =>(
+//       <Page
+//           onLoadSuccess={removeTextLayerOffset}
+//           key={`page_${index + 1}`}
+//           pageNumber={index + 1}
+//           scale={scale}
+//           className="pdf-viewer"
+//       />
+//   );
 //
-//   return splitText.reduce((arr, element, index) => (matches[index] ? [
-//     ...arr,
-//     element,
-//     <mark>
-//       {matches[index]}
-//     </mark>,
-//   ] : [...arr, element]), []);
-// };
+//   const Pages = () => (
+//       <VariableSizeList
+//         height={height}
+//         itemCount={numPages}
+//         itemSize={getItemSize}
+//         width={600}
+//       >
+//         {Row}
+//       </VariableSizeList>
+//   );
+//
+//   return Pages;
+// }
 
 //Fixes the offset for text highlighting
 function removeTextLayerOffset() {
@@ -74,6 +88,24 @@ class PdfComponent extends Component {
   render() {
     // const { numPages } = this.state;
     const { pageNumber, /*searchText,*/ scale } = this.props;
+    const height = window.innerHeight;
+    const GUTTER_SIZE = 5;
+    const Row =({index, style}) =>(
+    <div style={{
+        ...style,
+      top:style.top+ GUTTER_SIZE
+
+    }}>
+        <Page
+            onLoadSuccess={removeTextLayerOffset}
+            key={`page_${index + 1}`}
+            pageNumber={index + 1}
+            scale={scale}
+            className="pdf-viewer"
+            // style={style}
+        />
+    </div>
+    );
 
     return (
       <div className="document-wrapper">
@@ -83,20 +115,13 @@ class PdfComponent extends Component {
           className="pdf-container"
 
         >
-          {Array.from(
-            new Array(this.state.numPages),
-            (el, index) => (
-            <Page
-            onLoadSuccess={removeTextLayerOffset}
-            key={`page_${index + 1}`}
-            pageNumber={index + 1}
-            scale={scale}
-            className="pdf-viewer"
-            />
-            ))}
-
-
-        />
+          <FixedSizeList
+             height={height}
+             itemCount={this.state.numPages}
+             itemSize={height}
+             width={900}>
+            {Row}
+          </FixedSizeList>
         </Document>
       </div>
     );
