@@ -49,9 +49,12 @@ class PdfComponent extends Component {
       pdf: new Blob([this.props.data], { type: "application/pdf;base64" }),
       scale: 1.0
     }
+  
   }
 
-  getDerivedData = memoize(computeDeriveState);
+  getDerivedData = memoize((prop) => {
+    prop;
+  });
 
   componentWillReceiveProps(nextProps) {
 
