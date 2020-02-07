@@ -8,6 +8,7 @@ import PdfControls from "./PdfControls.jsx";
 import DiscoveryTool from './DiscoveryTool.jsx';
 import Citation from './Citation.jsx'
 
+import Viewer from '../PdfComponents/Viewer';
 
 class Analyze extends Component {
   constructor(props) {
@@ -184,7 +185,7 @@ class Analyze extends Component {
       rubric_id: this.state.rubricId,
       rubric_index: radio_index,
       annotation: this.state.annotation
-    };
+    }
 
     fetch(`/citations/add_assessment/${this.state.current_citation_id}`, {
       method: "PUT",
@@ -275,7 +276,7 @@ class Analyze extends Component {
   render() {
     let pdf, pdfControls;
 
-    // let pageNum = this.state.pageNumber === null ? 1 : this.state.pageNumber;
+    let pageNum = this.state.pageNumber === null ? 1 : this.state.pageNumber;
     let scale = this.state.scale === null ? 1.0 : this.state.scale;
 
     if (this.state.current_pdf_data === "this must get set") {
@@ -284,13 +285,13 @@ class Analyze extends Component {
     } else {
       pdf = <PdfComponent
         data={this.state.current_pdf_data}
-        // pageNumber={pageNum}
+        pageNumber={pageNum}
         scale={scale}
       />;
       pdfControls = <PdfControls
         data={this.state.current_pdf_data}
         passPageInfo={this.passPageInfo}
-        // pageNumber={pageNum}
+        pageNumber={pageNum}
         passScaleInfo={this.passScaleInfo}
         scale={scale}
       />

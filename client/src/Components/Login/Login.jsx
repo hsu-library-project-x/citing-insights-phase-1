@@ -31,10 +31,6 @@ class Login extends Component {
 		alert(err);
 	};
 
-	logout = () => {
-		this.setState({ isAuthenticated: false, token: '', user: null })
-	};
-
 	getInfo() {
 		this.props.passInfoLogin(this.state.isAuthenticated, this.state.token, this.state.user);
 	}
@@ -93,6 +89,7 @@ class Login extends Component {
 		});
 
 		const imageBase64String = this.props.configurations.images.img.data;
+
 
 		return (
 			<MuiThemeProvider theme={theme}>

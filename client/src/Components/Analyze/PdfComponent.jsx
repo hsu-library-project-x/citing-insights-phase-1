@@ -47,11 +47,8 @@ class PdfComponent extends Component {
       pageNumber: this.props.pageNumber,
       searchText: '',
       pdf: new Blob([this.props.data], { type: "application/pdf;base64" }),
-      scale: 1.0,
-      height: window.innerHeight,
-      width: window.innerWidth/3,
+      scale: 1.0
     }
-
   }
 
 
@@ -79,7 +76,7 @@ class PdfComponent extends Component {
     const { pageNumber, /*searchText,*/ scale } = this.props;
 
     return (
-      <div className="document-wrapper" style={{overflow: 'scroll', transform: 'translate(0px, 50px)'}}>
+      <div className="document-wrapper">
         <Document
           file={this.state.pdf}
           onLoadSuccess={this.onDocumentLoadSuccess}
@@ -99,6 +96,7 @@ class PdfComponent extends Component {
             ))}
 
 
+        />
         </Document>
       </div>
     );
