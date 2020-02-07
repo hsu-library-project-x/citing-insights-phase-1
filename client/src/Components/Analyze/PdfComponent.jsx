@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "./pdfComponent.css";
+import memoize from "memoize-one";
+
 
 pdfjs.GlobalWorkerOptions.workerSrc =
   `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -49,6 +51,7 @@ class PdfComponent extends Component {
     }
   }
 
+  getDerivedData = memoize(computeDeriveState);
 
   componentWillReceiveProps(nextProps) {
 
@@ -70,7 +73,8 @@ class PdfComponent extends Component {
 
   render() {
     // const { numPages } = this.state;
-    const { pageNumber, /*searchText,*/ scale } = this.props;
+    const scale = this.getDerivedData(this.props.scale);
+    const pageNumber = this.getDerivedData(this.props.pageNumber);
 
     return (
       <div className="document-wrapper">

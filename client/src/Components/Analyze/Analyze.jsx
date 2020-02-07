@@ -97,7 +97,7 @@ class Analyze extends Component {
   }
 
   //Here we populate citation source information and meta data
-  //Do this call every time a new Paper is loaded into the  component
+  //Do this call every time a new Paper is loaded into the  componentc
   componentWillMount() {
     let that = this;
     if (this.props.selectedAssignmentId !== undefined) {
@@ -290,7 +290,7 @@ class Analyze extends Component {
         pageNumber={pageNum}
         scale={scale}
       />;
-            pdfControls = <PdfControls
+      pdfControls = <PdfControls
         data={this.state.current_pdf_data}
         passPageInfo={this.passPageInfo}
         pageNumber={pageNum}
