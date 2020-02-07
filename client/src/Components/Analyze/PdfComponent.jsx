@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
+import { FixedSizeList } from "react-window";
+import InfiniteLoader from "react-window-infinite-loader";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "./pdfComponent.css";
 
@@ -45,13 +47,15 @@ class PdfComponent extends Component {
       pageNumber: this.props.pageNumber,
       searchText: '',
       pdf: new Blob([this.props.data], { type: "application/pdf;base64" }),
-      scale: 1.0
+      scale: 1.0,
+      height: window.innerHeight,
+      width: window.innerWidth/3,
     }
+
   }
 
 
   componentWillReceiveProps(nextProps) {
-
     let bytes = new Uint8Array(nextProps.data);
     let blob = new Blob([bytes], { type: "application/pdf;base64" });
 
@@ -68,24 +72,33 @@ class PdfComponent extends Component {
     });
   };
 
+
+
   render() {
     // const { numPages } = this.state;
     const { pageNumber, /*searchText,*/ scale } = this.props;
 
     return (
-      <div className="document-wrapper">
+      <div className="document-wrapper" style={{overflow: 'scroll', transform: 'translate(0px, 50px)'}}>
         <Document
           file={this.state.pdf}
           onLoadSuccess={this.onDocumentLoadSuccess}
           className="pdf-container"
+
         >
-          <Page
+          {Array.from(
+            new Array(this.state.numPages),
+            (el, index) => (
+            <Page
             onLoadSuccess={removeTextLayerOffset}
-            pageNumber={pageNumber}
+            key={`page_${index + 1}`}
+            pageNumber={index + 1}
             scale={scale}
             className="pdf-viewer"
+            />
+            ))}
 
-          />
+
         </Document>
       </div>
     );

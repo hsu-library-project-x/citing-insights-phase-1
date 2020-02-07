@@ -44,13 +44,20 @@ class BottomNavBar extends Component {
             <Container maxWidth={'sm'}>
                 <Card style={{margin:"1em"}}  variant="outlined">
                     <CardContent>
-                        <Typography style={{margin:"1em"}} variant={"h4"} component={"h2"}> About Citing Insights </Typography>
-                        <Typography style={{margin:"1em"}} component={"p"}>
-                            Citing Insights was developed as a way to improve student's information literacy. Currently, it
-                            exists as an assessment tool for university faculty and library staff. Once a student paper is uploaded
-                            the Citing Insights tool will search the citations and find the source as well as metadata about the
-                            cited source. The tool was developed by computer science students at Humboldt State University and
-                            paid for by GI2025 funding.
+                        <Typography style={{margin:"0.5em"}} align='center' variant={"h4"} component={"h2"}> Citing Insights About Us </Typography>
+                        <Typography component={"p"}>
+                            Citing Insights was developed by undergraduate students working at HSU Library,
+                            this powerful tool streamlines assessment of students' information literacy and
+                            other skills. The project began in the spring of 2019, Cindy Batres, Elizabeth Lujan,
+                            Ben Miller, Kyle Smith, and Mitchell Waters, the Citing Insights Team, working with
+                            Cyril Oberlander, Library Dean, developed this open source software to automate some
+                            of the assessment work with student papers. Beta release March 2020 and full release
+                            May 2020. With Citing Insights, you can upload a student paper, all the citations are
+                            detected and discovery of the sources are made easy. With Citing Insights, you can
+                            leverage and/or edit AAC&U Information Literacy and other assessment rubrics to the
+                            student papers, and annotate, providing students with feedback, or providing accrediting
+                            bodies with detailed reports. Citing Insights was developed by students working at
+                            Humboldt State University Library, thanks to funding from CSU Graduation Initiative 2025.
                         </Typography>
                     </CardContent>
                 </Card>

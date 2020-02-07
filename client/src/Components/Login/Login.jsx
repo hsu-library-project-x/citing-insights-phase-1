@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { GoogleLogin } from "react-google-login";
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import {Box, Grid, Button} from "@material-ui/core";
+import {Grid, Button} from "@material-ui/core";
 import Base64Image from './Base64Image.jsx';
 import config from "../../config.json";
-
-import picture from './lib1.jpg';   // eventually replace with props
 
 class Login extends Component {
 	constructor(props) {
@@ -95,8 +93,6 @@ class Login extends Component {
 		});
 
 		const imageBase64String = this.props.configurations.images.img.data;
-		
-		console.log('herrr' + JSON.stringify(imageBase64String));
 
 		return (
 			<MuiThemeProvider theme={theme}>

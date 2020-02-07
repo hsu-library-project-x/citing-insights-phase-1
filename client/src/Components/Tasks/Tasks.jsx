@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Switch, Route, withRouter } from "react-router-dom";
 import { Tooltip, IconButton, Container, Stepper, Step, StepButton, Typography, Fab, Grid } from "@material-ui/core";
-// import configuration from "../../configuration.json";
 import Classes from "../Classes/Classes.jsx";
 import Upload from "../Upload/Upload.jsx";
 import Analyze from "../Analyze/Analyze.jsx";
@@ -306,6 +305,7 @@ class Tasks extends Component {
 							<Route path="/tasks/analyze" render={(props) =>
 								<Analyze
 									user={this.props.user}
+									oneSearchUrl={this.props.configurations.oneSearchUrl}
 									selectedAssignmentId={this.state.selectedAssignmentId}
 									{...props} />}
 							/>

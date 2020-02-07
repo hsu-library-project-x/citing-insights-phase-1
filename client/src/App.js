@@ -7,12 +7,12 @@ import Tasks from "./Components/Tasks/Tasks.jsx";
 import Navibar from './Components/Navibar/Navibar.jsx';
 import SplashScreen from './SplashScreen';
 import BottomNavBar from "./Components/BottomNavBar/BottomNavBar";
-
-import './App.css';
 import ConfigurationForm from "./ConfigurationForm";
 
-class App extends Component {
+import './App.css';
 
+
+class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -69,7 +69,7 @@ class App extends Component {
   };
 
   handleConfigurationChange(){
-    this.getConfigurations();
+    this.setState({loading:true}, () => this.getConfigurations());
   }
 
   componentDidMount() {

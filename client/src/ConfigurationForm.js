@@ -68,7 +68,7 @@ class ConfigurationForm extends Component {
     renderSplash() {
         return(
             <div className={"config_background"}>
-                <form  className={'splash_screen'} onSubmit={this.handleSubmit} >
+                <form  className={'configuration_form'} onSubmit={this.handleSubmit} >
                     <Paper elevation={10}>
                         <Typography
                             style={{paddingTop: "1em"}}
@@ -113,7 +113,6 @@ class ConfigurationForm extends Component {
                             align={"left"}
                             variant={"h6"}
                             component={"h3"}
-                            style={{marginTop: '1em', paddingTop: '1em'}}
                             >
                             Institution Name
                         </Typography>
@@ -175,12 +174,11 @@ class ConfigurationForm extends Component {
                         Submit
                     </Button>
                 </Paper>
-            </form>
+             </form>
             </div>
 
         )
     }
-
 
     render() {
         return this.renderSplash()

@@ -17,7 +17,7 @@ body{
   margin-bottom: 1em;
 }
 
-.splash_screen{
+.configuration_form{
   width:60%;
   margin-left: auto;
   margin-right:auto;
@@ -39,5 +39,11 @@ body{
 .modal_form{
   text-align: center;
   padding: 1em;
+}
+
+.splash-screen{
+  position: fixed;
+  top: 50%;
+  left: 35%;
 }
 

@@ -184,7 +184,7 @@ class Analyze extends Component {
       rubric_id: this.state.rubricId,
       rubric_index: radio_index,
       annotation: this.state.annotation
-    }
+    };
 
     fetch(`/citations/add_assessment/${this.state.current_citation_id}`, {
       method: "PUT",
@@ -207,7 +207,6 @@ class Analyze extends Component {
           //User declined
         }
       });
-
   }
 
   refresh(index) {
@@ -276,7 +275,7 @@ class Analyze extends Component {
   render() {
     let pdf, pdfControls;
 
-    let pageNum = this.state.pageNumber === null ? 1 : this.state.pageNumber;
+    // let pageNum = this.state.pageNumber === null ? 1 : this.state.pageNumber;
     let scale = this.state.scale === null ? 1.0 : this.state.scale;
 
     if (this.state.current_pdf_data === "this must get set") {
@@ -285,13 +284,13 @@ class Analyze extends Component {
     } else {
       pdf = <PdfComponent
         data={this.state.current_pdf_data}
-        pageNumber={pageNum}
+        // pageNumber={pageNum}
         scale={scale}
       />;
       pdfControls = <PdfControls
         data={this.state.current_pdf_data}
         passPageInfo={this.passPageInfo}
-        pageNumber={pageNum}
+        // pageNumber={pageNum}
         passScaleInfo={this.passScaleInfo}
         scale={scale}
       />
@@ -310,8 +309,8 @@ class Analyze extends Component {
     }
     );
 
-    console.log(this.state);
     return (
+        <div>
       <Grid
         container={true}
         direction="row"
@@ -357,6 +356,7 @@ class Analyze extends Component {
             {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
               <DiscoveryTool
                 citations={this.state.citations}
+                oneSearchUrl={this.props.oneSearchUrl}
                 current_citation_id={this.state.current_citation_id}
                 key={this.state.current_citation_id}
               /> : null}
@@ -366,11 +366,7 @@ class Analyze extends Component {
         {/* PDF Viewer */}
         <Grid item xs={12} sm={4} md={8}>
 
-          <div className="overflow-auto">
-            <Paper>
-              {pdf}
-            </Paper>
-          </div>
+
         </Grid>
 
         {/* Pdf Controls; Rubric Assessment */}
@@ -415,6 +411,12 @@ class Analyze extends Component {
         </Grid>
         {this.state.assessingRubric ? <RubricSubmit sourceText={this.state.sourceText} unmountMe={this.handleChildUnmount} curRubric={this.state.currentRubric} curPaper={this.state.curPaperId} /> : null}
       </Grid>
+          {/*<div className="overflow-auto">*/}
+            <Paper>
+              {pdf}
+            </Paper>
+          {/*</div>*/}
+        </div>
     );
   }
 }
