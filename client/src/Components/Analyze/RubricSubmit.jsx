@@ -81,7 +81,7 @@ class RubricSubmit extends Component{
     //add this route in the routes and models
 
     let rubricScore = JSON.stringify(data);
-    fetch('http://localhost:5000/citation/add_rubric_score/id', { //missing async function call
+    fetch('/citation/add_rubric_score/id', { //missing async function call
       method: 'POST',
       body: rubricScore,
       headers:{

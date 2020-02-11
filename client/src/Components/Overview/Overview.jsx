@@ -30,7 +30,7 @@ class Overview extends Component {
     getCourses(){
         let that = this;
         return(
-            fetch('http://localhost:5000/courses/' + this.props.user.id)
+            fetch('/courses/' + this.props.user.id)
                 .then(response => {
                     return response.json();
                 })
@@ -43,7 +43,7 @@ class Overview extends Component {
     getRubrics(){
         let that = this;
         return(
-            fetch('http://localhost:5000/rubrics/' + this.props.user.id)
+            fetch('/rubrics/' + this.props.user.id)
                 .then(response => {
                     return response.json();
                 })
@@ -57,7 +57,7 @@ class Overview extends Component {
     handleClassSelection(event) {
         let that = this;
         let target = event.target;
-        fetch('http://localhost:5000/assignments/by_class_id/' + target.value)
+        fetch('/assignments/by_class_id/' + target.value)
             .then(response =>  {
                 return response.json();
             })
@@ -69,7 +69,7 @@ class Overview extends Component {
     handleAssignmentSelection(event) {
         let that = this;
         let target = event.target;
-        fetch('http://localhost:5000/papers/by_assignment_id/' + target.value)
+        fetch('/papers/by_assignment_id/' + target.value)
             .then(function (response) {
                 return response.json();
             })
@@ -81,7 +81,7 @@ class Overview extends Component {
     handlePaperSelection(event) {
         let that = this;
         let target = event.target;
-        fetch('http://localhost:5000/citations/find_evaluations/' + target.value)
+        fetch('/citations/find_evaluations/' + target.value)
             .then(response => {
                 return response.json();
             })
