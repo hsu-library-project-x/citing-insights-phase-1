@@ -1,8 +1,10 @@
-import React, { Component } from "react";
+import React, { forwardRef,Component,createContext } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-import { FixedSizeList  } from "react-window";
+import { VariableSizeList   } from "react-window";
+import {AppBar, Toolbar} from '@material-ui/core';
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "./pdfComponent.css";
+import App from "../../App";
 
 pdfjs.GlobalWorkerOptions.workerSrc =
   `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -42,16 +44,16 @@ pdfjs.GlobalWorkerOptions.workerSrc =
 // }
 
 //Fixes the offset for text highlighting
-function removeTextLayerOffset() {
-  const textLayers = document.querySelectorAll(".react-pdf__Page__textContent");
-  textLayers.forEach(layer => {
-    const { style } = layer;
-    style.top = "0";
-    style.left = "0";
-    style.transform = "";
-    style.margin = "auto";
-  });
-}
+// function removeTextLayerOffset() {
+//   const textLayers = document.querySelectorAll(".react-pdf__Page__textContent");
+//   textLayers.forEach(layer => {
+//     const { style } = layer;
+//     style.top = "0";
+//     style.left = "0";
+//     style.transform = "";
+//     style.margin = "auto";
+//   });
+// }
 
 class PdfComponent extends Component {
   constructor(props) {
@@ -70,8 +72,8 @@ class PdfComponent extends Component {
     let bytes = new Uint8Array(nextProps.data);
     let blob = new Blob([bytes], { type: "application/pdf;base64" });
 
-    this.setState({ 
-      pdf: blob 
+    this.setState({
+      pdf: blob
     })
   }
 
@@ -88,40 +90,60 @@ class PdfComponent extends Component {
   render() {
     // const { numPages } = this.state;
     const { pageNumber, /*searchText,*/ scale } = this.props;
-    const height = window.innerHeight;
-    const GUTTER_SIZE = 5;
+    // const GUTTER_SIZE = 5;
+    const StickyListContext = createContext();
+    StickyListContext.displayName = "StickyListContext";
+    const WIDTH = window.innerWidth;
+    const ROW_HEIGHT =  window.innerHeight + window.innerHeight/2.5;
+    const StickyRow = ({ index, style }) => (
+        <div className="sticky" style={style}>
+            Stick {index}
+        </div>
+    );
+    const rowHeights = new Array(this.state.numPages)
+        .fill(true)
+        .map(()=> ROW_HEIGHT);
+    const getItemSize = index => rowHeights[index];
     const Row =({index, style}) =>(
-    <div style={{
-        ...style,
-      top:style.top+ GUTTER_SIZE
-
-    }}>
+        <div
+            style={style}
+            // style={{
+            //   ...style,
+            //   left: style.left - GUTTER_SIZE,
+            //   top: style.top + GUTTER_SIZE,
+            //   bottom: style.bottom + GUTTER_SIZE,
+            //   right: style.right - GUTTER_SIZE,
+            //   width: style.width - GUTTER_SIZE,
+            //   height: style.height - GUTTER_SIZE
+            // }}
+        >
         <Page
-            onLoadSuccess={removeTextLayerOffset}
+            // onLoadSuccess={removeTextLayerOffset}
             key={`page_${index + 1}`}
             pageNumber={index + 1}
-            scale={scale}
+            // scale={1.0}
             className="pdf-viewer"
-            // style={style}
         />
     </div>
     );
 
     return (
       <div className="document-wrapper">
+
         <Document
           file={this.state.pdf}
           onLoadSuccess={this.onDocumentLoadSuccess}
           className="pdf-container"
 
         >
-          <FixedSizeList
-             height={height}
-             itemCount={this.state.numPages}
-             itemSize={height}
-             width={900}>
+          <VariableSizeList
+              height={ROW_HEIGHT}
+              itemCount={this.state.numPages}
+              itemSize={getItemSize}
+              width={WIDTH}
+          >
             {Row}
-          </FixedSizeList>
+          </VariableSizeList >
         </Document>
       </div>
     );
