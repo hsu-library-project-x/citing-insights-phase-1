@@ -48,7 +48,7 @@ module.exports = {
                     .write(newImg2); // save
             }).then((newImg2) => {
 
-            })
+            });
 
 
             newItem = {

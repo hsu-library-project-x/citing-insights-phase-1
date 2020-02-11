@@ -10,22 +10,17 @@
 }
 .pdf-container {
     display: flex;
-    width: auto;
-    border: 1px;
+    background: rgb(160, 164, 167);
     max-width: calc(100% - 2em);
-    box-shadow: 0 0 8px rgba(0, 0, 0, .5);
     margin: 1em;
     justify-content: space-evenly;
 }
 
 .pdf-viewer {
     display: flex;
-    width: auto;
-    border: 1px solid black;
     max-width: calc(100% - 2em);
-    box-shadow: 0 0 8px rgba(0, 0, 0, .5);
     margin: 1em;
-    justify-content: space-evenly;
+    justify-content: center;
 }
 
 .page-controls {
@@ -44,6 +39,6 @@
     margin: 1em
 }
 .document-wrapper {
-    max-height: 800px;
+    max-height: 850px;
     overflow-y: auto;
 }
