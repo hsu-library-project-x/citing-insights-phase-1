@@ -64,7 +64,7 @@ typings/
 .next
 
 
-/server/fileUpload/*
+./server/fileUpload/u*
 
 /server/config.js
 
