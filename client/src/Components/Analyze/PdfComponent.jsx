@@ -1,59 +1,14 @@
 import React, { forwardRef,Component,createContext } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-import { VariableSizeList   } from "react-window";
-import {AppBar, Toolbar} from '@material-ui/core';
+import { FixedSizeGrid   } from "react-window";
+import {TextField, Toolbar,InputAdornment } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search'
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "./pdfComponent.css";
-import App from "../../App";
 
 pdfjs.GlobalWorkerOptions.workerSrc =
   `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-// function getPages(numPages, scale){
-//   console.log("HIIIII");
-//   const height = window.innerHeight/2;
-//   console.log(height);
-//   const rowHeights = new Array(numPages)
-//       .fill(true)
-//       .map(()=> height);
-//
-//   const getItemSize = index => rowHeights[index];
-//
-//   const Row =({index, style}) =>(
-//       <Page
-//           onLoadSuccess={removeTextLayerOffset}
-//           key={`page_${index + 1}`}
-//           pageNumber={index + 1}
-//           scale={scale}
-//           className="pdf-viewer"
-//       />
-//   );
-//
-//   const Pages = () => (
-//       <VariableSizeList
-//         height={height}
-//         itemCount={numPages}
-//         itemSize={getItemSize}
-//         width={600}
-//       >
-//         {Row}
-//       </VariableSizeList>
-//   );
-//
-//   return Pages;
-// }
-
-//Fixes the offset for text highlighting
-// function removeTextLayerOffset() {
-//   const textLayers = document.querySelectorAll(".react-pdf__Page__textContent");
-//   textLayers.forEach(layer => {
-//     const { style } = layer;
-//     style.top = "0";
-//     style.left = "0";
-//     style.transform = "";
-//     style.margin = "auto";
-//   });
-// }
 
 class PdfComponent extends Component {
   constructor(props) {
@@ -64,7 +19,11 @@ class PdfComponent extends Component {
       searchText: '',
       pdf: new Blob([this.props.data], { type: "application/pdf;base64" }),
       scale: 1.0
-    }
+    };
+
+    this.GUTTER_SIZE = 5;
+    this.COLUMN_WIDTH = window.innerWidth/2;
+    this.ROW_HEIGHT =  1.5* window.innerHeight ;
   }
 
 
@@ -87,48 +46,85 @@ class PdfComponent extends Component {
 
 
 
-  render() {
-    // const { numPages } = this.state;
-    const { pageNumber, /*searchText,*/ scale } = this.props;
-    // const GUTTER_SIZE = 5;
+  GenerateGrid = () => {
+    //Sticky stuff
     const StickyListContext = createContext();
     StickyListContext.displayName = "StickyListContext";
-    const WIDTH = window.innerWidth;
-    const ROW_HEIGHT =  window.innerHeight + window.innerHeight/2.5;
+
     const StickyRow = ({ index, style }) => (
         <div className="sticky" style={style}>
-            Stick {index}
+          Stick {index}
         </div>
     );
-    const rowHeights = new Array(this.state.numPages)
-        .fill(true)
-        .map(()=> ROW_HEIGHT);
-    const getItemSize = index => rowHeights[index];
-    const Row =({index, style}) =>(
+
+    const innerElementType = forwardRef(({ style, ...rest }, ref) => (
         <div
-            style={style}
-            // style={{
-            //   ...style,
-            //   left: style.left - GUTTER_SIZE,
-            //   top: style.top + GUTTER_SIZE,
-            //   bottom: style.bottom + GUTTER_SIZE,
-            //   right: style.right - GUTTER_SIZE,
-            //   width: style.width - GUTTER_SIZE,
-            //   height: style.height - GUTTER_SIZE
-            // }}
-        >
-        <Page
-            // onLoadSuccess={removeTextLayerOffset}
-            key={`page_${index + 1}`}
-            pageNumber={index + 1}
-            // scale={1.0}
-            className="pdf-viewer"
+            ref={ref}
+            style={{
+              ...style,
+              paddingLeft: this.GUTTER_SIZE,
+              paddingTop: this.GUTTER_SIZE,
+              marginBottom:this.GUTTER_SIZE,
+            }}
+            {...rest}
         />
-    </div>
+    ));
+
+    const Cell = ({columnIndex, rowIndex, style}) => (
+        <div
+            className={"GridItem"}
+            style={{
+              ...style,
+              left: style.left + this.GUTTER_SIZE,
+              top: style.top + this.GUTTER_SIZE,
+              width: style.width - this.GUTTER_SIZE,
+              height: style.height - this.GUTTER_SIZE
+            }}
+        >
+          <Page
+              height={this.ROW_HEIGHT}
+              // width={this.COLUMN_WIDTH}
+              key={`page_${rowIndex + 1}`}
+              pageNumber={rowIndex + 1}
+              className="pdf-viewer"
+              scale={1.0}
+          />
+        </div>
     );
 
     return (
+        <FixedSizeGrid
+        className="Grid"
+        columnCount={1}
+        columnWidth={this.COLUMN_WIDTH + this.GUTTER_SIZE}
+        height={this.ROW_HEIGHT}
+        innerElementType={innerElementType}
+        rowCount={this.state.numPages}
+        rowHeight={this.ROW_HEIGHT+ this.GUTTER_SIZE }
+        width={this.COLUMN_WIDTH}
+      >
+        {Cell}
+      </FixedSizeGrid>
+    );
+  };
+
+
+  render() {
+    return (
       <div className="document-wrapper">
+          <Toolbar>
+              <TextField
+                placeholder={"search"}
+                InputProps={{
+                    startAdornment: (
+                        <InputAdornment position="start">
+                            <SearchIcon />
+                        </InputAdornment>
+                    ),
+                }}
+              />
+
+          </Toolbar>
 
         <Document
           file={this.state.pdf}
@@ -136,14 +132,7 @@ class PdfComponent extends Component {
           className="pdf-container"
 
         >
-          <VariableSizeList
-              height={ROW_HEIGHT}
-              itemCount={this.state.numPages}
-              itemSize={getItemSize}
-              width={WIDTH}
-          >
-            {Row}
-          </VariableSizeList >
+          {this.GenerateGrid()}
         </Document>
       </div>
     );

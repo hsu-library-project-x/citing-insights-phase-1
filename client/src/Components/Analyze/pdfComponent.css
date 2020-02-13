@@ -8,18 +8,18 @@
     margin: 1em;
     align-items: center;
 }
+
 .pdf-container {
     display: flex;
     background: rgb(160, 164, 167);
     max-width: calc(100% - 2em);
     margin: 1em;
-    justify-content: space-evenly;
+    justify-content: center;
 }
 
 .pdf-viewer {
     display: flex;
     max-width: calc(100% - 2em);
-    margin: 1em;
     justify-content: center;
 }
 
