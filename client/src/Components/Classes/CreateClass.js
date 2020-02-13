@@ -44,7 +44,7 @@ class CreateClass extends Component {
         };
 
         let newClass = JSON.stringify(data);
-        fetch('http://localhost:5000/courses/', {     // HAD TO CHANGE TO Localhost:5000 to make functional
+        fetch('/courses/', {     // HAD TO CHANGE TO Localhost:5000 to make functional
             method: 'POST',
             body: newClass,
             headers: {

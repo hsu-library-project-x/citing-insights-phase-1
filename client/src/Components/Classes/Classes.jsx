@@ -31,7 +31,7 @@ class Classes extends Component {
     }
 
     getClasses() {
-        fetch('http://localhost:5000/courses/' + this.props.user.id)
+        fetch('/courses/' + this.props.user.id)
             .then(function (response) {
                 return response.json();
             })
@@ -39,7 +39,7 @@ class Classes extends Component {
     }
 
     getAssignments() {
-        fetch('http://localhost:5000/assignments/by_user_id/' + this.props.user.id)
+        fetch('/assignments/by_user_id/' + this.props.user.id)
             .then(function (response) {
                 return response.json();
             })
@@ -61,7 +61,7 @@ class Classes extends Component {
     handleDeleteCourse(e, id) {
         if (window.confirm("Are you sure you wish to delete this course?")) {
             if (window.confirm("WARNING!! If you delete this course all assignments associated will also be deleted")) {
-                fetch('http://localhost:5000/courses/' + id, {
+                fetch('/courses/' + id, {
                     method: 'Delete',
                     headers: {
                         'Accept': 'application/json',
@@ -83,7 +83,7 @@ class Classes extends Component {
 
     handleDeleteAssignment(e, id) {
         if (window.confirm("Are you sure you wish to delete this?")) {
-            fetch('http://localhost:5000/assignments/' + id, {
+            fetch('/assignments/' + id, {
                 method: 'Delete',
                 headers: {
                     'Accept': 'application/json',

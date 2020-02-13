@@ -53,7 +53,7 @@ class Login extends Component {
 			}
 		};
 
-		fetch('http://localhost:5000/users/auth', options).then(r => {
+		fetch('/users/auth', options).then(r => {
 
 			//This is the token we'll use to authenticate each of the user's 
 			//actions (things that require auth: make class, remove assignment, etc.)

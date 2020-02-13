@@ -63,7 +63,7 @@ class Analyze extends Component {
   }
 
   get_paper_info(paper_id) {
-    fetch('http://localhost:5000/papers/' + paper_id)
+    fetch('/papers/' + paper_id)
       .then(function (response) {
         return response.json();
       })
@@ -75,7 +75,7 @@ class Analyze extends Component {
   componentDidMount() {
     let that = this;
     //Grab info about the assignment
-    fetch('http://localhost:5000/assignments/' + this.props.selectedAssignmentId)
+    fetch('/assignments/' + this.props.selectedAssignmentId)
       .then(function (response) {
         return response.json();
       })
@@ -89,7 +89,7 @@ class Analyze extends Component {
 
   get_citation_info(paper_id) {
     let that = this;
-    return fetch('http://localhost:5000/citations/by_paper_id/' + paper_id)
+    return fetch('/citations/by_paper_id/' + paper_id)
       .then(function (response) {
         return response.json();
       })
@@ -113,14 +113,14 @@ class Analyze extends Component {
     if (this.props.selectedAssignmentId !== undefined) {
       // this.setState({ assignmentId: this.props.selectedAssignmentId });
 
-      fetch('http://localhost:5000/papers/by_assignment_id/' + this.props.selectedAssignmentId)
+      fetch('/papers/by_assignment_id/' + this.props.selectedAssignmentId)
         .then(function (response) {
           return response.json();
         })
         .then(function (myJson) {
           that.setState({ paper_ids: myJson });
           try {
-            fetch('http://localhost:5000/papers/' + myJson[0]["_id"])
+            fetch('/papers/' + myJson[0]["_id"])
               .then(function (response) {
                 return response.json();
               })
@@ -142,7 +142,7 @@ class Analyze extends Component {
     } else {
       this.setState({ assignmentId: "no assignment selected" });
     }
-    fetch('http://localhost:5000/rubrics/' + this.props.user.id)
+    fetch('/rubrics/' + this.props.user.id)
       .then(function (response) {
         return response.json();
       })
