@@ -39,6 +39,6 @@
     margin: 1em
 }
 .document-wrapper {
-    max-height: 850px;
+    max-height: 800px;
     overflow-y: auto;
 }

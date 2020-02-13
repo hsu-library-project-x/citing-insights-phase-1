@@ -1,8 +1,10 @@
 import React, { forwardRef,Component,createContext } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { FixedSizeGrid   } from "react-window";
-import {TextField, Toolbar,InputAdornment } from '@material-ui/core';
+import {TextField, Toolbar,InputAdornment,IconButton, Tooltip  } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search'
+import ZoomInIcon from '@material-ui/icons/ZoomIn';
+import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "./pdfComponent.css";
 
@@ -18,12 +20,17 @@ class PdfComponent extends Component {
       pageNumber: this.props.pageNumber,
       searchText: '',
       pdf: new Blob([this.props.data], { type: "application/pdf;base64" }),
-      scale: 1.0
+      scale: 1.0,
+      columnWidth:  window.innerWidth/2,
+      rowHeight:  1.5* window.innerHeight,
     };
 
-    this.GUTTER_SIZE = 5;
-    this.COLUMN_WIDTH = window.innerWidth/2;
-    this.ROW_HEIGHT =  1.5* window.innerHeight ;
+    this.ZoomIn = this.ZoomIn.bind(this);
+    this.ZoomOut = this.ZoomOut.bind(this);
+    this.ScrollTo = this.ScrollTo.bind(this);
+
+      this.GUTTER_SIZE = 5;
+      this.gridRef = React.createRef();
   }
 
 
@@ -44,18 +51,37 @@ class PdfComponent extends Component {
     });
   };
 
+  ZoomIn(){
+      let offset=0.25 ;
 
+      this.setState( {
+          columnWidth:this.state.columnWidth + (this.state.columnWidth * offset),
+           rowHeight: this.state.rowHeight + (this.state.rowHeight * offset),
+      });
+  }
+
+    ZoomOut(){
+        let offset=-0.25 ;
+
+        this.setState( {
+            columnWidth:this.state.columnWidth + (this.state.columnWidth * offset),
+            rowHeight: this.state.rowHeight + (this.state.rowHeight * offset),
+        });
+    }
+
+    ScrollTo(event){
+      event.preventDefault();
+      let that = this;
+      let page= event.target.value;
+
+    that.gridRef.current.scrollToItem({
+        columnIndex: 1,
+        rowIndex: page-1,
+    });
+    }
 
   GenerateGrid = () => {
-    //Sticky stuff
-    const StickyListContext = createContext();
-    StickyListContext.displayName = "StickyListContext";
 
-    const StickyRow = ({ index, style }) => (
-        <div className="sticky" style={style}>
-          Stick {index}
-        </div>
-    );
 
     const innerElementType = forwardRef(({ style, ...rest }, ref) => (
         <div
@@ -82,8 +108,7 @@ class PdfComponent extends Component {
             }}
         >
           <Page
-              height={this.ROW_HEIGHT}
-              // width={this.COLUMN_WIDTH}
+              height={this.state.rowHeight}
               key={`page_${rowIndex + 1}`}
               pageNumber={rowIndex + 1}
               className="pdf-viewer"
@@ -96,12 +121,13 @@ class PdfComponent extends Component {
         <FixedSizeGrid
         className="Grid"
         columnCount={1}
-        columnWidth={this.COLUMN_WIDTH + this.GUTTER_SIZE}
-        height={this.ROW_HEIGHT}
+        columnWidth={this.state.columnWidth + this.GUTTER_SIZE}
+        height={this.state.rowHeight}
         innerElementType={innerElementType}
         rowCount={this.state.numPages}
-        rowHeight={this.ROW_HEIGHT+ this.GUTTER_SIZE }
-        width={this.COLUMN_WIDTH}
+        rowHeight={this.state.rowHeight+ this.GUTTER_SIZE }
+        width={this.state.columnWidth}
+        ref={this.gridRef}
       >
         {Cell}
       </FixedSizeGrid>
@@ -123,6 +149,34 @@ class PdfComponent extends Component {
                     ),
                 }}
               />
+              <Tooltip title="Zoom In">
+                  <IconButton aria-label="zoom-in" color="primary" onClick={this.ZoomIn}>
+                      <ZoomInIcon />
+                  </IconButton>
+              </Tooltip>
+              <Tooltip title="Zoom Out">
+                  <IconButton aria-label="zoom-out" color="primary"  onClick={this.ZoomOut}>
+                      <ZoomOutIcon />
+                  </IconButton>
+              </Tooltip>
+              <p> Go to Page
+              <TextField
+                  onChange={this.ScrollTo}
+                  aria-label="Page Number"
+                  type="number"
+                  size={'small'}
+                  InputLabelProps={{
+                  shrink: true,}}
+                  InputProps={{
+                      inputProps: {
+                          max: this.state.numPages,
+                          min: 1
+                      }
+                     }}
+
+                  />
+              of {this.state.numPages}
+              </p>
 
           </Toolbar>
 
