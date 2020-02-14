@@ -1,7 +1,7 @@
 import React, { forwardRef,Component,createContext } from "react";
-import { Document, Page, pdfjs } from "react-pdf";
+import {Document, default as page, Page, pdfjs} from "react-pdf";
 import { FixedSizeGrid   } from "react-window";
-import {TextField, Toolbar,InputAdornment,IconButton, Tooltip  } from '@material-ui/core';
+import {TextField, Toolbar,InputAdornment,IconButton, Tooltip, Button  } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search'
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
@@ -23,11 +23,15 @@ class PdfComponent extends Component {
       scale: 1.0,
       columnWidth:  window.innerWidth/2,
       rowHeight:  1.5* window.innerHeight,
+      rawText:[{}],
+        matches:[],
     };
 
     this.ZoomIn = this.ZoomIn.bind(this);
     this.ZoomOut = this.ZoomOut.bind(this);
     this.ScrollTo = this.ScrollTo.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.Search = this.Search.bind(this);
 
       this.GUTTER_SIZE = 5;
       this.gridRef = React.createRef();
@@ -51,6 +55,52 @@ class PdfComponent extends Component {
     });
   };
 
+  highlightPattern = (text, pattern) => {
+        const splitText = text.split(pattern);
+
+        if (splitText.length <= 1) {
+            return text;
+        }
+
+        const matches = text.match(pattern);
+
+        return splitText.reduce((arr, element, index) => (matches[index] ? [
+            ...arr,
+            element,
+            <mark>
+                {matches[index]}
+            </mark>,
+        ] : [...arr, element]), []);
+   };
+
+      Search(subject, objects){
+          let matches =[];
+          let regexp = new RegExp(subject, 'g');
+          for (let k=1; k<Object.keys(objects).length;k++){
+              for (let i=0; i<objects[k].length; i++){
+                  if (objects[k][i]['str'].match(regexp)) {
+                      //string, page, line
+                      matches.push([objects[k][i]['str'],k,i]);
+                  }
+              };
+          }
+          return matches;
+      };
+
+    //call when input changes to update the state
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.value;
+        let matches=[];
+        matches = this.Search(value, this.state.rawText);
+        this.setState({
+            matches: matches
+        });
+
+        console.log(this.state.matches);
+
+    }
+
   ZoomIn(){
       let offset=0.25 ;
 
@@ -69,6 +119,16 @@ class PdfComponent extends Component {
         });
     }
 
+    getLayers(items,pageNum){
+        this.setState(prevState => ({
+            rawText: {                   // object that we want to update
+                ...prevState.rawText,    // keep all other key-value pairs
+                [pageNum]: items       // update the value of specific key
+            }
+        }));
+        // console.log(this.state.rawText);
+    }
+
     ScrollTo(event){
       event.preventDefault();
       let that = this;
@@ -81,8 +141,6 @@ class PdfComponent extends Component {
     }
 
   GenerateGrid = () => {
-
-
     const innerElementType = forwardRef(({ style, ...rest }, ref) => (
         <div
             ref={ref}
@@ -108,6 +166,7 @@ class PdfComponent extends Component {
             }}
         >
           <Page
+              onGetTextSuccess={(items) => this.getLayers(items,rowIndex+1)}
               height={this.state.rowHeight}
               key={`page_${rowIndex + 1}`}
               pageNumber={rowIndex + 1}
@@ -139,7 +198,10 @@ class PdfComponent extends Component {
     return (
       <div className="document-wrapper">
           <Toolbar>
+
               <TextField
+                name={'searchText'}
+                onChange={this.handleInputChange}
                 placeholder={"search"}
                 InputProps={{
                     startAdornment: (
@@ -149,6 +211,15 @@ class PdfComponent extends Component {
                     ),
                 }}
               />
+              {/*<Button*/}
+              {/*    type='submit'*/}
+              {/*    size={'small'}*/}
+              {/*    variant={'contained'}*/}
+              {/*    color={'primary'}*/}
+              {/*    OnClick={this.FindText}>*/}
+              {/*    Find*/}
+              {/*</Button>*/}
+
               <Tooltip title="Zoom In">
                   <IconButton aria-label="zoom-in" color="primary" onClick={this.ZoomIn}>
                       <ZoomInIcon />
