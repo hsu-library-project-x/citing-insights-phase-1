@@ -1,12 +1,13 @@
-import React, { forwardRef,Component,createContext } from "react";
-import {Document, default as page, Page, pdfjs} from "react-pdf";
+import React, { forwardRef,Component } from "react";
+import {Document, Page, pdfjs} from "react-pdf";
 import { FixedSizeGrid   } from "react-window";
-import {TextField, Toolbar,InputAdornment,IconButton, Tooltip, Button  } from '@material-ui/core';
+import {TextField, Toolbar,InputAdornment,IconButton, Tooltip  } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search'
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "./pdfComponent.css";
+import PdfControls from "./PdfControls.jsx";
 
 pdfjs.GlobalWorkerOptions.workerSrc =
   `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -24,7 +25,7 @@ class PdfComponent extends Component {
       columnWidth:  window.innerWidth/2,
       rowHeight:  1.5* window.innerHeight,
       rawText:[{}],
-        matches:[],
+       matches:[],
     };
 
     this.ZoomIn = this.ZoomIn.bind(this);
@@ -32,16 +33,22 @@ class PdfComponent extends Component {
     this.ScrollTo = this.ScrollTo.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.Search = this.Search.bind(this);
+    this.PassUpText = this.PassUpText.bind(this);
 
-      this.GUTTER_SIZE = 5;
-      this.gridRef = React.createRef();
+    this.GUTTER_SIZE = 5;
+    this.gridRef = React.createRef();
   }
+
+    PassUpText(rawText) {
+        this.setState( ({
+            rawText: rawText,
+        }));
+    };
 
 
   componentWillReceiveProps(nextProps) {
     let bytes = new Uint8Array(nextProps.data);
     let blob = new Blob([bytes], { type: "application/pdf;base64" });
-
     this.setState({
       pdf: blob
     })
@@ -73,32 +80,30 @@ class PdfComponent extends Component {
         ] : [...arr, element]), []);
    };
 
-      Search(subject, objects){
-          let matches =[];
-          let regexp = new RegExp(subject, 'g');
-          for (let k=1; k<Object.keys(objects).length;k++){
-              for (let i=0; i<objects[k].length; i++){
-                  if (objects[k][i]['str'].match(regexp)) {
-                      //string, page, line
-                      matches.push([objects[k][i]['str'],k,i]);
-                  }
-              };
+  Search(subject, objects){
+      let matches =[];
+      let regexp = new RegExp(subject, 'g');
+      for (let k=1; k<Object.keys(objects).length;k++){
+          for (let i=0; i<objects[k].length; i++){
+              if (objects[k][i]['str'].match(regexp)) {
+                  //string, page, line
+                  matches.push([objects[k][i]['str'],k,i]);
+              }
           }
-          return matches;
-      };
+      }
+      this.setState({
+          matches: matches
+      });
 
-    //call when input changes to update the state
+      return matches;
+  };
+
+    // call when input changes to update the state
     handleInputChange(event) {
         const target = event.target;
         const value = target.value;
-        let matches=[];
-        matches = this.Search(value, this.state.rawText);
-        this.setState({
-            matches: matches
-        });
-
+        this.Search(value, this.state.rawText);
         console.log(this.state.matches);
-
     }
 
   ZoomIn(){
@@ -106,7 +111,7 @@ class PdfComponent extends Component {
 
       this.setState( {
           columnWidth:this.state.columnWidth + (this.state.columnWidth * offset),
-           rowHeight: this.state.rowHeight + (this.state.rowHeight * offset),
+          rowHeight: this.state.rowHeight + (this.state.rowHeight * offset),
       });
   }
 
@@ -117,16 +122,6 @@ class PdfComponent extends Component {
             columnWidth:this.state.columnWidth + (this.state.columnWidth * offset),
             rowHeight: this.state.rowHeight + (this.state.rowHeight * offset),
         });
-    }
-
-    getLayers(items,pageNum){
-        this.setState(prevState => ({
-            rawText: {                   // object that we want to update
-                ...prevState.rawText,    // keep all other key-value pairs
-                [pageNum]: items       // update the value of specific key
-            }
-        }));
-        // console.log(this.state.rawText);
     }
 
     ScrollTo(event){
@@ -166,7 +161,7 @@ class PdfComponent extends Component {
             }}
         >
           <Page
-              onGetTextSuccess={(items) => this.getLayers(items,rowIndex+1)}
+              // onGetTextSuccess={(items) => this.getLayers(items,rowIndex+1)}
               height={this.state.rowHeight}
               key={`page_${rowIndex + 1}`}
               pageNumber={rowIndex + 1}
@@ -198,7 +193,6 @@ class PdfComponent extends Component {
     return (
       <div className="document-wrapper">
           <Toolbar>
-
               <TextField
                 name={'searchText'}
                 onChange={this.handleInputChange}
@@ -211,15 +205,6 @@ class PdfComponent extends Component {
                     ),
                 }}
               />
-              {/*<Button*/}
-              {/*    type='submit'*/}
-              {/*    size={'small'}*/}
-              {/*    variant={'contained'}*/}
-              {/*    color={'primary'}*/}
-              {/*    OnClick={this.FindText}>*/}
-              {/*    Find*/}
-              {/*</Button>*/}
-
               <Tooltip title="Zoom In">
                   <IconButton aria-label="zoom-in" color="primary" onClick={this.ZoomIn}>
                       <ZoomInIcon />
@@ -248,9 +233,12 @@ class PdfComponent extends Component {
                   />
               of {this.state.numPages}
               </p>
-
           </Toolbar>
-
+          <PdfControls
+              PassUpText={this.PassUpText}
+              pageNum={this.state.pageNumber}
+              pdf={this.state.pdf}
+          />
         <Document
           file={this.state.pdf}
           onLoadSuccess={this.onDocumentLoadSuccess}

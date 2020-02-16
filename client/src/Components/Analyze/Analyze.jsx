@@ -9,13 +9,10 @@ import {
   Paper,
   InputLabel,
   TextField,
-  Toolbar,
-  AppBar
 } from '@material-ui/core';
 import RubricAccordion from './RubricAccordion.jsx';
 import RubricSubmit from './RubricSubmit.jsx';
 import PdfComponent from "./PdfComponent.jsx";
-import PdfControls from "./PdfControls.jsx";
 import DiscoveryTool from './DiscoveryTool.jsx';
 import Citation from './Citation.jsx'
 
@@ -44,7 +41,6 @@ class Analyze extends Component {
       current_citation_id: 0,
       annotation: "",
       pageNumber: null,
-      scale: null
     };
 
     this.componentWillMount = this.componentWillMount.bind(this);
@@ -58,8 +54,6 @@ class Analyze extends Component {
     this.refresh = this.refresh.bind(this);
     this.get_paper_info = this.get_paper_info.bind(this);
     this.updateCitationId = this.updateCitationId.bind(this);
-    this.passPageInfo = this.passPageInfo.bind(this);
-    this.passScaleInfo = this.passScaleInfo.bind(this);
   }
 
   get_paper_info(paper_id) {
@@ -271,40 +265,21 @@ class Analyze extends Component {
     });
   }
 
-  passPageInfo(offset) {
-    this.setState(prevState => ({
-      pageNumber: offset,
-    }));
-  };
 
-  passScaleInfo(offset) {
-    this.setState(prevState => ({
-      scale: offset,
-    }));
-  }
+
 
   render() {
-    let pdf, pdfControls;
+    let pdf;
 
     let pageNum = this.state.pageNumber === null ? 1 : this.state.pageNumber;
-    let scale = this.state.scale === null ? 1.0 : this.state.scale;
 
     if (this.state.current_pdf_data === "this must get set") {
       pdf = <p> No Pdf Data found </p>;
-      pdfControls = <p> Can't Control what we don't have!</p>
     } else {
       pdf = <PdfComponent
         data={this.state.current_pdf_data}
         pageNumber={pageNum}
-        scale={scale}
       />;
-      pdfControls = <PdfControls
-        data={this.state.current_pdf_data}
-        passPageInfo={this.passPageInfo}
-        pageNumber={pageNum}
-        passScaleInfo={this.passScaleInfo}
-        scale={scale}
-      />
 
     }
 
@@ -372,19 +347,12 @@ class Analyze extends Component {
               /> : null}
           </Paper>
         </Grid>
-
         {/* PDF Viewer */}
         <Grid item xs={12} sm={4} md={8}>
-          {/*<Paper>*/}
             {pdf}
-          {/*</Paper>*/}
         </Grid>
         {/* Pdf Controls; Rubric Assessment */}
         <Grid item xs={12} sm={4} md={2}>
-          <Paper variant="outlined">
-            {pdfControls}
-          </Paper>
-          <br />
           <Paper variant="outlined">
             <FormControl required={true} style={{ minWidth: 200, marginBottom: "1em" }}>
               <InputLabel id={"AssignRubriclabel"}>Select a Rubric</InputLabel>

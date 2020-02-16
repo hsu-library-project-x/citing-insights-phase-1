@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import {TextField, Button} from "@material-ui/core";
-import { Document, Outline, pdfjs } from "react-pdf";
+import { Document, Outline, pdfjs, Page } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "./pdfComponent.css";
 
@@ -12,107 +11,52 @@ class PdfControls extends Component {
         super(props);
         this.state = {
             numPages: null,
-            pageNumber: null,
-            searchText: '',
-            scale: null,
+            rawText:[{}]
         };
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.searchPdf = this.searchPdf.bind(this)
     }
-
-    searchPdf(){
-        //search through virtual text layers for a query
-
-        //keep result of all pages
-
-        // check if rendered
-        return;
-    }
-
-    //call when input changes to update the state
-    handleInputChange(event) {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
-        this.setState({
-            [name]: value
-        });
-    }
-
-    componentWillReceiveProps(nextProps) {
-        let bytes = new Uint8Array(nextProps.data);
-        let blob = new Blob([bytes], { type: "application/pdf;base64" });
-        this.setState({
-            pdf: blob
-        });
-    }
-
-    onChange = event => this.setState({ searchText: event.target.value });
-
-    //Here is where we pass nack up to analyze, then pass down to PdfComponent
-    onItemClick = ({ pageNumber }) => this.props.passPageInfo(pageNumber);
 
     onDocumentLoadSuccess = (document) => {
         const { numPages } = document;
-        this.setState({
-            numPages,
-            pageNumber:1,
-        });
+        this.setState({numPages});
+
     };
 
-    changePage(offset) {
-        let newNum = this.props.pageNumber === null ? 1 : this.props.pageNumber;
-        newNum = newNum + offset;
-        this.props.passPageInfo(newNum);
-    };
+    getLayers(items,pageNum){
+        this.setState(prevState => ({
+            rawText: {                   // object that we want to update
+                ...prevState.rawText,    // keep all other key-value pairs
+                [pageNum]: items       // update the value of specific key
+            }
+        }));
+        this.props.PassUpText(this.state.rawText);
+    }
 
-    changeScale(offset) {
-        let scale = this.props.scale === null ? 1.0 : this.props.scale;
-        scale = scale + offset;
-        this.props.passScaleInfo(scale);
-    };
-
-    previousPage = () => this.changePage(-1);
-
-    nextPage = () => this.changePage(1);
-
-    zoomIn = () => this.changeScale(0.25);
-
-    zoomOut = () => this.changeScale(-0.25);
-
+    renderLoader(){
+        return "";
+    }
 
     render() {
-        const { numPages,  /*searchText*/} = this.state;
-        const { pageNumber, scale } = this.props;
-
+        const { numPages} = this.state;
         return (
             <div className="document-wrapper">
                 <Document
-                    file={this.state.pdf}
-                    onLoadSuccess={this.onDocumentLoadSuccess}>
-                    <div className="zoom-controls">
-                        <button disabled={scale <= 0.1} onClick={this.zoomOut} type="button">
-                            - </button>
-                        Zoom
-                        <button disabled={scale >= 6.0} onClick={this.zoomIn} type="button" >
-                            + </button>
-                    </div>
-                    <div className="page-controls">
-                        <button disabled={pageNumber <= 1} onClick={this.previousPage} type="button">
-                            Previous </button>
-                        {` Page ${pageNumber || (numPages ? 1 : '--')} of ${numPages || '--'} `}
-                        <button disabled={pageNumber >= numPages} onClick={this.nextPage} type="button" >
-                            Next </button>
-                    </div>
+                    file={this.props.pdf}
+                    onLoadSuccess={this.onDocumentLoadSuccess}
+                    loading={this.renderLoader}
+                >
+                    {Array.from(
+                        new Array(numPages),
+                        (el, index) => (
+                            <Page
+                                loading={this.renderLoader}
+                                onGetTextSuccess={(items) => this.getLayers(items,index+1)}
+                                key={`page_${index + 1}`}
+                                pageNumber={index + 1}
+                            />
+                        ),
+                    )}
                     <Outline className="outline-list" onItemClick={this.onItemClick} />
                 </Document>
-                <TextField
-                    variant={'outlined'}
-                    label={'Search'}
-                    onChange={this.handleInputChange}
-                    name="searchText"
-                    style={{marginBottom: "1em"}} />
-                <Button variant={'contained'} color={'secondary'} onClick={this.searchPdf}> Find </Button>
             </div>
         );
     }
