@@ -5,6 +5,8 @@ import {TextField, Toolbar,InputAdornment,IconButton, Tooltip  } from '@material
 import SearchIcon from '@material-ui/icons/Search'
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "./pdfComponent.css";
 import PdfControls from "./PdfControls.jsx";
@@ -34,10 +36,10 @@ class PdfComponent extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.Search = this.Search.bind(this);
     this.PassUpText = this.PassUpText.bind(this);
-    this.highlightMatch = this.highlightMatch.bind(this);
+
     this.GUTTER_SIZE = 5;
     this.gridRef = React.createRef();
-    this.pageRef = React.createRef();
+
   }
 
 
@@ -64,15 +66,6 @@ class PdfComponent extends Component {
     });
   };
 
-    highlightMatch(matches, search){
-        let that=this;
-        let page = that.pageRef;
-        console.log(page);
-        // matches.forEach(match=>{
-        //     if(match[1]===)
-        // })
-    }
-
      highlightPattern = (text, pattern) => {
          let regexp = new RegExp(pattern,'gi');
         const splitText = text.split(regexp);
@@ -94,21 +87,23 @@ class PdfComponent extends Component {
 
   Search(subject, objects){
       let matches =[];
-      let regexp = new RegExp(subject,'gi');
-      for (let k=1; k<Object.keys(objects).length;k++){
-          for (let i=0; i<objects[k].length; i++){
-              if (objects[k][i]['str'].match(regexp)) {
-                  //string, page, line
-                  matches.push([objects[k][i]['str'],k,i]);
+
+      if(subject !== ""){
+          let regexp = new RegExp(subject,'gi');
+          for (let k=1; k<Object.keys(objects).length;k++){
+              for (let i=0; i<objects[k].length; i++){
+                  // console.log(objects[k][i]);
+                  if (objects[k][i]['str'].match(regexp)) {
+                      //string, page, line
+                      matches.push([objects[k][i]['str'],k,i]);
+                  }
               }
           }
       }
+
       this.setState({
           matches: matches
-      }, ()=>{
-          this.highlightMatch(matches,subject)
       });
-
       return matches;
   };
 
@@ -179,7 +174,7 @@ class PdfComponent extends Component {
           <Page
               // onGetTextSuccess={(items) => this.getLayers(items,rowIndex+1)}
               customTextRenderer={this.makeTextRenderer(this.state.searchText)}
-              onLoadSuccess={()=>console.log(rowIndex+1)}
+              // onLoadSuccess={()=>console.log(rowIndex+1)}
               height={this.state.rowHeight}
               key={`page_${rowIndex + 1}`}
               pageNumber={rowIndex + 1}
@@ -223,17 +218,19 @@ class PdfComponent extends Component {
                     ),
                 }}
               />
-              <Tooltip title="Zoom In">
-                  <IconButton aria-label="zoom-in" color="primary" onClick={this.ZoomIn}>
-                      <ZoomInIcon />
+              <p> {this.state.matches.length} matches</p>
+              <Tooltip title="Previous">
+                  <IconButton aria-label="previous-search-result" color="primary" onClick={this.ZoomIn}>
+                      <NavigateBeforeIcon />
                   </IconButton>
               </Tooltip>
-              <Tooltip title="Zoom Out">
-                  <IconButton aria-label="zoom-out" color="primary"  onClick={this.ZoomOut}>
-                      <ZoomOutIcon />
+              <Tooltip title="Next">
+                  <IconButton aria-label="next-search-result" color="primary" onClick={this.ZoomIn}>
+                      <NavigateNextIcon />
                   </IconButton>
               </Tooltip>
-              <p> Go to Page
+
+              <p> Go to Page </p>
               <TextField
                   onChange={this.ScrollTo}
                   aria-label="Page Number"
@@ -249,8 +246,18 @@ class PdfComponent extends Component {
                      }}
 
                   />
-              of {this.state.numPages}
-              </p>
+              <p> of {this.state.numPages} </p>
+              <Tooltip title="Zoom Out">
+                  <IconButton aria-label="zoom-out" color="primary"  onClick={this.ZoomOut}>
+                      <ZoomOutIcon />
+                  </IconButton>
+              </Tooltip>
+              <Tooltip title="Zoom In">
+                  <IconButton aria-label="zoom-in" color="primary" onClick={this.ZoomIn}>
+                      <ZoomInIcon />
+                  </IconButton>
+              </Tooltip>
+
           </Toolbar>
 
         <Document

@@ -27,8 +27,8 @@ class PdfControls extends Component {
                 ...prevState.rawText,    // keep all other key-value pairs
                 [pageNum]: items       // update the value of specific key
             }
-        }));
-        this.props.PassUpText(this.state.rawText);
+        }), ()=> this.props.PassUpText(this.state.rawText));
+
     }
 
     renderLoader(){
@@ -49,7 +49,7 @@ class PdfControls extends Component {
                         (el, index) => (
                             <Page
                                 loading={this.renderLoader}
-                                onGetTextSuccess={(items) => this.getLayers(items,index+1)}
+                                onGetTextSuccess={(items) => this.getLayers(items,index + 1)}
                                 key={`page_${index + 1}`}
                                 pageNumber={index + 1}
                             />
