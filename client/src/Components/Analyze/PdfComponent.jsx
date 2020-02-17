@@ -34,10 +34,12 @@ class PdfComponent extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.Search = this.Search.bind(this);
     this.PassUpText = this.PassUpText.bind(this);
-
+    this.highlightMatch = this.highlightMatch.bind(this);
     this.GUTTER_SIZE = 5;
     this.gridRef = React.createRef();
+    this.pageRef = React.createRef();
   }
+
 
     PassUpText(rawText) {
         this.setState( ({
@@ -62,14 +64,24 @@ class PdfComponent extends Component {
     });
   };
 
-  highlightPattern = (text, pattern) => {
-        const splitText = text.split(pattern);
+    highlightMatch(matches, search){
+        let that=this;
+        let page = that.pageRef;
+        console.log(page);
+        // matches.forEach(match=>{
+        //     if(match[1]===)
+        // })
+    }
+
+     highlightPattern = (text, pattern) => {
+         let regexp = new RegExp(pattern,'gi');
+        const splitText = text.split(regexp);
 
         if (splitText.length <= 1) {
             return text;
         }
 
-        const matches = text.match(pattern);
+        const matches = text.match(regexp);
 
         return splitText.reduce((arr, element, index) => (matches[index] ? [
             ...arr,
@@ -78,11 +90,11 @@ class PdfComponent extends Component {
                 {matches[index]}
             </mark>,
         ] : [...arr, element]), []);
-   };
+    };
 
   Search(subject, objects){
       let matches =[];
-      let regexp = new RegExp(subject, 'g');
+      let regexp = new RegExp(subject,'gi');
       for (let k=1; k<Object.keys(objects).length;k++){
           for (let i=0; i<objects[k].length; i++){
               if (objects[k][i]['str'].match(regexp)) {
@@ -93,6 +105,8 @@ class PdfComponent extends Component {
       }
       this.setState({
           matches: matches
+      }, ()=>{
+          this.highlightMatch(matches,subject)
       });
 
       return matches;
@@ -102,8 +116,9 @@ class PdfComponent extends Component {
     handleInputChange(event) {
         const target = event.target;
         const value = target.value;
+        const name=target.name;
+        this.setState({[name]:value});
         this.Search(value, this.state.rawText);
-        console.log(this.state.matches);
     }
 
   ZoomIn(){
@@ -129,13 +144,14 @@ class PdfComponent extends Component {
       let that = this;
       let page= event.target.value;
 
-    that.gridRef.current.scrollToItem({
-        columnIndex: 1,
-        rowIndex: page-1,
-    });
+        that.gridRef.current.scrollToItem({
+            columnIndex: 1,
+            rowIndex: page-1,
+        });
     }
+    makeTextRenderer = searchText => textItem => this.highlightPattern(textItem.str, searchText);
 
-  GenerateGrid = () => {
+    GenerateGrid = () => {
     const innerElementType = forwardRef(({ style, ...rest }, ref) => (
         <div
             ref={ref}
@@ -162,6 +178,8 @@ class PdfComponent extends Component {
         >
           <Page
               // onGetTextSuccess={(items) => this.getLayers(items,rowIndex+1)}
+              customTextRenderer={this.makeTextRenderer(this.state.searchText)}
+              onLoadSuccess={()=>console.log(rowIndex+1)}
               height={this.state.rowHeight}
               key={`page_${rowIndex + 1}`}
               pageNumber={rowIndex + 1}
@@ -234,11 +252,7 @@ class PdfComponent extends Component {
               of {this.state.numPages}
               </p>
           </Toolbar>
-          <PdfControls
-              PassUpText={this.PassUpText}
-              pageNum={this.state.pageNumber}
-              pdf={this.state.pdf}
-          />
+
         <Document
           file={this.state.pdf}
           onLoadSuccess={this.onDocumentLoadSuccess}
@@ -247,6 +261,11 @@ class PdfComponent extends Component {
         >
           {this.GenerateGrid()}
         </Document>
+          <PdfControls
+              PassUpText={this.PassUpText}
+              pageNum={this.state.pageNumber}
+              pdf={this.state.pdf}
+          />
       </div>
     );
   }
