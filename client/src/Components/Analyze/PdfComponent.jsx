@@ -19,20 +19,23 @@ class PdfComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      numPages: null,
-      pageNumber: this.props.pageNumber,
-      searchText: '',
-      pdf: new Blob([this.props.data], { type: "application/pdf;base64" }),
-      scale: 1.0,
-      columnWidth:  window.innerWidth/2,
-      rowHeight:  1.5* window.innerHeight,
-      rawText:[{}],
-       matches:[],
+        numPages: null,
+        pageNumber: this.props.pageNumber,
+        searchText: '',
+        pdf: new Blob([this.props.data], { type: "application/pdf;base64" }),
+        scale: 1.0,
+        columnWidth:  window.innerWidth/2,
+        rowHeight:  1.5* window.innerHeight,
+        rawText:[{}],
+        matches:[],
+        loadedPage:1,
+        currentMatch:null,
     };
 
     this.ZoomIn = this.ZoomIn.bind(this);
     this.ZoomOut = this.ZoomOut.bind(this);
     this.ScrollTo = this.ScrollTo.bind(this);
+    this.SearchScroll = this.SearchScroll.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.Search = this.Search.bind(this);
     this.PassUpText = this.PassUpText.bind(this);
@@ -50,24 +53,24 @@ class PdfComponent extends Component {
     };
 
 
-  componentWillReceiveProps(nextProps) {
-    let bytes = new Uint8Array(nextProps.data);
-    let blob = new Blob([bytes], { type: "application/pdf;base64" });
-    this.setState({
-      pdf: blob
-    })
-  }
+    componentWillReceiveProps(nextProps) {
+        let bytes = new Uint8Array(nextProps.data);
+        let blob = new Blob([bytes], { type: "application/pdf;base64" });
+        this.setState({
+          pdf: blob
+        })
+    }
 
-  onDocumentLoadSuccess = (document) => {
-    const { numPages } = document;
-    this.setState({
-      numPages,
-      pageNumber: 1,
-    });
-  };
+    onDocumentLoadSuccess = (document) => {
+        const { numPages } = document;
+        this.setState({
+          numPages,
+          pageNumber: 1,
+        });
+    };
 
      highlightPattern = (text, pattern) => {
-         let regexp = new RegExp(pattern,'gi');
+        let regexp = new RegExp(pattern,'gi');
         const splitText = text.split(regexp);
 
         if (splitText.length <= 1) {
@@ -85,27 +88,48 @@ class PdfComponent extends Component {
         ] : [...arr, element]), []);
     };
 
-  Search(subject, objects){
-      let matches =[];
+    SearchScroll(){
+        let that = this;
+        let match = this.state.matches[this.state.currentMatch];
+            if(match[1] === this.state.loadedPage){
+               return;
+            }
+           else{
+                that.gridRef.current.scrollToItem({
+                    columnIndex: 1,
+                    rowIndex: match[1]-1,
+                });
+           }
 
-      if(subject !== ""){
-          let regexp = new RegExp(subject,'gi');
-          for (let k=1; k<Object.keys(objects).length;k++){
-              for (let i=0; i<objects[k].length; i++){
-                  // console.log(objects[k][i]);
-                  if (objects[k][i]['str'].match(regexp)) {
-                      //string, page, line
-                      matches.push([objects[k][i]['str'],k,i]);
+    }
+
+     Search(subject, objects){
+          let matches =[];
+          let current = null;
+
+          if(subject !== ""){
+              let regexp = new RegExp(subject,'gi');
+              for (let k=1; k<Object.keys(objects).length;k++){
+                  for (let i=0; i<objects[k].length; i++){
+                      // console.log(objects[k][i]);
+                      if (objects[k][i]['str'].match(regexp)) {
+                          //string, page, line
+                          matches.push([objects[k][i]['str'],k,i]);
+                      }
                   }
               }
-          }
-      }
+              if(matches.length >= 1){
+                  current=1;
+              }
 
-      this.setState({
-          matches: matches
-      });
-      return matches;
-  };
+          }
+
+          this.setState({
+              matches: matches,
+              currentMatch:current,
+          });
+          return matches;
+      };
 
     // call when input changes to update the state
     handleInputChange(event) {
@@ -116,14 +140,26 @@ class PdfComponent extends Component {
         this.Search(value, this.state.rawText);
     }
 
-  ZoomIn(){
-      let offset=0.25 ;
+    PreviousResult(){
+        this.setState((prevState) => ({
+            currentMatch:prevState.currentMatch - 1
+        }));
+    }
 
-      this.setState( {
-          columnWidth:this.state.columnWidth + (this.state.columnWidth * offset),
-          rowHeight: this.state.rowHeight + (this.state.rowHeight * offset),
-      });
-  }
+    NextResult(){
+        this.setState((prevState) => ({
+            currentMatch:prevState.currentMatch + 1
+        }));
+    }
+
+    ZoomIn(){
+          let offset=0.25 ;
+
+          this.setState( {
+              columnWidth:this.state.columnWidth + (this.state.columnWidth * offset),
+              rowHeight: this.state.rowHeight + (this.state.rowHeight * offset),
+          });
+    }
 
     ZoomOut(){
         let offset=-0.25 ;
@@ -172,9 +208,8 @@ class PdfComponent extends Component {
             }}
         >
           <Page
-              // onGetTextSuccess={(items) => this.getLayers(items,rowIndex+1)}
               customTextRenderer={this.makeTextRenderer(this.state.searchText)}
-              // onLoadSuccess={()=>console.log(rowIndex+1)}
+              // onLoadSuccess={()=>this.setState({loadedPage: rowIndex+1})}
               height={this.state.rowHeight}
               key={`page_${rowIndex + 1}`}
               pageNumber={rowIndex + 1}
@@ -218,14 +253,22 @@ class PdfComponent extends Component {
                     ),
                 }}
               />
-              <p> {this.state.matches.length} matches</p>
+              <p> {this.state.currentMatch ? this.state.currentMatch + " of ": null} {this.state.matches.length} matches</p>
               <Tooltip title="Previous">
-                  <IconButton aria-label="previous-search-result" color="primary" onClick={this.ZoomIn}>
+                  <IconButton
+                      aria-label="previous-search-result"
+                      color="primary"
+                      disabled={this.state.currentMatch <= 1}
+                      onClick={() =>this.PreviousResult()}>
                       <NavigateBeforeIcon />
                   </IconButton>
               </Tooltip>
               <Tooltip title="Next">
-                  <IconButton aria-label="next-search-result" color="primary" onClick={this.ZoomIn}>
+                  <IconButton
+                      aria-label="next-search-result"
+                      color="primary"
+                      disabled={this.state.currentMatch >= this.state.matches.length}
+                      onClick={() => this.NextResult()}>
                       <NavigateNextIcon />
                   </IconButton>
               </Tooltip>
@@ -235,6 +278,7 @@ class PdfComponent extends Component {
                   onChange={this.ScrollTo}
                   aria-label="Page Number"
                   type="number"
+                  defaultValue={1}
                   size={'small'}
                   InputLabelProps={{
                   shrink: true,}}
