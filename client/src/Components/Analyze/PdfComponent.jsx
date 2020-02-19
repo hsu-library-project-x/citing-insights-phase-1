@@ -1,7 +1,7 @@
 import React, { forwardRef,Component } from "react";
 import {Document, Page, pdfjs} from "react-pdf";
 import { FixedSizeGrid   } from "react-window";
-import {TextField, Toolbar,InputAdornment,IconButton, Tooltip  } from '@material-ui/core';
+import {TextField, Toolbar,InputAdornment,IconButton, Tooltip , AppBar } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search'
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
@@ -240,83 +240,84 @@ class PdfComponent extends Component {
   render() {
     return (
       <div className="document-wrapper">
-          <Toolbar>
-              <TextField
-                name={'searchText'}
-                onChange={this.handleInputChange}
-                placeholder={"search"}
-                InputProps={{
-                    startAdornment: (
-                        <InputAdornment position="start">
-                            <SearchIcon />
-                        </InputAdornment>
-                    ),
-                }}
-              />
-              <p> {this.state.currentMatch ? this.state.currentMatch + " of ": null} {this.state.matches.length} matches</p>
-              <Tooltip title="Previous">
-                  <IconButton
-                      aria-label="previous-search-result"
-                      color="primary"
-                      disabled={this.state.currentMatch <= 1}
-                      onClick={() =>this.PreviousResult()}>
-                      <NavigateBeforeIcon />
-                  </IconButton>
-              </Tooltip>
-              <Tooltip title="Next">
-                  <IconButton
-                      aria-label="next-search-result"
-                      color="primary"
-                      disabled={this.state.currentMatch >= this.state.matches.length}
-                      onClick={() => this.NextResult()}>
-                      <NavigateNextIcon />
-                  </IconButton>
-              </Tooltip>
-
-              <p> Go to Page </p>
-              <TextField
-                  onChange={this.ScrollTo}
-                  aria-label="Page Number"
-                  type="number"
-                  defaultValue={1}
-                  size={'small'}
-                  InputLabelProps={{
-                  shrink: true,}}
-                  InputProps={{
-                      inputProps: {
-                          max: this.state.numPages,
-                          min: 1
-                      }
-                     }}
-
+          <AppBar color={'transparent'} position="sticky" className={'pdf-ToolBar'}>
+              <Toolbar className={'pdf-ToolBar'} disableGutters={true}>
+                  <TextField
+                    name={'searchText'}
+                    onChange={this.handleInputChange}
+                    placeholder={"search"}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <SearchIcon />
+                            </InputAdornment>
+                        ),
+                    }}
                   />
-              <p> of {this.state.numPages} </p>
-              <Tooltip title="Zoom Out">
-                  <IconButton aria-label="zoom-out" color="primary"  onClick={this.ZoomOut}>
-                      <ZoomOutIcon />
-                  </IconButton>
-              </Tooltip>
-              <Tooltip title="Zoom In">
-                  <IconButton aria-label="zoom-in" color="primary" onClick={this.ZoomIn}>
-                      <ZoomInIcon />
-                  </IconButton>
-              </Tooltip>
+                  <p> {this.state.currentMatch ? this.state.currentMatch + " of ": null} {this.state.matches.length} matches</p>
+                  <Tooltip title="Previous">
+                      <IconButton
+                          aria-label="previous-search-result"
+                          color="primary"
+                          disabled={this.state.currentMatch <= 1}
+                          onClick={() =>this.PreviousResult()}>
+                          <NavigateBeforeIcon />
+                      </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Next">
+                      <IconButton
+                          aria-label="next-search-result"
+                          color="primary"
+                          disabled={this.state.currentMatch >= this.state.matches.length}
+                          onClick={() => this.NextResult()}>
+                          <NavigateNextIcon />
+                      </IconButton>
+                  </Tooltip>
 
-          </Toolbar>
+                  <p> Go to Page </p>
+                  <TextField
+                      onChange={this.ScrollTo}
+                      aria-label="Page Number"
+                      type="number"
+                      defaultValue={1}
+                      size={'small'}
+                      InputLabelProps={{
+                      shrink: true,}}
+                      InputProps={{
+                          inputProps: {
+                              max: this.state.numPages,
+                              min: 1
+                          }
+                         }}
 
-        <Document
-          file={this.state.pdf}
-          onLoadSuccess={this.onDocumentLoadSuccess}
-          className="pdf-container"
+                      />
+                  <p> of {this.state.numPages} </p>
+                  <Tooltip title="Zoom Out">
+                      <IconButton aria-label="zoom-out" color="primary"  onClick={this.ZoomOut}>
+                          <ZoomOutIcon />
+                      </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Zoom In">
+                      <IconButton aria-label="zoom-in" color="primary" onClick={this.ZoomIn}>
+                          <ZoomInIcon />
+                      </IconButton>
+                  </Tooltip>
+              </Toolbar>
+          </AppBar>
 
-        >
-          {this.GenerateGrid()}
-        </Document>
-          <PdfControls
-              PassUpText={this.PassUpText}
-              pageNum={this.state.pageNumber}
-              pdf={this.state.pdf}
-          />
+            <Document
+              file={this.state.pdf}
+              onLoadSuccess={this.onDocumentLoadSuccess}
+              className="pdf-container"
+
+            >
+              {this.GenerateGrid()}
+            </Document>
+              <PdfControls
+                  PassUpText={this.PassUpText}
+                  pageNum={this.state.pageNumber}
+                  pdf={this.state.pdf}
+              />
       </div>
     );
   }

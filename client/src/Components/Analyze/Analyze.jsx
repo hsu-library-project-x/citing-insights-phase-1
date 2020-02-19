@@ -348,7 +348,7 @@ class Analyze extends Component {
           </Paper>
         </Grid>
         {/* PDF Viewer */}
-        <Grid item xs={12} sm={4} md={8}>
+        <Grid item xs={12} sm={4} md={8} style={{backgroundColor:'rgb(160, 164, 167)'}}>
             {pdf}
         </Grid>
         {/* Pdf Controls; Rubric Assessment */}

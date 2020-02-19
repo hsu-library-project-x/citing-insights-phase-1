@@ -46,17 +46,17 @@ class Navibar extends Component {
         return (
             <MuiThemeProvider theme={theme}>
                 <AppBar color='primary' position="static">
-                    <Toolbar>
-                        <Grid container spacing={1}>
-                            <Grid item xs={4}>
-                                <Typography variant="h5" component="h1" color="inherit" align={'left'}>
+                    <Toolbar >
+                        <Grid  container spacing={1}>
+                            <Grid item xs={5}>
+                                <Typography variant="h4" component="h1" color="inherit" align='left' style={{marginTop:'0.3em'}}  >
                                    {this.props.configurations.institutionName}
                                 </Typography>
                             </Grid>
                             <Grid item xs={3}>
                                 <img alt={'citing insights logo'} src={logo} />
                             </Grid>
-                            <Grid item xs={4}></Grid>
+                            <Grid item xs={3}></Grid>
                             <Grid item xs={1}>
                                 {this.props.isAuthenticated ?
                                     <Tooltip title={this.props.isAuthenticated ? this.props.user.name : null} aria-label="username">

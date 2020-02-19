@@ -1,3 +1,25 @@
+span::selection {
+    background: #d0dcff;
+    /*background: #b3daff;*/
+    /*color:transparent;*/
+    color:black;
+
+}
+
+
+::-moz-selection { /* Code for Firefox */
+    background: #ccecff;
+    color:transparent;
+}
+
+.pdf-ToolBar{
+    align-content: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+
 .outline-list {
     display: block;
     overflow-y: scroll;
@@ -13,7 +35,9 @@
     display: flex;
     background: rgb(160, 164, 167);
     max-width: calc(100% - 2em);
-    margin: 1em;
+    margin-top: 0;
+    margin-left: 1em;
+    margin-right: 1em;
     justify-content: center;
 }
 
@@ -31,13 +55,6 @@
     margin: auto;
 }
 
-.zoom-controls {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: fit-content;
-    margin: 1em
-}
 .document-wrapper {
     max-height: 800px;
     overflow-y: auto;
