@@ -93,7 +93,7 @@ module.exports = function upload(req, res) {
                     }
                 ],
                 "paper_id": paper.id
-            }
+            };
             let studentPaperCtitaion = new citationModel(defaultCitation);
             studentPaperCtitaion.save(function (err, studentPaperCtitaion) {
                 if (err) {

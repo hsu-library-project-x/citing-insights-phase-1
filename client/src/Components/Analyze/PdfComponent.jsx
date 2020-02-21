@@ -1,7 +1,7 @@
 import React, { forwardRef,Component } from "react";
 import {Document, Page, pdfjs} from "react-pdf";
 import { FixedSizeGrid   } from "react-window";
-import {TextField, Toolbar,InputAdornment,IconButton, Tooltip , AppBar } from '@material-ui/core';
+import {TextField, Toolbar,InputAdornment,IconButton, Tooltip , AppBar , Container} from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search'
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
@@ -39,6 +39,9 @@ class PdfComponent extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.Search = this.Search.bind(this);
     this.PassUpText = this.PassUpText.bind(this);
+
+    this.windowHeight = window.innerHeight;
+    this.windowWidth = window.innerWidth/1.5;
 
     this.GUTTER_SIZE = 5;
     this.gridRef = React.createRef();
@@ -224,11 +227,11 @@ class PdfComponent extends Component {
         className="Grid"
         columnCount={1}
         columnWidth={this.state.columnWidth + this.GUTTER_SIZE}
-        height={this.state.rowHeight}
+        height={this.windowHeight}
         innerElementType={innerElementType}
         rowCount={this.state.numPages}
         rowHeight={this.state.rowHeight+ this.GUTTER_SIZE }
-        width={this.state.columnWidth}
+        width={this.windowWidth}
         ref={this.gridRef}
       >
         {Cell}
@@ -240,6 +243,7 @@ class PdfComponent extends Component {
   render() {
     return (
       <div className="document-wrapper">
+          {/*<Container maxWidth="md">*/}
           <AppBar color={'transparent'} position="sticky" className={'pdf-ToolBar'}>
               <Toolbar className={'pdf-ToolBar'} disableGutters={true}>
                   <TextField
@@ -304,15 +308,17 @@ class PdfComponent extends Component {
                   </Tooltip>
               </Toolbar>
           </AppBar>
-
+          {/*</Container>*/}
             <Document
               file={this.state.pdf}
               onLoadSuccess={this.onDocumentLoadSuccess}
               className="pdf-container"
 
+
             >
               {this.GenerateGrid()}
             </Document>
+          {/*pdf controls is not shown with a css display:hidden eventually I need to make mode efficiant*/}
               <PdfControls
                   PassUpText={this.PassUpText}
                   pageNum={this.state.pageNumber}

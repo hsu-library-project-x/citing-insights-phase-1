@@ -1,9 +1,13 @@
 span::selection {
     background: #d0dcff;
     /*background: #b3daff;*/
-    /*color:transparent;*/
-    color:black;
+    color:transparent;
+    /*color:black;*/
 
+}
+
+.hide-pdf{
+    display: none;
 }
 
 
@@ -13,10 +17,7 @@ span::selection {
 }
 
 .pdf-ToolBar{
-    align-content: center;
-    justify-content: center;
-    margin: 0;
-    padding: 0;
+     justify-content: center;
 }
 
 
@@ -33,26 +34,8 @@ span::selection {
 
 .pdf-container {
     display: flex;
-    background: rgb(160, 164, 167);
     max-width: calc(100% - 2em);
-    margin-top: 0;
     margin-left: 1em;
-    margin-right: 1em;
-    justify-content: center;
-}
-
-.pdf-viewer {
-    display: flex;
-    max-width: calc(100% - 2em);
-    justify-content: center;
-}
-
-.page-controls {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: fit-content;
-    margin: auto;
 }
 
 .document-wrapper {

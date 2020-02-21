@@ -38,7 +38,7 @@ class PdfControls extends Component {
     render() {
         const { numPages} = this.state;
         return (
-            <div className="document-wrapper">
+            <div className="hide-pdf">
                 <Document
                     file={this.props.pdf}
                     onLoadSuccess={this.onDocumentLoadSuccess}
