@@ -1,21 +1,12 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import {
-  Grid,
-  Select,
-  MenuItem,
-  Button,
-  FormControl,
-  Paper,
-  InputLabel,
-  TextField,
-} from '@material-ui/core';
+import { Grid, Select, MenuItem, Button, FormControl, Paper, InputLabel, TextField, Fab} from '@material-ui/core';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import RubricAccordion from './RubricAccordion.jsx';
 import RubricSubmit from './RubricSubmit.jsx';
 import PdfComponent from "./PdfComponent.jsx";
 import DiscoveryTool from './DiscoveryTool.jsx';
 import Citation from './Citation.jsx'
-
 
 class Analyze extends Component {
   constructor(props) {
@@ -170,7 +161,6 @@ class Analyze extends Component {
     });
   }
 
-
   //this saves annotations and rubric values associated with citation
   handleSaveCitations() {
     let radio_value = "";
@@ -270,7 +260,6 @@ class Analyze extends Component {
 
   render() {
     let pdf;
-
     let pageNum = this.state.pageNumber === null ? 1 : this.state.pageNumber;
 
     if (this.state.current_pdf_data === "this must get set") {
@@ -282,7 +271,6 @@ class Analyze extends Component {
       />;
 
     }
-
 
     let rubrics = this.state.AvailableRubrics;
     let rubricList = rubrics.map((rubric) =>
@@ -297,100 +285,123 @@ class Analyze extends Component {
 
     return (
       <Grid
-        container={true}
-        direction="row"
-        justify="space-evenly"
-        alignItems="center"
-        spacing={1}>
+          container
+          direction="row"
+          // direction="column"
+          justify="flex-start"
+          alignItems="flex-start"
+      >
         {/* Paper + citation selection; Discovery Tool */}
         <Grid item xs={12} sm={4} md={2}>
-
-          <Paper variant="outlined">
-            <Button variant={'contained'} color={'primary'}
-              onClick={() => this.props.history.push('/tasks/analyzemenu')} >
-              Analyze Different Assignment
-            </Button>
-            <h3>Paper</h3>
-            <FormControl required={true} style={{ minWidth: 200, marginBottom: "1em" }}>
-              <InputLabel id={"selectPaperlabel"}>Select a Paper</InputLabel>
-              <Select
-                style={{ textAlign: "center" }}
-                labelId={"selectPaperlabel"}
-                onChange={this.handleInputChange}
-                defaultValue={""}
-                value={this.state.curPaperId}
-                inputProps={{
-                  name: 'curPaperId',
-                }}
-              >
-                <MenuItem value="" disabled >select paper </MenuItem>
-                {paperList}
-              </Select>
-            </FormControl>
-            <h3>Citations</h3>
+          {/*<Paper variant="outlined">*/}
+          <Fab color='primary' variant="extended" onClick={() => this.props.history.push('/tasks/analyzemenu')} >
+            <ArrowBackIcon />
+            Change Assignment
+          </Fab>
+        </Grid>
+        <Grid
+            // container={true}
+            // direction="row"
+            // justify="space-evenly"
+            // alignItems="center"
+            container
+            direction="row"
+            justify="flex-start"
+            alignItems="flex-start"
+            spacing={1}>
+          <Grid item xs={12} sm={4} md={2}>
+            {/*<Paper variant="outlined">*/}
             {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
-              <Citation
-                citations={this.state.citations}
-                current_citation_id={this.state.current_citation_id}
-                updateCitationId={this.updateCitationId}
-              /> : null
+                <DiscoveryTool
+                    citations={this.state.citations}
+                    oneSearchUrl={this.props.oneSearchUrl}
+                    current_citation_id={this.state.current_citation_id}
+                    key={this.state.current_citation_id}
+                /> : null}
+            {/*</Paper>*/}
+          </Grid>
+          {/* PDF Viewer */}
+          <Grid item xs={12} sm={4} md={8} style={{backgroundColor:'rgb(160, 164, 167)'}}>
+            {pdf}
+          </Grid>
+          <Grid item xs={12} sm={4} md={2}>
+            {/*<h3 style={{float:"left", margin:0}}>Citations</h3>*/}
+            {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
+                <Citation
+                    citations={this.state.citations}
+                    current_citation_id={this.state.current_citation_id}
+                    updateCitationId={this.updateCitationId}
+                /> : null
             }
-          </Paper>
-          <br />
-          <Paper variant="outlined">
-            {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
-              <DiscoveryTool
-                citations={this.state.citations}
-                oneSearchUrl={this.props.oneSearchUrl}
-                current_citation_id={this.state.current_citation_id}
-                key={this.state.current_citation_id}
-              /> : null}
-          </Paper>
-        </Grid>
-        {/* PDF Viewer */}
-        <Grid item xs={12} sm={4} md={8}
-              style={{backgroundColor:'rgb(160, 164, 167)'}}>
-        {/*  <Grid item xs={12} sm={4} md={8} >*/}
-          {pdf}
-        </Grid>
-        {/* Pdf Controls; Rubric Assessment */}
-        <Grid item xs={12} sm={4} md={2}>
-          <Paper variant="outlined">
-            <FormControl required={true} style={{ minWidth: 200, marginBottom: "1em" }}>
+            {/*</Paper>*/}
+            <br />
+            {/*<Paper variant="outlined">*/}
+            <FormControl style={{ minWidth: 200, maxWidth:200, marginBottom: "1em" }}>
               <InputLabel id={"AssignRubriclabel"}>Select a Rubric</InputLabel>
               <Select
-                style={{ textAlign: "center" }}
-                labelId={"AssignRubriclabel"}
-                defaultValue={""}
-                onChange={this.handleGetRubric}
-                inputProps={{
-                  name: 'AssignRubric',
-                }}
+                  style={{ textAlign: "center" }}
+                  labelId={"AssignRubriclabel"}
+                  defaultValue={""}
+                  onChange={this.handleGetRubric}
+                  autoWidth={true}
+                  inputProps={{
+                    name: 'AssignRubric',
+                  }}
               >
                 <MenuItem value="" disabled >select rubric</MenuItem>
                 {rubricList}
               </Select>
             </FormControl>
             <RubricAccordion
-              currentRubric={this.state.currentRubric}
-              allowZeroExpanded={true}
+                currentRubric={this.state.currentRubric}
+                allowZeroExpanded={true}
             />
             <TextField
-              id="annotation"
-              label="Annotation"
-              multiline
-              variant="filled"
-              onChange={this.handleInputChange}
-              inputProps={{
-                name: 'annotation',
-              }}
+                id="annotation"
+                label="Annotation"
+                multiline
+                variant="filled"
+                onChange={this.handleInputChange}
+                inputProps={{
+                  name: 'annotation',
+                }}
             />
-            <Button variant={"contained"} color={"primary"} onClick={this.handleSaveCitations}>Save Rubric Value </Button>
-          </Paper>
-        </Grid>
-        {this.state.assessingRubric ? <RubricSubmit sourceText={this.state.sourceText} unmountMe={this.handleChildUnmount} curRubric={this.state.currentRubric} curPaper={this.state.curPaperId} /> : null}
-      </Grid>
+            <Button variant={"contained"} color={"primary"} onClick={this.handleSaveCitations}>
+              Save Rubric Value
+            </Button>
+            {/*</Paper>*/}
 
+          {this.state.assessingRubric ?
+              <RubricSubmit
+                  sourceText={this.state.sourceText}
+                  unmountMe={this.handleChildUnmount}
+                  curRubric={this.state.currentRubric}
+                  curPaper={this.state.curPaperId} /> : null}
+          </Grid>
+        </Grid>
+
+          <Grid item xs={12} sm={4} md={2}>
+            {/*<h3 style={{float:"left", margin:0}}>Paper</h3>*/}
+            <FormControl required={true} style={{ minWidth: 200, marginBottom: "1em" }}>
+              <InputLabel id={"selectPaperlabel"} style={{textAlign:'center'}}>Select a Paper</InputLabel>
+              <Select
+                  variant={"filled"}
+                  style={{ textAlign: "center" }}
+                  labelId={"selectPaperlabel"}
+                  onChange={this.handleInputChange}
+                  defaultValue={""}
+                  autoWidth={true}
+                  value={this.state.curPaperId}
+                  inputProps={{
+                    name: 'curPaperId',
+                  }}
+              >
+                <MenuItem value="" disabled >select paper </MenuItem>
+                {paperList}
+              </Select>
+            </FormControl>
+          </Grid>
+      </Grid>
     );
   }
 }

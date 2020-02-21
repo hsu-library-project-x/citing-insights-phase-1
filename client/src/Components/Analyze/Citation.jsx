@@ -79,9 +79,9 @@ class Citation extends Component {
                     <InputLabel id={"selectCitationlabel"}>Select a Citation</InputLabel>
                     <Select
                         style={{textAlign:"center"}}
+                        variant={'filled'}
                         labelId={"selectCitationlabel"}
                         value={this.state.current_citation_id}
-                        defaultValue={""}
                         onChange={this.handleCitationChange}
                         inputProps={{
                             name: 'className',

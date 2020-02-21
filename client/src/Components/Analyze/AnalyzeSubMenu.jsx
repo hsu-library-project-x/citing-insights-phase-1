@@ -8,11 +8,11 @@ class AnalyzeSubMenu extends Component {
     super(props);
     this.state = {
       className: '',
-      selectedAssignmentId: '',
+      selectedAssignmentId: null,
       assignmentName: '',
       AvailableCourses: [],
       AvailableAssignments: [],
-      redirect: false
+      redirect: false,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -121,7 +121,7 @@ class AnalyzeSubMenu extends Component {
             </Select>
           </FormControl>
             <br />
-          <Button type="submit" color={"primary"} variant={"contained"}> Submit </Button>
+          <Button type="submit" color={"primary"} variant={"contained"} disabled={this.state.selectedAssignmentId === null}> Submit </Button>
         </form>
       </Container>
     );
