@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Grid, Select, MenuItem, Button, FormControl, Paper, InputLabel, TextField, Fab} from '@material-ui/core';
+import { Grid, Select, MenuItem, Button, FormControl, Tooltip, InputLabel, TextField, IconButton} from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import RubricAccordion from './RubricAccordion.jsx';
 import RubricSubmit from './RubricSubmit.jsx';
 import PdfComponent from "./PdfComponent.jsx";
 import DiscoveryTool from './DiscoveryTool.jsx';
 import Citation from './Citation.jsx'
+import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 
 class Analyze extends Component {
   constructor(props) {
@@ -291,13 +292,18 @@ class Analyze extends Component {
           justify="flex-start"
           alignItems="flex-start"
       >
-        {/* Paper + citation selection; Discovery Tool */}
         <Grid item xs={12} sm={4} md={2}>
           {/*<Paper variant="outlined">*/}
-          <Fab color='primary' variant="extended" onClick={() => this.props.history.push('/tasks/analyzemenu')} >
+        <Tooltip title="Change Assignment">
+          <IconButton
+              aria-label="change-assignment"
+              color="primary"
+              onClick={() => this.props.history.push('/tasks/analyzemenu')}>
             <ArrowBackIcon />
-            Change Assignment
-          </Fab>
+          </IconButton>
+        </Tooltip>
+
+
         </Grid>
         <Grid
             // container={true}
@@ -310,7 +316,25 @@ class Analyze extends Component {
             alignItems="flex-start"
             spacing={1}>
           <Grid item xs={12} sm={4} md={2}>
+
             {/*<Paper variant="outlined">*/}
+            <FormControl required={true} style={{ minWidth: 150}}>
+              <InputLabel id={"selectPaperlabel"} style={{textAlign:'center'}}>Select a Paper</InputLabel>
+              <Select
+                  variant={"filled"}
+                  style={{ textAlign: "center" }}
+                  labelId={"selectPaperlabel"}
+                  onChange={this.handleInputChange}
+                  defaultValue={""}
+                  value={this.state.curPaperId}
+                  inputProps={{
+                    name: 'curPaperId',
+                  }}
+              >
+                <MenuItem value="" disabled >select paper </MenuItem>
+                {paperList}
+              </Select>
+            </FormControl>
             {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
                 <DiscoveryTool
                     citations={this.state.citations}
@@ -382,24 +406,7 @@ class Analyze extends Component {
 
           <Grid item xs={12} sm={4} md={2}>
             {/*<h3 style={{float:"left", margin:0}}>Paper</h3>*/}
-            <FormControl required={true} style={{ minWidth: 200, marginBottom: "1em" }}>
-              <InputLabel id={"selectPaperlabel"} style={{textAlign:'center'}}>Select a Paper</InputLabel>
-              <Select
-                  variant={"filled"}
-                  style={{ textAlign: "center" }}
-                  labelId={"selectPaperlabel"}
-                  onChange={this.handleInputChange}
-                  defaultValue={""}
-                  autoWidth={true}
-                  value={this.state.curPaperId}
-                  inputProps={{
-                    name: 'curPaperId',
-                  }}
-              >
-                <MenuItem value="" disabled >select paper </MenuItem>
-                {paperList}
-              </Select>
-            </FormControl>
+
           </Grid>
       </Grid>
     );
