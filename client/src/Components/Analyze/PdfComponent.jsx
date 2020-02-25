@@ -48,6 +48,16 @@ class PdfComponent extends Component {
 
   }
 
+    // removeTextLayerOffset() {
+    //     const textLayers = document.querySelectorAll(".react-pdf__Page__textContent");
+    //     textLayers.forEach(layer => {
+    //         const { style } = layer;
+    //         style.top = "0";
+    //         style.left = "0";
+    //         style.transform = "";
+    //         style.margin = "auto";
+    //     });
+    // }
 
     PassUpText(rawText) {
         this.setState( ({
@@ -94,15 +104,20 @@ class PdfComponent extends Component {
     SearchScroll(){
         let that = this;
         let match = this.state.matches[this.state.currentMatch];
+        // console.log(this.state.matches);
+        // console.log(this.state.currentMatch);
+        // console.log(match);
+        if(match !== undefined){
             if(match[1] === this.state.loadedPage){
-               return;
+                return;
             }
-           else{
+            else{
                 that.gridRef.current.scrollToItem({
                     columnIndex: 1,
                     rowIndex: match[1]-1,
                 });
-           }
+            }
+        }
 
     }
 
@@ -130,7 +145,7 @@ class PdfComponent extends Component {
           this.setState({
               matches: matches,
               currentMatch:current,
-          });
+          }, () => this.SearchScroll());
           return matches;
       };
 
@@ -144,15 +159,18 @@ class PdfComponent extends Component {
     }
 
     PreviousResult(){
+        console.log(this.state.currentMatch);
         this.setState((prevState) => ({
             currentMatch:prevState.currentMatch - 1
-        }));
+        }),this.SearchScroll());
+        console.log(this.state.currentMatch);
+
     }
 
     NextResult(){
         this.setState((prevState) => ({
             currentMatch:prevState.currentMatch + 1
-        }));
+        }),this.SearchScroll());
     }
 
     ZoomIn(){
@@ -179,6 +197,7 @@ class PdfComponent extends Component {
       let page= event.target.value;
 
         that.gridRef.current.scrollToItem({
+            align: "start",
             columnIndex: 1,
             rowIndex: page-1,
         });
@@ -212,6 +231,7 @@ class PdfComponent extends Component {
         >
           <Page
               customTextRenderer={this.makeTextRenderer(this.state.searchText)}
+              // onLoadSuccess={() => this.removeTextLayerOffset()}
               // onLoadSuccess={()=>this.setState({loadedPage: rowIndex+1})}
               height={this.state.rowHeight}
               key={`page_${rowIndex + 1}`}
@@ -313,8 +333,6 @@ class PdfComponent extends Component {
               file={this.state.pdf}
               onLoadSuccess={this.onDocumentLoadSuccess}
               className="pdf-container"
-
-
             >
               {this.GenerateGrid()}
             </Document>
