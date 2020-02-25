@@ -163,7 +163,9 @@ class Analyze extends Component {
   }
 
   //this saves annotations and rubric values associated with citation
-  handleSaveCitations() {
+  async handleSaveCitations() {
+    var that = this;
+
     let radio_value = "";
     let radio_index = 0;
 
@@ -182,28 +184,100 @@ class Analyze extends Component {
       annotation: this.state.annotation
     };
 
-    fetch(`/citations/add_assessment/${this.state.current_citation_id}`, {
-      method: "PUT",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(assessment)
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Assessment Saved:', assessment);
-      })
-      .catch((error) => {
-        console.error('Error saving Assessment:', error);
 
-        if (window.confirm('Rewrite existing assessment?')) {
-          //  User chose to rewrite
 
+    //Grab current citation from DB and check to see if rubric has already been assessed.
+    let response = await fetch(`/citations/${that.state.current_citation_id}`);
+    let json = await response.json();
+    //Check to see if assessment has already been made.
+    let assessments = json.assessments;
+
+    if (assessments.length !== 0) {
+
+      //Look at each assessment
+      for (let index in assessments) {
+
+        //console.log(`current rub: ${that.state.rubricId} and \nnew rub: ${assessments[index].rubric_id}`);
+
+        //If true, assessment already exists
+        if (assessments[index].rubric_id === that.state.rubricId) {
+
+          //Ask user to confirm rewrite
+          if (window.confirm('Rewrite existing assessment?')) {
+
+            //Delete Existing
+            let resp = await fetch(`/citations/remove_assessment/${that.state.current_citation_id}`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(assessment)
+            })
+              .then((response) => {
+                return fetch(`/citations/add_assessment/${that.state.current_citation_id}`, {
+                  method: "PUT",
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(assessment)
+                })
+                  .then((response) => response.json())
+                  .then((data) => {
+                    console.log('Assessment Saved:', assessment);
+                  })
+                  .catch((error) => {
+                    console.error('Error saving Assessment:', error);
+                  });
+              });
+
+            break;
+
+          } else {
+            //User declined to overwrite
+            window.alert('Keeping Previous Assessment.');
+            break;
+          }
         } else {
-          //User declined
+          fetch(`/citations/add_assessment/${that.state.current_citation_id}`, {
+            method: "PUT",
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(assessment)
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log('Assessment Saved:', assessment);
+            })
+            .catch((error) => {
+              console.error('Error saving Assessment:', error);
+            });
         }
-      });
+      }
+    }
+    else {
+      console.log('in the else; assessment doesnt exist in array');
+
+      //Doesn't exist yet; good to go
+      fetch(`/citations/add_assessment/${that.state.current_citation_id}`, {
+        method: "PUT",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(assessment)
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Assessment Saved:', assessment);
+        })
+        .catch((error) => {
+          console.error('Error saving Assessment:', error);
+        });
+
+    }
+
   }
+
 
   refresh(index) {
     if (index < this.state.paper_ids.length) {

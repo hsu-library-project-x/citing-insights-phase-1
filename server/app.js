@@ -11,7 +11,7 @@ const mongoose = require('mongoose');
 // const multer = require('multer');
 const fs = require('fs');
 const url = `mongodb://${config.db.host}:${config.db.port}/${config.db.name}`;
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true , useFindAndModify: false });
 
 let routes = require('./routes/index');
 let users = require('./routes/userRoutes');

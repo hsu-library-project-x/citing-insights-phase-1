@@ -19,15 +19,11 @@ router.get('/:user_id', citationController.by_user_id);
 router.get('/find_evaluations/:paper_id', citationController.find_evaluations);
 
 /*
- * POST
- */
-
-//Creates a new citation, called from upload.js
-router.post('/', citationController.create);
-
-/*
  * PUT
  */
+
+//After user chooses to rewrite, updates the assessment array accordingly
+router.put('/remove_assessment/:id', citationController.remove_assessment);
 
 //Route for adding assessments to a citation
 //  Assessments have values: a rubric, a rubric value, and an optional annotation
