@@ -13,15 +13,11 @@ class Navibar extends Component {
     constructor(props) {
         super(props);
         this.responseGoogle = this.responseGoogle.bind(this);
-        this.giveInfo = this.giveInfo.bind(this);
     }
 
-    giveInfo() {
-        this.props.passInfoLogout();
-    }
 
     responseGoogle = () => {
-        this.giveInfo();
+        this.props.passInfoLogout();
         //Need to link to function in App.js, to reset our state to nothing
         this.props.history.push({
             pathname: "/login",
@@ -67,9 +63,8 @@ class Navibar extends Component {
                                                     <Button
                                                         className={"NavLinkButton"}
                                                         variant={"contained"}
-                                                        onClick={renderProps.onClick}
                                                         disabled={renderProps.disabled}
-                                                        // onClick={this.responseGoogle}
+                                                        onClick={this.responseGoogle}
                                                     >
                                                             Logout
                                                     </Button>
