@@ -110,11 +110,13 @@ class App extends Component {
                       exact path="/"
                       component={Tasks}
                       {...this.state}
+                      {...this.props}
                   />
                   <ProtectedRoute
                       path="/tasks"
                       component={Tasks}
                       {...this.state}
+                      {...this.props}
                   />
                 </div>
                 <BottomNavBar

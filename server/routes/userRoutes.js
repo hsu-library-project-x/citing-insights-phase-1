@@ -5,6 +5,7 @@ var passport = require("passport");
 
 var { generateToken, sendToken } = require('../utils/token.utils');
 require('../passport')();
+
 /*
  * GET
  */

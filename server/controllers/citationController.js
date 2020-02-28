@@ -70,10 +70,11 @@ module.exports = {
     });
   },
 
-  //Actually update_assessment
+  
   remove_assessment: function (req, res) {
     var id = req.params.id;
 
+    //Removes assessment from array
     citationModel.findOneAndUpdate(
       { _id: id },
       { $pull: { assessments: { rubric_id: req.body.rubric_id } } },

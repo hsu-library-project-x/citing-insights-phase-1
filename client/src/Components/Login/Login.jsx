@@ -14,7 +14,6 @@ class Login extends Component {
 			user: null,
 			token: "",
 		};
-		this.getInfo = this.getInfo.bind(this);
 		this.height = window.innerHeight/1.29;
 	}
 
@@ -30,10 +29,6 @@ class Login extends Component {
 	onFailure = (err) => {
 		alert(err);
 	};
-
-	getInfo() {
-		this.props.passInfoLogin(this.state.isAuthenticated, this.state.token, this.state.user);
-	}
 
 	responseGoogle = (response) => {
 		const tokenBlob = new Blob(
@@ -65,8 +60,8 @@ class Login extends Component {
 						user: user,
 						token: token
 					});
-					this.getInfo();
-					this.props.history.push({   
+					this.props.passInfoLogin(true, token, user);
+					this.props.history.push({
 						pathname: "/",
 						props: {
 							isAuthenticated: true,

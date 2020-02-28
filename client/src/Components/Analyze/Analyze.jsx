@@ -52,6 +52,8 @@ class Analyze extends Component {
 
   AssessmentScore(newScore, title){
     this.setState({radio_score: newScore, rubric_title:title});
+
+
   }
 
   get_paper_info(paper_id) {
@@ -102,6 +104,7 @@ class Analyze extends Component {
   //Do this call every time a new Paper is loaded into the  component
   componentWillMount() {
     let that = this;
+
     if (this.props.selectedAssignmentId !== undefined) {
       // this.setState({ assignmentId: this.props.selectedAssignmentId });
 
@@ -110,7 +113,9 @@ class Analyze extends Component {
           return response.json();
         })
         .then(function (myJson) {
-          that.setState({ paper_ids: myJson });
+          that.setState({
+             paper_ids: myJson
+            });
           try {
             fetch('/papers/' + myJson[0]["_id"])
               .then(function (response) {
@@ -141,6 +146,8 @@ class Analyze extends Component {
       .then(function (myJson) {
         that.setState({ AvailableRubrics: myJson });
       });
+
+
   }
 
   handleGetRubric(event) {
@@ -365,8 +372,9 @@ class Analyze extends Component {
   }
 
   render() {
-    let pdf;
     let pageNum = this.state.pageNumber === null ? 1 : this.state.pageNumber;
+
+    let pdf;
 
     if (this.state.current_pdf_data === "this must get set") {
       pdf = <p> No Pdf Data found </p>;
@@ -375,8 +383,8 @@ class Analyze extends Component {
         data={this.state.current_pdf_data}
         pageNumber={pageNum}
       />;
-
     }
+
 
     let rubrics = this.state.AvailableRubrics;
     let rubricList = rubrics.map((rubric) =>
