@@ -9,7 +9,6 @@ import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "./pdfComponent.css";
-import PdfControls from "./PdfControls.jsx";
 
 pdfjs.GlobalWorkerOptions.workerSrc =
   `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -48,16 +47,16 @@ class PdfComponent extends Component {
 
   }
 
-    // removeTextLayerOffset() {
-    //     const textLayers = document.querySelectorAll(".react-pdf__Page__textContent");
-    //     textLayers.forEach(layer => {
-    //         const { style } = layer;
-    //         style.top = "0";
-    //         style.left = "0";
-    //         style.transform = "";
-    //         style.margin = "auto";
-    //     });
-    // }
+    removeTextLayerOffset() {
+        const textLayers = document.querySelectorAll(".react-pdf__Page__textContent");
+        textLayers.forEach(layer => {
+            const { style } = layer;
+            style.top = "0";
+            style.left = "0";
+            style.transform = "";
+            style.margin = "auto";
+        });
+    }
 
     PassUpText(rawText) {
         this.setState( ({
@@ -231,7 +230,7 @@ class PdfComponent extends Component {
         >
           <Page
               customTextRenderer={this.makeTextRenderer(this.state.searchText)}
-              // onLoadSuccess={() => this.removeTextLayerOffset()}
+              onLoadSuccess={() => this.removeTextLayerOffset()}
               // onLoadSuccess={()=>this.setState({loadedPage: rowIndex+1})}
               height={this.state.rowHeight}
               key={`page_${rowIndex + 1}`}
@@ -337,11 +336,11 @@ class PdfComponent extends Component {
               {this.GenerateGrid()}
             </Document>
           {/*pdf controls is not shown with a css display:hidden eventually I need to make mode efficiant*/}
-              <PdfControls
-                  PassUpText={this.PassUpText}
-                  pageNum={this.state.pageNumber}
-                  pdf={this.state.pdf}
-              />
+          {/*    <PdfControls*/}
+          {/*        PassUpText={this.PassUpText}*/}
+          {/*        pageNum={this.state.pageNumber}*/}
+          {/*        pdf={this.state.pdf}*/}
+          {/*    />*/}
       </div>
     );
   }

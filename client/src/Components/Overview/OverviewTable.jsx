@@ -18,16 +18,19 @@ class OverviewTable extends Component {
         });
     }
 
-    formatCitation(citation) {
+
+    formatCitation(citation, assessment) {
+        console.log(citation);
         return (
             {
                 'author':  `${this.getAuthors(citation.author)} ${citation.date}. ${citation.title}`,
                 'title': citation.title,
-                'comments': citation.annotation,
-                'rubric_title': citation.rubricTitle,
-                'rubric_value' : citation.rubricScore,
+                'comments': assessment.annotation,
+                'rubric_title': assessment.rubric_id,
+                'rubric_value' : assessment.rubric_index,
             }
         );
+
     }
 
     showCitations() {
@@ -37,7 +40,10 @@ class OverviewTable extends Component {
         if (this.props.citations !== []) {
             this.props.citations.forEach((citation) => {
                 if (citation.evaluated === true) { //fetch call also checks this
-                    data.push(this.formatCitation(citation));
+                    citation.assessments.forEach((assessment =>{
+                        data.push(this.formatCitation(citation, assessment));
+                    }));
+
                 }
             });
         }

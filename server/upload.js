@@ -119,7 +119,7 @@ module.exports = function upload(req, res) {
                 })
             }
 
-            console.log(full_json_path + '\n' + file.path);
+            // console.log(full_json_path + '\n' + file.path);
 
             shell.exec('rm ' + full_json_path);
             shell.exec('rm ' + file.path);
@@ -138,4 +138,4 @@ module.exports = function upload(req, res) {
             //shell.exec('rm ' + txt_path);
         });
     form.parse(req);
-}
+};

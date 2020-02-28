@@ -18,7 +18,7 @@ router.get('/:id', rubricController.show);
 /*
  * POST
  */
-router.post('/', rubricController.create)
+router.post('/', rubricController.create);
 
 /*
  * PUT

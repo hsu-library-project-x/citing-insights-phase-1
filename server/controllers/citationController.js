@@ -93,9 +93,10 @@ module.exports = {
 
   add_assessment: function (req, res) {
     var id = req.params.id;
+    console.log(id);
 
     //Find the current citation
-    citationModel.findById(id, function (err, citation) {
+    citationModel.findById({_id: id}, function (err, citation) {
       if (err) {
         return res.status(500).json({
           message: 'Error when getting citation',
@@ -113,7 +114,7 @@ module.exports = {
         'rubric_id': req.body.rubric_id,
         'rubric_index': req.body.rubric_index,
         'annotation': req.body.annotation
-      }
+      };
 
       //Push new item onto array
       citation.assessments.push(new_assessment);

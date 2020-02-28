@@ -10,24 +10,33 @@ class RubricAccordion extends Component {
         super(props);
         this.state = {
             expanded: false,
-            value: "",
+            radio_score: "",
         };
 
         this.createExpansion = this.createExpansion.bind(this);
     }
 
-    createExpansion(){
-        let that = this;
+
+
+    createExpansion(that){
+        // let that = this;
         const handleChange = panel => (event, isExpanded) => {
             let test = isExpanded ? panel : false;
             this.setState({expanded: test});
+        };
+
+        const handleSelection= (event,index) => {
+            // console.log(index);
+            event.stopPropagation();
+            this.setState({radio_score: event.target.value});
+            this.props.AssessmentScore(event.target.value, index);
         };
 
         let rubrics = this.props.currentRubric.cards;
         let rubricList = <p> Please select a rubric </p>;
 
         if (rubrics !== undefined && rubrics !== []) {
-            rubricList = rubrics.map(function (rubric) {
+            rubricList = rubrics.map(function (rubric, index) {
                 let rId = rubric['cardTitle'];
                 return (
                     <ExpansionPanel expanded={that.state.expanded === rId} onChange={handleChange(rId)} key={rId}>
@@ -38,10 +47,14 @@ class RubricAccordion extends Component {
                         >
                             <FormControlLabel
                                 aria-label={'Select'}
-                                value={rubric["cardTitle"]}
-                                onClick={event => event.stopPropagation()}
+                                value={rId}
+                                onClick={handleChange(rId)}
                                 onFocus={event => event.stopPropagation()}
-                                control={<Radio />}
+                                control={<Radio
+                                    inputProps={{name:rId}}
+                                    onClick={event => handleSelection(event, index)}
+                                    checked={that.state.radio_score === rId}
+                                />}
                                 label={rId}
                             />
                         </ExpansionPanelSummary>
@@ -59,7 +72,7 @@ class RubricAccordion extends Component {
 
     render() {
         return (
-            <div> {this.createExpansion()}</div>
+            <div> {this.createExpansion(this)}</div>
 
         );
     }
