@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Grid, Select, MenuItem, Button, FormControl, Tooltip, InputLabel, TextField, IconButton, Fab} from '@material-ui/core';
+import { Grid, Select, MenuItem, Button, FormControl, Tooltip, InputLabel, TextField, Fab} from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import RubricAccordion from './RubricAccordion.jsx';
 import RubricSubmit from './RubricSubmit.jsx';
-import PdfComponent from "./PdfComponent.jsx";
+import PdfComponent from "../Pdf/PdfComponent.jsx";
 import DiscoveryTool from './DiscoveryTool.jsx';
 import Citation from './Citation.jsx'
-import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 
 class Analyze extends Component {
   constructor(props) {
@@ -179,28 +178,12 @@ class Analyze extends Component {
   async handleSaveCitations() {
     let that = this;
 
-   console.log( that.state.current_citation_id);
-
-    // let radio_value =""; assigned but never used
-    // let radio_index = 0;
-
-    // let radio = this.state.radio_score;
-
-    // for (let i = 0; i < radios.length; i++) {
-    //   if (radios[i].checked) {
-    //     // radio_value = radios[i].value;
-    //     radio_index = i;
-    //   }
-    // }
-
     const assessment = {
       rubric_id: this.state.rubricId,
       rubric_score: this.state.radio_score,
       rubric_title:this.state.rubric_title,
       annotation: this.state.annotation
     };
-
-
 
     //Grab current citation from DB and check to see if rubric has already been assessed.
     let response = await fetch(`/citations/${that.state.current_citation_id}`);
@@ -523,7 +506,6 @@ class Analyze extends Component {
 
           <Grid item xs={12} sm={4} md={2}>
             {/*<h3 style={{float:"left", margin:0}}>Paper</h3>*/}
-
           </Grid>
       </Grid>
     );

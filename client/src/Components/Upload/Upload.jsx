@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
-
 import {Container, FormControl, InputLabel, Select, MenuItem, Typography, Button} from "@material-ui/core";
 import Dropzone from "./Dropzone";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Backdrop from '@material-ui/core/Backdrop';
+
 
 class Upload extends Component {
   constructor(props) {
@@ -14,6 +16,7 @@ class Upload extends Component {
         classId: "",
         assignmentId: "",
         uploading:false,
+        progress:0,
     };
 
     this.getClasses();
@@ -72,8 +75,12 @@ class Upload extends Component {
 
     }
 
+
+
+
     async handleSubmitFiles(event) {
       event.preventDefault();
+      this.setState({uploading:true});
 
       const data= {
           class_id: this.state.classId,
@@ -94,9 +101,10 @@ class Upload extends Component {
                 method: 'POST',
                 body: formData,
             }).then((response =>{
-                console.log(response);
+                this.setState({uploading:false})
             }))
         });
+
     }
 
     render(){
@@ -109,69 +117,77 @@ class Upload extends Component {
           <MenuItem key={d._id} value={d._id}>{d.name}</MenuItem>
       );
 
+
     return(
-        <div>
-              <Typography style={{marginTop: "1em"}} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}>
-                  Upload Files
-              </Typography>
-              <Typography align={"center"} variant={"subtitle1"} component={"p"} gutterBottom={true}>
-                  Please upload papers as PDF
-              </Typography>
+        this.state.uploading ?
+            <Backdrop open={this.state.uploading}>
+                <CircularProgress className='circularProgress' color="secondary" />
+                <Typography fontWeight="fontWeightBold" align={"center"} variant={"h6"} component={"h1"} gutterBottom={true} color={'secondary'}>
+                   Please wait while we upload your files. Once complete, this screen will close.
+                </Typography>
+            </Backdrop>:
+                <div>
+                    <Typography style={{marginTop: "1em"}} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}>
+                        Upload Files
+                    </Typography>
+                    <Typography align={"center"} variant={"subtitle1"} component={"p"} gutterBottom={true}>
+                        Please upload papers as PDF
+                    </Typography>
 
-                <Container maxWidth={'md'} className={"container"}>
-                      <form style={{textAlign:"center", margin:"1em"}} onSubmit={this.handleSubmitFiles}>
-                          <FormControl required={true} style={{minWidth: 250}}>
-                              <InputLabel id="selectClasslabel">Select a Class</InputLabel>
-                              <Select
-                                  style={{textAlign:"center"}}
-                                  labelId={"selectClasslabel"}
-                                  onChange={this.handleClassSelection}
-                                  defaultValue={""}
-                                  inputProps={{
-                                      name: 'classId',
-                                      id: 'selectClass',
-                                  }}
-                              >
-                                  <MenuItem value="" disabled >select class</MenuItem>
-                                  {courses}
-                              </Select>
-                          </FormControl>
-                          <br />
-                          <FormControl  required={true} style={{minWidth: 250, marginBottom:"1em"}}>
-                              <InputLabel id="selectAssignmentLabel">Select an Assignment</InputLabel>
-                              <Select
-                                  style={{textAlign:"center"}}
-                                  onChange={this.handleInputChange}
-                                  defaultValue={""}
-                                  inputProps={{
-                                      name: 'assignmentId',
-                                      id: 'selectAssignment',
-                                  }}
-                              >
-                                  <MenuItem value="" disabled> select assignment</MenuItem>
-                                  {assignments}
-                              </Select>
-                          </FormControl>
-                          <br />
-                          <Dropzone
-                              onFilesAdded={this.onFilesAdded}
-                              disabled={this.state.uploading}
-                          />
-                          <br />
-
-                                  <Typography align={"center"} variant={"h6"} component={"h1"} gutterBottom={true}>
-                                      Files to Upload
-                                  </Typography>
-                                  {this.state.files.map(file => {
-                                      return (
-                                          <p key={file.name}>{file.name}</p>
-                                      );
-                                  })}
+                    <Container maxWidth={'md'} className={"container"}>
+                        <form style={{textAlign:"center", margin:"1em"}} onSubmit={this.handleSubmitFiles}>
+                            <FormControl required={true} style={{minWidth: 250}}>
+                                <InputLabel id="selectClasslabel">Select a Class</InputLabel>
+                                <Select
+                                    style={{textAlign:"center"}}
+                                    labelId={"selectClasslabel"}
+                                    onChange={this.handleClassSelection}
+                                    defaultValue={""}
+                                    inputProps={{
+                                        name: 'classId',
+                                        id: 'selectClass',
+                                    }}
+                                >
+                                    <MenuItem value="" disabled >select class</MenuItem>
+                                    {courses}
+                                </Select>
+                            </FormControl>
                             <br />
-                          <Button type='submit' variant='contained' color='primary' > Upload </Button>
-                      </form>
-          </Container>
-        </div>
+                            <FormControl  required={true} style={{minWidth: 250, marginBottom:"1em"}}>
+                                <InputLabel id="selectAssignmentLabel">Select an Assignment</InputLabel>
+                                <Select
+                                    style={{textAlign:"center"}}
+                                    onChange={this.handleInputChange}
+                                    defaultValue={""}
+                                    inputProps={{
+                                        name: 'assignmentId',
+                                        id: 'selectAssignment',
+                                    }}
+                                >
+                                    <MenuItem value="" disabled> select assignment</MenuItem>
+                                    {assignments}
+                                </Select>
+                            </FormControl>
+                            <br />
+                            <Dropzone
+                                onFilesAdded={this.onFilesAdded}
+                                disabled={this.state.uploading}
+                            />
+                            <br />
+
+                            <Typography align={"center"} variant={"h6"} component={"h1"} gutterBottom={true}>
+                                Files to Upload
+                            </Typography>
+                            {this.state.files.map(file => {
+                                return (
+                                    <p key={file.name}>{file.name}</p>
+                                );
+                            })}
+                            <br />
+                            <Button type='submit' variant='contained' color='primary' > Upload </Button>
+                        </form>
+                    </Container>
+                </div>
     );
   }
 }
