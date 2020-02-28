@@ -42,7 +42,8 @@ var citationSchema = new Schema({
 			type: Schema.Types.ObjectId,
 			ref: 'rubric'
 		},
-		'rubric_index': Number,
+		'rubric_score': String,
+		'rubric_title': String,
 		'annotation': String
 	}],
 	'evaluated': Boolean

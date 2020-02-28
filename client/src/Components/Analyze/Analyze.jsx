@@ -50,8 +50,8 @@ class Analyze extends Component {
     this.AssessmentScore = this.AssessmentScore.bind(this);
   }
 
-  AssessmentScore(newScore, index){
-    this.setState({radio_score: newScore, rubric_index:index});
+  AssessmentScore(newScore, title){
+    this.setState({radio_score: newScore, rubric_title:title});
   }
 
   get_paper_info(paper_id) {
@@ -188,11 +188,11 @@ class Analyze extends Component {
 
     const assessment = {
       rubric_id: this.state.rubricId,
-      // rubric_index: this.state.radio_score,
-      rubric_index:this.state.rubric_index,
+      rubric_score: this.state.radio_score,
+      rubric_title:this.state.rubric_title,
       annotation: this.state.annotation
     };
-    console.log(assessment);
+
 
 
     //Grab current citation from DB and check to see if rubric has already been assessed.

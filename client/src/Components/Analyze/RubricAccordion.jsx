@@ -25,18 +25,18 @@ class RubricAccordion extends Component {
             this.setState({expanded: test});
         };
 
-        const handleSelection= (event,index) => {
+        const handleSelection= (event) => {
             // console.log(index);
             event.stopPropagation();
             this.setState({radio_score: event.target.value});
-            this.props.AssessmentScore(event.target.value, index);
+            this.props.AssessmentScore(event.target.value, this.props.currentRubric.name);
         };
 
         let rubrics = this.props.currentRubric.cards;
         let rubricList = <p> Please select a rubric </p>;
-
+        console.log(this.props.currentRubric);
         if (rubrics !== undefined && rubrics !== []) {
-            rubricList = rubrics.map(function (rubric, index) {
+            rubricList = rubrics.map(function (rubric) {
                 let rId = rubric['cardTitle'];
                 return (
                     <ExpansionPanel expanded={that.state.expanded === rId} onChange={handleChange(rId)} key={rId}>
@@ -52,7 +52,7 @@ class RubricAccordion extends Component {
                                 onFocus={event => event.stopPropagation()}
                                 control={<Radio
                                     inputProps={{name:rId}}
-                                    onClick={event => handleSelection(event, index)}
+                                    onClick={event => handleSelection(event)}
                                     checked={that.state.radio_score === rId}
                                 />}
                                 label={rId}

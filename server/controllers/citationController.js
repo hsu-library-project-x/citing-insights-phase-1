@@ -112,7 +112,8 @@ module.exports = {
       //Get new assessment ready
       let new_assessment = {
         'rubric_id': req.body.rubric_id,
-        'rubric_index': req.body.rubric_index,
+        'rubric_score': req.body.rubric_score,
+        'rubric_title': req.body.rubric_title,
         'annotation': req.body.annotation
       };
 
