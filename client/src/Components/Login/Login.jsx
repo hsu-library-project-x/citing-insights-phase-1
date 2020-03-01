@@ -111,6 +111,7 @@ class Login extends Component {
 								buttonText="Sign in with Google"
 								onSuccess={this.responseGoogle}
 								onFailure={this.onFailure}
+								cookiePolicy={'single_host_origin'}
 							/>
 						</div>
 					</Grid>

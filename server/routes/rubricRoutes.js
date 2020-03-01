@@ -3,7 +3,7 @@ var router = express.Router();
 var rubricController = require('../controllers/rubricController.js');
 
 // get ALL rubrics
-router.get('/', rubricController.all),
+router.get('/', rubricController.all);
 
 /*                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
  * GET
@@ -18,7 +18,7 @@ router.get('/:id', rubricController.show);
 /*
  * POST
  */
-router.post('/', rubricController.create)
+router.post('/', rubricController.create);
 
 /*
  * PUT

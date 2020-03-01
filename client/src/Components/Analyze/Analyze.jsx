@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Grid, Select, MenuItem, Button, FormControl, Tooltip, InputLabel, TextField, IconButton} from '@material-ui/core';
+import { Grid, Select, MenuItem, Button, FormControl, Tooltip, InputLabel, TextField, IconButton, Fab} from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import RubricAccordion from './RubricAccordion.jsx';
 import RubricSubmit from './RubricSubmit.jsx';
@@ -33,6 +33,7 @@ class Analyze extends Component {
       current_citation_id: 0,
       annotation: "",
       pageNumber: null,
+      radio_score:null,
     };
 
     this.componentWillMount = this.componentWillMount.bind(this);
@@ -46,8 +47,13 @@ class Analyze extends Component {
     this.refresh = this.refresh.bind(this);
     this.get_paper_info = this.get_paper_info.bind(this);
     this.updateCitationId = this.updateCitationId.bind(this);
+    this.AssessmentScore = this.AssessmentScore.bind(this);
+  }
 
-   
+  AssessmentScore(newScore, title){
+    this.setState({radio_score: newScore, rubric_title:title});
+
+
   }
 
   get_paper_info(paper_id) {
@@ -171,23 +177,26 @@ class Analyze extends Component {
 
   //this saves annotations and rubric values associated with citation
   async handleSaveCitations() {
-    var that = this;
+    let that = this;
 
-    let radio_value = "";
-    let radio_index = 0;
+   console.log( that.state.current_citation_id);
 
-    let radios = document.getElementsByName("radio");
+    // let radio_value =""; assigned but never used
+    // let radio_index = 0;
 
-    for (let i = 0; i < radios.length; i++) {
-      if (radios[i].checked) {
-        radio_value = radios[i].value;
-        radio_index = i;
-      }
-    }
+    // let radio = this.state.radio_score;
+
+    // for (let i = 0; i < radios.length; i++) {
+    //   if (radios[i].checked) {
+    //     // radio_value = radios[i].value;
+    //     radio_index = i;
+    //   }
+    // }
 
     const assessment = {
       rubric_id: this.state.rubricId,
-      rubric_index: radio_index,
+      rubric_score: this.state.radio_score,
+      rubric_title:this.state.rubric_title,
       annotation: this.state.annotation
     };
 
@@ -221,24 +230,34 @@ class Analyze extends Component {
               body: JSON.stringify(assessment)
             })
               .then((response) => {
-                return fetch(`/citations/add_assessment/${that.state.current_citation_id}`, {
-                  method: "PUT",
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify(assessment)
-                })
-                  .then((response) => response.json())
-                  .then((data) => {
-                    console.log('Assessment Saved:', assessment);
+                if(response.ok || response.status === 201){
+                  return fetch(`/citations/add_assessment/${that.state.current_citation_id}`, {
+                    method: "PUT",
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(assessment)
                   })
-                  .catch((error) => {
-                    console.error('Error saving Assessment:', error);
-                  });
+                      .then((response) =>{
+                        if(response.ok || response.status === 201){
+                          return response.json();
+                        }
+                        else{
+                          alert("Something went wrong. Please Try again");
+                        }
+                      } )
+                      .then((data) => {
+                        if(data){
+                          console.log('Assessment Saved:', assessment);
+                        }
+                      })
+                      .catch((error) => {
+                        console.error('Error saving Assessment:', error);
+                      });
+                }else{
+                  alert("something went wrong. Please try again");
+                }
               });
-
-            break;
-
           } else {
             //User declined to overwrite
             window.alert('Keeping Previous Assessment.');
@@ -252,9 +271,18 @@ class Analyze extends Component {
             },
             body: JSON.stringify(assessment)
           })
-            .then((response) => response.json())
+            .then((response) => {
+              if(response.ok || response.status === 201 ){
+                return response.json();
+              }
+              else{
+                alert("Something went wrong. Please Try again");
+              }
+            })
             .then((data) => {
-              console.log('Assessment Saved:', assessment);
+              if(data){
+                console.log('Assessment Saved:', assessment);
+              }
             })
             .catch((error) => {
               console.error('Error saving Assessment:', error);
@@ -273,22 +301,29 @@ class Analyze extends Component {
         },
         body: JSON.stringify(assessment)
       })
-        .then((response) => response.json())
+        .then((response) =>{
+          if(response.ok || response.status === 201){
+            return  response.json();
+          }
+          else{
+            alert("Something went wrong. Please Try again");
+          }
+        })
         .then((data) => {
-          console.log('Assessment Saved:', assessment);
+          if(data){
+            console.log('Assessment Saved:', assessment);
+          }
         })
         .catch((error) => {
           console.error('Error saving Assessment:', error);
         });
-
     }
-
   }
 
 
   refresh(index) {
     if (index < this.state.paper_ids.length) {
-      this.get_citation_info(this.state.paper_ids[index]["_id"]);
+      this.get_citation_info(this.state.paper_ids[index]["_id"]); // promise returned is ignored
       this.get_paper_info(this.state.paper_ids[index]["_id"]);
     } else {
       return "";
@@ -302,8 +337,7 @@ class Analyze extends Component {
     //alert(name + ", " + value);
     this.setState({
       [name]: value
-    },
-    );
+    });
   }
 
   next_paper(direction) {
@@ -337,23 +371,11 @@ class Analyze extends Component {
     });
   }
 
-//  shouldComponentUpdate(nextProps, nextState){
-//   if(this.state.current_pdf_data === "this must get set" 
-//      ||
-//      this.state.current_pdf_data !== nextState.current_pdf_data){
-//      return true;
-//    }
-//    else{
-//      return false;
-//    }
-//  }
-
-
   render() {
     let pageNum = this.state.pageNumber === null ? 1 : this.state.pageNumber;
 
     let pdf;
-   
+
     if (this.state.current_pdf_data === "this must get set") {
       pdf = <p> No Pdf Data found </p>;
     } else {
@@ -386,12 +408,14 @@ class Analyze extends Component {
         <Grid item xs={12} sm={4} md={2}>
           {/*<Paper variant="outlined">*/}
         <Tooltip title="Change Assignment">
-          <IconButton
+          <Fab
               aria-label="change-assignment"
               color="primary"
+              variant={'extended'}
               onClick={() => this.props.history.push('/tasks/analyzemenu')}>
             <ArrowBackIcon />
-          </IconButton>
+            Change Assignment
+          </Fab>
         </Tooltip>
 
 
@@ -427,6 +451,13 @@ class Analyze extends Component {
               </Select>
             </FormControl>
             {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
+                <Citation
+                    citations={this.state.citations}
+                    current_citation_id={this.state.current_citation_id}
+                    updateCitationId={this.updateCitationId}
+                /> : null
+            }
+            {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
                 <DiscoveryTool
                     citations={this.state.citations}
                     oneSearchUrl={this.props.oneSearchUrl}
@@ -441,13 +472,7 @@ class Analyze extends Component {
           </Grid>
           <Grid item xs={12} sm={4} md={2}>
             {/*<h3 style={{float:"left", margin:0}}>Citations</h3>*/}
-            {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
-                <Citation
-                    citations={this.state.citations}
-                    current_citation_id={this.state.current_citation_id}
-                    updateCitationId={this.updateCitationId}
-                /> : null
-            }
+
             {/*</Paper>*/}
             <br />
             {/*<Paper variant="outlined">*/}
@@ -470,6 +495,7 @@ class Analyze extends Component {
             <RubricAccordion
                 currentRubric={this.state.currentRubric}
                 allowZeroExpanded={true}
+                AssessmentScore={this.AssessmentScore}
             />
             <TextField
                 id="annotation"
