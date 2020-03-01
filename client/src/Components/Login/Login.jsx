@@ -18,6 +18,7 @@ class Login extends Component {
 	}
 
 	componentDidMount() {
+		console.log('did mount');
 		if (this.props.isAuthenticated === true) {
 			this.props.history.push({
 				pathname: "/",
