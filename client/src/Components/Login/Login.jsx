@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import { GoogleLogin } from "react-google-login";
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import {Grid, Button} from "@material-ui/core";
+import { Grid, Button } from "@material-ui/core";
 import Base64Image from './Base64Image.jsx';
 import config from "../../config.json";
 
@@ -14,16 +14,11 @@ class Login extends Component {
 			user: null,
 			token: "",
 		};
-		this.height = window.innerHeight/1.29;
+		this.height = window.innerHeight / 1.29;
 	}
 
 	componentDidMount() {
-		if (this.props.isAuthenticated === true) {
-			this.props.history.push({
-				pathname: "/",
-				props: { ...this.state }
-			});
-		}
+		console.log('did mount');
 	}
 
 	onFailure = (err) => {
@@ -76,47 +71,56 @@ class Login extends Component {
 
 	render() {
 
-		const theme = createMuiTheme({
-			palette: {
-				primary: { main: this.props.configurations.primaryColor },
-				secondary: { main: this.props.configurations.secondaryColor }
-			},
-		});
+		if (this.props.isAuthenticated === true) {
+			return (
+				<Redirect to={{
+					pathname: '/tasks',
+					state: { from: this.props.location }
+			}} /> )
+		}else {
 
-		const imageBase64String = this.props.configurations.images.img.data;
+			const theme = createMuiTheme({
+				palette: {
+					primary: { main: this.props.configurations.primaryColor },
+					secondary: { main: this.props.configurations.secondaryColor }
+				},
+			});
+
+			const imageBase64String = this.props.configurations.images.img.data;
 
 
-		return (
-			<MuiThemeProvider theme={theme}>
-				<Grid container spacing={0} style={{margin:'-1em'}}>
-					<Grid item xs={7}>
-						<Base64Image imageBase64String={imageBase64String} />
-						{/* <Box style={{backgroundImage: `url(${`data:image/jpeg;base64,${img}`} )`, height: this.height}} /> */}
-					</Grid>
-					<Grid item xs={5}>
-						<h1 style={{textAlign: "center", margin:"1em"}}> Your Opportunity To Change the Assessment World </h1>
-						<div style={{textAlign:"center", marginTop:"2em"}} id="google">
-							<GoogleLogin
-								clientId={config.GOOGLE_CLIENT_ID}
-								render={renderProps => (
-									<Button
-										color="primary"
-										variant="contained"
-										onClick={renderProps.onClick}
-										disabled={renderProps.disabled}>
-										Login with Google
+			return (
+				<MuiThemeProvider theme={theme}>
+					<Grid container spacing={0} style={{ margin: '-1em' }}>
+						<Grid item xs={7}>
+							<Base64Image imageBase64String={imageBase64String} />
+							{/* <Box style={{backgroundImage: `url(${`data:image/jpeg;base64,${img}`} )`, height: this.height}} /> */}
+						</Grid>
+						<Grid item xs={5}>
+							<h1 style={{ textAlign: "center", margin: "1em" }}> Your Opportunity To Change the Assessment World </h1>
+							<div style={{ textAlign: "center", marginTop: "2em" }} id="google">
+								<GoogleLogin
+									clientId={config.GOOGLE_CLIENT_ID}
+									render={renderProps => (
+										<Button
+											color="primary"
+											variant="contained"
+											onClick={renderProps.onClick}
+											disabled={renderProps.disabled}>
+											Login with Google
 									</Button>
-								)}
-								buttonText="Sign in with Google"
-								onSuccess={this.responseGoogle}
-								onFailure={this.onFailure}
-								cookiePolicy={'single_host_origin'}
-							/>
-						</div>
+									)}
+									buttonText="Sign in with Google"
+									onSuccess={this.responseGoogle}
+									onFailure={this.onFailure}
+									cookiePolicy={'single_host_origin'}
+								/>
+							</div>
+						</Grid>
 					</Grid>
-				</Grid>
-			</MuiThemeProvider>
-		);
+				</MuiThemeProvider>
+			);
+		}
 	}
 }
 

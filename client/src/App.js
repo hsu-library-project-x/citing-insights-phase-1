@@ -60,12 +60,13 @@ class App extends Component {
   };
 
   passInfoLogout() {
+    localStorage.clear();
+    
     this.setState({
       isAuthenticated: false,
       user: null,
       token: ""
     });
-    localStorage.clear();
   };
 
   handleConfigurationChange(){
@@ -73,9 +74,10 @@ class App extends Component {
   }
 
   componentDidMount() {
+    console.log('in app.js');
     const persistedState = localStorage.getItem("user");
     //Test to see if user object is valid
-    if (persistedState) {
+    if (persistedState !== undefined) {
       this.setState(JSON.parse(persistedState));    
     }
   }
