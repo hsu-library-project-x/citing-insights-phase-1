@@ -81,7 +81,7 @@ class Citation extends Component {
                         style={{textAlign:"center"}}
                         variant={'filled'}
                         labelId={"selectCitationlabel"}
-                        value={this.state.current_citation_id}
+                        value={this.props.current_citation_id}
                         onChange={this.handleCitationChange}
                         inputProps={{
                             name: 'className',

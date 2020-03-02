@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Grid, Select, MenuItem, Button, FormControl, Tooltip, InputLabel, TextField, IconButton, Fab} from '@material-ui/core';
+import { Grid, Select, MenuItem, Button, FormControl, Tooltip, InputLabel, TextField, IconButton, Fab } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import RubricAccordion from './RubricAccordion.jsx';
 import RubricSubmit from './RubricSubmit.jsx';
@@ -33,7 +33,7 @@ class Analyze extends Component {
       current_citation_id: 0,
       annotation: "",
       pageNumber: null,
-      radio_score:null,
+      radio_score: null,
     };
 
     this.componentWillMount = this.componentWillMount.bind(this);
@@ -50,8 +50,8 @@ class Analyze extends Component {
     this.AssessmentScore = this.AssessmentScore.bind(this);
   }
 
-  AssessmentScore(newScore, title){
-    this.setState({radio_score: newScore, rubric_title:title});
+  AssessmentScore(newScore, title) {
+    this.setState({ radio_score: newScore, rubric_title: title });
 
 
   }
@@ -114,8 +114,8 @@ class Analyze extends Component {
         })
         .then(function (myJson) {
           that.setState({
-             paper_ids: myJson
-            });
+            paper_ids: myJson
+          });
           try {
             fetch('/papers/' + myJson[0]["_id"])
               .then(function (response) {
@@ -179,7 +179,7 @@ class Analyze extends Component {
   async handleSaveCitations() {
     let that = this;
 
-   console.log( that.state.current_citation_id);
+    console.log(that.state.current_citation_id);
 
     // let radio_value =""; assigned but never used
     // let radio_index = 0;
@@ -196,7 +196,7 @@ class Analyze extends Component {
     const assessment = {
       rubric_id: this.state.rubricId,
       rubric_score: this.state.radio_score,
-      rubric_title:this.state.rubric_title,
+      rubric_title: this.state.rubric_title,
       annotation: this.state.annotation
     };
 
@@ -230,7 +230,7 @@ class Analyze extends Component {
               body: JSON.stringify(assessment)
             })
               .then((response) => {
-                if(response.ok || response.status === 201){
+                if (response.ok || response.status === 201) {
                   return fetch(`/citations/add_assessment/${that.state.current_citation_id}`, {
                     method: "PUT",
                     headers: {
@@ -238,23 +238,23 @@ class Analyze extends Component {
                     },
                     body: JSON.stringify(assessment)
                   })
-                      .then((response) =>{
-                        if(response.ok || response.status === 201){
-                          return response.json();
-                        }
-                        else{
-                          alert("Something went wrong. Please Try again");
-                        }
-                      } )
-                      .then((data) => {
-                        if(data){
-                          console.log('Assessment Saved:', assessment);
-                        }
-                      })
-                      .catch((error) => {
-                        console.error('Error saving Assessment:', error);
-                      });
-                }else{
+                    .then((response) => {
+                      if (response.ok || response.status === 201) {
+                        return response.json();
+                      }
+                      else {
+                        alert("Something went wrong. Please Try again");
+                      }
+                    })
+                    .then((data) => {
+                      if (data) {
+                        console.log('Assessment Saved:', assessment);
+                      }
+                    })
+                    .catch((error) => {
+                      console.error('Error saving Assessment:', error);
+                    });
+                } else {
                   alert("something went wrong. Please try again");
                 }
               });
@@ -272,15 +272,15 @@ class Analyze extends Component {
             body: JSON.stringify(assessment)
           })
             .then((response) => {
-              if(response.ok || response.status === 201 ){
+              if (response.ok || response.status === 201) {
                 return response.json();
               }
-              else{
+              else {
                 alert("Something went wrong. Please Try again");
               }
             })
             .then((data) => {
-              if(data){
+              if (data) {
                 console.log('Assessment Saved:', assessment);
               }
             })
@@ -301,16 +301,16 @@ class Analyze extends Component {
         },
         body: JSON.stringify(assessment)
       })
-        .then((response) =>{
-          if(response.ok || response.status === 201){
-            return  response.json();
+        .then((response) => {
+          if (response.ok || response.status === 201) {
+            return response.json();
           }
-          else{
+          else {
             alert("Something went wrong. Please Try again");
           }
         })
         .then((data) => {
-          if(data){
+          if (data) {
             console.log('Assessment Saved:', assessment);
           }
         })
@@ -338,6 +338,13 @@ class Analyze extends Component {
     this.setState({
       [name]: value
     });
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if(nextState.annotation !== this.state.annotation){
+      return false;
+    }
+    return true;
   }
 
   next_paper(direction) {
@@ -399,75 +406,75 @@ class Analyze extends Component {
 
     return (
       <Grid
-          container
-          direction="row"
-          // direction="column"
-          justify="flex-start"
-          alignItems="flex-start"
+        container
+        direction="row"
+        // direction="column"
+        justify="flex-start"
+        alignItems="flex-start"
       >
         <Grid item xs={12} sm={4} md={2}>
           {/*<Paper variant="outlined">*/}
-        <Tooltip title="Change Assignment">
-          <Fab
+          <Tooltip title="Change Assignment">
+            <Fab
               aria-label="change-assignment"
               color="primary"
               variant={'extended'}
               onClick={() => this.props.history.push('/tasks/analyzemenu')}>
-            <ArrowBackIcon />
-            Change Assignment
+              <ArrowBackIcon />
+              Change Assignment
           </Fab>
-        </Tooltip>
+          </Tooltip>
 
 
         </Grid>
         <Grid
-            // container={true}
-            // direction="row"
-            // justify="space-evenly"
-            // alignItems="center"
-            container
-            direction="row"
-            justify="flex-start"
-            alignItems="flex-start"
-            spacing={1}>
+          // container={true}
+          // direction="row"
+          // justify="space-evenly"
+          // alignItems="center"
+          container
+          direction="row"
+          justify="flex-start"
+          alignItems="flex-start"
+          spacing={1}>
           <Grid item xs={12} sm={4} md={2}>
 
             {/*<Paper variant="outlined">*/}
-            <FormControl required={true} style={{ minWidth: 150}}>
-              <InputLabel id={"selectPaperlabel"} style={{textAlign:'center'}}>Select a Paper</InputLabel>
+            <FormControl required={true} style={{ minWidth: 150 }}>
+              <InputLabel id={"selectPaperlabel"} style={{ textAlign: 'center' }}>Select a Paper</InputLabel>
               <Select
-                  variant={"filled"}
-                  style={{ textAlign: "center" }}
-                  labelId={"selectPaperlabel"}
-                  onChange={this.handleInputChange}
-                  defaultValue={""}
-                  value={this.state.curPaperId}
-                  inputProps={{
-                    name: 'curPaperId',
-                  }}
+                variant={"filled"}
+                style={{ textAlign: "center" }}
+                labelId={"selectPaperlabel"}
+                onChange={this.handleInputChange}
+                defaultValue={""}
+                value={this.state.curPaperId}
+                inputProps={{
+                  name: 'curPaperId',
+                }}
               >
                 <MenuItem value="" disabled >select paper </MenuItem>
                 {paperList}
               </Select>
             </FormControl>
             {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
-                <Citation
-                    citations={this.state.citations}
-                    current_citation_id={this.state.current_citation_id}
-                    updateCitationId={this.updateCitationId}
-                /> : null
+              <Citation
+                citations={this.state.citations}
+                current_citation_id={this.state.current_citation_id}
+                updateCitationId={this.updateCitationId}
+              /> : null
             }
             {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
-                <DiscoveryTool
-                    citations={this.state.citations}
-                    oneSearchUrl={this.props.oneSearchUrl}
-                    current_citation_id={this.state.current_citation_id}
-                    key={this.state.current_citation_id}
-                /> : null}
+              <DiscoveryTool
+                citations={this.state.citations}
+                oneSearchUrl={this.props.oneSearchUrl}
+                current_citation_id={this.state.current_citation_id}
+                key={this.state.current_citation_id}
+              /> : null}
             {/*</Paper>*/}
           </Grid>
           {/* PDF Viewer */}
-          <Grid item xs={12} sm={4} md={8} style={{backgroundColor:'rgb(160, 164, 167)'}}>
+          <Grid item xs={12} sm={4} md={8} style={{ backgroundColor: 'rgb(160, 164, 167)' }}>
             {pdf}
           </Grid>
           <Grid item xs={12} sm={4} md={2}>
@@ -476,55 +483,55 @@ class Analyze extends Component {
             {/*</Paper>*/}
             <br />
             {/*<Paper variant="outlined">*/}
-            <FormControl style={{ minWidth: 200, maxWidth:200, marginBottom: "1em" }}>
+            <FormControl style={{ minWidth: 200, maxWidth: 200, marginBottom: "1em" }}>
               <InputLabel id={"AssignRubriclabel"}>Select a Rubric</InputLabel>
               <Select
-                  style={{ textAlign: "center" }}
-                  labelId={"AssignRubriclabel"}
-                  defaultValue={""}
-                  onChange={this.handleGetRubric}
-                  autoWidth={true}
-                  inputProps={{
-                    name: 'AssignRubric',
-                  }}
+                style={{ textAlign: "center" }}
+                labelId={"AssignRubriclabel"}
+                defaultValue={""}
+                onChange={this.handleGetRubric}
+                autoWidth={true}
+                inputProps={{
+                  name: 'AssignRubric',
+                }}
               >
                 <MenuItem value="" disabled >select rubric</MenuItem>
                 {rubricList}
               </Select>
             </FormControl>
             <RubricAccordion
-                currentRubric={this.state.currentRubric}
-                allowZeroExpanded={true}
-                AssessmentScore={this.AssessmentScore}
+              currentRubric={this.state.currentRubric}
+              allowZeroExpanded={true}
+              AssessmentScore={this.AssessmentScore}
             />
             <TextField
-                id="annotation"
-                label="Annotation"
-                multiline
-                variant="filled"
-                onChange={this.handleInputChange}
-                inputProps={{
-                  name: 'annotation',
-                }}
+              id="annotation"
+              label="Annotation"
+              multiline
+              variant="filled"
+              onChange={this.handleInputChange}
+              inputProps={{
+                name: 'annotation',
+              }}
             />
             <Button variant={"contained"} color={"primary"} onClick={this.handleSaveCitations}>
               Save Rubric Value
             </Button>
             {/*</Paper>*/}
 
-          {this.state.assessingRubric ?
+            {this.state.assessingRubric ?
               <RubricSubmit
-                  sourceText={this.state.sourceText}
-                  unmountMe={this.handleChildUnmount}
-                  curRubric={this.state.currentRubric}
-                  curPaper={this.state.curPaperId} /> : null}
+                sourceText={this.state.sourceText}
+                unmountMe={this.handleChildUnmount}
+                curRubric={this.state.currentRubric}
+                curPaper={this.state.curPaperId} /> : null}
           </Grid>
         </Grid>
 
-          <Grid item xs={12} sm={4} md={2}>
-            {/*<h3 style={{float:"left", margin:0}}>Paper</h3>*/}
+        <Grid item xs={12} sm={4} md={2}>
+          {/*<h3 style={{float:"left", margin:0}}>Paper</h3>*/}
 
-          </Grid>
+        </Grid>
       </Grid>
     );
   }
