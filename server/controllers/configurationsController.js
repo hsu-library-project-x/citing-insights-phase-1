@@ -40,22 +40,12 @@ module.exports = {
 
             let newImg = fs.readFileSync(file.path);
 
-            // open a file called "lenna.png"
-            Jimp.read(newImg, (err, img) => {
-                if (err) throw err;
-                img
-                    .resize(800, 500) // resize
-                    .write(newImg2); // save
-            }).then((newImg2) => {
-
-            });
-
 
             newItem = {
                 name: file.name,
                 contentType: file.mimetype,
                 size: file.size,
-                img: Buffer(encImg, 'base64')
+                img: Buffer(newImg, 'base64')
             };
         });
 

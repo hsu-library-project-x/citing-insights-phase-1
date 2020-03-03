@@ -15,6 +15,38 @@ const controller = require("./controllers/webCallsController.js");
 
 var check = true;
 
+// default render callback
+function render_page(pageData) {
+    //check documents https://mozilla.github.io/pdf.js/
+    let render_options = {
+        //replaces all occurrences of whitespace with standard spaces (0x20). The default value is `false`.
+        normalizeWhitespace: false,
+        //do not attempt to combine same line TextItem's. The default value is `false`.
+        disableCombineTextItems: false
+    };
+
+    return pageData.getTextContent(render_options)
+        .then(function(textContent) {
+            // console.log("LIZ WAS HERE");
+            let lastY, text = '';
+            for (let item of textContent.items) {
+                if (lastY == item.transform[5] || !lastY){
+                    text += item.str;
+                }
+                else{
+                    text += '\n' + item.str;
+                }
+                lastY = item.transform[5];
+            }
+            return {[pageData.pageNumber]: text};
+        });
+}
+
+
+let options = {
+    pagerender: render_page
+};
+
 module.exports = function upload(req, res) {
 
     console.log("goin into it");
@@ -46,7 +78,7 @@ module.exports = function upload(req, res) {
             var textByLine = fs.readFileSync(file.path);
             let body="";
 
-            pdf(textByLine).then((data)=>{
+            pdf(textByLine, options).then((data)=>{
                 body = data.text;
                 var raw_text = {
                     "body": body,
@@ -55,6 +87,10 @@ module.exports = function upload(req, res) {
                     "name": null,
                     "assignment_id": field
                 };
+
+                console.log("boom chaka laka");
+
+                console.log(JSON.stringify(body[0][0]));
 
 
                 // we actually want to set a variable to see whether or not things happenned successfully
