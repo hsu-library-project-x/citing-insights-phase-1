@@ -44,7 +44,18 @@ class PdfComponent extends PureComponent {
 
         this.GUTTER_SIZE = 5;
         this.gridRef = React.createRef();
-
+        const innerElementType = forwardRef(({ style, ...rest }, ref) => (
+            <div
+                ref={ref}
+                style={{
+                    ...style,
+                    paddingLeft: this.GUTTER_SIZE,
+                    paddingTop: this.GUTTER_SIZE,
+                    marginBottom: this.GUTTER_SIZE,
+                }}
+                {...rest}
+            />
+        ));
     }
 
     removeTextLayerOffset() {
@@ -222,19 +233,7 @@ class PdfComponent extends PureComponent {
     makeTextRenderer = searchText => textItem => this.highlightPattern(textItem.str, searchText);
 
     GenerateGrid = () => {
-        const innerElementType = forwardRef(({ style, ...rest }, ref) => (
-            <div
-                ref={ref}
-                style={{
-                    ...style,
-                    paddingLeft: this.GUTTER_SIZE,
-                    paddingTop: this.GUTTER_SIZE,
-                    marginBottom: this.GUTTER_SIZE,
-                }}
-                {...rest}
-            />
-        ));
-
+    
         const Cell = ({ columnIndex, rowIndex, style }) => (
             <div
                 className={"GridItem"}
@@ -265,7 +264,7 @@ class PdfComponent extends PureComponent {
                 columnCount={1}
                 columnWidth={this.state.columnWidth + this.GUTTER_SIZE}
                 height={this.windowHeight}
-                innerElementType={innerElementType}
+                innerElementType={this.innerElementType}
                 rowCount={this.state.numPages}
                 rowHeight={this.state.rowHeight + this.GUTTER_SIZE}
                 width={this.windowWidth}
@@ -368,6 +367,7 @@ class PdfComponent extends PureComponent {
 }
 
 function PdfPropsAreEqual(prevProps, nextProps) {
+    console.log(prevProps, nextProps);
     return prevProps.data === nextProps.data
         && prevProps.pageNumber === nextProps.pageNumber;
 }

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Grid, Select, MenuItem, Button, FormControl, Tooltip, InputLabel, TextField, IconButton, Fab } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -9,7 +9,7 @@ import DiscoveryTool from './DiscoveryTool.jsx';
 import Citation from './Citation.jsx'
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 
-class Analyze extends Component {
+class Analyze extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -455,7 +455,7 @@ class Analyze extends Component {
                 style={{ textAlign: "center" }}
                 labelId={"selectPaperlabel"}
                 onChange={this.handlePaperChange}
-                defaultValue={""}
+                defaultValue={this.state.curPaperId}
                 value={this.state.curPaperId}
                 inputProps={{
                   name: 'curPaperId',
@@ -464,6 +464,7 @@ class Analyze extends Component {
                 <MenuItem value="" disabled >select paper </MenuItem>
                 {paperList}
               </Select>
+
             </FormControl>
             {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
               <Citation
@@ -549,4 +550,4 @@ class Analyze extends Component {
   }
 }
 
-export default withRouter(Analyze);
+export default React.memo(Analyze);
