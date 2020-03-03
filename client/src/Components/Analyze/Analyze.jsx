@@ -58,12 +58,12 @@ class Analyze extends Component {
 
   get_paper_info(paper_id) {
     fetch('/papers/' + paper_id)
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (myJson) {
-        this.setState({ current_pdf_data: myJson["pdf"]["data"] });
-      });
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (myJson) {
+          this.setState({ current_pdf_data: myJson["pdf"]["data"] });
+        });
   }
 
   componentDidMount() {
