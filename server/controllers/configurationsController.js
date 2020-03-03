@@ -1,8 +1,7 @@
 let configurationsModel = require('../models/configurationsModel');
 const IncomingForm = require("formidable").IncomingForm;
 const fs = require("fs");
-var Jimp = require('jimp');
-
+const shell = require("shelljs");
 
 module.exports = {
 
@@ -42,23 +41,14 @@ module.exports = {
             let newImg = fs.readFileSync(file.path);
             let encImg = newImg.toString('base64');
 
-            // // open a file called "lenna.png"
-            // Jimp.read(newImg, (err, img) => {
-            //     if (err) throw err;
-            //     img
-            //         .resize(800, 500) // resize
-            //         .write(newImg2); // save
-            // }).then((newImg2) => {
-
-            // });
-
-
             newItem = {
                 name: file.name,
                 contentType: file.mimetype,
                 size: file.size,
                 img: Buffer(encImg, 'base64')
             };
+
+            shell.exec(`rm ${file.path}`);
         });
 
         form.on('error', function (err) {
