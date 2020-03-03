@@ -44,6 +44,7 @@ class PdfComponent extends PureComponent {
 
         this.GUTTER_SIZE = 5;
         this.gridRef = React.createRef();
+        
         const innerElementType = forwardRef(({ style, ...rest }, ref) => (
             <div
                 ref={ref}

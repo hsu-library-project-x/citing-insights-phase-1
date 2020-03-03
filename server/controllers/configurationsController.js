@@ -38,17 +38,19 @@ module.exports = {
 
         form.on('file', function (name, file) {
 
+            
             let newImg = fs.readFileSync(file.path);
+            let encImg = newImg.toString('base64');
 
-            // open a file called "lenna.png"
-            Jimp.read(newImg, (err, img) => {
-                if (err) throw err;
-                img
-                    .resize(800, 500) // resize
-                    .write(newImg2); // save
-            }).then((newImg2) => {
+            // // open a file called "lenna.png"
+            // Jimp.read(newImg, (err, img) => {
+            //     if (err) throw err;
+            //     img
+            //         .resize(800, 500) // resize
+            //         .write(newImg2); // save
+            // }).then((newImg2) => {
 
-            });
+            // });
 
 
             newItem = {
@@ -70,6 +72,7 @@ module.exports = {
                 secondaryColor: newData['secondaryColor'],
                 institutionName: newData['institutionName'],
                 oneSearchUrl: newData['oneSearchUrl'],
+                oneSearchViewId: newData['oneSearchViewId'],
                 images: newItem,
             });
 

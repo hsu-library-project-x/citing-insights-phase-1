@@ -477,6 +477,7 @@ class Analyze extends PureComponent {
               <DiscoveryTool
                 citations={this.state.citations}
                 oneSearchUrl={this.props.oneSearchUrl}
+                oneSearchViewId={this.props.oneSearchViewId}
                 current_citation_id={this.state.current_citation_id}
                 key={this.state.current_citation_id}
               /> : null}

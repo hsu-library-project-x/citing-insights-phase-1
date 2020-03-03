@@ -6,6 +6,7 @@ let configurationsSchema = new Schema({
     'secondaryColor' : String,
     'institutionName': String,
     'oneSearchUrl':String,
+    'oneSearchViewId': String,
     'images': {
         name:String,
         contentType:String,

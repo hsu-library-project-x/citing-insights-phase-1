@@ -309,6 +309,7 @@ class Tasks extends PureComponent {
 								<Analyze
 									user={this.props.user}
 									oneSearchUrl={this.props.configurations.oneSearchUrl}
+									oneSearchViewId={this.props.configurations.oneSearchViewId}
 									selectedAssignmentId={this.state.selectedAssignmentId}
 									{...props} />}
 							/>
