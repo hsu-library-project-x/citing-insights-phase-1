@@ -25,7 +25,7 @@ class PdfComponent extends Component {
         scale: 1.0,
         columnWidth:  window.innerWidth/2,
         rowHeight:  1.5* window.innerHeight,
-        rawText:[{}],
+        // rawText:this.p,
         matches:[],
         loadedPage:1,
         currentMatch:null,
@@ -37,7 +37,7 @@ class PdfComponent extends Component {
     this.SearchScroll = this.SearchScroll.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.Search = this.Search.bind(this);
-    this.PassUpText = this.PassUpText.bind(this);
+
 
     this.windowHeight = window.innerHeight;
     this.windowWidth = window.innerWidth/1.5;
@@ -58,11 +58,11 @@ class PdfComponent extends Component {
         });
     }
 
-    PassUpText(rawText) {
-        this.setState( ({
-            rawText: rawText,
-        }));
-    };
+    // PassUpText(rawText) {
+    //     this.setState( ({
+    //         rawText: rawText,
+    //     }));
+    // };
 
 
     componentWillReceiveProps(nextProps) {
@@ -123,7 +123,8 @@ class PdfComponent extends Component {
      Search(subject, objects){
           let matches =[];
           let current = null;
-
+          console.log(subject);
+          console.log(objects);
           if(subject !== ""){
               let regexp = new RegExp(subject,'gi');
               for (let k=1; k<Object.keys(objects).length;k++){
@@ -154,7 +155,7 @@ class PdfComponent extends Component {
         const value = target.value;
         const name=target.name;
         this.setState({[name]:value});
-        this.Search(value, this.state.rawText);
+        this.Search(value, this.props.rawText);
     }
 
     PreviousResult(){

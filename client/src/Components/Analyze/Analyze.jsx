@@ -34,6 +34,7 @@ class Analyze extends Component {
       annotation: "",
       pageNumber: null,
       radio_score: null,
+      raw_pdf_data:null,
     };
 
     this.componentWillMount = this.componentWillMount.bind(this);
@@ -62,7 +63,7 @@ class Analyze extends Component {
           return response.json();
         })
         .then(function (myJson) {
-          this.setState({ current_pdf_data: myJson["pdf"]["data"] });
+          this.setState({ current_pdf_data: myJson["pdf"]["data"] ,raw_pdf_data: myJson['body'] });
         });
   }
 
@@ -122,7 +123,7 @@ class Analyze extends Component {
                 return response.json();
               })
               .then(function (myJson) {
-                that.setState({ current_pdf_data: myJson["pdf"]["data"] });
+                that.setState({ current_pdf_data: myJson["pdf"]["data"], raw_pdf_data: myJson['body'] });
                 that.get_citation_info(myJson["_id"])
                   .then((citations) => {
                     that.setCurrentCitation(citations[1]["_id"]);
@@ -374,6 +375,7 @@ class Analyze extends Component {
     } else {
       pdf = <PdfComponent
         data={this.state.current_pdf_data}
+        rawText={this.state.raw_pdf_data}
         pageNumber={pageNum}
       />;
     }
