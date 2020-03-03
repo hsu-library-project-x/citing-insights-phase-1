@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Switch, Route, withRouter } from "react-router-dom";
 import { Tooltip, IconButton, Container, Stepper, Step, StepButton, Typography, Fab, Grid } from "@material-ui/core";
 import Classes from "../Classes/Classes.jsx";
@@ -16,21 +16,21 @@ import DoneIcon from '@material-ui/icons/Done';
 
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
-class Tasks extends Component {
+class Tasks extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
 			ActiveStep: 0,
 			completed: {},
 			selectedAssignmentId: null,
-			isEditing:null,
+			isEditing: null,
 			rubricExists: null,
 			rubricTitle: "",
-			rubricElements:"",
-			selectedRubric:"",
+			rubricElements: "",
+			selectedRubric: "",
 			AvailableRubrics: [],
-			rubricData:{},
-			citations:[],
+			rubricData: {},
+			citations: [],
 			overviewPage: null,
 		};
 
@@ -41,8 +41,10 @@ class Tasks extends Component {
 			"Step 4: Assess Student's citations using rubric and our Discovery tools",
 			"Step 5: See how you rated a student's citations"];
 
-		this.pathnames = {'/tasks/courses' : 0, '/tasks/upload' : 1, '/tasks/rubric' :2, '/tasks/rubriceditor' :2,
-			'/tasks/analyzemenu':3, '/tasks/analyze':3, '/tasks/overview':4};
+		this.pathnames = {
+			'/tasks/courses': 0, '/tasks/upload': 1, '/tasks/rubric': 2, '/tasks/rubriceditor': 2,
+			'/tasks/analyzemenu': 3, '/tasks/analyze': 3, '/tasks/overview': 4
+		};
 
 		this.renderPage();
 
@@ -86,7 +88,7 @@ class Tasks extends Component {
 				// find the first step that has been completed
 				this.steps.findIndex((step, i) => !(i in this.state.completed))
 				: this.state.ActiveStep + 1;
-		this.setState({ ActiveStep: newActiveStep },this.renderPage);
+		this.setState({ ActiveStep: newActiveStep }, this.renderPage);
 	};
 
 	handleBack = () => {
@@ -95,7 +97,7 @@ class Tasks extends Component {
 	};
 
 	handleStep = step => () => {
-		this.setState({ ActiveStep: step },this.renderPage);
+		this.setState({ ActiveStep: step }, this.renderPage);
 	};
 
 	handleComplete = () => {
@@ -114,15 +116,15 @@ class Tasks extends Component {
 		this.setState({ selectedAssignmentId: newId }, this.renderPage);
 	}
 
-	updateOverviewPage(citations){
-		this.setState({citations: citations, overviewPage:true}, this.renderPage);
+	updateOverviewPage(citations) {
+		this.setState({ citations: citations, overviewPage: true }, this.renderPage);
 	}
 
 	updateisEditing = (rubricExists, rubricTitle, rubricElements, selectedRubric, availableRubrics, rubricData) => {
 		this.setState({
 			isEditing: true,
 			rubricExists: rubricExists,
-			rubricTitle:rubricTitle,
+			rubricTitle: rubricTitle,
 			rubricElements: rubricElements,
 			selectedRubric: selectedRubric,
 			AvailableRubrics: availableRubrics,
@@ -139,10 +141,10 @@ class Tasks extends Component {
 				this.props.history.push('/tasks/upload');
 				return;
 			case 2:
-				if (this.state.isEditing !== null){
+				if (this.state.isEditing !== null) {
 					this.props.history.push('/tasks/rubriceditor');
 					return;
-				}else{
+				} else {
 					this.props.history.push('/tasks/rubric');
 					return;
 				}
@@ -155,10 +157,10 @@ class Tasks extends Component {
 					return;
 				}
 			case 4:
-				if (this.state.overviewPage !== null){
+				if (this.state.overviewPage !== null) {
 					this.props.history.push('/tasks/overviewtable');
 					return;
-				}else{
+				} else {
 					this.props.history.push('/tasks/overview');
 					return;
 				}
@@ -180,7 +182,7 @@ class Tasks extends Component {
 
 		return (
 			<MuiThemeProvider theme={theme}>
-				<Container>
+				<Container maxWidth='xl'>
 					<Container maxWidth={'md'}>
 						<Stepper nonLinear activeStep={this.pathnames[this.props.location.pathname]}>
 							{this.steps.map((label, index) => (
@@ -216,9 +218,9 @@ class Tasks extends Component {
 								<div>
 									<Grid container spacing={0}>
 										<Grid item xs={8}>
-											<Typography 
-											align={"right"} 
-											 color="textSecondary">{this.stepContent[this.state.ActiveStep]}</Typography>
+											<Typography
+												align={"right"}
+												color="textSecondary">{this.stepContent[this.state.ActiveStep]}</Typography>
 										</Grid>
 										<Grid item xs={4}>
 											<div align={"right"}>
@@ -269,15 +271,16 @@ class Tasks extends Component {
 								</div>
 							)}
 						<Switch>
+
 							<Route path="/tasks/courses" render={(props) =>
-									   <Classes
-										   user={this.props.user}
-										   {...props} />}
+								<Classes
+									user={this.props.user}
+									{...props} />}
 							/>
 							<Route path="/tasks/upload" render={(props) =>
-									<Upload
-										user={this.props.user}
-										{...props} />}
+								<Upload
+									user={this.props.user}
+									{...props} />}
 							/>
 							<Route path="/tasks/rubric" render={(props) =>
 								<Rubric

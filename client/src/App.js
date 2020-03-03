@@ -11,7 +11,6 @@ import ConfigurationForm from "./ConfigurationForm";
 
 import './App.css';
 
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -22,6 +21,7 @@ class App extends Component {
       configurations:null,
       loading: true,
     };
+    window.localStorage.clear();
     this.getConfigurations();
 
     this.getConfigurations = this.getConfigurations.bind(this);

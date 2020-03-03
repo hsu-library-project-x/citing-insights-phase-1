@@ -41,6 +41,7 @@ class Analyze extends Component {
     this.handleChildUnmount = this.handleChildUnmount.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSaveCitations = this.handleSaveCitations.bind(this);
+    this.handlePaperChange = this.handlePaperChange.bind(this);
     this.get_citation_info = this.get_citation_info.bind(this);
     this.setCurrentCitation = this.setCurrentCitation.bind(this);
     this.next_paper = this.next_paper.bind(this);
@@ -48,6 +49,10 @@ class Analyze extends Component {
     this.get_paper_info = this.get_paper_info.bind(this);
     this.updateCitationId = this.updateCitationId.bind(this);
     this.AssessmentScore = this.AssessmentScore.bind(this);
+
+    let pdf = <p> No Pdf Data found </p>;
+
+
   }
 
   AssessmentScore(newScore, title) {
@@ -57,16 +62,18 @@ class Analyze extends Component {
   }
 
   get_paper_info(paper_id) {
+    var that = this;
     fetch('/papers/' + paper_id)
       .then(function (response) {
         return response.json();
       })
       .then(function (myJson) {
-        this.setState({ current_pdf_data: myJson["pdf"]["data"] });
+        that.setState({ current_pdf_data: myJson["pdf"]["data"] });
       });
   }
 
   componentDidMount() {
+    console.log('mounting analyze');
     let that = this;
     //Grab info about the assignment
     fetch('/assignments/' + this.props.selectedAssignmentId)
@@ -79,6 +86,10 @@ class Analyze extends Component {
         });
       });
 
+  }
+
+  componentWillUnmount() {
+    console.log('unmounting analyze');
   }
 
   get_citation_info(paper_id) {
@@ -154,11 +165,12 @@ class Analyze extends Component {
     const target = event.target;
     const id = target.value;
     const rubricArray = this.state.AvailableRubrics;
+
     for (let i = 0; i < rubricArray.length; i++) {
       if (rubricArray[i]._id === id) {
-        this.setState({
-          currentRubric: rubricArray[i]
-        });
+        this.setState((state, props) => ({
+          currentRubric: state.AvailableRubrics[i]
+        }));
       }
     }
 
@@ -340,12 +352,23 @@ class Analyze extends Component {
     });
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if(nextState.annotation !== this.state.annotation){
-      return false;
-    }
-    return true;
+  handlePaperChange(event){
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+    //alert(name + ", " + value);
+    this.setState({
+      [name]: value
+    });
+    this.get_paper_info(value);
   }
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   if (this.state.pdf === "this must get set"  ||  nextState.paper_id !== this.state.paper_id) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   next_paper(direction) {
     let check = true;  //THis is redunant?
@@ -372,26 +395,12 @@ class Analyze extends Component {
   updateCitationId(new_id) {
     this.setState({
       current_citation_id: new_id,
-      function() {
-        console.log(this.state.current_citation_id);
-      }
     });
   }
 
+
   render() {
     let pageNum = this.state.pageNumber === null ? 1 : this.state.pageNumber;
-
-    let pdf;
-
-    if (this.state.current_pdf_data === "this must get set") {
-      pdf = <p> No Pdf Data found </p>;
-    } else {
-      pdf = <PdfComponent
-        data={this.state.current_pdf_data}
-        pageNumber={pageNum}
-      />;
-    }
-
 
     let rubrics = this.state.AvailableRubrics;
     let rubricList = rubrics.map((rubric) =>
@@ -401,8 +410,7 @@ class Analyze extends Component {
     let papers = this.state.paper_ids;
     let paperList = papers.map(p => {
       return <MenuItem value={p._id} key={p._id}> {p.title} </MenuItem>
-    }
-    );
+    });
 
     return (
       <Grid
@@ -424,9 +432,8 @@ class Analyze extends Component {
               Change Assignment
           </Fab>
           </Tooltip>
-
-
         </Grid>
+
         <Grid
           // container={true}
           // direction="row"
@@ -437,8 +444,9 @@ class Analyze extends Component {
           justify="flex-start"
           alignItems="flex-start"
           spacing={1}>
-          <Grid item xs={12} sm={4} md={2}>
 
+          {/* Paper + citation selection, and discovery tool*/}
+          <Grid item xs={12} sm={4} md={2}>
             {/*<Paper variant="outlined">*/}
             <FormControl required={true} style={{ minWidth: 150 }}>
               <InputLabel id={"selectPaperlabel"} style={{ textAlign: 'center' }}>Select a Paper</InputLabel>
@@ -446,7 +454,7 @@ class Analyze extends Component {
                 variant={"filled"}
                 style={{ textAlign: "center" }}
                 labelId={"selectPaperlabel"}
-                onChange={this.handleInputChange}
+                onChange={this.handlePaperChange}
                 defaultValue={""}
                 value={this.state.curPaperId}
                 inputProps={{
@@ -473,16 +481,19 @@ class Analyze extends Component {
               /> : null}
             {/*</Paper>*/}
           </Grid>
+
           {/* PDF Viewer */}
           <Grid item xs={12} sm={4} md={8} style={{ backgroundColor: 'rgb(160, 164, 167)' }}>
-            {pdf}
+            <PdfComponent
+              data={this.state.current_pdf_data}
+              pageNumber={pageNum}
+            />
           </Grid>
-          <Grid item xs={12} sm={4} md={2}>
-            {/*<h3 style={{float:"left", margin:0}}>Citations</h3>*/}
 
-            {/*</Paper>*/}
+          <Grid item xs={12} sm={4} md={2}>
+
+            {/*Rubric selection and annotation field*/}
             <br />
-            {/*<Paper variant="outlined">*/}
             <FormControl style={{ minWidth: 200, maxWidth: 200, marginBottom: "1em" }}>
               <InputLabel id={"AssignRubriclabel"}>Select a Rubric</InputLabel>
               <Select
@@ -526,12 +537,13 @@ class Analyze extends Component {
                 curRubric={this.state.currentRubric}
                 curPaper={this.state.curPaperId} /> : null}
           </Grid>
+
         </Grid>
 
         <Grid item xs={12} sm={4} md={2}>
           {/*<h3 style={{float:"left", margin:0}}>Paper</h3>*/}
-
         </Grid>
+
       </Grid>
     );
   }
