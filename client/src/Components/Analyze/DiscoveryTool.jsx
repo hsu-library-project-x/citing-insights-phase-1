@@ -53,9 +53,15 @@ class DiscoveryTool extends Component {
     open_alma_primo() {
         let query = encodeURI(this.state.citation["title"][0]);
         let url = this.props.oneSearchUrl;
-        // change this url to a prop passed in from Analyze - (originally received from Config File);
+        let vid = this.props.oneSearchViewId;
+        
+        
         // Some Exception Handling would be nice in case the URL provided doesn't work!
-        let win = window.open("https://humboldt-primo.hosted.exlibrisgroup.com/primo-explore/search?query=title,begins_with," + query + ",AND&tab=everything&search_scope=EVERYTHING&sortby=title&vid=01CALS_HUL&lang=en_US&mode=advanced&offset=0&pcAvailability=true", '_blank');
+        //   
+        //ex. https://chico-primo.hosted.exlibrisgroup.com/primo-explore/
+        //ex. https://humboldt-primo.hosted.exlibrisgroup.com/primo-explore/
+
+        let win = window.open(`https://${url}/search?vid=${vid}&query=title,begins_with,${query},AND&tab=everything&search_scope=EVERYTHING&sortby=title&lang=en_US&mode=advanced&offset=0&pcAvailability=true`, '_blank');
         win.focus();
     }
 

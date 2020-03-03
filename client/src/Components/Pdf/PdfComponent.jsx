@@ -1,7 +1,7 @@
-import React, { forwardRef,Component } from "react";
-import {Document, Page, pdfjs} from "react-pdf";
-import { FixedSizeGrid   } from "react-window";
-import {TextField, Toolbar,InputAdornment,IconButton, Tooltip , AppBar } from '@material-ui/core';
+import React, { forwardRef, PureComponent } from "react";
+import { Document, Page, pdfjs } from "react-pdf";
+import { FixedSizeGrid } from "react-window";
+import { TextField, Toolbar, InputAdornment, IconButton, Tooltip, AppBar, Container } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search'
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
@@ -11,36 +11,35 @@ import "react-pdf/dist/Page/AnnotationLayer.css";
 import "./pdfComponent.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc =
-  `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+    `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 
-class PdfComponent extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-        numPages: null,
-        pageNumber: this.props.pageNumber,
-        searchText: '',
-        pdf: new Blob([this.props.data], { type: "application/pdf;base64" }),
-        scale: 1.0,
-        columnWidth:  window.innerWidth/2,
-        rowHeight:  1.5* window.innerHeight,
-        // rawText:this.p,
-        matches:[],
-        loadedPage:1,
-        currentMatch:null,
-    };
+class PdfComponent extends PureComponent {
+    constructor(props) {
+        super(props);
+        this.state = {
+            numPages: null,
+            pageNumber: this.props.pageNumber,
+            searchText: '',
+            pdf: new Blob([this.props.data], { type: "application/pdf;base64" }),
+            scale: 1.0,
+            columnWidth: window.innerWidth / 2,
+            rowHeight: 1.5 * window.innerHeight,
+            // rawText: [{}],
+            matches: [],
+            loadedPage: 1,
+            currentMatch: null,
+        };
 
-    this.ZoomIn = this.ZoomIn.bind(this);
-    this.ZoomOut = this.ZoomOut.bind(this);
-    this.ScrollTo = this.ScrollTo.bind(this);
-    this.SearchScroll = this.SearchScroll.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.Search = this.Search.bind(this);
+        this.ZoomIn = this.ZoomIn.bind(this);
+        this.ZoomOut = this.ZoomOut.bind(this);
+        this.ScrollTo = this.ScrollTo.bind(this);
+        this.SearchScroll = this.SearchScroll.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.Search = this.Search.bind(this);
 
-
-    this.windowHeight = window.innerHeight;
-    this.windowWidth = window.innerWidth/1.5;
+        this.windowHeight = window.innerHeight;
+        this.windowWidth = window.innerWidth / 1.5;
 
     this.GUTTER_SIZE = 5;
     this.gridRef = React.createRef();
@@ -64,25 +63,42 @@ class PdfComponent extends Component {
     //     }));
     // };
 
+    componentDidMount() {
+        console.log('pdf mounted');
+    }
+
+    // shouldComponentUpdate(nextProps, nextState){
+    //     if(nextProps === this.props && nextState === this.state){
+    //         return false;
+    //     }
+    //     return true;
+    // }
+
 
     componentWillReceiveProps(nextProps) {
+
         let bytes = new Uint8Array(nextProps.data);
         let blob = new Blob([bytes], { type: "application/pdf;base64" });
         this.setState({
-          pdf: blob
-        })
+            pdf: blob
+        });
+
+    }
+
+    componentWillUnmount() {
+        console.log('unmounting pdf');
     }
 
     onDocumentLoadSuccess = (document) => {
         const { numPages } = document;
         this.setState({
-          numPages,
-          pageNumber: 1,
+            numPages,
+            pageNumber: 1,
         });
     };
 
-     highlightPattern = (text, pattern) => {
-        let regexp = new RegExp(pattern,'gi');
+    highlightPattern = (text, pattern) => {
+        let regexp = new RegExp(pattern, 'gi');
         const splitText = text.split(regexp);
 
         if (splitText.length <= 1) {
@@ -100,164 +116,152 @@ class PdfComponent extends Component {
         ] : [...arr, element]), []);
     };
 
-    SearchScroll(){
+    SearchScroll() {
         let that = this;
         let match = this.state.matches[this.state.currentMatch];
         // console.log(this.state.matches);
         // console.log(this.state.currentMatch);
         // console.log(match);
-        if(match !== undefined){
-            if(match[1] === this.state.loadedPage){
+        if (match !== undefined) {
+            if (match[1] === this.state.loadedPage) {
                 return;
             }
-            else{
+            else {
                 that.gridRef.current.scrollToItem({
                     columnIndex: 1,
-                    rowIndex: match[1]-1,
+                    rowIndex: match[1] - 1,
                 });
             }
         }
 
     }
 
-     Search(subject, objects){
-          let matches =[];
-          let current = null;
-          console.log(subject);
-          console.log(objects);
-          if(subject !== ""){
-              let regexp = new RegExp(subject,'gi');
-              for (let k=1; k<Object.keys(objects).length;k++){
-                  for (let i=0; i<objects[k].length; i++){
-                      // console.log(objects[k][i]);
-                      if (objects[k][i]['str'].match(regexp)) {
-                          //string, page, line
-                          matches.push([objects[k][i]['str'],k,i]);
-                      }
-                  }
-              }
-              if(matches.length >= 1){
-                  current=1;
-              }
+    Search(subject, objects) {
+        let matches = [];
+        let current = null;
 
-          }
+        if (subject !== "") {
+            let regexp = new RegExp(subject, 'gi');
+            for (let k = 1; k < Object.keys(objects).length; k++) {
+                for (let i = 0; i < objects[k].length; i++) {
+                    // console.log(objects[k][i]);
+                    if (objects[k][i]['str'].match(regexp)) {
+                        //string, page, line
+                        matches.push([objects[k][i]['str'], k, i]);
+                    }
+                }
+            }
+            if (matches.length >= 1) {
+                current = 1;
+            }
 
-          this.setState({
-              matches: matches,
-              currentMatch:current,
-          }, () => this.SearchScroll());
-          return matches;
-      };
+        }
+
+        this.setState({
+            matches: matches,
+            currentMatch: current,
+        }, () => this.SearchScroll());
+        console.log(matches);
+        return matches;
+    };
 
     // call when input changes to update the state
     handleInputChange(event) {
         const target = event.target;
         const value = target.value;
-        const name=target.name;
-        this.setState({[name]:value});
-        this.Search(value, this.props.rawText);
+        const name = target.name;
+        this.setState({ [name]: value });
+        this.Search(value, this.state.rawText);
     }
 
-    PreviousResult(){
+    PreviousResult() {
         console.log(this.state.currentMatch);
         this.setState((prevState) => ({
-            currentMatch:prevState.currentMatch - 1
-        }),this.SearchScroll());
+            currentMatch: prevState.currentMatch - 1
+        }), this.SearchScroll());
         console.log(this.state.currentMatch);
 
     }
 
-    NextResult(){
+    NextResult() {
         this.setState((prevState) => ({
-            currentMatch:prevState.currentMatch + 1
-        }),this.SearchScroll());
+            currentMatch: prevState.currentMatch + 1
+        }), this.SearchScroll());
     }
 
-    ZoomIn(){
-          let offset=0.25 ;
+    ZoomIn() {
+        let offset = 0.25;
 
-          this.setState( {
-              columnWidth:this.state.columnWidth + (this.state.columnWidth * offset),
-              rowHeight: this.state.rowHeight + (this.state.rowHeight * offset),
-          });
+        this.setState((prevState) => ({
+            columnWidth: prevState.columnWidth + (prevState.columnWidth * offset),
+            rowHeight: prevState.rowHeight + (prevState.rowHeight * offset),
+        }));
     }
 
-    ZoomOut(){
-        let offset=-0.25 ;
+    ZoomOut() {
+        let offset = -0.25;
 
-        this.setState( {
-            columnWidth:this.state.columnWidth + (this.state.columnWidth * offset),
-            rowHeight: this.state.rowHeight + (this.state.rowHeight * offset),
-        });
+        this.setState((prevState) => ({
+            columnWidth: prevState.columnWidth + (prevState.columnWidth * offset),
+            rowHeight: prevState.rowHeight + (prevState.rowHeight * offset),
+        }));
     }
 
-    ScrollTo(event){
-      event.preventDefault();
-      let that = this;
-      let page= event.target.value;
+    ScrollTo(event) {
+        event.preventDefault();
+        let that = this;
+        let page = event.target.value;
 
         that.gridRef.current.scrollToItem({
             align: "start",
             columnIndex: 1,
-            rowIndex: page-1,
+            rowIndex: page - 1,
         });
     }
     makeTextRenderer = searchText => textItem => this.highlightPattern(textItem.str, searchText);
 
     GenerateGrid = () => {
-    const innerElementType = forwardRef(({ style, ...rest }, ref) => (
-        <div
-            ref={ref}
-            style={{
-              ...style,
-              paddingLeft: this.GUTTER_SIZE,
-              paddingTop: this.GUTTER_SIZE,
-              marginBottom:this.GUTTER_SIZE,
-            }}
-            {...rest}
-        />
-    ));
 
-    const Cell = ({columnIndex, rowIndex, style}) => (
-        <div
-            className={"GridItem"}
-            style={{
-              ...style,
-              left: style.left + this.GUTTER_SIZE,
-              top: style.top + this.GUTTER_SIZE,
-              width: style.width - this.GUTTER_SIZE,
-              height: style.height - this.GUTTER_SIZE
-            }}
-        >
-          <Page
-              customTextRenderer={this.makeTextRenderer(this.state.searchText)}
-              onLoadSuccess={() => this.removeTextLayerOffset()}
-              // onLoadSuccess={()=>this.setState({loadedPage: rowIndex+1})}
-              height={this.state.rowHeight}
-              key={`page_${rowIndex + 1}`}
-              pageNumber={rowIndex + 1}
-              className="pdf-viewer"
-              scale={1.0}
-          />
-        </div>
-    );
+        const Cell = ({ columnIndex, rowIndex, style }) => (
+            <div
+                className={"GridItem"}
+                style={{
+                    ...style,
+                    left: style.left + this.GUTTER_SIZE,
+                    top: style.top + this.GUTTER_SIZE,
+                    width: style.width - this.GUTTER_SIZE,
+                    height: style.height - this.GUTTER_SIZE
+                }}
+            >
+                <Page
+                    customTextRenderer={this.makeTextRenderer(this.state.searchText)}
+                    onLoadSuccess={() => this.removeTextLayerOffset()}
+                    // onLoadSuccess={()=>this.setState({loadedPage: rowIndex+1})}
+                    height={this.state.rowHeight}
+                    key={`page_${rowIndex + 1}`}
+                    pageNumber={rowIndex + 1}
+                    className="pdf-viewer"
+                    scale={1.0}
+                />
+            </div>
+        );
 
-    return (
-        <FixedSizeGrid
-        className="Grid"
-        columnCount={1}
-        columnWidth={this.state.columnWidth + this.GUTTER_SIZE}
-        height={this.windowHeight}
-        innerElementType={innerElementType}
-        rowCount={this.state.numPages}
-        rowHeight={this.state.rowHeight+ this.GUTTER_SIZE }
-        width={this.windowWidth}
-        ref={this.gridRef}
-      >
-        {Cell}
-      </FixedSizeGrid>
-    );
-  };
+        return (
+            <FixedSizeGrid
+                className="Grid"
+                columnCount={1}
+                columnWidth={this.state.columnWidth + this.GUTTER_SIZE}
+                height={this.windowHeight}
+                innerElementType={this.innerElementType}
+                rowCount={this.state.numPages}
+                rowHeight={this.state.rowHeight + this.GUTTER_SIZE}
+                width={this.windowWidth}
+                ref={this.gridRef}
+            >
+                {Cell}
+            </FixedSizeGrid>
+        );
+    };
 
 
   render() {
@@ -298,53 +302,61 @@ class PdfComponent extends Component {
                       </IconButton>
                   </Tooltip>
 
-                  <p> Go to Page </p>
-                  <TextField
-                      onChange={this.ScrollTo}
-                      aria-label="Page Number"
-                      type="number"
-                      defaultValue={1}
-                      size={'small'}
-                      InputLabelProps={{
-                      shrink: true,}}
-                      InputProps={{
-                          inputProps: {
-                              max: this.state.numPages,
-                              min: 1
-                          }
-                         }}
+                        <p> Go to Page </p>
+                        <TextField
+                            onChange={this.ScrollTo}
+                            aria-label="Page Number"
+                            type="number"
+                            defaultValue={1}
+                            size={'small'}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            InputProps={{
+                                inputProps: {
+                                    max: this.state.numPages,
+                                    min: 1
+                                }
+                            }}
 
-                      />
-                  <p> of {this.state.numPages} </p>
-                  <Tooltip title="Zoom Out">
-                      <IconButton aria-label="zoom-out" color="primary"  onClick={this.ZoomOut}>
-                          <ZoomOutIcon />
-                      </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Zoom In">
-                      <IconButton aria-label="zoom-in" color="primary" onClick={this.ZoomIn}>
-                          <ZoomInIcon />
-                      </IconButton>
-                  </Tooltip>
-              </Toolbar>
-          </AppBar>
-          {/*</Container>*/}
-            <Document
-              file={this.state.pdf}
-              onLoadSuccess={this.onDocumentLoadSuccess}
-              className="pdf-container"
-            >
-              {this.GenerateGrid()}
-            </Document>
-          {/*pdf controls is not shown with a css display:hidden eventually I need to make mode efficiant*/}
-          {/*    <PdfControls*/}
-          {/*        PassUpText={this.PassUpText}*/}
-          {/*        pageNum={this.state.pageNumber}*/}
-          {/*        pdf={this.state.pdf}*/}
-          {/*    />*/}
-      </div>
-    );
-  }
+                        />
+                        <p> of {this.state.numPages} </p>
+                        <Tooltip title="Zoom Out">
+                            <IconButton aria-label="zoom-out" color="primary" onClick={this.ZoomOut}>
+                                <ZoomOutIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Zoom In">
+                            <IconButton aria-label="zoom-in" color="primary" onClick={this.ZoomIn}>
+                                <ZoomInIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </Toolbar>
+                </AppBar>
+                {/*</Container>*/}
+                <Document
+                    file={this.state.pdf}
+                    onLoadSuccess={this.onDocumentLoadSuccess}
+                    className="pdf-container"
+                >
+                    {this.GenerateGrid()}
+                </Document>
+                {/*pdf controls is not shown with a css display:hidden eventually I need to make mode efficiant*/}
+                {/*    <PdfControls*/}
+                {/*        PassUpText={this.PassUpText}*/}
+                {/*        pageNum={this.state.pageNumber}*/}
+                {/*        pdf={this.state.pdf}*/}
+                {/*    />*/}
+            </div>
+        );
+    }
 }
 
-export default PdfComponent;
+function PdfPropsAreEqual(prevProps, nextProps) {
+    console.log(prevProps, nextProps);
+    return prevProps.data === nextProps.data
+        && prevProps.pageNumber === nextProps.pageNumber;
+}
+
+//Wrapping the component in a memo lets us check against a memoized version -- eliminating unneccessary rerenders
+export default React.memo(PdfComponent, PdfPropsAreEqual);
