@@ -70,8 +70,8 @@ class Citation extends Component {
 
 
     render() {
-        const cardText = this.generateCitationCard(this.state.citations, this.props.current_citation_id);
-        const dropDownItems = this.generateDropDown(this.state.citations);
+        const cardText = this.generateCitationCard(this.props.citations, this.props.current_citation_id);
+        const dropDownItems = this.generateDropDown(this.props.citations);
 
         return (
             <div>
@@ -81,6 +81,7 @@ class Citation extends Component {
                         style={{textAlign:"center"}}
                         variant={'filled'}
                         labelId={"selectCitationlabel"}
+                        defaultValue={'Select a Citation'}
                         value={this.props.current_citation_id}
                         onChange={this.handleCitationChange}
                         inputProps={{

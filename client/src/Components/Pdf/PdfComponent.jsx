@@ -41,10 +41,22 @@ class PdfComponent extends PureComponent {
         this.windowHeight = window.innerHeight;
         this.windowWidth = window.innerWidth / 1.5;
 
-    this.GUTTER_SIZE = 5;
-    this.gridRef = React.createRef();
+        this.GUTTER_SIZE = 5;
+        this.gridRef = React.createRef();
 
-  }
+        const innerElementType = forwardRef(({ style, ...rest }, ref) => (
+            <div
+                ref={ref}
+                style={{
+                    ...style,
+                    paddingLeft: this.GUTTER_SIZE,
+                    paddingTop: this.GUTTER_SIZE,
+                    marginBottom: this.GUTTER_SIZE,
+                }}
+                {...rest}
+            />
+        ));
+    }
 
     removeTextLayerOffset() {
         const textLayers = document.querySelectorAll(".react-pdf__Page__textContent");
@@ -353,7 +365,6 @@ class PdfComponent extends PureComponent {
 }
 
 function PdfPropsAreEqual(prevProps, nextProps) {
-    console.log(prevProps, nextProps);
     return prevProps.data === nextProps.data
         && prevProps.pageNumber === nextProps.pageNumber;
 }

@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {TextField, Modal, Paper, Fab, Button, Typography, Select,
     MenuItem, InputLabel, FormControl} from "@material-ui/core";
+import {withRouter} from "react-router-dom";
 import AssignmentIcon from '@material-ui/icons/Assignment';
 
 
@@ -156,4 +157,4 @@ class CreateAssignment extends Component {
     }
 }
 
-export default CreateAssignment;
+export default withRouter(CreateAssignment);

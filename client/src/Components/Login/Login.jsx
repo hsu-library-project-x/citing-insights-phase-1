@@ -22,16 +22,18 @@ class Login extends Component {
 	}
 
 	onFailure = (err) => {
-		alert(err);
+		console.log(err);
 	};
 
 	responseGoogle = (response) => {
+
+		console.log(response);
+
 		const tokenBlob = new Blob(
 			[JSON.stringify({ access_token: response.accessToken }, null, 2)],
 			{ type: 'application/json' }
 		);
 		const options = {
-			//origin: "*",
 			method: 'POST',
 			body: tokenBlob,
 			mode: 'cors',
@@ -40,6 +42,7 @@ class Login extends Component {
 				'Content-Type': 'application/json',
 				'Accept': 'application/json',
 				'Access-Control-Allow': true,
+				 'Authorization': `Bearer ${response.tokedId}`,
 			}
 		};
 
@@ -48,6 +51,7 @@ class Login extends Component {
 			//This is the token we'll use to authenticate each of the user's 
 			//actions (things that require auth: make class, remove assignment, etc.)
 			const token = r.headers.get('x-auth-token');
+			console.log(token);
 			r.json().then(user => {
 				if (token) {
 					this.setState({
@@ -56,14 +60,14 @@ class Login extends Component {
 						token: token
 					});
 					this.props.passInfoLogin(true, token, user);
-					this.props.history.push({
-						pathname: "/",
-						props: {
-							isAuthenticated: true,
-							user: user,
-							token: token
-						}
-					});
+					// this.props.history.push({
+					// 	pathname: "/",
+					// 	props: {
+					// 		isAuthenticated: true,
+					// 		user: user,
+					// 		token: token
+					// 	}
+					// });
 				}
 			});
 		})
@@ -110,10 +114,14 @@ class Login extends Component {
 											Login with Google
 									</Button>
 									)}
+									accessType="offline"
+									approvalPrompt="force"
+									responseType="token code"
 									buttonText="Sign in with Google"
 									onSuccess={this.responseGoogle}
 									onFailure={this.onFailure}
 									cookiePolicy={'single_host_origin'}
+									prompt="consent"
 								/>
 							</div>
 						</Grid>

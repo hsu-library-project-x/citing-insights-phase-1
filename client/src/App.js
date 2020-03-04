@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route,  HashRouter} from "react-router-dom";
+import { withRouter, Route,  HashRouter, Redirect} from "react-router-dom";
 import { ProtectedRoute } from "./ProtectedRoute.jsx";
 
 import Login from "./Components/Login/Login.jsx";
@@ -21,7 +21,7 @@ class App extends Component {
       configurations:null,
       loading: true,
     };
-    window.localStorage.clear();
+    //window.localStorage.clear();
     this.getConfigurations();
 
     this.getConfigurations = this.getConfigurations.bind(this);
@@ -29,6 +29,10 @@ class App extends Component {
     this.passInfoLogout = this.passInfoLogout.bind(this);
     this.handleConfigurationChange = this.handleConfigurationChange.bind(this);
   }
+
+  // shouldComponentUpdate(nextProps, nextState){
+  //   if()
+  // }
 
   getConfigurations = () => {
     fetch('/configurations/', {
@@ -60,13 +64,15 @@ class App extends Component {
   };
 
   passInfoLogout() {
-    localStorage.clear();
     
+    localStorage.clear();
+    sessionStorage.clear();
     this.setState({
       isAuthenticated: false,
       user: null,
       token: ""
     });
+
   };
 
   handleConfigurationChange(){
@@ -82,6 +88,10 @@ class App extends Component {
     }
   }
 
+  componentWillUnmount(){
+    localStorage.clear();
+  }
+
   render() {
         if(this.state.loading){
           return <SplashScreen />;
@@ -89,7 +99,7 @@ class App extends Component {
         else{
           if(this.state.configurations){
             return( <div className="head">
-              <HashRouter>
+              <HashRouter history={this.props.history}>
                 <Navibar
                     isAuthenticated={this.state.isAuthenticated}
                     passInfoLogout={this.passInfoLogout}
