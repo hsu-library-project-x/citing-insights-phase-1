@@ -43,7 +43,7 @@ class RubricSubmit extends Component{
 				<Card>
 			        <h6>{curCard.cardTitle}</h6>
 			        <p>{curCard.cardText}</p>
-			        <label for="rubricValue">Score</label>
+			        <label id="rubricValue">Score</label>
 			        <TextField
 						type="number"
 						placeholder="0-10"
@@ -88,7 +88,14 @@ class RubricSubmit extends Component{
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-    });
+    }).then(response =>{
+    	console.log(response.status)
+    	if (response.ok || response.status === 201){
+    		alert("Evaluation Submitted!");
+		}else{
+    		alert("Could not save evaluation");
+		}
+	});
   }
 
 	render(){
