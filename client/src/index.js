@@ -9,7 +9,7 @@ if(process.env.NODE_ENV ==='development'){
     whyDidYouRender(React, {
       trackAllPureComponents: true,
     });
-  }
+}
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

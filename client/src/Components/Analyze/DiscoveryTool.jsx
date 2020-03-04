@@ -19,7 +19,6 @@ class DiscoveryTool extends Component {
 
     componentDidMount() {
         this.getCurrentCitation();
-        console.log(this.state);
     }
 
 
@@ -29,10 +28,7 @@ class DiscoveryTool extends Component {
             if (c["_id"] === this.props.current_citation_id) {
                 current = c;
                 this.setState({
-                    citation: current,
-                    function() {
-                        console.log(this.state.citation);
-                    }
+                    citation: current
                 });
             }
         });

@@ -361,6 +361,7 @@ class Analyze extends PureComponent {
       [name]: value
     });
     this.get_paper_info(value);
+    this.get_citation_info(value);
   }
 
   // shouldComponentUpdate(nextProps, nextState) {
