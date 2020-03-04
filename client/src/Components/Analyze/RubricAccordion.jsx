@@ -17,7 +17,6 @@ class RubricAccordion extends Component {
     }
 
     createExpansion(that){
-        // let that = this;
         const handleChange = panel => (event, isExpanded) => {
             let test = isExpanded ? panel : false;
             this.setState({expanded: test});

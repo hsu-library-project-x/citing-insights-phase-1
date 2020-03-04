@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { withRouter } from 'react-router-dom';
 import { Grid, Select, MenuItem, Button, FormControl, Tooltip, InputLabel, TextField, Fab} from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import RubricAccordion from './RubricAccordion.jsx';
@@ -48,16 +47,10 @@ class Analyze extends PureComponent {
     this.get_paper_info = this.get_paper_info.bind(this);
     this.updateCitationId = this.updateCitationId.bind(this);
     this.AssessmentScore = this.AssessmentScore.bind(this);
-
-    // let pdf = <p> No Pdf Data found </p>;
-
-
   }
 
   AssessmentScore(newScore, title) {
     this.setState({ radio_score: newScore, rubric_title: title });
-
-
   }
 
   get_paper_info(paper_id) {
@@ -233,22 +226,23 @@ class Analyze extends PureComponent {
                   })
                     .then((response) => {
                       if (response.ok || response.status === 201) {
+                        alert("Assessment Saved!");
                         return response.json();
                       }
                       else {
                         alert("Something went wrong. Please Try again");
                       }
-                    })
-                    .then((data) => {
-                      if (data) {
-                       alert("Assessment Saved!");
-                        console.log('Assessment Saved:', assessment);
-                      }
-                    })
-                    .catch((error) => {
-                      alert('Error saving Assessment:' + error);
-                      console.error('Error saving Assessment:', error);
                     });
+                    // .then((data) => {
+                    //   if (data) {
+                    //    alert("Assessment Saved!");
+                    //     console.log('Assessment Saved:', assessment);
+                    //   }
+                    // })
+                    // .catch((error) => {
+                    //   alert('Error saving Assessment:' + error);
+                    //   console.error('Error saving Assessment:', error);
+                    // });
                 } else {
                   alert("something went wrong. Please try again");
                 }
@@ -268,20 +262,21 @@ class Analyze extends PureComponent {
           })
             .then((response) => {
               if (response.ok || response.status === 201) {
+                alert("Assessment Saved!");
                 return response.json();
               }
               else {
                 alert("Something went wrong. Please Try again");
               }
-            })
-            .then((data) => {
-              if (data) {
-                console.log('Assessment Saved:', assessment);
-              }
-            })
-            .catch((error) => {
-              console.error('Error saving Assessment:', error);
             });
+            // .then((data) => {
+            //   if (data) {
+            //     console.log('Assessment Saved:', assessment);
+            //   }
+            // })
+            // .catch((error) => {
+            //   console.error('Error saving Assessment:', error);
+            // });
         }
       }
     }
