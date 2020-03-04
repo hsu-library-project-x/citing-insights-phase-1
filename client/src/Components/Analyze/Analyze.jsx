@@ -3,11 +3,9 @@ import { withRouter } from 'react-router-dom';
 import { Grid, Select, MenuItem, Button, FormControl, Tooltip, InputLabel, TextField, Fab} from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import RubricAccordion from './RubricAccordion.jsx';
-import RubricSubmit from './RubricSubmit.jsx';
 import PdfComponent from "../Pdf/PdfComponent.jsx";
 import DiscoveryTool from './DiscoveryTool.jsx';
 import Citation from './Citation.jsx'
-import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 
 class Analyze extends PureComponent {
   constructor(props) {
@@ -51,7 +49,7 @@ class Analyze extends PureComponent {
     this.updateCitationId = this.updateCitationId.bind(this);
     this.AssessmentScore = this.AssessmentScore.bind(this);
 
-    let pdf = <p> No Pdf Data found </p>;
+    // let pdf = <p> No Pdf Data found </p>;
 
 
   }
@@ -63,7 +61,7 @@ class Analyze extends PureComponent {
   }
 
   get_paper_info(paper_id) {
-    var that = this;
+    let that = this;
     fetch('/papers/' + paper_id)
         .then(function (response) {
           return response.json();
@@ -117,8 +115,6 @@ class Analyze extends PureComponent {
     let that = this;
 
     if (this.props.selectedAssignmentId !== undefined) {
-      // this.setState({ assignmentId: this.props.selectedAssignmentId });
-
       fetch('/papers/by_assignment_id/' + this.props.selectedAssignmentId)
         .then(function (response) {
           return response.json();
@@ -140,7 +136,6 @@ class Analyze extends PureComponent {
                   });
               });
           } catch (e) {
-            alert("No paper found for this assignment! (Please upload one)");
             that.props.history.push({
               pathname: "/",
               props: { ...that.state }
@@ -246,10 +241,12 @@ class Analyze extends PureComponent {
                     })
                     .then((data) => {
                       if (data) {
+                       alert("Assessment Saved!");
                         console.log('Assessment Saved:', assessment);
                       }
                     })
                     .catch((error) => {
+                      alert('Error saving Assessment:' + error);
                       console.error('Error saving Assessment:', error);
                     });
                 } else {
@@ -301,20 +298,23 @@ class Analyze extends PureComponent {
       })
         .then((response) => {
           if (response.ok || response.status === 201) {
+            alert("Assessment Saved!");
             return response.json();
           }
           else {
             alert("Something went wrong. Please Try again");
           }
         })
-        .then((data) => {
-          if (data) {
-            console.log('Assessment Saved:', assessment);
-          }
-        })
-        .catch((error) => {
-          console.error('Error saving Assessment:', error);
-        });
+      // I Dont think this is needed --Liz
+        // .then((data) => {
+        //   if (data) {
+        //     console.log('Assessment Saved:', assessment);
+        //   }
+        // })
+        // .catch((error) => {
+        //   console.error('Error saving Assessment:', error);
+        // });
+      // chunck end --Liz
     }
   }
 
@@ -332,7 +332,7 @@ class Analyze extends PureComponent {
     const target = event.target;
     const value = target.value;
     const name = target.name;
-    //alert(name + ", " + value);
+
     this.setState({
       [name]: value
     });
@@ -342,20 +342,12 @@ class Analyze extends PureComponent {
     const target = event.target;
     const value = target.value;
     const name = target.name;
-    //alert(name + ", " + value);
     this.setState({
       [name]: value
     });
     this.get_paper_info(value);
     this.get_citation_info(value);
   }
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   if (this.state.pdf === "this must get set"  ||  nextState.paper_id !== this.state.paper_id) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
 
   next_paper(direction) {
     let check = true;  //THis is redunant?
@@ -388,19 +380,6 @@ class Analyze extends PureComponent {
   render() {
     let pageNum = this.state.pageNumber === null ? 1 : this.state.pageNumber;
 
-    let pdf;
-
-    if (this.state.current_pdf_data === "this must get set") {
-      pdf = <p> No Pdf Data found </p>;
-    } else {
-      pdf = <PdfComponent
-        data={this.state.current_pdf_data}
-        rawText={this.state.raw_pdf_data}
-        pageNumber={pageNum}
-      />;
-    }
-
-
     let rubrics = this.state.AvailableRubrics;
     let rubricList = rubrics.map((rubric) =>
       <MenuItem value={rubric._id} key={rubric._id}>{rubric.name}</MenuItem>
@@ -415,7 +394,6 @@ class Analyze extends PureComponent {
       <Grid
         container
         direction="row"
-        // direction="column"
         justify="flex-start"
         alignItems="flex-start"
       >
@@ -434,15 +412,12 @@ class Analyze extends PureComponent {
         </Grid>
 
         <Grid
-          // container={true}
-          // direction="row"
-          // justify="space-evenly"
-          // alignItems="center"
           container
           direction="row"
           justify="flex-start"
           alignItems="flex-start"
-          spacing={1}>
+          spacing={1}
+        >
 
           {/* Paper + citation selection, and discovery tool*/}
           <Grid item xs={12} sm={4} md={2}>
@@ -492,7 +467,6 @@ class Analyze extends PureComponent {
           </Grid>
 
           <Grid item xs={12} sm={4} md={2}>
-
             {/*Rubric selection and annotation field*/}
             <br />
             <FormControl style={{ minWidth: 200, maxWidth: 200, marginBottom: "1em" }}>
@@ -529,22 +503,8 @@ class Analyze extends PureComponent {
             <Button variant={"contained"} color={"primary"} onClick={this.handleSaveCitations}>
               Save Rubric Value
             </Button>
-            {/*</Paper>*/}
-
-            {this.state.assessingRubric ?
-              <RubricSubmit
-                sourceText={this.state.sourceText}
-                unmountMe={this.handleChildUnmount}
-                curRubric={this.state.currentRubric}
-                curPaper={this.state.curPaperId} /> : null}
           </Grid>
-
         </Grid>
-
-        <Grid item xs={12} sm={4} md={2}>
-          {/*<h3 style={{float:"left", margin:0}}>Paper</h3>*/}
-        </Grid>
-
       </Grid>
     );
   }
