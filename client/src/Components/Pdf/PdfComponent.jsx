@@ -25,7 +25,7 @@ class PdfComponent extends PureComponent {
             scale: 1.0,
             columnWidth: window.innerWidth / 2,
             rowHeight: 1.5 * window.innerHeight,
-            rawText: [{}],
+            // rawText: [{}],
             matches: [],
             loadedPage: 1,
             currentMatch: null,
@@ -37,7 +37,6 @@ class PdfComponent extends PureComponent {
         this.SearchScroll = this.SearchScroll.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.Search = this.Search.bind(this);
-        this.PassUpText = this.PassUpText.bind(this);
 
         this.windowHeight = window.innerHeight;
         this.windowWidth = window.innerWidth / 1.5;
@@ -70,11 +69,11 @@ class PdfComponent extends PureComponent {
         });
     }
 
-    PassUpText(rawText) {
-        this.setState(({
-            rawText: rawText,
-        }));
-    };
+    // PassUpText(rawText) {
+    //     this.setState( ({
+    //         rawText: rawText,
+    //     }));
+    // };
 
     componentDidMount() {
         console.log('pdf mounted');
@@ -234,7 +233,7 @@ class PdfComponent extends PureComponent {
     makeTextRenderer = searchText => textItem => this.highlightPattern(textItem.str, searchText);
 
     GenerateGrid = () => {
-    
+
         const Cell = ({ columnIndex, rowIndex, style }) => (
             <div
                 className={"GridItem"}
@@ -277,45 +276,43 @@ class PdfComponent extends PureComponent {
     };
 
 
-    render() {
-        return (
-
-            <div className="document-wrapper">
-                {/*<Container maxWidth="md">*/}
-                {console.log('in return')}
-                <AppBar color={'transparent'} position="sticky" className={'pdf-ToolBar'}>
-                    <Toolbar className={'pdf-ToolBar'} disableGutters={true}>
-                        <TextField
-                            name={'searchText'}
-                            onChange={this.handleInputChange}
-                            placeholder={"search"}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <SearchIcon />
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                        <p> {this.state.currentMatch ? this.state.currentMatch + " of " : null} {this.state.matches.length} matches</p>
-                        <Tooltip title="Previous">
-                            <IconButton
-                                aria-label="previous-search-result"
-                                color="primary"
-                                disabled={this.state.currentMatch <= 1}
-                                onClick={() => this.PreviousResult()}>
-                                <NavigateBeforeIcon />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Next">
-                            <IconButton
-                                aria-label="next-search-result"
-                                color="primary"
-                                disabled={this.state.currentMatch >= this.state.matches.length}
-                                onClick={() => this.NextResult()}>
-                                <NavigateNextIcon />
-                            </IconButton>
-                        </Tooltip>
+  render() {
+    return (
+      <div className="document-wrapper">
+          {/*<Container maxWidth="md">*/}
+          <AppBar color={'transparent'} position="sticky" className={'pdf-ToolBar'}>
+              <Toolbar className={'pdf-ToolBar'} disableGutters={true}>
+                  <TextField
+                    name={'searchText'}
+                    onChange={this.handleInputChange}
+                    placeholder={"search"}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <SearchIcon />
+                            </InputAdornment>
+                        ),
+                    }}
+                  />
+                  <p> {this.state.currentMatch ? this.state.currentMatch + " of ": null} {this.state.matches.length} matches</p>
+                  <Tooltip title="Previous">
+                      <IconButton
+                          aria-label="previous-search-result"
+                          color="primary"
+                          disabled={this.state.currentMatch <= 1}
+                          onClick={() =>this.PreviousResult()}>
+                          <NavigateBeforeIcon />
+                      </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Next">
+                      <IconButton
+                          aria-label="next-search-result"
+                          color="primary"
+                          disabled={this.state.currentMatch >= this.state.matches.length}
+                          onClick={() => this.NextResult()}>
+                          <NavigateNextIcon />
+                      </IconButton>
+                  </Tooltip>
 
                         <p> Go to Page </p>
                         <TextField

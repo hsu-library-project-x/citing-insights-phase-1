@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Grid, Select, MenuItem, Button, FormControl, Tooltip, InputLabel, TextField, IconButton, Fab } from '@material-ui/core';
+import { Grid, Select, MenuItem, Button, FormControl, Tooltip, InputLabel, TextField, Fab} from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import RubricAccordion from './RubricAccordion.jsx';
 import RubricSubmit from './RubricSubmit.jsx';
-import PdfComponent from "./PdfComponent.jsx";
+import PdfComponent from "../Pdf/PdfComponent.jsx";
 import DiscoveryTool from './DiscoveryTool.jsx';
 import Citation from './Citation.jsx'
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
@@ -34,6 +34,7 @@ class Analyze extends PureComponent {
       annotation: "",
       pageNumber: null,
       radio_score: null,
+      raw_pdf_data:null,
     };
 
     this.componentWillMount = this.componentWillMount.bind(this);
@@ -64,16 +65,15 @@ class Analyze extends PureComponent {
   get_paper_info(paper_id) {
     var that = this;
     fetch('/papers/' + paper_id)
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (myJson) {
-        that.setState({ current_pdf_data: myJson["pdf"]["data"] });
-      });
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (myJson) {
+          that.setState({ current_pdf_data: myJson["pdf"]["data"] ,raw_pdf_data: myJson['body'] });
+        });
   }
 
   componentDidMount() {
-    console.log('mounting analyze');
     let that = this;
     //Grab info about the assignment
     fetch('/assignments/' + this.props.selectedAssignmentId)
@@ -133,7 +133,7 @@ class Analyze extends PureComponent {
                 return response.json();
               })
               .then(function (myJson) {
-                that.setState({ current_pdf_data: myJson["pdf"]["data"] });
+                that.setState({ current_pdf_data: myJson["pdf"]["data"], raw_pdf_data: myJson['body'] });
                 that.get_citation_info(myJson["_id"])
                   .then((citations) => {
                     that.setCurrentCitation(citations[1]["_id"]);
@@ -190,20 +190,6 @@ class Analyze extends PureComponent {
   //this saves annotations and rubric values associated with citation
   async handleSaveCitations() {
     let that = this;
-
-    console.log(that.state.current_citation_id);
-
-    // let radio_value =""; assigned but never used
-    // let radio_index = 0;
-
-    // let radio = this.state.radio_score;
-
-    // for (let i = 0; i < radios.length; i++) {
-    //   if (radios[i].checked) {
-    //     // radio_value = radios[i].value;
-    //     radio_index = i;
-    //   }
-    // }
 
     const assessment = {
       rubric_id: this.state.rubricId,
@@ -399,9 +385,21 @@ class Analyze extends PureComponent {
     });
   }
 
-
   render() {
     let pageNum = this.state.pageNumber === null ? 1 : this.state.pageNumber;
+
+    let pdf;
+
+    if (this.state.current_pdf_data === "this must get set") {
+      pdf = <p> No Pdf Data found </p>;
+    } else {
+      pdf = <PdfComponent
+        data={this.state.current_pdf_data}
+        rawText={this.state.raw_pdf_data}
+        pageNumber={pageNum}
+      />;
+    }
+
 
     let rubrics = this.state.AvailableRubrics;
     let rubricList = rubrics.map((rubric) =>

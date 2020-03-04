@@ -4,7 +4,9 @@ var Schema = mongoose.Schema;
 var paperSchema = new Schema({
 	'title': String,
 	'name': String,
-	'body': String,
+	'body':[{
+		number: String,
+	}],
 	'pdf': Buffer,
 	'assignment_id': {
 		type: Schema.Types.ObjectId,

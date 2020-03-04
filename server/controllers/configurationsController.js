@@ -37,7 +37,7 @@ module.exports = {
 
         form.on('file', function (name, file) {
 
-            
+
             let newImg = fs.readFileSync(file.path);
             let encImg = newImg.toString('base64');
 
@@ -45,7 +45,7 @@ module.exports = {
                 name: file.name,
                 contentType: file.mimetype,
                 size: file.size,
-                img: Buffer(encImg, 'base64')
+                img: Buffer(newImg, 'base64')
             };
 
             shell.exec(`rm ${file.path}`);

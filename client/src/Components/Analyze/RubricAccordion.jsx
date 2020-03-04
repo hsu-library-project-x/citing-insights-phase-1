@@ -16,8 +16,6 @@ class RubricAccordion extends Component {
         this.createExpansion = this.createExpansion.bind(this);
     }
 
-
-
     createExpansion(that){
         // let that = this;
         const handleChange = panel => (event, isExpanded) => {
@@ -26,7 +24,6 @@ class RubricAccordion extends Component {
         };
 
         const handleSelection= (event) => {
-            // console.log(index);
             event.stopPropagation();
             this.setState({radio_score: event.target.value});
             this.props.AssessmentScore(event.target.value, this.props.currentRubric.name);
@@ -34,6 +31,7 @@ class RubricAccordion extends Component {
 
         let rubrics = this.props.currentRubric.cards;
         let rubricList = <p> Please select a rubric </p>;
+
         if (rubrics !== undefined && rubrics !== []) {
             rubricList = rubrics.map(function (rubric) {
                 let rId = rubric['cardTitle'];
