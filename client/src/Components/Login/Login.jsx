@@ -27,6 +27,7 @@ class Login extends Component {
 
 	responseGoogle = (response) => {
 
+		console.log(` here is the wierd response: \n${response}`);
 		let access_token = response.accessToken === undefined ? response.uc.access_token : response.accessToken;
 		
 		const tokenBlob = new Blob(
