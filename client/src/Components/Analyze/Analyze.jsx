@@ -460,6 +460,7 @@ class Analyze extends PureComponent {
           {/* PDF Viewer */}
           <Grid item xs={12} sm={4} md={8} style={{ backgroundColor: 'rgb(160, 164, 167)' }}>
             <PdfComponent
+              rawText={this.state.raw_pdf_data}
               data={this.state.current_pdf_data}
               pageNumber={pageNum}
             />

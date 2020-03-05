@@ -154,24 +154,26 @@ class PdfComponent extends PureComponent {
 
         if (subject !== "") {
             let regexp = new RegExp(subject, 'gi');
-            for (let k = 1; k < Object.keys(objects).length; k++) {
-                for (let i = 0; i < objects[k].length; i++) {
-                    // console.log(objects[k][i]);
-                    if (objects[k][i]['str'].match(regexp)) {
-                        //string, page, line
-                        matches.push([objects[k][i]['str'], k, i]);
-                    }
-                }
-            }
-            if (matches.length >= 1) {
-                current = 1;
-            }
+
+            // for (let k = 1; k < Object.keys(objects).length; k++) {
+            //     for (let i = 0; i < objects[k].length; i++) {
+            //         // console.log(objects[k][i]);
+            //         if (objects[k][i]['str'].match(regexp)) {
+            //             //string, page, line
+            //             matches.push([objects[k][i]['str'], k, i]);
+            //         }
+            //     }
+            // }
+            // if (matches.length >= 1) {
+            //     current = 1;
+            // }
 
         }
 
-        // this.setState({
-        //     matches: matches,
-        //     currentMatch: current,
+        this.setState({
+            matches: matches,
+            currentMatch: current,
+        });
         // }, () => this.SearchScroll());
         console.log(matches);
         return matches;
@@ -183,7 +185,7 @@ class PdfComponent extends PureComponent {
         const value = target.value;
         const name = target.name;
         this.setState({ [name]: value });
-        this.Search(value, this.state.rawText);
+        this.Search(value, this.props.rawText);
     }
 
     PreviousResult() {
