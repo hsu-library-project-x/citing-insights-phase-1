@@ -60,7 +60,11 @@ class App extends Component {
       token: token
     });
     //Persist our user into localStorage(right now its the whole object, for production just need token)
-    localStorage.setItem("user", JSON.stringify(this.state))
+    localStorage.setItem("user", JSON.stringify({
+      isAuthenticated: isAuthenticated,
+      user: user,
+      token: token
+    }))
   };
 
   passInfoLogout() {
@@ -89,7 +93,7 @@ class App extends Component {
   }
 
   componentWillUnmount(){
-    localStorage.clear();
+    // localStorage.clear();
   }
 
   render() {

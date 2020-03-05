@@ -9,11 +9,11 @@ import config from "../../config.json";
 class Login extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			isAuthenticated: false,
-			user: null,
-			token: "",
-		};
+		// this.state = {
+		// 	isAuthenticated: false,
+		// 	user: null,
+		// 	token: "",
+		// };
 		this.height = window.innerHeight / 1.29;
 	}
 
@@ -27,12 +27,13 @@ class Login extends Component {
 
 	responseGoogle = (response) => {
 
-		console.log(response);
-
+		let access_token = response.accessToken === undefined ? response.uc.access_token : response.accessToken;
+		
 		const tokenBlob = new Blob(
-			[JSON.stringify({ access_token: response.accessToken }, null, 2)],
+			[JSON.stringify({ access_token: access_token  }, null, 2)],
 			{ type: 'application/json' }
 		);
+
 		const options = {
 			method: 'POST',
 			body: tokenBlob,
@@ -42,35 +43,20 @@ class Login extends Component {
 				'Content-Type': 'application/json',
 				'Accept': 'application/json',
 				'Access-Control-Allow': true,
-				 'Authorization': `Bearer ${response.tokedId}`,
 			}
 		};
 
 		fetch('/users/auth', options).then(r => {
 
+			console.log(r);
 			//This is the token we'll use to authenticate each of the user's 
 			//actions (things that require auth: make class, remove assignment, etc.)
 			const token = r.headers.get('x-auth-token');
-			console.log(token);
 			r.json().then(user => {
-				if (token) {
-					this.setState({
-						isAuthenticated: true,
-						user: user,
-						token: token
-					});
-					this.props.passInfoLogin(true, token, user);
-					// this.props.history.push({
-					// 	pathname: "/",
-					// 	props: {
-					// 		isAuthenticated: true,
-					// 		user: user,
-					// 		token: token
-					// 	}
-					// });
-				}
+				this.props.passInfoLogin(true, token, user);
 			});
-		})
+		});
+
 	};
 
 	render() {
@@ -80,8 +66,8 @@ class Login extends Component {
 				<Redirect to={{
 					pathname: '/tasks',
 					state: { from: this.props.location }
-			}} /> )
-		}else {
+				}} />)
+		} else {
 
 			const theme = createMuiTheme({
 				palette: {
