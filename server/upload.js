@@ -4,18 +4,17 @@ const fs = require("fs");
 const pdf = require('pdf-parse');
 const shell = require("shelljs");
 
-var Chance = require("chance");
-var chance = new Chance();
+let Chance = require("chance");
+// let chance = new Chance();
 
-var paperModel = require("./models/paperModel.js");
-var citationModel = require("./models/citationModel.js");
+let paperModel = require("./models/paperModel.js");
+let citationModel = require("./models/citationModel.js");
 
 //For use with CrossRef + SemanticScholar calls
 const controller = require("./controllers/webCallsController.js");
 
-var check = true;
+let check = true;
 
-// default render callback
 function render_page(pageData) {
     //check documents https://mozilla.github.io/pdf.js/
     let render_options = {
@@ -27,7 +26,6 @@ function render_page(pageData) {
 
     return pageData.getTextContent(render_options)
         .then(function(textContent) {
-            // console.log("LIZ WAS HERE");
             let lastY, text = '';
             for (let item of textContent.items) {
                 if (lastY == item.transform[5] || !lastY){
@@ -38,7 +36,7 @@ function render_page(pageData) {
                 }
                 lastY = item.transform[5];
             }
-            return {[pageData.pageNumber]: text};
+            return text;
         });
 }
 
@@ -51,7 +49,7 @@ module.exports = function upload(req, res) {
 
     console.log("goin into it");
 
-    var form = new IncomingForm();
+    let form = new IncomingForm();
 
     //Set the directory where uploads will be placed
     //Can be changed with fs.rename
@@ -68,19 +66,12 @@ module.exports = function upload(req, res) {
 
     form
         .on("file", (field, file) => {
-
-            // this length be increased if there are collisions
-            var file_name = chance.string({
-                pool: "abcdefghijklmnopqrstuvwxyz",
-                length: 10
-            });
-
-            var textByLine = fs.readFileSync(file.path);
+            let textByLine = fs.readFileSync(file.path);
             let body="";
 
             pdf(textByLine, options).then((data)=>{
-                body = data.text;
-                var raw_text = {
+                body = JSON.stringify(data.text);
+                let raw_text = {
                     "body": body,
                     "pdf": textByLine,
                     "title": file.name,
@@ -88,14 +79,9 @@ module.exports = function upload(req, res) {
                     "assignment_id": field
                 };
 
-                console.log("boom chaka laka");
-
-                console.log(JSON.stringify(body[0][0]));
-
-
                 // we actually want to set a variable to see whether or not things happenned successfully
                 // instantiate the paper and save to db
-                var paper = new paperModel(raw_text);
+                let paper = new paperModel(raw_text);
 
                 paper.save(function (err, paper) {
                     if (err) {
@@ -108,19 +94,19 @@ module.exports = function upload(req, res) {
                 citations start
                 */
 
-                var json_path = "./tmp/json";
+                let json_path = "./tmp/json";
 
                 //Need to now run anystyle on pdf
                 shell.exec("anystyle -w -f json find " + file.path + " " + json_path);
 
                 //successful parse
-                var json_file = require(
+                let json_file = require(
                     json_path + file.path
                         .replace("fileUpload", "")
                         .replace(".pdf", ".json")
                 );
 
-                var full_json_path = json_path + file.path
+                let full_json_path = json_path + file.path
                     .replace("fileUpload", "")
                     .replace(".pdf", ".json");
 
@@ -144,7 +130,7 @@ module.exports = function upload(req, res) {
 
                 //Assign all citations to the paper.
                 for (index in json_file) {
-                    var citation = json_file[index];
+                    let citation = json_file[index];
 
                     //Give each citation the paper's id
                     citation.paper_id = paper.id;

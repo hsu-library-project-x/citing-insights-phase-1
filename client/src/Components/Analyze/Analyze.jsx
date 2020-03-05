@@ -87,7 +87,11 @@ class Analyze extends PureComponent {
     let that = this;
     return fetch('/citations/by_paper_id/' + paper_id)
       .then(function (response) {
-        return response.json();
+        if(response.ok || response.status === 201){
+          return response.json();
+        }else{
+          alert("Something went wrong");
+        }
       })
       .then(function (myJson) {
         that.setState({ citations: myJson });

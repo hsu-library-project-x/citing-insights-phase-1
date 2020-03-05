@@ -68,6 +68,7 @@ module.exports = {
         
         var paper = new paperModel({
 			title : req.body.title,
+            body: req.body.body,
 			name : req.body.name,
 			assignment_id : req.body.assignment_id,
         });

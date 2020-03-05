@@ -25,7 +25,7 @@ class PdfComponent extends PureComponent {
             scale: 1.0,
             columnWidth: window.innerWidth / 2,
             rowHeight: 1.5 * window.innerHeight,
-            // rawText: [{}],
+            rawText: [{}],
             matches: [],
             loadedPage: 1,
             currentMatch: null,
@@ -169,10 +169,10 @@ class PdfComponent extends PureComponent {
 
         }
 
-        this.setState({
-            matches: matches,
-            currentMatch: current,
-        }, () => this.SearchScroll());
+        // this.setState({
+        //     matches: matches,
+        //     currentMatch: current,
+        // }, () => this.SearchScroll());
         console.log(matches);
         return matches;
     };
