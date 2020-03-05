@@ -1,12 +1,13 @@
 import React, { forwardRef, PureComponent } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { FixedSizeGrid } from "react-window";
-import { TextField, Toolbar, InputAdornment, IconButton, Tooltip, AppBar, Container } from '@material-ui/core';
+import { TextField, Toolbar, InputAdornment, IconButton, Tooltip, AppBar } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search'
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+import PdfControls from "./PdfControls";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "./pdfComponent.css";
 
@@ -37,6 +38,7 @@ class PdfComponent extends PureComponent {
         this.SearchScroll = this.SearchScroll.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.Search = this.Search.bind(this);
+        this.PassUpText = this.PassUpText.bind(this);
 
         this.windowHeight = window.innerHeight;
         this.windowWidth = window.innerWidth / 1.5;
@@ -69,11 +71,12 @@ class PdfComponent extends PureComponent {
         });
     }
 
-    // PassUpText(rawText) {
-    //     this.setState( ({
-    //         rawText: rawText,
-    //     }));
-    // };
+    PassUpText(rawText) {
+        let that = this;
+        that.setState( ({
+            rawText: rawText,
+        }));
+    };
 
     componentDidMount() {
         console.log('pdf mounted');
@@ -155,27 +158,27 @@ class PdfComponent extends PureComponent {
         if (subject !== "") {
             let regexp = new RegExp(subject, 'gi');
 
-            // for (let k = 1; k < Object.keys(objects).length; k++) {
-            //     for (let i = 0; i < objects[k].length; i++) {
-            //         // console.log(objects[k][i]);
-            //         if (objects[k][i]['str'].match(regexp)) {
-            //             //string, page, line
-            //             matches.push([objects[k][i]['str'], k, i]);
-            //         }
-            //     }
-            // }
-            // if (matches.length >= 1) {
-            //     current = 1;
-            // }
+            for (let k = 1; k < Object.keys(objects).length; k++) {
+                for (let i = 0; i < objects[k].length; i++) {
+                    // console.log(objects[k][i]);
+                    if (objects[k][i]['str'].match(regexp)) {
+                        //string, page, line
+                        matches.push([objects[k][i]['str'], k, i]);
+                    }
+                }
+            }
+            if (matches.length >= 1) {
+                current = 1;
+            }
 
         }
 
         this.setState({
             matches: matches,
             currentMatch: current,
-        });
-        // }, () => this.SearchScroll());
-        console.log(matches);
+        // });
+        }, () => this.SearchScroll());
+        // console.log(matches);
         return matches;
     };
 
@@ -185,7 +188,7 @@ class PdfComponent extends PureComponent {
         const value = target.value;
         const name = target.name;
         this.setState({ [name]: value });
-        this.Search(value, this.props.rawText);
+        this.Search(value, this.state.rawText);
     }
 
     PreviousResult() {
@@ -352,15 +355,16 @@ class PdfComponent extends PureComponent {
                     file={this.state.pdf}
                     onLoadSuccess={this.onDocumentLoadSuccess}
                     className="pdf-container"
+                    error={"Loading may take a few seconds...."}
                 >
                     {this.GenerateGrid()}
                 </Document>
                 {/*pdf controls is not shown with a css display:hidden eventually I need to make mode efficiant*/}
-                {/*    <PdfControls*/}
-                {/*        PassUpText={this.PassUpText}*/}
-                {/*        pageNum={this.state.pageNumber}*/}
-                {/*        pdf={this.state.pdf}*/}
-                {/*    />*/}
+                    <PdfControls
+                        PassUpText={this.PassUpText}
+                        pageNum={this.state.pageNumber}
+                        pdf={this.state.pdf}
+                    />
             </div>
         );
     }

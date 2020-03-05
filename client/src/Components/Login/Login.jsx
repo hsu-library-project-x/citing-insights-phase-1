@@ -27,7 +27,8 @@ class Login extends Component {
 
 	responseGoogle = (response) => {
 
-		console.log(` here is the wierd response: \n${response}`);
+		console.log("BITCHES!");
+		console.log(response);
 		let access_token = response.accessToken === undefined ? response.uc.access_token : response.accessToken;
 		
 		const tokenBlob = new Blob(
@@ -48,8 +49,6 @@ class Login extends Component {
 		};
 
 		fetch('/users/auth', options).then(r => {
-
-			console.log(r);
 			//This is the token we'll use to authenticate each of the user's 
 			//actions (things that require auth: make class, remove assignment, etc.)
 			const token = r.headers.get('x-auth-token');
