@@ -113,7 +113,7 @@ class PdfComponent extends PureComponent {
     };
 
     highlightPattern = (text, pattern) => {
-        let newPattern = pattern.replace(/[^a-zA-Z0-9]/g, "");
+        let newPattern = pattern.replace(/[^\w\s]/, "");
 
         let regexp = new RegExp(newPattern, 'gi');
 
@@ -157,10 +157,11 @@ class PdfComponent extends PureComponent {
         let matches = [];
         let current = null;
 
-        let newString = subject.replace(/[^a-zA-Z0-9]/g, "");
-        // let newString = subject.replace("[\\[\\]?*+|{}\\\\()@.\n\r]", "");
-        if (subject !== "") {
-            let regexp = new RegExp(newString, 'gi');
+        let newString = subject.replace(/[^\w\s]/, "");
+        let regexp = new RegExp(newString, 'gi');
+        const splitText = newString.split(regexp);
+
+        if (splitText.length <= 1) {
 
             for (let k = 1; k < Object.keys(objects).length; k++) {
                 for (let i = 0; i < objects[k].length; i++) {
@@ -177,6 +178,8 @@ class PdfComponent extends PureComponent {
 
         }
 
+        // console.log(matches);
+
         this.setState({
             matches: matches,
             currentMatch: current,
@@ -188,9 +191,10 @@ class PdfComponent extends PureComponent {
     // call when input changes to update the state
     handleInputChange(event) {
         const target = event.target;
-        const value = target.value;
+        const value = target.value.replace(/[^\w\s]/, "");
         const name = target.name;
         this.setState({ [name]: value });
+        console.log("search text" + this.state.searchText);
         this.Search(value, this.state.rawText);
     }
 
@@ -235,7 +239,7 @@ class PdfComponent extends PureComponent {
             rowIndex: page - 1,
         });
     }
-    makeTextRenderer = searchText => textItem => this.highlightPattern(textItem.str, searchText);
+    makeTextRenderer = searchText => textItem => this.highlightPattern((textItem.str).replace(/[^\w\s]/, ""), searchText);
 
     GenerateGrid = () => {
 
