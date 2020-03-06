@@ -163,7 +163,7 @@ class PdfComponent extends PureComponent {
         let regexp = new RegExp(newString, 'gi');
         const splitText = newString.split(regexp);
 
-        if (splitText.length <= 1) {
+        if (newString !== "") {
 
             for (let k = 1; k < Object.keys(objects).length; k++) {
                 for (let i = 0; i < objects[k].length; i++) {
@@ -179,8 +179,6 @@ class PdfComponent extends PureComponent {
             }
 
         }
-
-        // console.log(matches);
 
         this.setState({
             matches: matches,
