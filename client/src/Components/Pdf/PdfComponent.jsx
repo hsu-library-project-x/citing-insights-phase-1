@@ -114,6 +114,7 @@ class PdfComponent extends PureComponent {
 
     highlightPattern = (text, pattern) => {
         let newPattern = pattern.replace(/[^\w\s]/, "");
+        newPattern = newPattern.replace(/\\/g, '');
 
         let regexp = new RegExp(newPattern, 'gi');
 
@@ -158,6 +159,7 @@ class PdfComponent extends PureComponent {
         let current = null;
 
         let newString = subject.replace(/[^\w\s]/, "");
+        newString = newString.replace(/\\/g, '');
         let regexp = new RegExp(newString, 'gi');
         const splitText = newString.split(regexp);
 
