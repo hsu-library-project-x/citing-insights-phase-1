@@ -113,7 +113,10 @@ class PdfComponent extends PureComponent {
     };
 
     highlightPattern = (text, pattern) => {
-        let regexp = new RegExp(pattern, 'gi');
+        let newPattern = pattern.replace(/[^a-zA-Z0-9]/g, "");
+
+        let regexp = new RegExp(newPattern, 'gi');
+
         const splitText = text.split(regexp);
 
         if (splitText.length <= 1) {
@@ -134,9 +137,7 @@ class PdfComponent extends PureComponent {
     SearchScroll() {
         let that = this;
         let match = this.state.matches[this.state.currentMatch];
-        // console.log(this.state.matches);
-        // console.log(this.state.currentMatch);
-        // console.log(match);
+
         if (match !== undefined) {
             if (match[1] === this.state.loadedPage) {
                 return;
@@ -151,12 +152,15 @@ class PdfComponent extends PureComponent {
 
     }
 
+
     Search(subject, objects) {
         let matches = [];
         let current = null;
 
+        let newString = subject.replace(/[^a-zA-Z0-9]/g, "");
+        // let newString = subject.replace("[\\[\\]?*+|{}\\\\()@.\n\r]", "");
         if (subject !== "") {
-            let regexp = new RegExp(subject, 'gi');
+            let regexp = new RegExp(newString, 'gi');
 
             for (let k = 1; k < Object.keys(objects).length; k++) {
                 for (let i = 0; i < objects[k].length; i++) {
@@ -176,9 +180,8 @@ class PdfComponent extends PureComponent {
         this.setState({
             matches: matches,
             currentMatch: current,
-        // });
         }, () => this.SearchScroll());
-        // console.log(matches);
+
         return matches;
     };
 
@@ -192,12 +195,9 @@ class PdfComponent extends PureComponent {
     }
 
     PreviousResult() {
-        console.log(this.state.currentMatch);
         this.setState((prevState) => ({
             currentMatch: prevState.currentMatch - 1
         }), this.SearchScroll());
-        console.log(this.state.currentMatch);
-
     }
 
     NextResult() {
@@ -253,7 +253,6 @@ class PdfComponent extends PureComponent {
                 <Page
                     customTextRenderer={this.makeTextRenderer(this.state.searchText)}
                     onLoadSuccess={() => this.removeTextLayerOffset()}
-                    // onLoadSuccess={()=>this.setState({loadedPage: rowIndex+1})}
                     height={this.state.rowHeight}
                     key={`page_${rowIndex + 1}`}
                     pageNumber={rowIndex + 1}
