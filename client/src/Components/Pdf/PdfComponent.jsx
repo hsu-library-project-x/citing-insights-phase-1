@@ -161,7 +161,6 @@ class PdfComponent extends PureComponent {
         let newString = subject.replace(/[^\w\s]/, "");
         newString = newString.replace(/\\/g, '');
         let regexp = new RegExp(newString, 'gi');
-        const splitText = newString.split(regexp);
 
         if (newString !== "") {
 
@@ -321,7 +320,6 @@ class PdfComponent extends PureComponent {
                           <NavigateNextIcon />
                       </IconButton>
                   </Tooltip>
-
                         <p> Go to Page </p>
                         <TextField
                             onChange={this.ScrollTo}
