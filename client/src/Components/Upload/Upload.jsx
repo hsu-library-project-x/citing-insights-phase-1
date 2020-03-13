@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
-import {Container, FormControl, InputLabel, Select, MenuItem, Typography, Button} from "@material-ui/core";
+import {Container, FormControl, InputLabel, Select, MenuItem, Typography,
+    Button, Snackbar,CircularProgress, Backdrop} from "@material-ui/core";
+import MuiAlert from '@material-ui/lab/Alert';
 import Dropzone from "./Dropzone";
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Backdrop from '@material-ui/core/Backdrop';
-
 
 class Upload extends Component {
   constructor(props) {
@@ -15,8 +14,9 @@ class Upload extends Component {
         files: [],
         classId: "",
         assignmentId: "",
-        uploading:false,
+        openSnack:false,
         progress:0,
+        uploading:false,
     };
 
     this.getClasses();
@@ -75,9 +75,6 @@ class Upload extends Component {
 
     }
 
-
-
-
     async handleSubmitFiles(event) {
       event.preventDefault();
       this.setState({uploading:true});
@@ -100,13 +97,13 @@ class Upload extends Component {
             fetch('/api/upload/',{
                 method: 'POST',
                 body: formData,
-            }).then((response =>{
-                this.setState({uploading:false})
-            }))
+            }).then(() =>{
+                this.setState({files:[], openSnack:true, uploading:false})
+            })
         });
 
     }
-
+    
     render(){
 
       let courses = this.state.classes.map((d) =>
@@ -117,16 +114,28 @@ class Upload extends Component {
           <MenuItem key={d._id} value={d._id}>{d.name}</MenuItem>
       );
 
+      function Alert(props) {
+            return <MuiAlert elevation={6} variant="filled" {...props} />;
+        }
 
     return(
         this.state.uploading ?
             <Backdrop open={this.state.uploading}>
                 <CircularProgress className='circularProgress' color="secondary" />
-                <Typography fontWeight="fontWeightBold" align={"center"} variant={"h6"} component={"h1"} gutterBottom={true} color={'secondary'}>
-                   Please wait while we upload your files. Once complete, this screen will close.
-                </Typography>
             </Backdrop>:
                 <div>
+                    <Snackbar
+                        open={this.state.openSnack}
+                        role={"alert"}
+                        autoHideDuration={6000}
+                        anchorOrigin={{horizontal:'right', vertical:'top'}}
+                    >
+                        <Alert  severity="success"
+                                onClose={()=> this.setState({openSnack: false})}>
+                            Files Uploaded
+                        </Alert>
+
+                    </Snackbar>
                     <Typography style={{marginTop: "1em"}} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}>
                         Upload Files
                     </Typography>
@@ -184,7 +193,12 @@ class Upload extends Component {
                                 );
                             })}
                             <br />
-                            <Button type='submit' variant='contained' color='primary' > Upload </Button>
+                            <Button type='submit'
+                                    variant='contained'
+                                    color='primary'
+                                    disabled={(this.state.classId === "" || this.state.assignmentId === "")}>
+                                Upload
+                            </Button>
                         </form>
                     </Container>
                 </div>
