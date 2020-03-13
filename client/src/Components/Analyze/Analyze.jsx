@@ -55,7 +55,7 @@ class Analyze extends PureComponent {
 
   get_paper_info(paper_id) {
     let that = this;
-    fetch('/papers/' + paper_id)
+    fetch('/api/papers/' + paper_id)
         .then(function (response) {
           return response.json();
         })
@@ -67,7 +67,7 @@ class Analyze extends PureComponent {
   componentDidMount() {
     let that = this;
     //Grab info about the assignment
-    fetch('/assignments/' + this.props.selectedAssignmentId)
+    fetch('/api/assignments/' + this.props.selectedAssignmentId)
       .then(function (response) {
         return response.json();
       })
@@ -85,7 +85,7 @@ class Analyze extends PureComponent {
 
   get_citation_info(paper_id) {
     let that = this;
-    return fetch('/citations/by_paper_id/' + paper_id)
+    return fetch('/api/citations/by_paper_id/' + paper_id)
       .then(function (response) {
         if(response.ok || response.status === 201){
           return response.json();
@@ -112,7 +112,7 @@ class Analyze extends PureComponent {
     let that = this;
 
     if (this.props.selectedAssignmentId !== undefined) {
-      fetch('/papers/by_assignment_id/' + this.props.selectedAssignmentId)
+      fetch('/api/papers/by_assignment_id/' + this.props.selectedAssignmentId)
         .then(function (response) {
           return response.json();
         })
@@ -121,7 +121,7 @@ class Analyze extends PureComponent {
             paper_ids: myJson
           });
           try {
-            fetch('/papers/' + myJson[0]["_id"])
+            fetch('/api/papers/' + myJson[0]["_id"])
               .then(function (response) {
                 return response.json();
               })
@@ -142,7 +142,7 @@ class Analyze extends PureComponent {
     } else {
       this.setState({ assignmentId: "no assignment selected" });
     }
-    fetch('/rubrics/' + this.props.user.id)
+    fetch('/api/rubrics/' + this.props.user.id)
       .then(function (response) {
         return response.json();
       })
@@ -193,7 +193,7 @@ class Analyze extends PureComponent {
 
 
     //Grab current citation from DB and check to see if rubric has already been assessed.
-    let response = await fetch(`/citations/${that.state.current_citation_id}`);
+    let response = await fetch(`/api/citations/${that.state.current_citation_id}`);
     let json = await response.json();
     //Check to see if assessment has already been made.
     let assessments = json.assessments;
@@ -212,7 +212,7 @@ class Analyze extends PureComponent {
           if (window.confirm('Rewrite existing assessment?')) {
 
             //Delete Existing
-            let resp = await fetch(`/citations/remove_assessment/${that.state.current_citation_id}`, {
+            let resp = await fetch(`/api/citations/remove_assessment/${that.state.current_citation_id}`, {
               method: "PUT",
               headers: {
                 "Content-Type": "application/json"
@@ -221,7 +221,7 @@ class Analyze extends PureComponent {
             })
               .then((response) => {
                 if (response.ok || response.status === 201) {
-                  return fetch(`/citations/add_assessment/${that.state.current_citation_id}`, {
+                  return fetch(`/api/citations/add_assessment/${that.state.current_citation_id}`, {
                     method: "PUT",
                     headers: {
                       'Content-Type': 'application/json'
@@ -237,16 +237,6 @@ class Analyze extends PureComponent {
                         alert("Something went wrong. Please Try again");
                       }
                     });
-                    // .then((data) => {
-                    //   if (data) {
-                    //    alert("Assessment Saved!");
-                    //     console.log('Assessment Saved:', assessment);
-                    //   }
-                    // })
-                    // .catch((error) => {
-                    //   alert('Error saving Assessment:' + error);
-                    //   console.error('Error saving Assessment:', error);
-                    // });
                 } else {
                   alert("something went wrong. Please try again");
                 }
@@ -257,7 +247,7 @@ class Analyze extends PureComponent {
             break;
           }
         } else {
-          fetch(`/citations/add_assessment/${that.state.current_citation_id}`, {
+          fetch(`/api/citations/add_assessment/${that.state.current_citation_id}`, {
             method: "PUT",
             headers: {
               'Content-Type': 'application/json'
@@ -273,22 +263,12 @@ class Analyze extends PureComponent {
                 alert("Something went wrong. Please Try again");
               }
             });
-            // .then((data) => {
-            //   if (data) {
-            //     console.log('Assessment Saved:', assessment);
-            //   }
-            // })
-            // .catch((error) => {
-            //   console.error('Error saving Assessment:', error);
-            // });
         }
       }
     }
     else {
-      console.log('in the else; assessment doesnt exist in array');
-
       //Doesn't exist yet; good to go
-      fetch(`/citations/add_assessment/${that.state.current_citation_id}`, {
+      fetch(`/api/citations/add_assessment/${that.state.current_citation_id}`, {
         method: "PUT",
         headers: {
           'Content-Type': 'application/json'
@@ -304,16 +284,6 @@ class Analyze extends PureComponent {
             alert("Something went wrong. Please Try again");
           }
         })
-      // I Dont think this is needed --Liz
-        // .then((data) => {
-        //   if (data) {
-        //     console.log('Assessment Saved:', assessment);
-        //   }
-        // })
-        // .catch((error) => {
-        //   console.error('Error saving Assessment:', error);
-        // });
-      // chunck end --Liz
     }
   }
 

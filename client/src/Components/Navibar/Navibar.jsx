@@ -32,7 +32,6 @@ class Navibar extends Component {
 
     render() {
 
-        // console.log(this.props.configurations);
         const theme = createMuiTheme({
             palette: {
                 primary: { main: this.props.configurations.primaryColor }, // dk green

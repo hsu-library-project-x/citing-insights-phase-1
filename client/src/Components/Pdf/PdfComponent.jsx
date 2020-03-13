@@ -79,15 +79,7 @@ class PdfComponent extends PureComponent {
     };
 
     componentDidMount() {
-        console.log('pdf mounted');
     }
-
-    // shouldComponentUpdate(nextProps, nextState){
-    //     if(nextProps === this.props && nextState === this.state){
-    //         return false;
-    //     }
-    //     return true;
-    // }
 
 
     componentWillReceiveProps(nextProps) {
@@ -167,7 +159,6 @@ class PdfComponent extends PureComponent {
 
             for (let k = 1; k < Object.keys(objects).length; k++) {
                 for (let i = 0; i < objects[k].length; i++) {
-                    // console.log(objects[k][i]);
                     if (objects[k][i]['str'].match(regexp)) {
                         //string, page, line
                         matches.push([objects[k][i]['str'], k, i]);
@@ -194,7 +185,6 @@ class PdfComponent extends PureComponent {
         const value = target.value.replace(/[^\w\s]/, "");
         const name = target.name;
         this.setState({ [name]: value });
-        console.log("search text" + this.state.searchText);
         this.Search(value, this.state.rawText);
     }
 

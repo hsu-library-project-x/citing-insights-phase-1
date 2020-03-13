@@ -35,7 +35,7 @@ class App extends Component {
   // }
 
   getConfigurations = () => {
-    fetch('/configurations/', {
+    fetch('/api/configurations/', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -84,7 +84,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    console.log('in app.js');
     const persistedState = localStorage.getItem("user");
     //Test to see if user object is valid
     if (persistedState !== undefined) {

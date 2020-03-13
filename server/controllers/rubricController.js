@@ -7,8 +7,8 @@ var rubricModel = require('../models/rubricModel.js');
  */
 module.exports = {
 
-    all: function(req,res) {
-        rubricModel.find({},function (err, rubrics) {
+    all: function (req, res) {
+        rubricModel.find({}, function (err, rubrics) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when getting rubric.',
@@ -21,10 +21,10 @@ module.exports = {
     /**
      * rubricController.list()
      */
-    
+
     list: function (req, res) {
         var user_id = req.params.user_id;
-        rubricModel.find({user_id: user_id},function (err, rubrics) {
+        rubricModel.find({ user_id: user_id }, function (err, rubrics) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when getting rubric.',
@@ -40,7 +40,7 @@ module.exports = {
      */
     show: function (req, res) {
         var id = req.params.id;
-        rubricModel.findOne({_id: id}, function (err, rubric) {
+        rubricModel.findOne({ _id: id }, function (err, rubric) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when getting rubric.',
@@ -60,29 +60,46 @@ module.exports = {
      * rubricController.create()
      */
     create: function (req, res) {
-        var rubric = new rubricModel({
-			name : req.body.name,
-			cards : req.body.cards,
-			user_id : req.body.user_id
-        });
 
-        rubric.save(function (err, rubric) {
+        var rubric = new rubricModel({
+            name: req.body.name,
+            cards: req.body.cards,
+            user_id: req.body.user_id
+        });
+        rubricModel.findOne({ name: req.body.name }, function (err, foundRubric) {
             if (err) {
                 return res.status(500).json({
-                    message: 'Error when creating rubric',
+                    message: 'Error when getting rubric',
                     error: err
                 });
             }
-            return res.status(201).json(rubric);
+            if (!foundRubric) {
+                //Rubric is not in user's collection yet, add it.
+                rubric.save(function (err, rubric) {
+                    if (err) {
+                        return res.status(500).json({
+                            message: 'Error when creating rubric',
+                            error: err
+                        });
+                    }
+                    return res.status(201).json(rubric);
+                });
+            }
+            else{
+                return res.status(304).json({
+                    message: 'Rubric already in collection'
+                });
+            };
         });
     },
+
 
     /**
      * rubricController.update()
      */
     update: function (req, res) {
         var id = req.params.id;
-        rubricModel.findOne({_id: id}, function (err, rubric) {
+        rubricModel.findOne({ _id: id }, function (err, rubric) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when getting rubric',
@@ -96,9 +113,9 @@ module.exports = {
             }
 
             rubric.name = req.body.name ? req.body.name : rubric.name;
-			rubric.cards = req.body.cards ? req.body.cards : rubric.cards;
-			rubric.user_id = req.body.user_id ? req.body.user_id : rubric.user_id;
-			
+            rubric.cards = req.body.cards ? req.body.cards : rubric.cards;
+            rubric.user_id = req.body.user_id ? req.body.user_id : rubric.user_id;
+
             rubric.save(function (err, rubric) {
                 if (err) {
                     return res.status(500).json({

@@ -47,7 +47,6 @@ let options = {
 
 module.exports = function upload(req, res) {
 
-    console.log("goin into it");
 
     let form = new IncomingForm();
 
@@ -60,9 +59,6 @@ module.exports = function upload(req, res) {
 
     //Either multipart or urlencoded
     form.type = "multipart";
-
-    console.log('attempting to print params');
-    //console.log(req.headers);
 
     form
         .on("file", (field, file) => {
@@ -141,15 +137,12 @@ module.exports = function upload(req, res) {
                     let URL = "https://api.crossref.org/works?query.author=" + author + "&query.bibliographic=" + title +  "&mailto=citinginsightsheroku@gmail.com&rows=1&offset=0&select=DOI";
 
                     let dummy = controller.getData(URL, citation).then((result) => {
-                        //console.log("RESULLLLT: " + result);
                     })
                 }
 
-                // console.log(full_json_path + '\n' + file.path);
 
                 shell.exec('rm ' + full_json_path);
                 shell.exec('rm ' + file.path);
-                //  shell.exec('rm ' + txt_path);
             })
             .catch((error)=>{
                 console.log(error);
@@ -165,8 +158,6 @@ module.exports = function upload(req, res) {
             else {
                 res.send("we Not cool");
             }
-            console.log("ending");
-            //shell.exec('rm ' + txt_path);
         });
     form.parse(req);
 };

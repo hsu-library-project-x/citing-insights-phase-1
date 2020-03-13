@@ -52,20 +52,19 @@ app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.post('/upload', upload);
-app.use('/', routes);
-app.use('/users', users);
-app.use('/courses', courses);
-app.use('/assignments', assignments);
-app.use('/papers', papers);
-app.use('/citations', citations);
-app.use('/rubrics', rubrics);
-app.use('/feedback', feedback);
-app.use('/configurations', configurations);
+app.post('/api/upload', upload);
+app.use('/api', routes);
+app.use('/api/users', users);
+app.use('/api/courses', courses);
+app.use('/api/assignments', assignments);
+app.use('/api/papers', papers);
+app.use('/api/citations', citations);
+app.use('/api/rubrics', rubrics);
+app.use('/api/feedback', feedback);
+app.use('/api/configurations', configurations);
 
 if (app.get('env') === 'production') {
   app.get('/*', (req, res) => {
-    // console.log(path.join(__dirname + '/../client/public/index.html'));
     res.sendFile(path.join(__dirname + '/../client/build/index.html'));
   });
 }

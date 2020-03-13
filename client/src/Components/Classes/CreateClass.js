@@ -44,7 +44,7 @@ class CreateClass extends Component {
         };
 
         let newClass = JSON.stringify(data);
-        fetch('/courses/', {
+        fetch('/api/courses/', {
             method: 'POST',
             body: newClass,
             headers: {

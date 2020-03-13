@@ -46,7 +46,7 @@ class Upload extends Component {
   }
 
   getClasses() {
-      fetch('/courses/' + this.props.user.id)
+      fetch('/api/courses/' + this.props.user.id)
          .then(function (response) {
               return response.json();
          }).then((response)=>{
@@ -56,7 +56,7 @@ class Upload extends Component {
 
     handleClassSelection(event) {
         let target = event.target;
-        fetch('/assignments/by_class_id/' + target.value)
+        fetch('/api/assignments/by_class_id/' + target.value)
             .then(function(response) {
                 return response.json();
             })
@@ -97,7 +97,7 @@ class Upload extends Component {
             const formData = new FormData();
             formData.append(data.assignment_id, file, file.name);
 
-            fetch('/upload/',{
+            fetch('/api/upload/',{
                 method: 'POST',
                 body: formData,
             }).then((response =>{

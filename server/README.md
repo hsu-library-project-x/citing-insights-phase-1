@@ -48,12 +48,12 @@ Deletes the document from the given collection that corresponds the
 
 ## *Examples*
 
-* /papers/
+* /api/papers/
 
   * If sent a GET request, this will show all documents in the paper collection.
  * If sent a POST request, this will create a document in papers, with information sent along with the request.
 
-* /papers/5d0aab0cf43d790f49ed2b6b
+* /api/papers/5d0aab0cf43d790f49ed2b6b
 
  * If sent a GET request, this URL will show the contents of the paper with the corresponding 
 id: 5d0aab0cf43d790f49ed2b6b.
