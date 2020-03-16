@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {TextField, Modal, Paper, Button, Fab,  Typography} from "@material-ui/core";
+import Alert from '@material-ui/lab/Alert';
 import ClassIcon from '@material-ui/icons/Class';
 
 class CreateClass extends Component {
@@ -14,7 +15,7 @@ class CreateClass extends Component {
         this.handleClose= this.handleClose.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmitClass = this.handleSubmitClass.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        // this.handleChange = this.handleChange.bind(this);
     }
 
     handleOpen = () => {
@@ -54,18 +55,18 @@ class CreateClass extends Component {
         })
             .then((response) => {
                 if (response.status === 201){
-                    alert("New Class Created!");
+                    // alert("New Class Created!");
                     this.setState({
                         ClassName: "",
                         ClassNote: "",
                         open:false,
-                    });
+                    } );
                 }
                 else{
                     alert("Error: could not create class");
                     this.setState({open:false});
                 }
-        }).then(() => this.handleChange());
+        });
     }
 
     handleChange(){

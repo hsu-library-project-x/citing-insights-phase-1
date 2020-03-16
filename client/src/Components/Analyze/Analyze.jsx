@@ -1,6 +1,9 @@
 import React, { PureComponent } from 'react';
-import { Grid, Select, MenuItem, Button, FormControl, Tooltip, InputLabel, TextField, Fab} from '@material-ui/core';
+import { Grid, Select, MenuItem, Button, FormControl, Tooltip, InputLabel,
+  TextField, Fab, Snackbar } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import Alert from '@material-ui/lab/Alert';
+
 import RubricAccordion from './RubricAccordion.jsx';
 import PdfComponent from "../Pdf/PdfComponent.jsx";
 import DiscoveryTool from './DiscoveryTool.jsx';
@@ -49,6 +52,7 @@ class Analyze extends PureComponent {
     this.AssessmentScore = this.AssessmentScore.bind(this);
   }
 
+
   AssessmentScore(newScore, title) {
     this.setState({ radio_score: newScore, rubric_title: title });
   }
@@ -57,7 +61,11 @@ class Analyze extends PureComponent {
     let that = this;
     fetch('/papers/' + paper_id)
         .then(function (response) {
-          return response.json();
+          if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
+            return response.json();
+          }else{
+            return <Alert variant={"filled"} severity={"error"} >Could not get paper</Alert>;
+          }
         })
         .then(function (myJson) {
           that.setState({ current_pdf_data: myJson["pdf"]["data"] ,raw_pdf_data: myJson['body'] });
@@ -69,7 +77,11 @@ class Analyze extends PureComponent {
     //Grab info about the assignment
     fetch('/assignments/' + this.props.selectedAssignmentId)
       .then(function (response) {
-        return response.json();
+        if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
+          return response.json();
+        }else{
+          return <Alert variant={"filled"} severity={"error"} >Could not get paper</Alert>;
+        }
       })
       .then(function (myJson) {
         that.setState({
@@ -90,7 +102,7 @@ class Analyze extends PureComponent {
         if(response.ok || response.status === 201){
           return response.json();
         }else{
-          alert("Something went wrong");
+         return <Alert severity={"error"} variant={"filled"}>Could not access citations</Alert> ;
         }
       })
       .then(function (myJson) {
@@ -114,7 +126,11 @@ class Analyze extends PureComponent {
     if (this.props.selectedAssignmentId !== undefined) {
       fetch('/papers/by_assignment_id/' + this.props.selectedAssignmentId)
         .then(function (response) {
-          return response.json();
+          if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
+            return response.json();
+          }else{
+            return <Alert severity={"error"} variant={"filled"}>Could not access citations</Alert> ;
+          }
         })
         .then(function (myJson) {
           that.setState({
@@ -123,13 +139,19 @@ class Analyze extends PureComponent {
           try {
             fetch('/papers/' + myJson[0]["_id"])
               .then(function (response) {
-                return response.json();
+                if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
+                  return response.json();
+                }else{
+                  return <Alert severity={"error"} variant={"filled"}>Could not access paper </Alert> ;
+                }
               })
               .then(function (myJson) {
                 that.setState({ current_pdf_data: myJson["pdf"]["data"], raw_pdf_data: myJson['body'] });
                 that.get_citation_info(myJson["_id"])
                   .then((citations) => {
-                    that.setCurrentCitation(citations[1]["_id"]);
+                    if(citations[1]){
+                      that.setCurrentCitation(citations[1]["_id"]);
+                    }
                   });
               });
           } catch (e) {
@@ -144,7 +166,11 @@ class Analyze extends PureComponent {
     }
     fetch('/rubrics/' + this.props.user.id)
       .then(function (response) {
-        return response.json();
+        if (response.ok || response.status !== 500 ) {
+          return response.json();
+        }else{
+          return <Alert severity={"error"} variant={"filled"}>Could not access citations</Alert> ;
+        }
       })
       .then(function (myJson) {
         that.setState({ AvailableRubrics: myJson });
@@ -198,6 +224,9 @@ class Analyze extends PureComponent {
     //Check to see if assessment has already been made.
     let assessments = json.assessments;
 
+    if (assessments !== undefined){
+
+    }
     if (assessments.length !== 0) {
 
       //Look at each assessment
@@ -230,25 +259,22 @@ class Analyze extends PureComponent {
                   })
                     .then((response) => {
                       if (response.ok || response.status === 201) {
-                        alert("Assessment Saved!");
-                        return response.json();
+                        return <Alert variant={'filled'} severity={'success'}>
+                          Assessment Saved!
+                        </Alert>;
+                        // alert("Assessment Saved!");
+                        // return response.json();
                       }
                       else {
-                        alert("Something went wrong. Please Try again");
+                        return <Alert variant={'filled'} severity={'error'}>
+                          Could not save Assessment. Please Try again
+                        </Alert>;
                       }
                     });
-                    // .then((data) => {
-                    //   if (data) {
-                    //    alert("Assessment Saved!");
-                    //     console.log('Assessment Saved:', assessment);
-                    //   }
-                    // })
-                    // .catch((error) => {
-                    //   alert('Error saving Assessment:' + error);
-                    //   console.error('Error saving Assessment:', error);
-                    // });
                 } else {
-                  alert("something went wrong. Please try again");
+                  return <Alert variant={'filled'} severity={'error'}>
+                    Could not save Assessment. Please Try again
+                  </Alert>;
                 }
               });
           } else {
@@ -266,27 +292,22 @@ class Analyze extends PureComponent {
           })
             .then((response) => {
               if (response.ok || response.status === 201) {
-                alert("Assessment Saved!");
-                return response.json();
+                return <Alert variant={'filled'} severity={'success'}>
+                  Assessment Saved!
+                </Alert>;
+                // alert("Assessment Saved!");
+                // return response.json();
               }
               else {
-                alert("Something went wrong. Please Try again");
+                return <Alert variant={'filled'} severity={'error'}>
+                  Could not save Assessment. Please Try again
+                </Alert>;
               }
             });
-            // .then((data) => {
-            //   if (data) {
-            //     console.log('Assessment Saved:', assessment);
-            //   }
-            // })
-            // .catch((error) => {
-            //   console.error('Error saving Assessment:', error);
-            // });
         }
       }
     }
     else {
-      console.log('in the else; assessment doesnt exist in array');
-
       //Doesn't exist yet; good to go
       fetch(`/citations/add_assessment/${that.state.current_citation_id}`, {
         method: "PUT",
@@ -297,23 +318,16 @@ class Analyze extends PureComponent {
       })
         .then((response) => {
           if (response.ok || response.status === 201) {
-            alert("Assessment Saved!");
-            return response.json();
+            return <Alert variant={'filled'} severity={'success'}>
+              Assessment Saved!
+            </Alert>;
           }
           else {
-            alert("Something went wrong. Please Try again");
+            return <Alert variant={'filled'} severity={'error'}>
+              Could not save Assessment. Please Try again
+            </Alert>;
           }
         })
-      // I Dont think this is needed --Liz
-        // .then((data) => {
-        //   if (data) {
-        //     console.log('Assessment Saved:', assessment);
-        //   }
-        // })
-        // .catch((error) => {
-        //   console.error('Error saving Assessment:', error);
-        // });
-      // chunck end --Liz
     }
   }
 

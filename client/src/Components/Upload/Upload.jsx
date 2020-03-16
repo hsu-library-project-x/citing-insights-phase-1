@@ -103,7 +103,7 @@ class Upload extends Component {
         });
 
     }
-    
+
     render(){
 
       let courses = this.state.classes.map((d) =>

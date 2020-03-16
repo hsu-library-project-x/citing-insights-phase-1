@@ -4,7 +4,6 @@ import {TextField, Modal, Paper, Fab, Button, Typography, Select,
 import {withRouter} from "react-router-dom";
 import AssignmentIcon from '@material-ui/icons/Assignment';
 
-
 class CreateAssignment extends Component {
     constructor(props) {
         super(props);
@@ -13,21 +12,23 @@ class CreateAssignment extends Component {
             AssignName: '',
             AssignNote: '',
             ClassId: '',
-
+            createClassAlert:null,
         };
-
         this.handleOpen = this.handleOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmitAssign = this.handleSubmitAssign.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-
+        this.handleAlert = this.handleAlert.bind(this);
     }
 
-    handleChange(){
-        this.props.getAssignments();
+    handleAlert(subject, bool){
+        if (subject === 'class') {
+            this.props.classAlert('create', bool);
+        }
+        if(subject === 'assignment'){
+            this.props.assignmentAlert('create', bool);
+        }
     }
-
 
     handleOpen = () => {
         this.setState({open: true});
@@ -49,6 +50,8 @@ class CreateAssignment extends Component {
 
     handleSubmitAssign(event) {
 
+      event.preventDefault();
+
       const data = {
         "name": this.state.AssignName,
         "note": this.state.AssignNote,
@@ -65,24 +68,21 @@ class CreateAssignment extends Component {
           'Content-Type': 'application/json'
         },
       }).then((response) => {
-          if (response.status === 201) {
-              alert("New Assignment Created!");
+          if (response.status === 201 || response.ok) {
               this.setState({
-                  AssignName: "",
-                  AssignNote: "",
-                  ClassId: "",
                   open: false,
               });
+              this.handleAlert('class', true);
           } else {
-              alert("Error: could not create assignment");
-              this.setState({open: false});
+              this.setState({
+                  open: false,
+              });
+              this.handleAlert('class', false);
           }
-      }).then(() => this.handleChange());
+      });
     }
 
     render() {
-
-
         let classes = this.props.classList.map(d => {
             return (
                 <MenuItem value={d._id} key={d._id + d.name}>
@@ -100,7 +100,6 @@ class CreateAssignment extends Component {
                      onClick={this.handleOpen}
                      size={"small"}
                      style={{float:"right", margin:"1em"}}
-
                 >
                     <AssignmentIcon />
                     Create Assignment
@@ -152,7 +151,6 @@ class CreateAssignment extends Component {
                     </Paper>
                 </Modal>
            </div>
-
         );
     }
 }

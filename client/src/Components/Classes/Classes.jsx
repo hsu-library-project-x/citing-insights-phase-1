@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import {
-    ListItem, List, ListItemAvatar, Divider, ListItemText, ListItemSecondaryAction,
-    Container, Avatar, IconButton, Tooltip, Typography
+    Container, Typography, CircularProgress, Snackbar
 } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
 import { withRouter } from 'react-router-dom';
 
 import CreateClass from "./CreateClass";
 import CreateAssignment from "./CreateAssignment";
-import ClassIcon from '@material-ui/icons/Class';
-import DeleteIcon from "@material-ui/icons/Delete";
-import AssignmentIcon from "@material-ui/icons/Assignment";
+import CreateList from "./CreateList";
 
 class Classes extends Component {
     constructor(props) {
@@ -17,17 +15,22 @@ class Classes extends Component {
         this.state = {
             classList: [],
             assignmentList: [],
-            open: false,
+            classDeleteSuccess:null,
+            classCreateSuccess:null,
+            assignmentDeleteSuccess:null,
+            assignmentCreateSuccess: null,
+            nestedList: null,
+            snackbarOpen:true, //we get away with only one snackbar vairable because mat-ui only allows one snackbar to be open
         };
 
         this.getClasses();
         this.getAssignments();
-        this.nestItems = this.nestItems.bind(this);
+
         this.getClasses = this.getClasses.bind(this);
         this.getAssignments = this.getAssignments.bind(this);
         this.createTreeItems = this.createTreeItems.bind(this);
-        this.handleDeleteCourse = this.handleDeleteCourse.bind(this);
-        this.handleDeleteAssignment = this.handleDeleteAssignment.bind(this);
+        this.assignmentAlert = this.assignmentAlert.bind(this);
+        this.classAlert = this.classAlert.bind(this);
     }
 
     getClasses() {
@@ -50,148 +53,168 @@ class Classes extends Component {
 
     createTreeItems(json, state) {
         let list = [];
-
         for (let i = 0; i < json.length; i++) {
             list.push(json[i]);
         }
-
         this.setState({ [state]: list });
     }
 
-    handleDeleteCourse(e, id) {
-        if (window.confirm("Are you sure you wish to delete this course?")) {
-            if (window.confirm("WARNING!! If you delete this course all assignments associated will also be deleted")) {
-                fetch('/courses/' + id, {
-                    method: 'Delete',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                }).then((response) => {
-                    if (response.status === 204) {
-                        alert("Class Deleted");
-                        this.getClasses();
-                    }
-                    else {
-                        alert("Something went wrong. Could not delete course");
-                    }
-                }
-                );
+    assignmentAlert(action, bool){
+        if(action === 'delete'){
+            this.setState({assignmentDeleteSuccess: bool}, ()=> this.getAssignments());
+            // this.getAssignments();
+        }
+
+        if(action === 'create'){
+            this.setState({assignmentCreateSuccess: bool}, ()=>this.getAssignments());
+            // this.getAssignments();
+        }
+    }
+
+    classAlert(action, bool){
+        if(action === 'delete') {
+            this.setState({classDeleteSuccess: bool},()=>this.getClasses());
+
+        }
+        if(action === 'create'){
+            this.setState({classCreateSuccess: bool}, ()=>  this.getClasses());
+
+        }
+    }
+
+    Alerts(){
+        if(this.state.classDeleteSuccess !== null){
+            if(this.state.classDeleteSuccess === false){
+                return <Snackbar
+                    open={this.state.snackbarOpen}
+                    role={"alert"}
+                    autoHideDuration={6000}
+                    anchorOrigin={{horizontal:'right', vertical:'top'}}>
+                    <Alert variant={'filled'}
+                           severity={'error'}
+                           onClose={()=>this.setState({snackbarOpen:false})}>
+                        Could not Delete Class</Alert>
+                </Snackbar>;
+            } else{
+                return <Snackbar
+                    open={this.state.snackbarOpen}
+                    role={"alert"}
+                    autoHideDuration={6000}
+                    anchorOrigin={{horizontal:'right', vertical:'top'}} >
+                    <Alert variant={'filled'}
+                           severity={'success'}
+                           onClose={()=>this.setState({snackbarOpen:false})}>
+                        Class Deleted </Alert>
+                </Snackbar>
             }
         }
-    }
-
-    handleDeleteAssignment(e, id) {
-        if (window.confirm("Are you sure you wish to delete this?")) {
-            fetch('/assignments/' + id, {
-                method: 'Delete',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-            }).then((response) => {
-                if (response.status === 204) {
-                    alert("Assignment Deleted");
-                    this.getAssignments();
-                }
-                else {
-                    alert("Something went wrong. Could not delete assignment");
-                }
-            });
+        if(this.state.classCreateSuccess !== null){
+            if(this.state.classCreateSuccess === false){
+                return <Snackbar
+                    open={this.state.snackbarOpen}
+                    role={"alert"}
+                    autoHideDuration={6000}
+                    anchorOrigin={{horizontal:'right', vertical:'top'}}>
+                    <Alert variant={'filled'}
+                           severity={'error'}
+                           onClose={()=>this.setState({snackbarOpen:false})}>
+                        Could not Create Class</Alert>
+                </Snackbar>;
+            } else{
+                return <Snackbar
+                    open={this.state.snackbarOpen}
+                    role={"alert"}
+                    autoHideDuration={6000}
+                    anchorOrigin={{horizontal:'right', vertical:'top'}} >
+                    <Alert variant={'filled'}
+                           severity={'success'}
+                           onClose={()=>this.setState({snackbarOpen:false})}>
+                        Class Created </Alert>
+                </Snackbar>
+            }
         }
-    }
-
-    nestItems(classes, assignments) {
-        return classes.map(d => {
-            let notes = d.course_note ? d.course_note : "";
-            return (
-                <List key={d._id} dense={true} style={{ padding: 0, margin: 0 }}>
-                    <ListItem key={d._id} id={d._id} >
-                        <ListItemAvatar>
-                            <Avatar>
-                                <ClassIcon />
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText
-                            style={{ padding: 0, margin: 0 }}
-                            primary={d.name}
-                            secondary={notes}
-                        />
-                        <ListItemSecondaryAction>
-                            <Tooltip title="Delete Course" aria-label="delete course">
-                                <IconButton edge="end" aria-label="delete" onClick={(e) => this.handleDeleteCourse(e, d._id)}>
-                                    <DeleteIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                    <Divider variant="inset" />
-                    <List
-                        component={"div"}
-                        disablePadding={true}
-                        style={{ paddingLeft: "4em" }}
-                        dense={true}
-                    >
-                        {assignments.map(a => {
-                            if (a.class_id === d._id) {
-                                let a_notes = a.note ? a.note : "";
-                                return (
-                                    <div key={`divider-${a._id}`}>
-                                        <ListItem id={a._id} style={{ margin: 0 }} key={a._id}>
-                                            <ListItemAvatar>
-                                                <Avatar>
-                                                    <AssignmentIcon />
-                                                </Avatar>
-                                            </ListItemAvatar>
-                                            <ListItemText
-                                                primary={a.name}
-                                                secondary={a_notes}
-                                            />
-                                            <ListItemSecondaryAction>
-                                                <Tooltip title="Delete Assignment" aria-label="delete assignment">
-                                                    <IconButton edge="end"
-                                                                aria-label="delete"
-                                                                onClick={e => this.handleDeleteAssignment(e, a._id)}
-                                                    >
-                                                        <DeleteIcon />
-                                                    </IconButton>
-                                                </Tooltip>
-                                            </ListItemSecondaryAction>
-                                        </ListItem>
-                                        <Divider variant="inset" />
-                                    </div>
-                                    );
-                            } else return null;
-                        })}
-                    </List>
-                </List>
-            );
-        });
-    }
+        if(this.state.assignmentDeleteSuccess !== null){
+            if(this.state.assignmentDeleteSuccess === false){
+                return <Snackbar
+                    open={this.state.snackbarOpen}
+                    role={"alert"}
+                    autoHideDuration={6000}
+                    anchorOrigin={{horizontal:'right', vertical:'top'}}>
+                    <Alert variant={'filled'}
+                           severity={'error'}
+                           onClose={()=>this.setState({snackbarOpen:false})}>
+                        Could not Delete Assignment </Alert>
+                </Snackbar>
+            } else{
+                return <Snackbar
+                    open={this.state.snackbarOpen}
+                    role={"alert"}
+                    autoHideDuration={6000}
+                    anchorOrigin={{horizontal:'right', vertical:'top'}}>
+                    <Alert variant={'filled'}
+                           severity={'success'}
+                           onClose={()=>this.setState({snackbarOpen:false})}>
+                        Assignment Deleted </Alert>
+                </Snackbar>
+            }
+        }
+        if(this.state.assignmentCreateSuccess !== null){
+            if(this.state.assignmentCreateSuccess === false){
+                return <Snackbar
+                    open={this.state.snackbarOpen}
+                    role={"alert"}
+                    autoHideDuration={6000}
+                    anchorOrigin={{horizontal:'right', vertical:'top'}}>
+                    <Alert variant={'filled'}
+                           severity={'error'}
+                           onClose={()=>this.setState({snackbarOpen:false})}>
+                        Could not Create Assignment </Alert>
+                </Snackbar>
+            } else{
+                return <Snackbar
+                    open={this.state.snackbarOpen}
+                    role={"alert"}
+                    autoHideDuration={6000}
+                    anchorOrigin={{horizontal:'right', vertical:'top'}}>
+                    <Alert variant={'filled'}
+                           severity={'success'}
+                           onClose={()=>this.setState({snackbarOpen:false})}>
+                        Assignment Created </Alert>
+                </Snackbar>
+            }
+        }
+    };
 
     render() {
-
         return (
             <Container maxWidth={'md'}>
                 <Typography style={{ marginTop: "1em" }} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}>
                     Manage Coursework
-          </Typography>
+                </Typography>
+
+                {this.Alerts()}
 
                 <Container maxWidth={"sm"}>
-                    <List dense={true} style={{ padding: 0 }}>
-                        {this.nestItems(this.state.classList, this.state.assignmentList)}
-                    </List>
+                    {/*{this.state.loading ?  <CircularProgress /> : null}*/}
+                    <CreateList
+                        classList={this.state.classList}
+                        assignmentList={this.state.assignmentList}
+                        assignmentAlert={this.assignmentAlert}
+                        classAlert={this.classAlert}
+                    />
                 </Container>
 
                 <CreateAssignment
                     user_id={this.props.user.id}
                     classList={this.state.classList}
-                    getAssignments={this.getAssignments}
+                    assignmentAlert={this.assignmentAlert}
+                    classAlert={this.classAlert}
                 />
 
                 <CreateClass
                     user_id={this.props.user.id}
-                    getClasses={this.getClasses}
+                    assignmentAlert={this.assignmentAlert}
+                    classAlert={this.classAlert}
                 />
             </Container>
 

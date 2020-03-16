@@ -52,7 +52,6 @@ class AnalyzeSubMenu extends Component {
     const target = event.target;
     const value = target.value;
     const name = target.name;
-    //alert(name + ", " + value);
     this.setState({
       [name]: value
     },

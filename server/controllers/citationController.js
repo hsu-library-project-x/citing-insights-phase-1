@@ -66,7 +66,7 @@ module.exports = {
           message: 'No such citation'
         });
       }
-      return res.json(citation);
+      return res.status(201).json(citation);
     });
   },
 
