@@ -127,7 +127,7 @@ class Upload extends Component {
                     <Snackbar
                         open={this.state.openSnack}
                         role={"alert"}
-                        autoHideDuration={6000}
+                        autoHideDuration={3000}
                         anchorOrigin={{horizontal:'right', vertical:'top'}}
                     >
                         <Alert  severity="success"

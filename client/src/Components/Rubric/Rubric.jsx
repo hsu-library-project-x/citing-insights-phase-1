@@ -19,6 +19,8 @@ class Rubric extends Component {
 			selectedRubric: "",
 			currentlyEditing: false,
 			checked: [],
+			rubricAddSuccess:null,
+			rubricDeleteSuccess:null,
 		};
 
 		this.getRubrics();

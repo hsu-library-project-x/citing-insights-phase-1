@@ -12,7 +12,6 @@ class CreateAssignment extends Component {
             AssignName: '',
             AssignNote: '',
             ClassId: '',
-            createClassAlert:null,
         };
         this.handleOpen = this.handleOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
@@ -21,13 +20,8 @@ class CreateAssignment extends Component {
         this.handleAlert = this.handleAlert.bind(this);
     }
 
-    handleAlert(subject, bool){
-        if (subject === 'class') {
-            this.props.classAlert('create', bool);
-        }
-        if(subject === 'assignment'){
-            this.props.assignmentAlert('create', bool);
-        }
+    handleAlert(bool){
+        this.props.assignmentAlert('create', bool);
     }
 
     handleOpen = () => {
@@ -71,13 +65,12 @@ class CreateAssignment extends Component {
           if (response.status === 201 || response.ok) {
               this.setState({
                   open: false,
-              });
-              this.handleAlert('class', true);
+              },()=>this.handleAlert(true));
+
           } else {
               this.setState({
                   open: false,
-              });
-              this.handleAlert('class', false);
+              },()=>  this.handleAlert(false));
           }
       });
     }

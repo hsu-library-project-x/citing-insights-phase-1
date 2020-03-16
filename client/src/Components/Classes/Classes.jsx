@@ -62,12 +62,10 @@ class Classes extends Component {
     assignmentAlert(action, bool){
         if(action === 'delete'){
             this.setState({assignmentDeleteSuccess: bool}, ()=> this.getAssignments());
-            // this.getAssignments();
         }
 
         if(action === 'create'){
             this.setState({assignmentCreateSuccess: bool}, ()=>this.getAssignments());
-            // this.getAssignments();
         }
     }
 
@@ -88,7 +86,7 @@ class Classes extends Component {
                 return <Snackbar
                     open={this.state.snackbarOpen}
                     role={"alert"}
-                    autoHideDuration={6000}
+                    autoHideDuration={2000}
                     anchorOrigin={{horizontal:'right', vertical:'top'}}>
                     <Alert variant={'filled'}
                            severity={'error'}
@@ -99,7 +97,7 @@ class Classes extends Component {
                 return <Snackbar
                     open={this.state.snackbarOpen}
                     role={"alert"}
-                    autoHideDuration={6000}
+                    autoHideDuration={2000}
                     anchorOrigin={{horizontal:'right', vertical:'top'}} >
                     <Alert variant={'filled'}
                            severity={'success'}
@@ -113,7 +111,7 @@ class Classes extends Component {
                 return <Snackbar
                     open={this.state.snackbarOpen}
                     role={"alert"}
-                    autoHideDuration={6000}
+                    autoHideDuration={2000}
                     anchorOrigin={{horizontal:'right', vertical:'top'}}>
                     <Alert variant={'filled'}
                            severity={'error'}
@@ -124,7 +122,7 @@ class Classes extends Component {
                 return <Snackbar
                     open={this.state.snackbarOpen}
                     role={"alert"}
-                    autoHideDuration={6000}
+                    autoHideDuration={2000}
                     anchorOrigin={{horizontal:'right', vertical:'top'}} >
                     <Alert variant={'filled'}
                            severity={'success'}
@@ -138,7 +136,7 @@ class Classes extends Component {
                 return <Snackbar
                     open={this.state.snackbarOpen}
                     role={"alert"}
-                    autoHideDuration={6000}
+                    autoHideDuration={2000}
                     anchorOrigin={{horizontal:'right', vertical:'top'}}>
                     <Alert variant={'filled'}
                            severity={'error'}
@@ -149,7 +147,7 @@ class Classes extends Component {
                 return <Snackbar
                     open={this.state.snackbarOpen}
                     role={"alert"}
-                    autoHideDuration={6000}
+                    autoHideDuration={2000}
                     anchorOrigin={{horizontal:'right', vertical:'top'}}>
                     <Alert variant={'filled'}
                            severity={'success'}
@@ -163,7 +161,7 @@ class Classes extends Component {
                 return <Snackbar
                     open={this.state.snackbarOpen}
                     role={"alert"}
-                    autoHideDuration={6000}
+                    autoHideDuration={2000}
                     anchorOrigin={{horizontal:'right', vertical:'top'}}>
                     <Alert variant={'filled'}
                            severity={'error'}
@@ -174,7 +172,7 @@ class Classes extends Component {
                 return <Snackbar
                     open={this.state.snackbarOpen}
                     role={"alert"}
-                    autoHideDuration={6000}
+                    autoHideDuration={2000}
                     anchorOrigin={{horizontal:'right', vertical:'top'}}>
                     <Alert variant={'filled'}
                            severity={'success'}
@@ -208,12 +206,10 @@ class Classes extends Component {
                     user_id={this.props.user.id}
                     classList={this.state.classList}
                     assignmentAlert={this.assignmentAlert}
-                    classAlert={this.classAlert}
                 />
 
                 <CreateClass
                     user_id={this.props.user.id}
-                    assignmentAlert={this.assignmentAlert}
                     classAlert={this.classAlert}
                 />
             </Container>
