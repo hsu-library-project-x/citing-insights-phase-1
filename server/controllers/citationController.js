@@ -94,7 +94,6 @@ module.exports = {
 
   add_assessment: function (req, res) {
     var id = req.params.id;
-    console.log(id);
 
     //Find the current citation
     citationModel.findById({_id: id}, function (err, citation) {

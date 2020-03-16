@@ -60,7 +60,7 @@ class RubricEditor extends Component {
                 "user_id": this.props.user.id
             };
             let dataString = JSON.stringify(newdata);
-            fetch('/rubrics', {
+            fetch('/api/rubrics', {
                 method: 'POST',
                 body: dataString,
                 mode: 'cors',
@@ -88,7 +88,7 @@ class RubricEditor extends Component {
                 "user_id": this.props.user.id
             };
             let dataString = JSON.stringify(newdata);
-            fetch('/rubrics/' + this.props.selectedRubric, {
+            fetch('/api/rubrics/' + this.props.selectedRubric, {
                 method: 'PUT',
                 body: dataString,
                 headers: {

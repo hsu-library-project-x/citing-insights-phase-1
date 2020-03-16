@@ -10,23 +10,8 @@ class OverviewTable extends Component {
         this.showCitations = this.showCitations.bind(this);
         this.formatCitation = this.formatCitation.bind(this);
         this.getAuthors = this.getAuthors.bind(this);
-        // this.getRubric = this.getRubric.bind(this);
     };
-    //
-    // getRubric(rubricId){
-    //     fetch('/rubrics/' + rubricId)
-    //         .then(function (response) {
-    //             if(response.status !== 500 || response.status !== 404){
-    //                 return response.json();
-    //             }
-    //             else{
-    //                 alert("Something went wrong getting rubric used. Please try again");
-    //             }
-    //         })
-    //         .then(function (myJson) {
-    //             console.log(myJson)
-    //         });
-    // }
+
     getAuthors(authors) {
         return authors.map((d) => {
             return d.family + ", " + d.given + "\n"
@@ -35,7 +20,6 @@ class OverviewTable extends Component {
 
 
     formatCitation(citation, assessment) {
-        console.log(citation);
         return (
             {
                 'author':  `${this.getAuthors(citation.author)} ${citation.date}. ${citation.title}`,

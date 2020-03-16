@@ -34,7 +34,7 @@ class Classes extends Component {
     }
 
     getClasses() {
-        fetch('/courses/' + this.props.user.id)
+        fetch('/api/courses/' + this.props.user.id)
             .then(function (response) {
                 return response.json();
             })
@@ -42,7 +42,7 @@ class Classes extends Component {
     }
 
     getAssignments() {
-        fetch('/assignments/by_user_id/' + this.props.user.id)
+        fetch('/api/assignments/by_user_id/' + this.props.user.id)
             .then(function (response) {
                 return response.json();
             })

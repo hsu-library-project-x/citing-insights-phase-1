@@ -42,7 +42,7 @@ class Tasks extends PureComponent {
 			"Step 5: See how you rated a student's citations"];
 
 		this.pathnames = {
-			'/tasks/courses': 0, '/tasks/upload': 1, '/tasks/rubric': 2, '/tasks/rubriceditor': 2,
+			'/tasks/api/courses': 0, '/tasks/api/upload': 1, '/tasks/rubric': 2, '/tasks/rubriceditor': 2,
 			'/tasks/analyzemenu': 3, '/tasks/analyze': 3, '/tasks/overview': 4
 		};
 
@@ -135,10 +135,10 @@ class Tasks extends PureComponent {
 	renderPage = () => {
 		switch (this.state.ActiveStep) {
 			case 0:
-				this.props.history.push('/tasks/courses');
+				this.props.history.push('/tasks/api/courses');
 				return;
 			case 1:
-				this.props.history.push('/tasks/upload');
+				this.props.history.push('/tasks/api/upload');
 				return;
 			case 2:
 				if (this.state.isEditing !== null) {
@@ -272,12 +272,12 @@ class Tasks extends PureComponent {
 							)}
 						<Switch>
 
-							<Route path="/tasks/courses" render={(props) =>
+							<Route path="/tasks/api/courses" render={(props) =>
 								<Classes
 									user={this.props.user}
 									{...props} />}
 							/>
-							<Route path="/tasks/upload" render={(props) =>
+							<Route path="/tasks/api/upload" render={(props) =>
 								<Upload
 									user={this.props.user}
 									{...props} />}

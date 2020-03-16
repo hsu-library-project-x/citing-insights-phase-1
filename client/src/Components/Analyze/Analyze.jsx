@@ -59,7 +59,7 @@ class Analyze extends PureComponent {
 
   get_paper_info(paper_id) {
     let that = this;
-    fetch('/papers/' + paper_id)
+    fetch('/api/papers/' + paper_id)
         .then(function (response) {
           if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
             return response.json();
@@ -75,7 +75,7 @@ class Analyze extends PureComponent {
   componentDidMount() {
     let that = this;
     //Grab info about the assignment
-    fetch('/assignments/' + this.props.selectedAssignmentId)
+    fetch('/api/assignments/' + this.props.selectedAssignmentId)
       .then(function (response) {
         if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
           return response.json();
@@ -97,7 +97,7 @@ class Analyze extends PureComponent {
 
   get_citation_info(paper_id) {
     let that = this;
-    return fetch('/citations/by_paper_id/' + paper_id)
+    return fetch('/api/citations/by_paper_id/' + paper_id)
       .then(function (response) {
         if(response.ok || response.status === 201){
           return response.json();
@@ -124,7 +124,7 @@ class Analyze extends PureComponent {
     let that = this;
 
     if (this.props.selectedAssignmentId !== undefined) {
-      fetch('/papers/by_assignment_id/' + this.props.selectedAssignmentId)
+      fetch('/api/papers/by_assignment_id/' + this.props.selectedAssignmentId)
         .then(function (response) {
           if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
             return response.json();
@@ -137,7 +137,7 @@ class Analyze extends PureComponent {
             paper_ids: myJson
           });
           try {
-            fetch('/papers/' + myJson[0]["_id"])
+            fetch('/api/papers/' + myJson[0]["_id"])
               .then(function (response) {
                 if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
                   return response.json();
@@ -164,7 +164,7 @@ class Analyze extends PureComponent {
     } else {
       this.setState({ assignmentId: "no assignment selected" });
     }
-    fetch('/rubrics/' + this.props.user.id)
+    fetch('/api/rubrics/' + this.props.user.id)
       .then(function (response) {
         if (response.ok || response.status !== 500 ) {
           return response.json();
@@ -219,7 +219,7 @@ class Analyze extends PureComponent {
 
 
     //Grab current citation from DB and check to see if rubric has already been assessed.
-    let response = await fetch(`/citations/${that.state.current_citation_id}`);
+    let response = await fetch(`/api/citations/${that.state.current_citation_id}`);
     let json = await response.json();
     //Check to see if assessment has already been made.
     let assessments = json.assessments;
@@ -241,7 +241,7 @@ class Analyze extends PureComponent {
           if (window.confirm('Rewrite existing assessment?')) {
 
             //Delete Existing
-            let resp = await fetch(`/citations/remove_assessment/${that.state.current_citation_id}`, {
+            let resp = await fetch(`/api/citations/remove_assessment/${that.state.current_citation_id}`, {
               method: "PUT",
               headers: {
                 "Content-Type": "application/json"
@@ -250,7 +250,7 @@ class Analyze extends PureComponent {
             })
               .then((response) => {
                 if (response.ok || response.status === 201) {
-                  return fetch(`/citations/add_assessment/${that.state.current_citation_id}`, {
+                  return fetch(`/api/citations/add_assessment/${that.state.current_citation_id}`, {
                     method: "PUT",
                     headers: {
                       'Content-Type': 'application/json'
@@ -283,7 +283,7 @@ class Analyze extends PureComponent {
             break;
           }
         } else {
-          fetch(`/citations/add_assessment/${that.state.current_citation_id}`, {
+          fetch(`/api/citations/add_assessment/${that.state.current_citation_id}`, {
             method: "PUT",
             headers: {
               'Content-Type': 'application/json'
@@ -309,7 +309,7 @@ class Analyze extends PureComponent {
     }
     else {
       //Doesn't exist yet; good to go
-      fetch(`/citations/add_assessment/${that.state.current_citation_id}`, {
+      fetch(`/api/citations/add_assessment/${that.state.current_citation_id}`, {
         method: "PUT",
         headers: {
           'Content-Type': 'application/json'

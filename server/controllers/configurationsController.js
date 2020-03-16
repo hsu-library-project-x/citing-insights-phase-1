@@ -52,7 +52,6 @@ module.exports = {
         });
 
         form.on('error', function (err) {
-            console.log('error');
             console.log(err);
         });
 

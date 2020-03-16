@@ -35,7 +35,7 @@ class ConfigurationForm extends Component {
         data.append('oneSearchViewId', this.state.oneSearchViewId);
         data.append('images', this.state.images[0], this.state.images[0]['name']);
 
-        fetch('/configurations/', {
+        fetch('/api/configurations/', {
             method: 'POST',
             body: data,
         }).then(response => {
