@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-    Container, Typography, CircularProgress, Snackbar
+    Container, Typography, Snackbar
 } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import { withRouter } from 'react-router-dom';
@@ -20,6 +20,7 @@ class Classes extends Component {
             assignmentDeleteSuccess:null,
             assignmentCreateSuccess: null,
             nestedList: null,
+            loading:true,
             snackbarOpen:true, //we get away with only one snackbar vairable because mat-ui only allows one snackbar to be open
         };
 
@@ -185,35 +186,33 @@ class Classes extends Component {
 
     render() {
         return (
-            <Container maxWidth={'md'}>
-                <Typography style={{ marginTop: "1em" }} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}>
-                    Manage Coursework
-                </Typography>
+                    <Container maxWidth={'md'}>
+                        <Typography style={{ marginTop: "1em" }} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}>
+                            Manage Coursework
+                        </Typography>
 
-                {this.Alerts()}
+                        {this.Alerts()}
 
-                <Container maxWidth={"sm"}>
-                    {/*{this.state.loading ?  <CircularProgress /> : null}*/}
-                    <CreateList
-                        classList={this.state.classList}
-                        assignmentList={this.state.assignmentList}
-                        assignmentAlert={this.assignmentAlert}
-                        classAlert={this.classAlert}
-                    />
-                </Container>
+                        <Container maxWidth={"sm"}>
+                            <CreateList
+                                classList={this.state.classList}
+                                assignmentList={this.state.assignmentList}
+                                assignmentAlert={this.assignmentAlert}
+                                classAlert={this.classAlert}
+                            />
+                        </Container>
 
-                <CreateAssignment
-                    user_id={this.props.user.id}
-                    classList={this.state.classList}
-                    assignmentAlert={this.assignmentAlert}
-                />
+                        <CreateAssignment
+                            user_id={this.props.user.id}
+                            classList={this.state.classList}
+                            assignmentAlert={this.assignmentAlert}
+                        />
 
-                <CreateClass
-                    user_id={this.props.user.id}
-                    classAlert={this.classAlert}
-                />
-            </Container>
-
+                        <CreateClass
+                            user_id={this.props.user.id}
+                            classAlert={this.classAlert}
+                        />
+                    </Container>
         );
     }
 }

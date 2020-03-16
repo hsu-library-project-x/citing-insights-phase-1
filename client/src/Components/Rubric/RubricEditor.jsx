@@ -16,7 +16,12 @@ class RubricEditor extends Component {
         this.handleStandardInputChange = this.handleStandardInputChange.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.buildCards = this.buildCards.bind(this);
+        this.handleAlert = this.handleAlert.bind(this);
     };
+
+    handleAlert(subject, bool){
+        this.props.RubricAlert(subject, bool);
+    }
 
     handleRubricSubmit() {
         const keys = Object.keys(this.state.rubricData);
@@ -53,6 +58,7 @@ class RubricEditor extends Component {
 
     //adding a new rubric
     sendRequest(rubricTitle, data) {
+        let that = this;
         return new Promise(() => {
             const newdata = {
                 "name": rubricTitle,
@@ -70,10 +76,10 @@ class RubricEditor extends Component {
                 },
             }).then(function (response)  {
                 if (response.status === 201 || response.ok ){
-                    alert("Rubric Added");
+                    that.handleAlert('add', true);
                 }
                 else {
-                    alert("could not add rubric");
+                    that.handleAlert('add', false);
                 }
             }).then(()=> this.props.history.push('/tasks/rubric'));
         });
@@ -97,10 +103,10 @@ class RubricEditor extends Component {
                 },
             }).then(function (response)  {
                 if (response.status === 201 || response.ok ){
-                    alert("Rubric Updated");
+                    this.handleAlert('update', true);
                 }
                 else {
-                    alert("could not update rubric");
+                    this.handleAlert('update', false);
                 }
             }).then(()=> this.props.history.push('/tasks/rubric'));
         });

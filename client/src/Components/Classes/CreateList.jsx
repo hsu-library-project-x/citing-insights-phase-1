@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {
-    Avatar, Divider, IconButton,
+    Avatar, CircularProgress, Divider, IconButton,
     List,
     ListItem,
     ListItemAvatar,
@@ -16,10 +16,10 @@ class CreateList extends Component {
     constructor(props) {
         super(props);
 
-        this.nestItems=this.nestItems.bind(this);
+        this.nestItems = this.nestItems.bind(this);
         this.handleDeleteAssignment = this.handleDeleteAssignment.bind(this);
         this.handleDeleteCourse = this.handleDeleteCourse.bind(this);
-        this.handleAlert=this.handleAlert.bind(this);
+        this.handleAlert = this.handleAlert.bind(this);
 
     }
 
@@ -35,7 +35,7 @@ class CreateList extends Component {
     handleDeleteCourse(e, id) {
         if (window.confirm("Are you sure you wish to delete this course?")) {
             if (window.confirm("WARNING!! If you delete this course all assignments associated will also be deleted")) {
-                fetch('/courses/' + id, {
+                fetch('api/courses/' + id, {
                     method: 'Delete',
                     headers: {
                         'Accept': 'application/json',
@@ -56,7 +56,7 @@ class CreateList extends Component {
 
     handleDeleteAssignment(e, id) {
         if (window.confirm("Are you sure you wish to delete this?")) {
-            fetch('/assignments/' + id, {
+            fetch('api/assignments/' + id, {
                 method: 'Delete',
                 headers: {
                     'Accept': 'application/json',
@@ -144,7 +144,7 @@ class CreateList extends Component {
 
     render() {
         return(
-            <List dense={true} style={{ padding: 0 }}>
+            <List dense={true} style={{ padding: 0 }} >
                 {
                     this.nestItems(this.props.classList, this.props.assignmentList)
                 }

@@ -32,6 +32,8 @@ class Tasks extends PureComponent {
 			rubricData: {},
 			citations: [],
 			overviewPage: null,
+			rubricAddSuccess:null,
+			rubricUpdateSuccess:null,
 		};
 
 		this.steps = ['Manage Courses', 'Upload Papers', 'Edit Rubrics', 'Analyze', 'Overview'];
@@ -61,6 +63,7 @@ class Tasks extends PureComponent {
 		this.updateSelectedId = this.updateSelectedId.bind(this);
 		this.updateisEditing = this.updateisEditing.bind(this);
 		this.updateOverviewPage = this.updateOverviewPage.bind(this);
+		this.RubricAlert = this.RubricAlert.bind(this);
 
 	}
 
@@ -171,6 +174,16 @@ class Tasks extends PureComponent {
 				return 'Unknown step';
 		}
 	};
+
+	RubricAlert(subject, bool){
+		if(subject === 'add'){
+			this.setState({rubricAddSuccess:bool});
+		}
+		if(subject === 'update'){
+			this.setState({rubricUpdateSuccess:bool});
+		}
+
+	}
 
 	render() {
 		const theme = createMuiTheme({
@@ -286,6 +299,8 @@ class Tasks extends PureComponent {
 								<Rubric
 									user={this.props.user}
 									updateisEditing={this.updateisEditing}
+									rubricAddSuccess={this.state.rubricAddSuccess}
+									rubricUpdateSuccess={this.state.rubricUpdateSuccess}
 									{...props} />}
 							/>
 							<Route path="/tasks/rubriceditor" render={(props) =>
@@ -296,6 +311,7 @@ class Tasks extends PureComponent {
 									rubricTitle={this.state.rubricTitle}
 									selectedRubric={this.state.selectedRubric}
 									AvailableRubrics={this.state.AvailableRubrics}
+									RubricAlert={this.RubricAlert}
 									rubricData={this.state.rubricData}
 									{...props} />}
 							/>

@@ -1,60 +1,58 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import {
-	Container, Grid, TextField, InputLabel, Select, MenuItem, List, ListItem, FormControl, Typography,
-	Button, IconButton, Checkbox, Tooltip, Toolbar, Link, ListItemSecondaryAction
+	Container, Grid, TextField, InputLabel, Select, MenuItem, FormControl, Typography,
+	Button, Snackbar
 } from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
+
 import defaultRubricsJson from '../../default_rubrics/defaultRubric.json';
+import Alert from "@material-ui/lab/Alert";
+import CreateRubricList from "./CreateRubricList";
 
 class Rubric extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			rubricData: [],
+			rubricData: [], // I think redundant
 			rubricElements: null,
 			rubricTitle: "",
 			AvailableRubrics: [],
 			rubricExists: false,
 			selectedRubric: "",
 			currentlyEditing: false,
-			checked: [],
+			rubricGetSuccess:null,
 			rubricAddSuccess:null,
 			rubricDeleteSuccess:null,
+			rubricRedundancy:false,
+			rubricCreateSuccess:null,
+			snackbarOpen:true,
 		};
 
 		this.getRubrics();
 
 		this.handleEditState = this.handleEditState.bind(this);
 		this.handleStandardInputChange = this.handleStandardInputChange.bind(this);
-		this.handleEditRubric = this.handleEditRubric.bind(this);
-		this.handleDeleteRubric = this.handleDeleteRubric.bind(this);
 		this.handleDefaultRubric = this.handleDefaultRubric.bind(this);
-		this.handleToggle = this.handleToggle.bind(this);
+		this.handleAlert = this.handleAlert.bind(this);
+		this.Alerts = this.Alerts.bind(this);
 	}
+
 
 	handleStandardInputChange(event) {
 		const target = event.target;
 		const value = target.value;
 		const name = target.name;
-
-		if (value < 1 || value > 5) {
-			//Toast here
-
-		}
-
 		this.setState({
 			[name]: value
 		});
 	}
 
 	handleDefaultRubric(event) {
+		event.preventDefault();
 		let that = this;
 
 		let rubricToAdd = defaultRubricsJson[event.target.value];
 		rubricToAdd.user_id = this.props.user.id;
-
-		console.log(rubricToAdd);
 		const defaultString = JSON.stringify(rubricToAdd);
 
 		fetch('/api/rubrics/', {
@@ -65,76 +63,32 @@ class Rubric extends Component {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json'
 			}
-		}).then(function (response) {
+		}).then(response => {
 			if (response.status === 304) {
-				alert("Rubric has already been added");
-			}
-			else if (response.status === 201) {
-				alert("Rubric Added");
-			}
-			else {
-				alert("could not add rubric");
-			}
-		}).then(() => that.getRubrics())
-
-	}
-
-	//called when clicking on the rubric list
-	handleEditRubric(event) {
-		const target = event.target;
-		const curId = target.id;
-		let rubric = null;
-
-		this.state.AvailableRubrics.forEach(function (r) {
-			if (r._id === curId) {
-				rubric = r;
+				this.handleAlert('redundancy', true);
+			} else if (response.status === 201) {
+				this.handleAlert('add', true);
+			} else {
+				this.handleAlert('add', false);
 			}
 		});
-
-		let rubricData = {};
-
-		rubric.cards.forEach(c => {
-			rubricData[`cardTitle-${rubric.cards.indexOf(c)}`] = c.cardTitle;
-			rubricData[`cardText-${rubric.cards.indexOf(c)}`] = c.cardText;
-		});
-
-
-		this.setState({
-			rubricExists: true,
-			selectedRubric: curId,
-			isEditing: true,
-			rubricTitle: rubric.name,
-			rubricData: rubricData
-		}, this.handleEditState);
-
 	}
 
-	//handles deleting a rubric
-	handleDeleteRubric(event) {
-		event.preventDefault();
-		let toDelete = this.state.checked;
-		let that = this;
-
-		for (let i = 0; i < toDelete.length; i++) {    //TODO: OPTOMIZE FOR LOOP CALLS
-			fetch('/api/rubrics/' + toDelete[i], {
-				method: 'Delete',
-				headers: {
-					'Accept': 'application/json',
-					'Content-Type': 'application/json'
-				},
-			}).then(function (response) {
-				if (response.status === 201 || response.ok) {
-					alert("Rubric Deleted");
-					that.setState({
-						checked: [],
-					});
-				}
-				else {
-					alert("could not delete rubric");
-				}
-			}).then(() => that.getRubrics());
+	handleAlert(action, bool){
+		if(action ==='add'){
+			this.setState({rubricAddSuccess: bool}, ()=>this.getRubrics());
+		}
+		if(action ==='redundancy'){
+			this.setState({rubricRedundancy:bool}, ()=>this.getRubrics());
+		}
+		if (action === 'delete'){
+			this.setState({rubricDeleteSuccess:bool}, ()=>this.getRubrics());
 		}
 	}
+
+
+
+
 
 
 	getRubrics() {
@@ -146,7 +100,8 @@ class Rubric extends Component {
 					return response.json();
 				}
 				else {
-					alert("could get rubrics");
+					this.handleAlert('get', false);
+					return {};
 				}
 			}
 			).then(function (myJson) {
@@ -162,63 +117,152 @@ class Rubric extends Component {
 			this.props.updateisEditing(this.state.rubricExists, this.state.rubricTitle, this.state.rubricElements,
 				this.state.selectedRubric, this.state.AvailableRubrics, this.state.rubricData);
 		}
-		else{
-			alert('Please enter a value 1-5');
-		}
 	}
 
-	handleToggle = value => () => {
-		const currentIndex = this.state.checked.indexOf(value);
-		const newChecked = [...this.state.checked];
 
-		if (currentIndex === -1) {
-			newChecked.push(value);
-		} else {
-			newChecked.splice(currentIndex, 1);
+	Alerts(){
+		if(this.state.rubricGetSuccess !== null){
+			if(this.state.rubricGetSuccess === false){
+				return <Snackbar
+					open={this.state.snackbarOpen}
+					role={"alert"}
+					autoHideDuration={2000}
+					anchorOrigin={{horizontal:'right', vertical:'top'}}>
+					<Alert variant={'filled'}
+						   severity={'error'}
+						   onClose={()=>this.setState({snackbarOpen:false})}>
+						Could not Get Rubrics</Alert>
+				</Snackbar>;
+			}
+		}
+		if(this.state.rubricDeleteSuccess !== null){
+			if(this.state.rubricDeleteSuccess === false){
+				return <Snackbar
+					open={this.state.snackbarOpen}
+					role={"alert"}
+					autoHideDuration={2000}
+					anchorOrigin={{horizontal:'right', vertical:'top'}}>
+					<Alert variant={'filled'}
+						   severity={'error'}
+						   onClose={()=>this.setState({snackbarOpen:false})}>
+						Could not Delete Rubric</Alert>
+				</Snackbar>;
+			} else{
+				return <Snackbar
+					open={this.state.snackbarOpen}
+					role={"alert"}
+					autoHideDuration={2000}
+					anchorOrigin={{horizontal:'right', vertical:'top'}} >
+					<Alert variant={'filled'}
+						   severity={'success'}
+						   onClose={()=>this.setState({snackbarOpen:false})}>
+						Rubric Deleted </Alert>
+				</Snackbar>
+			}
+		}
+		if(this.props.rubricAddSuccess !== null){
+			if(this.props.rubricAddSuccess === false){
+				return <Snackbar
+					open={this.state.snackbarOpen}
+					role={"alert"}
+					autoHideDuration={2000}
+					anchorOrigin={{horizontal:'right', vertical:'top'}}>
+					<Alert variant={'filled'}
+						   severity={'error'}
+						   onClose={()=>this.setState({snackbarOpen:false})}>
+						Could not Add Rubric</Alert>
+				</Snackbar>;
+			} else{
+				return <Snackbar
+					open={this.state.snackbarOpen}
+					role={"alert"}
+					autoHideDuration={2000}
+					anchorOrigin={{horizontal:'right', vertical:'top'}} >
+					<Alert variant={'filled'}
+						   severity={'success'}
+						   onClose={()=>this.setState({snackbarOpen:false})}>
+						Rubric Added </Alert>
+				</Snackbar>
+			}
+		}
+		if(this.props.rubricUpdateSuccess !== null){
+			if(this.props.rubricUpdateSuccess === false){
+				return <Snackbar
+					open={this.state.snackbarOpen}
+					role={"alert"}
+					autoHideDuration={2000}
+					anchorOrigin={{horizontal:'right', vertical:'top'}}>
+					<Alert variant={'filled'}
+						   severity={'error'}
+						   onClose={()=>this.setState({snackbarOpen:false})}>
+						Could not Update Rubric</Alert>
+				</Snackbar>;
+			} else{
+				return <Snackbar
+					open={this.state.snackbarOpen}
+					role={"alert"}
+					autoHideDuration={2000}
+					anchorOrigin={{horizontal:'right', vertical:'top'}} >
+					<Alert variant={'filled'}
+						   severity={'success'}
+						   onClose={()=>this.setState({snackbarOpen:false})}>
+						Rubric Updated </Alert>
+				</Snackbar>
+			}
+		}
+		if(this.state.rubricRedundancy !== null){
+			if(this.state.rubricRedundancy === true){
+				return <Snackbar
+					open={this.state.snackbarOpen}
+					role={"alert"}
+					autoHideDuration={2000}
+					anchorOrigin={{horizontal:'right', vertical:'top'}}>
+					<Alert variant={'filled'}
+						   severity={'error'}
+						   onClose={()=>this.setState({snackbarOpen:false})}>
+						This has already been added </Alert>
+				</Snackbar>
+			}
 		}
 
-		this.setState({ checked: newChecked });
+		if(this.state.rubricCreateSuccess !== null){
+			if(this.state.rubricCreateSuccess === false){
+				return <Snackbar
+					open={this.state.snackbarOpen}
+					role={"alert"}
+					autoHideDuration={2000}
+					anchorOrigin={{horizontal:'right', vertical:'top'}}>
+					<Alert variant={'filled'}
+						   severity={'error'}
+						   onClose={()=>this.setState({snackbarOpen:false})}>
+						Could not Create Rubric </Alert>
+				</Snackbar>
+			} else{
+				return <Snackbar
+					open={this.state.snackbarOpen}
+					role={"alert"}
+					autoHideDuration={2000}
+					anchorOrigin={{horizontal:'right', vertical:'top'}}>
+					<Alert variant={'filled'}
+						   severity={'success'}
+						   onClose={()=>this.setState({snackbarOpen:false})}>
+						Custom Rubric Created </Alert>
+				</Snackbar>
+			}
+		}
 	};
+
 
 	//renders the page
 	render() {
-		let rubrics = this.state.AvailableRubrics;
-		let rubricList = <List dense={true}>
-			{rubrics.map((rubric) => {
-				const labelId = `rubric-list-label-${rubric._id}`;
-				return (
-					<ListItem
-						dense={true}
-						button
-						onClick={this.handleToggle(rubric._id)}
-						key={labelId}
-					>
-						<Link style={{ textAlign: "left", color: 'blue' }}
-							id={rubric._id}
-							component={'button'}
-							onClick={this.handleEditRubric}
-						>
-							{rubric.name}
-						</Link>
-						<ListItemSecondaryAction>
-							<Checkbox
-								edge={'end'}
-								checked={this.state.checked.indexOf(rubric._id) !== -1}
-								tabIndex={-1}
-								inputProps={{ 'aria-labelledby': labelId }}
-								onClick={this.handleToggle(rubric._id)}
-								value={"delete"}
-							/>
-						</ListItemSecondaryAction>
-					</ListItem>
-				);
 
-			}
-			)}
-		</List>;
+
 
 		return (
 			<Container maxWidth={'md'}>
+
+				{this.Alerts()}
+
 				<Typography style={{ marginTop: "1em" }} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}>
 					Edit Rubrics
 				</Typography>
@@ -259,19 +303,10 @@ class Rubric extends Component {
 						<Typography align={"left"} variant={"h6"} component={"h3"} gutterBottom={true}>
 							Edit Existing
 						</Typography>
-						{this.state.checked.length > 0 ?
-							<Toolbar>
-								<Typography align={"right"} variant={"subtitle2"} component={"p"} >
-									{this.state.checked.length} selected
-								</Typography>
 
-								<Tooltip title="Delete">
-									<IconButton edge={'end'} aria-label="delete" onClick={this.handleDeleteRubric}>
-										<DeleteIcon edge={'end'} />
-									</IconButton>
-								</Tooltip>
-							</Toolbar> : null}
-						{rubricList}
+						<CreateRubricList
+							rubrics={this.state.AvailableRubrics}
+						/>
 					</Grid>
 					<Grid item style={{ marginTop: '4em' }}> OR </Grid>
 					<Grid item>
