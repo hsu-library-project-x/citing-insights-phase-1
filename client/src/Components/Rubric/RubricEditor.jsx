@@ -19,8 +19,8 @@ class RubricEditor extends Component {
         this.handleAlert = this.handleAlert.bind(this);
     };
 
-    handleAlert(subject, bool){
-        this.props.RubricAlert(subject, bool);
+    handleAlert(message, severity){
+        this.props.RubricAlert(message, severity);
     }
 
     handleRubricSubmit() {
@@ -76,10 +76,10 @@ class RubricEditor extends Component {
                 },
             }).then(function (response)  {
                 if (response.status === 201 || response.ok ){
-                    that.handleAlert('add', true);
+                    that.handleAlert('Added Custom Rubric', 'success');
                 }
                 else {
-                    that.handleAlert('add', false);
+                    that.handleAlert('Could not Add Rubric', 'error');
                 }
             }).then(()=> this.props.history.push('/tasks/rubric'));
         });
@@ -104,10 +104,10 @@ class RubricEditor extends Component {
                 },
             }).then(function (response)  {
                 if (response.status === 201 || response.ok ){
-                    that.handleAlert('update', true);
+                    that.handleAlert('Updated Rubric Success', 'success');
                 }
                 else {
-                    that.handleAlert('update', false);
+                    that.handleAlert('Could not Update Rubric', 'error');
                 }
             }).then(()=> this.props.history.push('/tasks/rubric'));
         });

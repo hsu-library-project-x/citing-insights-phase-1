@@ -22,11 +22,11 @@ class CreateRubricList extends Component{
         this.handleToggle = this.handleToggle.bind(this);
         this.handleDeleteRubric = this.handleDeleteRubric.bind(this);
         this.handleEditRubric = this.handleEditRubric.bind(this);
-        this.handleListAlert = this.handleListAlert.bind(this);
+        this.handleAlert = this.handleAlert.bind(this);
     }
 
-    handleListAlert(subject, bool){
-        this.props.handleAlert(subject, bool);
+    handleAlert(message, severity){
+        this.props.handleQueueAlert(message, severity);
     }
 
     //called when clicking on the rubric list
@@ -68,9 +68,9 @@ class CreateRubricList extends Component{
                 if (response.status === 201 || response.ok) {
                     that.setState({
                         checked: [],
-                    }, ()=>that.handleListAlert('delete', true));
+                    }, ()=>that.handleAlert('Rubric(s) Deleted', 'success'));
                 }else{
-                    that.handleListAlert('delete', false);
+                    that.handleAlert('Could not Delete Rubric(s)', 'error');
                 }
             });
         }

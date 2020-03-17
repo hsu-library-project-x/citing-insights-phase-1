@@ -17,22 +17,68 @@ class Rubric extends Component {
 			rubricExists: false,
 			selectedRubric: "",
 			currentlyEditing: false,
-			rubricGetSuccess:null,
-			rubricDefaultAddSuccess:null,
-			rubricDeleteSuccess:null,
-			rubricRedundancy:false,
-			rubricCreateSuccess:null,
 			snackbarOpen:true,
 		};
 
+		this.queueRef = React.createRef();
+		this.queueRef.current = [];
+
 		this.getRubrics();
+
 
 		this.handleEditState = this.handleEditState.bind(this);
 		this.handleStandardInputChange = this.handleStandardInputChange.bind(this);
 		this.handleDefaultRubric = this.handleDefaultRubric.bind(this);
-		this.handleAlert = this.handleAlert.bind(this);
-		this.Alerts = this.Alerts.bind(this);
+		this.DisplayAlerts = this.DisplayAlerts.bind(this);
+		this.processQueue = this.processQueue.bind(this);
+		this.handleQueueAlert = this.handleQueueAlert.bind(this);
+		this.handleClose = this.handleClose.bind(this);
+		this.handleExited = this.handleExited.bind(this);
+
+
 	}
+
+	componentDidMount() {
+		if(this.props.message !== null){
+			this.handleQueueAlert(this.props.message, this.props.severity);
+		}
+	}
+
+	processQueue(){
+		if(this.queueRef.current.length >0){
+			this.setState({
+				messageInfo: this.queueRef.current.shift(),
+				snackbarOpen:true
+			});
+		}
+	};
+
+	handleQueueAlert(message, severity){
+		
+		this.queueRef.current.push({
+			message: message,
+			severity:severity,
+			key: new Date().getTime(),
+		});
+
+		if(this.state.snackbarOpen){
+			this.setState({snackbarOpen:false});
+		}else{
+			this.processQueue();
+		}
+		this.getRubrics();
+	};
+
+	handleClose(event, reason){
+		if(reason === 'clickaway'){
+			return;
+		}
+		this.setState({snackbarOpen:false});
+	};
+
+	handleExited(){
+		this.processQueue();
+	};
 
 
 	handleStandardInputChange(event) {
@@ -61,25 +107,13 @@ class Rubric extends Component {
 			}
 		}).then(response => {
 			if (response.status === 304) {
-				this.handleAlert('redundancy', true);
+				this.handleQueueAlert('Rubric Already Added', 'warning');
 			} else if (response.status === 201) {
-				this.handleAlert('add', true);
+				this.handleQueueAlert('Rubric Added', 'success');
 			} else {
-				this.handleAlert('add', false);
+				this.handleQueueAlert('Could not Add Rubric', 'error');
 			}
 		});
-	}
-
-	handleAlert(action, bool){
-		if(action ==='add'){
-			this.setState({rubricDefaultAddSuccess: bool}, ()=>this.getRubrics());
-		}
-		if(action ==='redundancy'){
-			this.setState({rubricRedundancy:bool}, ()=>this.getRubrics());
-		}
-		if (action === 'delete'){
-			this.setState({rubricDeleteSuccess:bool}, ()=>this.getRubrics());
-		}
 	}
 
 	getRubrics() {
@@ -91,7 +125,7 @@ class Rubric extends Component {
 					return response.json();
 				}
 				else {
-					that.handleAlert('get', false);
+					that.handleQueueAlert('Could not Get Rubrics', 'error');
 					return {};
 				}
 			}
@@ -115,175 +149,34 @@ class Rubric extends Component {
 		}
 	}
 
-
-	Alerts(){
-		if(this.state.rubricGetSuccess !== null){
-			if(this.state.rubricGetSuccess === false){
-				return <Snackbar
-					open={this.state.snackbarOpen}
-					role={"alert"}
-					autoHideDuration={2000}
-					anchorOrigin={{horizontal:'right', vertical:'top'}}>
-					<Alert variant={'filled'}
-						   severity={'error'}
-						   onClose={()=>this.setState({snackbarOpen:false})}>
-						Could not Get Rubrics</Alert>
-				</Snackbar>;
-			}
-		}
-		if(this.state.rubricDeleteSuccess !== null){
-			if(this.state.rubricDeleteSuccess === false){
-				return <Snackbar
-					open={this.state.snackbarOpen}
-					role={"alert"}
-					autoHideDuration={2000}
-					anchorOrigin={{horizontal:'right', vertical:'top'}}>
-					<Alert variant={'filled'}
-						   severity={'error'}
-						   onClose={()=>this.setState({snackbarOpen:false})}>
-						Could not Delete Rubric</Alert>
-				</Snackbar>;
-			} else{
-				return <Snackbar
-					open={this.state.snackbarOpen}
-					role={"alert"}
-					autoHideDuration={2000}
-					anchorOrigin={{horizontal:'right', vertical:'top'}} >
-					<Alert variant={'filled'}
-						   severity={'success'}
-						   onClose={()=>this.setState({snackbarOpen:false})}>
-						Rubric Deleted </Alert>
-				</Snackbar>
-			}
-		}
-		if(this.props.rubricAddSuccess !== null){
-			if(this.props.rubricAddSuccess === false){
-				return <Snackbar
-					open={this.state.snackbarOpen}
-					role={"alert"}
-					autoHideDuration={2000}
-					anchorOrigin={{horizontal:'right', vertical:'top'}}>
-					<Alert variant={'filled'}
-						   severity={'error'}
-						   onClose={()=>this.setState({snackbarOpen:false})}>
-						Could not Add Rubric</Alert>
-				</Snackbar>;
-			} else{
-				return <Snackbar
-					open={this.state.snackbarOpen}
-					role={"alert"}
-					autoHideDuration={2000}
-					anchorOrigin={{horizontal:'right', vertical:'top'}} >
-					<Alert variant={'filled'}
-						   severity={'success'}
-						   onClose={()=>this.setState({snackbarOpen:false})}>
-						Rubric Added </Alert>
-				</Snackbar>
-			}
-		}
-		if(this.state.rubricDefaultAddSuccess !==null){
-			if(this.state.rubricDefaultAddSuccess === false){
-				return <Snackbar
-					open={this.state.snackbarOpen}
-					role={"alert"}
-					autoHideDuration={2000}
-					anchorOrigin={{horizontal:'right', vertical:'top'}}>
-					<Alert variant={'filled'}
-						   severity={'error'}
-						   onClose={()=>this.setState({snackbarOpen:false})}>
-						Could not Add Rubric</Alert>
-				</Snackbar>;
-			} else{
-				return <Snackbar
-					open={this.state.snackbarOpen}
-					role={"alert"}
-					autoHideDuration={2000}
-					anchorOrigin={{horizontal:'right', vertical:'top'}} >
-					<Alert variant={'filled'}
-						   severity={'success'}
-						   onClose={()=>this.setState({snackbarOpen:false})}>
-						Rubric Added </Alert>
-				</Snackbar>
-			}
-		}
-		if(this.props.rubricUpdateSuccess !== null){
-			if(this.props.rubricUpdateSuccess === false){
-				return <Snackbar
-					open={this.state.snackbarOpen}
-					role={"alert"}
-					autoHideDuration={2000}
-					anchorOrigin={{horizontal:'right', vertical:'top'}}>
-					<Alert variant={'filled'}
-						   severity={'error'}
-						   onClose={()=>this.setState({snackbarOpen:false})}>
-						Could not Update Rubric</Alert>
-				</Snackbar>;
-			} else{
-				return <Snackbar
-					open={this.state.snackbarOpen}
-					role={"alert"}
-					autoHideDuration={2000}
-					anchorOrigin={{horizontal:'right', vertical:'top'}} >
-					<Alert variant={'filled'}
-						   severity={'success'}
-						   onClose={()=>this.setState({snackbarOpen:false})}>
-						Rubric Updated </Alert>
-				</Snackbar>
-			}
-		}
-		if(this.state.rubricRedundancy !== null){
-			if(this.state.rubricRedundancy === true){
-				return <Snackbar
-					open={this.state.snackbarOpen}
-					role={"alert"}
-					autoHideDuration={2000}
-					anchorOrigin={{horizontal:'right', vertical:'top'}}>
-					<Alert variant={'filled'}
-						   severity={'error'}
-						   onClose={()=>this.setState({snackbarOpen:false})}>
-						This has already been added </Alert>
-				</Snackbar>
-			}
-		}
-
-		if(this.state.rubricCreateSuccess !== null){
-			if(this.state.rubricCreateSuccess === false){
-				return <Snackbar
-					open={this.state.snackbarOpen}
-					role={"alert"}
-					autoHideDuration={2000}
-					anchorOrigin={{horizontal:'right', vertical:'top'}}>
-					<Alert variant={'filled'}
-						   severity={'error'}
-						   onClose={()=>this.setState({snackbarOpen:false})}>
-						Could not Create Rubric </Alert>
-				</Snackbar>
-			} else{
-				return <Snackbar
-					open={this.state.snackbarOpen}
-					role={"alert"}
-					autoHideDuration={2000}
-					anchorOrigin={{horizontal:'right', vertical:'top'}}>
-					<Alert variant={'filled'}
-						   severity={'success'}
-						   onClose={()=>this.setState({snackbarOpen:false})}>
-						Custom Rubric Created </Alert>
-				</Snackbar>
-			}
-		}
-	};
+	DisplayAlerts(){
+		return <Snackbar
+			key={this.state.messageInfo ? this.state.messageInfo.key : undefined}
+			anchorOrigin={{
+				vertical: 'top',
+				horizontal: 'right',
+			}}
+			open={this.state.snackbarOpen}
+			autoHideDuration={3000}
+			onClose={this.handleClose}
+			onExited={this.handleExited}
+		>
+			<Alert variant={'filled'}
+				   severity={this.state.messageInfo ? this.state.messageInfo.severity : undefined}
+				   onClose={this.handleClose}
+			>
+				{this.state.messageInfo ? this.state.messageInfo.message : undefined}
+			</Alert>
+		</Snackbar>
+	}
 
 
 	//renders the page
 	render() {
-
-
-
 		return (
 			<Container maxWidth={'md'}>
 
-				{this.Alerts()}
-
+				{this.DisplayAlerts()}
 				<Typography style={{ marginTop: "1em" }} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}>
 					Edit Rubrics
 				</Typography>
@@ -328,7 +221,7 @@ class Rubric extends Component {
 						<CreateRubricList
 							rubrics={this.state.AvailableRubrics}
 							handleEditExistingRubric={this.handleEditExistingRubric}
-							handleAlert={this.handleAlert}
+							handleQueueAlert={this.handleQueueAlert}
 						/>
 					</Grid>
 					<Grid item style={{ marginTop: '4em' }}> OR </Grid>

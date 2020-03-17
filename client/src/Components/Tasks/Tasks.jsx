@@ -32,8 +32,8 @@ class Tasks extends PureComponent {
 			rubricData: {},
 			citations: [],
 			overviewPage: null,
-			rubricAddSuccess:null,
-			rubricUpdateSuccess:null,
+			severity:null,
+			message:null,
 		};
 
 		this.steps = ['Manage Courses', 'Upload Papers', 'Edit Rubrics', 'Analyze', 'Overview'];
@@ -174,14 +174,11 @@ class Tasks extends PureComponent {
 		}
 	};
 
-	RubricAlert(subject, bool){
-		if(subject === 'add'){
-			this.setState({rubricAddSuccess:bool});
-		}
-		if(subject === 'update'){
-			this.setState({rubricUpdateSuccess:bool});
-		}
-
+	RubricAlert(message, severity){
+		this.setState({
+			message:message,
+			severity:severity
+		});
 	}
 
 	render() {
@@ -298,8 +295,8 @@ class Tasks extends PureComponent {
 								<Rubric
 									user={this.props.user}
 									updateisEditing={this.updateisEditing}
-									rubricAddSuccess={this.state.rubricAddSuccess}
-									rubricUpdateSuccess={this.state.rubricUpdateSuccess}
+									message={this.state.message}
+									severity={this.state.severity}
 									{...props} />}
 							/>
 							<Route path="/tasks/rubriceditor" render={(props) =>
