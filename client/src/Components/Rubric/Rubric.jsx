@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import {
-	Container, Grid, TextField, InputLabel, Select, MenuItem, FormControl, Typography,
-	Button, Snackbar
-} from "@material-ui/core";
-
+import { Container, Grid, TextField, InputLabel, Select, MenuItem,
+	FormControl, Typography, Button, Snackbar } from "@material-ui/core";
 import defaultRubricsJson from '../../default_rubrics/defaultRubric.json';
 import Alert from "@material-ui/lab/Alert";
 import CreateRubricList from "./CreateRubricList";
@@ -21,7 +18,7 @@ class Rubric extends Component {
 			selectedRubric: "",
 			currentlyEditing: false,
 			rubricGetSuccess:null,
-			rubricAddSuccess:null,
+			rubricDefaultAddSuccess:null,
 			rubricDeleteSuccess:null,
 			rubricRedundancy:false,
 			rubricCreateSuccess:null,
@@ -76,7 +73,7 @@ class Rubric extends Component {
 
 	handleAlert(action, bool){
 		if(action ==='add'){
-			this.setState({rubricAddSuccess: bool}, ()=>this.getRubrics());
+			this.setState({rubricDefaultAddSuccess: bool}, ()=>this.getRubrics());
 		}
 		if(action ==='redundancy'){
 			this.setState({rubricRedundancy:bool}, ()=>this.getRubrics());
@@ -85,11 +82,6 @@ class Rubric extends Component {
 			this.setState({rubricDeleteSuccess:bool}, ()=>this.getRubrics());
 		}
 	}
-
-
-
-
-
 
 	getRubrics() {
 		let that = this;
@@ -100,13 +92,18 @@ class Rubric extends Component {
 					return response.json();
 				}
 				else {
-					this.handleAlert('get', false);
+					that.handleAlert('get', false);
 					return {};
 				}
 			}
 			).then(function (myJson) {
 				that.setState({ AvailableRubrics: myJson });
 			});
+	}
+
+	handleEditExistingRubric(rubricExists,selectedRubric,rubricTitle,rubricElements,rubricData){
+		this.props.updateisEditing(rubricExists,rubricTitle,rubricElements, selectedRubric,
+			this.state.AvailableRubrics, rubricData);
 	}
 
 	//toggles editor enabling editing or adding new rubrics
@@ -162,6 +159,31 @@ class Rubric extends Component {
 		}
 		if(this.props.rubricAddSuccess !== null){
 			if(this.props.rubricAddSuccess === false){
+				return <Snackbar
+					open={this.state.snackbarOpen}
+					role={"alert"}
+					autoHideDuration={2000}
+					anchorOrigin={{horizontal:'right', vertical:'top'}}>
+					<Alert variant={'filled'}
+						   severity={'error'}
+						   onClose={()=>this.setState({snackbarOpen:false})}>
+						Could not Add Rubric</Alert>
+				</Snackbar>;
+			} else{
+				return <Snackbar
+					open={this.state.snackbarOpen}
+					role={"alert"}
+					autoHideDuration={2000}
+					anchorOrigin={{horizontal:'right', vertical:'top'}} >
+					<Alert variant={'filled'}
+						   severity={'success'}
+						   onClose={()=>this.setState({snackbarOpen:false})}>
+						Rubric Added </Alert>
+				</Snackbar>
+			}
+		}
+		if(this.state.rubricDefaultAddSuccess !==null){
+			if(this.state.rubricDefaultAddSuccess === false){
 				return <Snackbar
 					open={this.state.snackbarOpen}
 					role={"alert"}
@@ -306,6 +328,8 @@ class Rubric extends Component {
 
 						<CreateRubricList
 							rubrics={this.state.AvailableRubrics}
+							handleEditExistingRubric={this.handleEditExistingRubric}
+							handleAlert={this.handleAlert}
 						/>
 					</Grid>
 					<Grid item style={{ marginTop: '4em' }}> OR </Grid>

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {
-    Avatar, CircularProgress, Divider, IconButton,
+    Avatar, Divider, IconButton,
     List,
     ListItem,
     ListItemAvatar,

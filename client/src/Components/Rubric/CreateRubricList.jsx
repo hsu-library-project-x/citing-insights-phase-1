@@ -22,6 +22,11 @@ class CreateRubricList extends Component{
         this.handleToggle = this.handleToggle.bind(this);
         this.handleDeleteRubric = this.handleDeleteRubric.bind(this);
         this.handleEditRubric = this.handleEditRubric.bind(this);
+        this.handleListAlert = this.handleListAlert.bind(this);
+    }
+
+    handleListAlert(subject, bool){
+        this.props.handleAlert(subject, bool);
     }
 
     //called when clicking on the rubric list
@@ -43,22 +48,14 @@ class CreateRubricList extends Component{
             rubricData[`cardText-${rubric.cards.indexOf(c)}`] = c.cardText;
         });
 
-
-        // this.setState({
-        //     rubricExists: true,
-        //     selectedRubric: curId,
-        //     isEditing: true,
-        //     rubricTitle: rubric.name,
-        //     rubricData: rubricData
-        // }, this.handleEditState);
-
+        this.props.handleEditExistingRubric(true, curId, rubric.name, rubricData.length, rubricData);
     }
 
     //handles deleting a rubric
     handleDeleteRubric(event) {
+        let that = this;
         event.preventDefault();
         let toDelete = this.state.checked;
-        let that = this;
 
         for (let i = 0; i < toDelete.length; i++) {    //TODO: OPTOMIZE FOR LOOP CALLS
             fetch('/api/rubrics/' + toDelete[i], {
@@ -71,9 +68,9 @@ class CreateRubricList extends Component{
                 if (response.status === 201 || response.ok) {
                     that.setState({
                         checked: [],
-                    }, ()=>this.handleAlert('delete', true));
+                    }, ()=>that.handleListAlert('delete', true));
                 }else{
-                    this.handleAlert('delete', false);
+                    that.handleListAlert('delete', false);
                 }
             });
         }

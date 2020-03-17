@@ -87,6 +87,7 @@ class RubricEditor extends Component {
 
     //updating an existing rubric
     updateRequest(rubricTitle, data) {
+        let that = this;
         return new Promise(() => {
             const newdata = {
                 "name": rubricTitle,
@@ -103,10 +104,10 @@ class RubricEditor extends Component {
                 },
             }).then(function (response)  {
                 if (response.status === 201 || response.ok ){
-                    this.handleAlert('update', true);
+                    that.handleAlert('update', true);
                 }
                 else {
-                    this.handleAlert('update', false);
+                    that.handleAlert('update', false);
                 }
             }).then(()=> this.props.history.push('/tasks/rubric'));
         });

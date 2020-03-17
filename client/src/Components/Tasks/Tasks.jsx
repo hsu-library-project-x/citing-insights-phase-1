@@ -167,7 +167,6 @@ class Tasks extends PureComponent {
 					this.props.history.push('/tasks/overview');
 					return;
 				}
-
 			case 5:
 				return <p align={"center"}> Click on the Reset Button to reset your progress or click on any step to go back </p>;
 			default:
