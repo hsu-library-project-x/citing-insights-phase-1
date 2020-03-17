@@ -18,6 +18,7 @@ class Rubric extends Component {
 			selectedRubric: "",
 			currentlyEditing: false,
 			snackbarOpen:true,
+			messageInfo:null,
 		};
 
 		this.queueRef = React.createRef();
@@ -39,7 +40,7 @@ class Rubric extends Component {
 	}
 
 	componentDidMount() {
-		if(this.props.message !== null){
+		if(this.props.message !== null && this.props.severity !== null){
 			this.handleQueueAlert(this.props.message, this.props.severity);
 		}
 	}
@@ -54,7 +55,6 @@ class Rubric extends Component {
 	};
 
 	handleQueueAlert(message, severity){
-		
 		this.queueRef.current.push({
 			message: message,
 			severity:severity,
@@ -150,24 +150,28 @@ class Rubric extends Component {
 	}
 
 	DisplayAlerts(){
-		return <Snackbar
-			key={this.state.messageInfo ? this.state.messageInfo.key : undefined}
-			anchorOrigin={{
-				vertical: 'top',
-				horizontal: 'right',
-			}}
-			open={this.state.snackbarOpen}
-			autoHideDuration={3000}
-			onClose={this.handleClose}
-			onExited={this.handleExited}
-		>
-			<Alert variant={'filled'}
-				   severity={this.state.messageInfo ? this.state.messageInfo.severity : undefined}
-				   onClose={this.handleClose}
+		if (this.state.messageInfo || this.props.message){
+			return <Snackbar
+				key={this.state.messageInfo ? this.state.messageInfo.key : undefined}
+				anchorOrigin={{
+					vertical: 'top',
+					horizontal: 'right',
+				}}
+				open={this.state.snackbarOpen}
+				autoHideDuration={3000}
+				onClose={this.handleClose}
+				onExited={this.handleExited}
 			>
-				{this.state.messageInfo ? this.state.messageInfo.message : undefined}
-			</Alert>
-		</Snackbar>
+				<Alert variant={'filled'}
+					   severity={this.state.messageInfo ? this.state.messageInfo.severity : undefined}
+					   onClose={this.handleClose}
+				>
+					{this.state.messageInfo ? this.state.messageInfo.message : undefined}
+				</Alert>
+			</Snackbar>
+		}
+
+
 	}
 
 
