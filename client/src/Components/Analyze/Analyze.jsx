@@ -35,6 +35,10 @@ class Analyze extends PureComponent {
       pageNumber: null,
       radio_score: null,
       raw_pdf_data:null,
+      getPaperInfoSuccess:null,
+      getCitationsSuccess:null,
+      saveAssessmentSuccess:null,
+      snackbarOpen: true,
     };
 
     this.componentWillMount = this.componentWillMount.bind(this);
@@ -50,8 +54,77 @@ class Analyze extends PureComponent {
     this.get_paper_info = this.get_paper_info.bind(this);
     this.updateCitationId = this.updateCitationId.bind(this);
     this.AssessmentScore = this.AssessmentScore.bind(this);
+    this.handleAlert = this.handleAlert.bind(this);
+    this.DisplayAlerts = this.DisplayAlerts.bind(this);
   }
 
+  handleAlert(action, bool){
+    if(action ==='getPaper'){
+      this.setState({ getPaperInfoSuccess: bool});
+    }
+    if(action ==='getCitations'){
+      this.setState({getCitationsSuccess:bool});
+    }
+    if (action === 'saveAssessment'){
+      this.setState({saveAssessmentSuccess:bool});
+    }
+  }
+
+  DisplayAlerts() {
+    if (this.state.getPaperInfoSuccess !== null) {
+      if (this.state.getPaperInfoSuccess === false) {
+        return <Snackbar
+            open={this.state.snackbarOpen}
+            role={"alert"}
+            autoHideDuration={2000}
+            anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
+          <Alert variant={'filled'}
+                 severity={'error'}
+                 onClose={() => this.setState({snackbarOpen: false})}>
+            Could not Access Paper</Alert>
+        </Snackbar>;
+      }
+      if (this.state.getCitationsSuccess !== null) {
+        if (this.state.getCitationsSuccess === false) {
+          return <Snackbar
+              open={this.state.snackbarOpen}
+              role={"alert"}
+              autoHideDuration={2000}
+              anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
+            <Alert variant={'filled'}
+                   severity={'error'}
+                   onClose={() => this.setState({snackbarOpen: false})}>
+              Could not Get Citations</Alert>
+          </Snackbar>;
+        }
+      }
+      if (this.state.saveAssessmentSuccess !== null) {
+        if (this.state.saveAssessmentSuccess === false) {
+          return <Snackbar
+              open={this.state.snackbarOpen}
+              role={"alert"}
+              autoHideDuration={2000}
+              anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
+            <Alert variant={'filled'}
+                   severity={'error'}
+                   onClose={() => this.setState({snackbarOpen: false})}>
+              Could not Save Assessment</Alert>
+          </Snackbar>;
+        } else {
+          return <Snackbar
+              open={this.state.snackbarOpen}
+              role={"alert"}
+              autoHideDuration={2000}
+              anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
+            <Alert variant={'filled'}
+                   severity={'success'}
+                   onClose={() => this.setState({snackbarOpen: false})}>
+              Assessment Saved</Alert>
+          </Snackbar>
+        }
+      }
+    }
+  }
 
   AssessmentScore(newScore, title) {
     this.setState({ radio_score: newScore, rubric_title: title });
@@ -64,7 +137,8 @@ class Analyze extends PureComponent {
           if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
             return response.json();
           }else{
-            return <Alert variant={"filled"} severity={"error"} >Could not get paper</Alert>;
+            that.handleAlert('getPaper', false);
+            
           }
         })
         .then(function (myJson) {
@@ -80,7 +154,8 @@ class Analyze extends PureComponent {
         if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
           return response.json();
         }else{
-          return <Alert variant={"filled"} severity={"error"} >Could not get paper</Alert>;
+          that.handleAlert('getPaper', false);
+          
         }
       })
       .then(function (myJson) {
@@ -102,7 +177,7 @@ class Analyze extends PureComponent {
         if(response.ok || response.status === 201){
           return response.json();
         }else{
-         return <Alert severity={"error"} variant={"filled"}>Could not access citations</Alert> ;
+          that.handleAlert('getCitations', false);
         }
       })
       .then(function (myJson) {
@@ -129,7 +204,8 @@ class Analyze extends PureComponent {
           if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
             return response.json();
           }else{
-            return <Alert severity={"error"} variant={"filled"}>Could not access citations</Alert> ;
+            that.handleAlert('getCitations', false);
+            
           }
         })
         .then(function (myJson) {
@@ -142,7 +218,7 @@ class Analyze extends PureComponent {
                 if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
                   return response.json();
                 }else{
-                  return <Alert severity={"error"} variant={"filled"}>Could not access paper </Alert> ;
+                  that.handleAlert('getPaper', false);
                 }
               })
               .then(function (myJson) {
@@ -169,7 +245,7 @@ class Analyze extends PureComponent {
         if (response.ok || response.status !== 500 ) {
           return response.json();
         }else{
-          return <Alert severity={"error"} variant={"filled"}>Could not access citations</Alert> ;
+          that.handleAlert('getCitations', false);
         }
       })
       .then(function (myJson) {
@@ -259,22 +335,14 @@ class Analyze extends PureComponent {
                   })
                     .then((response) => {
                       if (response.ok || response.status === 201) {
-                        return <Alert variant={'filled'} severity={'success'}>
-                          Assessment Saved!
-                        </Alert>;
-                        // alert("Assessment Saved!");
-                        // return response.json();
+                        that.handleAlert('saveAssessment', true);
                       }
                       else {
-                        return <Alert variant={'filled'} severity={'error'}>
-                          Could not save Assessment. Please Try again
-                        </Alert>;
+                        that.handleAlert('saveAssessment', false);
                       }
                     });
                 } else {
-                  return <Alert variant={'filled'} severity={'error'}>
-                    Could not save Assessment. Please Try again
-                  </Alert>;
+                  that.handleAlert('saveAssessment', false);
                 }
               });
           } else {
@@ -292,16 +360,10 @@ class Analyze extends PureComponent {
           })
             .then((response) => {
               if (response.ok || response.status === 201) {
-                return <Alert variant={'filled'} severity={'success'}>
-                  Assessment Saved!
-                </Alert>;
-                // alert("Assessment Saved!");
-                // return response.json();
+                that.handleAlert('saveAssessment', true);
               }
               else {
-                return <Alert variant={'filled'} severity={'error'}>
-                  Could not save Assessment. Please Try again
-                </Alert>;
+                that.handleAlert('saveAssessment', false);
               }
             });
         }
@@ -318,14 +380,10 @@ class Analyze extends PureComponent {
       })
         .then((response) => {
           if (response.ok || response.status === 201) {
-            return <Alert variant={'filled'} severity={'success'}>
-              Assessment Saved!
-            </Alert>;
+            that.handleAlert('saveAssessment', true);
           }
           else {
-            return <Alert variant={'filled'} severity={'error'}>
-              Could not save Assessment. Please Try again
-            </Alert>;
+            that.handleAlert('saveAssessment', false);
           }
         })
     }
@@ -403,6 +461,7 @@ class Analyze extends PureComponent {
       return <MenuItem value={p._id} key={p._id}> {p.title} </MenuItem>
     });
 
+    console.log(this.state.citations);
     return (
       <Grid
         container
@@ -410,6 +469,7 @@ class Analyze extends PureComponent {
         justify="flex-start"
         alignItems="flex-start"
       >
+        {this.DisplayAlerts()}
         <Grid item xs={12} sm={4} md={2}>
           {/*<Paper variant="outlined">*/}
           <Tooltip title="Change Assignment">

@@ -46,7 +46,6 @@ class Rubric extends Component {
 
 	handleDefaultRubric(event) {
 		event.preventDefault();
-		let that = this;
 
 		let rubricToAdd = defaultRubricsJson[event.target.value];
 		rubricToAdd.user_id = this.props.user.id;
@@ -109,7 +108,7 @@ class Rubric extends Component {
 	//toggles editor enabling editing or adding new rubrics
 	handleEditState() {
 		let count = this.state.rubricElements;
-		var reg = new RegExp('^\\d+$');
+		let reg = new RegExp('^\\d+$');
 		if (count > 0 && count < 6 && count.match(reg)) {
 			this.props.updateisEditing(this.state.rubricExists, this.state.rubricTitle, this.state.rubricElements,
 				this.state.selectedRubric, this.state.AvailableRubrics, this.state.rubricData);

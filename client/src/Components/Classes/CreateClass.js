@@ -17,8 +17,8 @@ class CreateClass extends Component {
         this.handleAlert = this.handleAlert.bind(this);
     }
 
-    handleAlert(bool){
-        this.props.classAlert('create', bool);
+    handleAlert(message, severity){
+        this.props.handleQueueAlert(message, severity);
     }
 
     handleOpen = () => {
@@ -62,10 +62,10 @@ class CreateClass extends Component {
                         ClassName: "",
                         ClassNote: "",
                         open:false,
-                    },()=>this.handleAlert(true));
+                    },()=>this.handleAlert('Class Created', 'success'));
                 }
                 else{
-                    this.setState({open:false},()=>this.handleAlert(false));
+                    this.setState({open:false},()=>this.handleAlert('Could not Create Class', 'error'));
                 }
         });
     }

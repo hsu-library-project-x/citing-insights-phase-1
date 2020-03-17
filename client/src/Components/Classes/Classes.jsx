@@ -15,23 +15,26 @@ class Classes extends Component {
         this.state = {
             classList: [],
             assignmentList: [],
-            classDeleteSuccess:null,
-            classCreateSuccess:null,
-            assignmentDeleteSuccess:null,
-            assignmentCreateSuccess: null,
-            nestedList: null,
-            loading:true,
-            snackbarOpen:true, //we get away with only one snackbar vairable because mat-ui only allows one snackbar to be open
+            loading:true, // currently not used
+            messageInfo: undefined,
+            snackbarOpen:false, //we get away with only one snackbar vairable because mat-ui only allows one snackbar to be open
         };
+
 
         this.getClasses();
         this.getAssignments();
 
+
         this.getClasses = this.getClasses.bind(this);
         this.getAssignments = this.getAssignments.bind(this);
         this.createTreeItems = this.createTreeItems.bind(this);
-        this.assignmentAlert = this.assignmentAlert.bind(this);
-        this.classAlert = this.classAlert.bind(this);
+        this.processQueue = this.processQueue.bind(this);
+        this.handleQueueAlert = this.handleQueueAlert.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.handleExited = this.handleExited.bind(this);
+
+        this.queueRef = React.createRef();
+        this.queueRef.current = [];
     }
 
     getClasses() {
@@ -60,129 +63,64 @@ class Classes extends Component {
         this.setState({ [state]: list });
     }
 
-    assignmentAlert(action, bool){
-        if(action === 'delete'){
-            this.setState({assignmentDeleteSuccess: bool}, ()=> this.getAssignments());
-        }
-
-        if(action === 'create'){
-            this.setState({assignmentCreateSuccess: bool}, ()=>this.getAssignments());
-        }
-    }
-
-    classAlert(action, bool){
-        if(action === 'delete') {
-            this.setState({classDeleteSuccess: bool},()=>this.getClasses());
-
-        }
-        if(action === 'create'){
-            this.setState({classCreateSuccess: bool}, ()=>  this.getClasses());
-
-        }
-    }
-
-    Alerts(){
-        if(this.state.classDeleteSuccess !== null){
-            if(this.state.classDeleteSuccess === false){
-                return <Snackbar
-                    open={this.state.snackbarOpen}
-                    role={"alert"}
-                    autoHideDuration={2000}
-                    anchorOrigin={{horizontal:'right', vertical:'top'}}>
-                    <Alert variant={'filled'}
-                           severity={'error'}
-                           onClose={()=>this.setState({snackbarOpen:false})}>
-                        Could not Delete Class</Alert>
-                </Snackbar>;
-            } else{
-                return <Snackbar
-                    open={this.state.snackbarOpen}
-                    role={"alert"}
-                    autoHideDuration={2000}
-                    anchorOrigin={{horizontal:'right', vertical:'top'}} >
-                    <Alert variant={'filled'}
-                           severity={'success'}
-                           onClose={()=>this.setState({snackbarOpen:false})}>
-                        Class Deleted </Alert>
-                </Snackbar>
-            }
-        }
-        if(this.state.classCreateSuccess !== null){
-            if(this.state.classCreateSuccess === false){
-                return <Snackbar
-                    open={this.state.snackbarOpen}
-                    role={"alert"}
-                    autoHideDuration={2000}
-                    anchorOrigin={{horizontal:'right', vertical:'top'}}>
-                    <Alert variant={'filled'}
-                           severity={'error'}
-                           onClose={()=>this.setState({snackbarOpen:false})}>
-                        Could not Create Class</Alert>
-                </Snackbar>;
-            } else{
-                return <Snackbar
-                    open={this.state.snackbarOpen}
-                    role={"alert"}
-                    autoHideDuration={2000}
-                    anchorOrigin={{horizontal:'right', vertical:'top'}} >
-                    <Alert variant={'filled'}
-                           severity={'success'}
-                           onClose={()=>this.setState({snackbarOpen:false})}>
-                        Class Created </Alert>
-                </Snackbar>
-            }
-        }
-        if(this.state.assignmentDeleteSuccess !== null){
-            if(this.state.assignmentDeleteSuccess === false){
-                return <Snackbar
-                    open={this.state.snackbarOpen}
-                    role={"alert"}
-                    autoHideDuration={2000}
-                    anchorOrigin={{horizontal:'right', vertical:'top'}}>
-                    <Alert variant={'filled'}
-                           severity={'error'}
-                           onClose={()=>this.setState({snackbarOpen:false})}>
-                        Could not Delete Assignment </Alert>
-                </Snackbar>
-            } else{
-                return <Snackbar
-                    open={this.state.snackbarOpen}
-                    role={"alert"}
-                    autoHideDuration={2000}
-                    anchorOrigin={{horizontal:'right', vertical:'top'}}>
-                    <Alert variant={'filled'}
-                           severity={'success'}
-                           onClose={()=>this.setState({snackbarOpen:false})}>
-                        Assignment Deleted </Alert>
-                </Snackbar>
-            }
-        }
-        if(this.state.assignmentCreateSuccess !== null){
-            if(this.state.assignmentCreateSuccess === false){
-                return <Snackbar
-                    open={this.state.snackbarOpen}
-                    role={"alert"}
-                    autoHideDuration={2000}
-                    anchorOrigin={{horizontal:'right', vertical:'top'}}>
-                    <Alert variant={'filled'}
-                           severity={'error'}
-                           onClose={()=>this.setState({snackbarOpen:false})}>
-                        Could not Create Assignment </Alert>
-                </Snackbar>
-            } else{
-                return <Snackbar
-                    open={this.state.snackbarOpen}
-                    role={"alert"}
-                    autoHideDuration={2000}
-                    anchorOrigin={{horizontal:'right', vertical:'top'}}>
-                    <Alert variant={'filled'}
-                           severity={'success'}
-                           onClose={()=>this.setState({snackbarOpen:false})}>
-                        Assignment Created </Alert>
-                </Snackbar>
-            }
+    processQueue(){
+        if(this.queueRef.current.length >0){
+            this.setState({
+                messageInfo: this.queueRef.current.shift(),
+                snackbarOpen:true}
+            );
         }
     };
+
+    handleQueueAlert(message, severity){
+        this.queueRef.current.push({
+            message: message,
+            severity:severity,
+            key: new Date().getTime(),
+        });
+        if(this.state.snackbarOpen){
+            this.setState({snackbarOpen:false});
+        }else{
+            this.processQueue();
+        }
+        this.getClasses();
+        this.getAssignments();
+    };
+
+    handleClose(event, reason){
+        if(reason === 'clickaway'){
+            return;
+        }
+        this.setState({snackbarOpen:false});
+    };
+
+    handleExited(){
+        this.processQueue();
+    };
+
+    DisplayAlerts(){
+       return <Snackbar
+            key={this.state.messageInfo ? this.state.messageInfo.key : undefined}
+            anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            open={this.state.snackbarOpen}
+            autoHideDuration={3000}
+            onClose={this.handleClose}
+            onExited={this.handleExited}
+            >
+                <Alert variant={'filled'}
+                       severity={this.state.messageInfo ? this.state.messageInfo.severity : undefined}
+                       onClose={this.handleClose}
+                >
+                    {this.state.messageInfo ? this.state.messageInfo.message : undefined}
+                </Alert>
+         </Snackbar>
+    }
+
+
+
 
     render() {
         return (
@@ -191,26 +129,25 @@ class Classes extends Component {
                             Manage Coursework
                         </Typography>
 
-                        {this.Alerts()}
-
                         <Container maxWidth={"sm"}>
                             <CreateList
                                 classList={this.state.classList}
                                 assignmentList={this.state.assignmentList}
-                                assignmentAlert={this.assignmentAlert}
-                                classAlert={this.classAlert}
+                                handleQueueAlert={this.handleQueueAlert}
                             />
                         </Container>
+
+                        {this.DisplayAlerts()}
 
                         <CreateAssignment
                             user_id={this.props.user.id}
                             classList={this.state.classList}
-                            assignmentAlert={this.assignmentAlert}
+                            handleQueueAlert={this.handleQueueAlert}
                         />
 
                         <CreateClass
                             user_id={this.props.user.id}
-                            classAlert={this.classAlert}
+                            handleQueueAlert={this.handleQueueAlert}
                         />
                     </Container>
         );

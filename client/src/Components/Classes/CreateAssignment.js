@@ -20,8 +20,8 @@ class CreateAssignment extends Component {
         this.handleAlert = this.handleAlert.bind(this);
     }
 
-    handleAlert(bool){
-        this.props.assignmentAlert('create', bool);
+    handleAlert(message, severity){
+        this.props.handleQueueAlert(message, severity);
     }
 
     handleOpen = () => {
@@ -45,6 +45,7 @@ class CreateAssignment extends Component {
     handleSubmitAssign(event) {
 
       event.preventDefault();
+      let that = this;
 
       const data = {
         "name": this.state.AssignName,
@@ -63,14 +64,16 @@ class CreateAssignment extends Component {
         },
       }).then((response) => {
           if (response.status === 201 || response.ok) {
+              that.handleAlert('Assignment Created', 'success');
               this.setState({
                   open: false,
-              },()=>this.handleAlert(true));
+              });
 
           } else {
+              that.handleAlert('Could not Create Assignment', 'error');
               this.setState({
                   open: false,
-              },()=>  this.handleAlert(false));
+              });
           }
       });
     }

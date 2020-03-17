@@ -23,13 +23,9 @@ class CreateList extends Component {
 
     }
 
-    handleAlert(subject, bool){
-        if (subject === 'class') {
-            this.props.classAlert('delete', bool);
-        }
-        if(subject === 'assignment'){
-            this.props.assignmentAlert('delete', bool);
-        }
+    handleAlert(message, severity){
+        console.log(message + " " + severity);
+        this.props.handleQueueAlert(message, severity);
     }
 
     handleDeleteCourse(e, id) {
@@ -43,10 +39,10 @@ class CreateList extends Component {
                     },
                 }).then((response) => {
                         if (response.status === 204) {
-                            this.handleAlert('class', true);
+                            this.handleAlert('Course Deleted', 'success');
                         }
                         else {
-                            this.handleAlert('class', false);
+                            this.handleAlert('Could not Delete Course', 'error');
                         }
                     }
                 );
@@ -64,10 +60,10 @@ class CreateList extends Component {
                 },
             }).then((response) => {
                 if (response.status === 204) {
-                    this.handleAlert('assignment', true);
+                    this.handleAlert('Assignment Deleted', 'success');
                 }
                 else {
-                    this.handleAlert('assignment', false);
+                    this.handleAlert('Could not Delete Assignment', 'error');
                 }
             });
         }
