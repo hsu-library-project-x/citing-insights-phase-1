@@ -64,6 +64,7 @@ class Tasks extends PureComponent {
 		this.updateisEditing = this.updateisEditing.bind(this);
 		this.updateOverviewPage = this.updateOverviewPage.bind(this);
 		this.RubricAlert = this.RubricAlert.bind(this);
+		this.ChangeOverview = this.ChangeOverview.bind(this);
 
 	}
 
@@ -179,6 +180,10 @@ class Tasks extends PureComponent {
 			message:message,
 			severity:severity
 		});
+	}
+
+	ChangeOverview(){
+		this.setState({overviewPage:null});
 	}
 
 	render() {
@@ -335,6 +340,7 @@ class Tasks extends PureComponent {
 								<OverviewTable
 									user={this.props.user}
 									citations={this.state.citations}
+									ChangeOverview={this.ChangeOverview}
 									{...props} />}
 							/>
 						</Switch>

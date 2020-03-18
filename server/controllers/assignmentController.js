@@ -1,4 +1,6 @@
 var assignmentModel = require('../models/assignmentModel.js');
+let paperModel =require('../models/paperModel.js');
+let citationModel = require('../models/citationModel.js');
 
 /**
  * assignmentController.js
@@ -144,7 +146,36 @@ module.exports = {
      */
     remove: function (req, res) {
         var id = req.params.id;
-        
+
+        paperModel.find({'assignment_id': id}, function (err, papers) {
+                if (err) {
+                    return res.status(500).json({
+                        message: 'Error when finding the papers of the assignment.',
+                        error: err
+                    });
+                }
+
+                for (let j = 0; j < papers.length; j++) {
+                    citationModel.deleteMany({'paper_id': papers[j]['_id']}, function(err, citations){
+                        if(err) {
+                            return res.status(500).json({
+                                message: 'Error when deleting the citations of the paper.',
+                                error: err
+                            });
+                        }
+                    });
+                }
+            });
+
+        paperModel.deleteMany({'assignment_id': id}, function (err, papers) {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Error when deleting the papers of the assignment.',
+                    error: err
+                });
+            }
+        });
+
         assignmentModel.findByIdAndRemove(id, function (err, assignment) {
             if (err) {
                 return res.status(500).json({
@@ -152,6 +183,7 @@ module.exports = {
                     error: err
                 });
             }
+
             return res.status(204).json();
         });
     }

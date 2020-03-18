@@ -12,6 +12,10 @@ class OverviewTable extends Component {
         this.getAuthors = this.getAuthors.bind(this);
     };
 
+    componentWillUnmount() {
+        this.props.ChangeOverview();
+    }
+
     getAuthors(authors) {
         return authors.map((d) => {
             return d.family + ", " + d.given + "\n"

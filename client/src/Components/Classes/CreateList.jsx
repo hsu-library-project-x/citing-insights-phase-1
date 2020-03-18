@@ -24,7 +24,6 @@ class CreateList extends Component {
     }
 
     handleAlert(message, severity){
-        console.log(message + " " + severity);
         this.props.handleQueueAlert(message, severity);
     }
 
