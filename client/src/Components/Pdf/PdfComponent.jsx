@@ -24,7 +24,7 @@ class PdfComponent extends PureComponent {
             searchText: '',
             pdf: new Blob([this.props.data], { type: "application/pdf;base64" }),
             scale: 1.0,
-            columnWidth: window.innerWidth / 2,
+            columnWidth: window.innerWidth / 1.5,
             rowHeight: 1.5 * window.innerHeight,
             rawText: [{}],
             matches: [],
@@ -77,10 +77,6 @@ class PdfComponent extends PureComponent {
             rawText: rawText,
         }));
     };
-
-    componentDidMount() {
-    }
-
 
     componentWillReceiveProps(nextProps) {
 
@@ -237,10 +233,11 @@ class PdfComponent extends PureComponent {
                 className={"GridItem"}
                 style={{
                     ...style,
-                    left: style.left + this.GUTTER_SIZE,
+                    left:((this.windowWidth - this.state.columnWidth) /2 )+ this.GUTTER_SIZE,
                     top: style.top + this.GUTTER_SIZE,
                     width: style.width - this.GUTTER_SIZE,
-                    height: style.height - this.GUTTER_SIZE
+                    height: style.height - this.GUTTER_SIZE,
+
                 }}
             >
                 <Page
@@ -257,6 +254,7 @@ class PdfComponent extends PureComponent {
 
         return (
             <FixedSizeGrid
+                style={{justifyContent:'center', alignContent:'center'}}
                 className="Grid"
                 columnCount={1}
                 columnWidth={this.state.columnWidth + this.GUTTER_SIZE}

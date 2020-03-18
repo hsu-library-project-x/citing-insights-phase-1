@@ -36,6 +36,7 @@ class Analyze extends PureComponent {
       radio_score: null,
       raw_pdf_data:null,
       snackbarOpen: true,
+      messageInfo:null,
     };
 
     this.componentWillMount = this.componentWillMount.bind(this);
@@ -99,24 +100,24 @@ class Analyze extends PureComponent {
   };
 
   DisplayAlerts(){
-    return <Snackbar
-        key={this.state.messageInfo ? this.state.messageInfo.key : undefined}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        open={this.state.snackbarOpen}
-        autoHideDuration={3000}
-        onClose={this.handleClose}
-        onExited={this.handleExited}
-    >
-      <Alert variant={'filled'}
-             severity={this.state.messageInfo ? this.state.messageInfo.severity : undefined}
-             onClose={this.handleClose}
+      return <Snackbar
+          key={this.state.messageInfo ? this.state.messageInfo.key : undefined}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          open={this.state.snackbarOpen}
+          autoHideDuration={3000}
+          onClose={this.handleClose}
+          onExited={this.handleExited}
       >
-        {this.state.messageInfo ? this.state.messageInfo.message : undefined}
-      </Alert>
-    </Snackbar>
+        <Alert variant={'filled'}
+               severity={this.state.messageInfo ? this.state.messageInfo.severity : undefined}
+               onClose={this.handleClose}
+        >
+          {this.state.messageInfo ? this.state.messageInfo.message : undefined}
+        </Alert>
+      </Snackbar>
   }
 
   AssessmentScore(newScore, title) {
@@ -130,7 +131,7 @@ class Analyze extends PureComponent {
           if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
             return response.json();
           }else{
-            that.handleAlert('Could not Access Paper', 'error');
+            that.handleQueueAlert('Could not Access Paper', 'error');
           }
         })
         .then(function (myJson) {
@@ -146,7 +147,7 @@ class Analyze extends PureComponent {
         if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
           return response.json();
         }else{
-          that.handleAlert('Could not Access Paper', 'error');
+          that.handleQueueAlert('Could not Access Paper', 'error');
           
         }
       })
@@ -155,7 +156,6 @@ class Analyze extends PureComponent {
           assignment: myJson
         });
       });
-
   }
 
   componentWillUnmount() {
@@ -169,14 +169,13 @@ class Analyze extends PureComponent {
         if(response.ok || response.status === 201){
           return response.json();
         }else{
-          that.handleAlert('Could not get Citations', 'error');
+          that.handleQueueAlert('Could not get Citations', 'error');
         }
       })
       .then(function (myJson) {
         that.setState({ citations: myJson });
         return (myJson);
       });
-
   }
 
   setCurrentCitation(citation_id) {
@@ -196,8 +195,8 @@ class Analyze extends PureComponent {
           if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
             return response.json();
           }else{
-            that.handleAlert('Could not get Citations', 'error');
-            
+            that.handleQueueAlert('Could not get Citations', 'error');
+
           }
         })
         .then(function (myJson) {
@@ -210,7 +209,7 @@ class Analyze extends PureComponent {
                 if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
                   return response.json();
                 }else{
-                  that.handleAlert('Could not get Paper', 'error');
+                  that.handleQueueAlert('Could not get Paper', 'error');
                 }
               })
               .then(function (myJson) {
@@ -237,7 +236,7 @@ class Analyze extends PureComponent {
         if (response.ok || response.status !== 500 ) {
           return response.json();
         }else{
-          that.handleAlert('Could not get Citations', 'error');
+          that.handleQueueAlert('Could not get Citations', 'error');
         }
       })
       .then(function (myJson) {
@@ -327,14 +326,14 @@ class Analyze extends PureComponent {
                   })
                     .then((response) => {
                       if (response.ok || response.status === 201) {
-                        that.handleAlert('Assessment Save Success', 'success');
+                        that.handleQueueAlert('Assessment Save Success', 'success');
                       }
                       else {
-                        that.handleAlert('Could not Save Assessment', 'error');
+                        that.handleQueueAlert('Could not Save Assessment', 'error');
                       }
                     });
                 } else {
-                  that.handleAlert('Could not Save Assessment', 'error');
+                  that.handleQueueAlert('Could not Save Assessment', 'error');
                 }
               });
           } else {
@@ -352,10 +351,10 @@ class Analyze extends PureComponent {
           })
             .then((response) => {
               if (response.ok || response.status === 201) {
-                that.handleAlert('Assessment Save Success', 'success');
+                that.handleQueueAlert('Assessment Save Success', 'success');
               }
               else {
-                that.handleAlert('Could not Save Assessment', 'error');
+                that.handleQueueAlert('Could not Save Assessment', 'error');
               }
             });
         }
@@ -372,10 +371,10 @@ class Analyze extends PureComponent {
       })
         .then((response) => {
           if (response.ok || response.status === 201) {
-            that.handleAlert('Assessment Save Success', 'success');
+            that.handleQueueAlert('Assessment Save Success', 'success');
           }
           else {
-            that.handleAlert('Could not Save Assessment', 'error');
+            that.handleQueueAlert('Could not Save Assessment', 'error');
           }
         })
     }
@@ -519,7 +518,6 @@ class Analyze extends PureComponent {
                 current_citation_id={this.state.current_citation_id}
                 key={this.state.current_citation_id}
               /> : null}
-            {/*</Paper>*/}
           </Grid>
 
           {/* PDF Viewer */}
