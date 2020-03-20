@@ -3,16 +3,6 @@ var router = express.Router();
 var feedbackController = require('../controllers/feedbackController.js');
 
 /*
- * GET
- */
-router.get('/', feedbackController.list);
-
-/*
- * GET
- */
-router.get('/:id', feedbackController.show);
-
-/*
  * POST
  */
 router.post('/', feedbackController.create);
@@ -22,9 +12,5 @@ router.post('/', feedbackController.create);
  */
 router.put('/:id', feedbackController.update);
 
-/*
- * DELETE
- */
-router.delete('/:id', feedbackController.remove);
 
 module.exports = router;

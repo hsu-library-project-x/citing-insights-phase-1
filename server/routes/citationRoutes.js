@@ -14,7 +14,6 @@ router.get('/:id', citationController.show);
 
 router.get('/by_paper_id/:id', citationController.by_paper_id);
 
-router.get('/:user_id', citationController.by_user_id);
 
 router.get('/find_evaluations/:paper_id', citationController.find_evaluations);
 

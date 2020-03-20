@@ -9,6 +9,7 @@ module.exports = {
      * configurationsController.find()
      */
     list: function (req, res) {
+        
         configurationsModel.find(function (err, configurations) {
             if (err) {
                 return res.status(500).json({

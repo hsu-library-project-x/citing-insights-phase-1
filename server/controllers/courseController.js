@@ -15,6 +15,8 @@ module.exports = {
      */
 
     list: function (req, res) {
+        if(req.session.user !== undefined) {
+
         let id = req.params.id;
         courseModel.find({user_id: id}, function (err, courses) {
             if (err) {
@@ -25,12 +27,15 @@ module.exports = {
             }
           return res.json(courses);
         });
+    }
     },
 
     /**
      * courseController.show()
      */
     show: function (req, res) {
+        if(req.session.user !== undefined) {
+
         let id = req.params.id;
         courseModel.findOne({_id: id}, function (err, course) {
             if (err) {
@@ -46,12 +51,15 @@ module.exports = {
             }
             return res.json(course);
         });
+    }
     },
 
     /**
      * courseController.create()
      */
-    create: function (req, res) {
+    create: function (req, res) {        
+        if(req.session.user !== undefined) {
+
 
         let course = new courseModel({
 			name : req.body.name,
@@ -69,12 +77,15 @@ module.exports = {
             }
             return res.status(201).json(course);
         });
+    }
     },
 
     /**
      * courseController.update()
      */
     update: function (req, res) {
+        if(req.session.user !== undefined) {
+
         let id = req.params.id;
         courseModel.findOne({_id: id}, function (err, course) {
             if (err) {
@@ -103,12 +114,15 @@ module.exports = {
                 return res.json(course);
             });
         });
+    }
     },
 
     /**
      * courseController.remove()
      */
     remove: function (req, res) {
+        if(req.session.user !== undefined) {
+
         let id = req.params.id;
 
         assignmentModel.find({"class_id": id}, function(err, assignments) {
@@ -173,5 +187,5 @@ module.exports = {
                 return res.status(204).json();
             });
         }
-
+    }
 };
