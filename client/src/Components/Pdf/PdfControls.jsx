@@ -27,8 +27,7 @@ class PdfControls extends Component {
                 ...prevState.rawText,    // keep all other key-value pairs
                 [pageNum]: items       // update the value of specific key
             }
-        }), ()=> this.props.PassUpText(this.state.rawText));
-
+        }), ()=> this.props.PassUpText(this.state.rawText, pageNum));
     }
 
     renderLoader(){
@@ -36,19 +35,14 @@ class PdfControls extends Component {
     }
 
     render() {
-        const { numPages} = this.state;
+        const { numPages} = this.props;
         return (
             <div className="hide-pdf">
-                <Document
-                    file={this.props.pdf}
-                    onLoadSuccess={this.onDocumentLoadSuccess}
-                    loading={this.renderLoader}
-                >
                     {Array.from(
                         new Array(numPages),
                         (el, index) => (
                             <Page
-                                loading={this.renderLoader}
+                                loading={""}
                                 onGetTextSuccess={(items) => this.getLayers(items,index + 1)}
                                 key={`page_${index + 1}`}
                                 pageNumber={index + 1}
@@ -56,7 +50,6 @@ class PdfControls extends Component {
                         ),
                     )}
                     <Outline className="outline-list" onItemClick={this.onItemClick} />
-                </Document>
             </div>
         );
     }
