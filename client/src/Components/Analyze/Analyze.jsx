@@ -36,7 +36,7 @@ class Analyze extends PureComponent {
       radio_score: null,
       raw_pdf_data:null,
       snackbarOpen: true,
-      messageInfo:null,
+      messageInfo:"",
     };
 
     this.componentWillMount = this.componentWillMount.bind(this);
@@ -99,7 +99,8 @@ class Analyze extends PureComponent {
     this.processQueue();
   };
 
-  DisplayAlerts(){
+  DisplayAlerts = () => {
+    // if(this.state.messageInfo !== "") {
       return <Snackbar
           key={this.state.messageInfo ? this.state.messageInfo.key : undefined}
           anchorOrigin={{
@@ -118,7 +119,10 @@ class Analyze extends PureComponent {
           {this.state.messageInfo ? this.state.messageInfo.message : undefined}
         </Alert>
       </Snackbar>
-  }
+    // } else{
+    //   return null;
+    // }
+  };
 
   AssessmentScore(newScore, title) {
     this.setState({ radio_score: newScore, rubric_title: title });
@@ -452,6 +456,8 @@ class Analyze extends PureComponent {
       return <MenuItem value={p._id} key={p._id}> {p.title} </MenuItem>
     });
 
+
+
     return (
       <Grid
         container
@@ -459,7 +465,7 @@ class Analyze extends PureComponent {
         justify="flex-start"
         alignItems="flex-start"
       >
-        {this.DisplayAlerts()}
+        {this.state.messageInfo ? this.DisplayAlerts() : undefined}
         <Grid item xs={12} sm={4} md={2}>
           {/*<Paper variant="outlined">*/}
           <Tooltip title="Change Assignment">

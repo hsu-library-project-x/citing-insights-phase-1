@@ -45,9 +45,6 @@ class PdfComponent extends PureComponent {
 
         this.GUTTER_SIZE = 5;
         this.gridRef = React.createRef();
-
-
-
     }
 
     removeTextLayerOffset() {
@@ -289,7 +286,6 @@ class PdfComponent extends PureComponent {
 
 
     render() {
-        console.log('pageNum' + this.state.pageNumber);
         return (
             <div className="document-wrapper">
                 {/*<Container maxWidth="md">*/}
