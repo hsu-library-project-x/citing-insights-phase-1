@@ -9,15 +9,8 @@ import config from "../../config.json";
 class Login extends Component {
 	constructor(props) {
 		super(props);
-		// this.state = {
-		// 	isAuthenticated: false,
-		// 	user: null,
-		// 	token: "",
-		// };
-		this.height = window.innerHeight / 1.29;
-	}
 
-	componentDidMount() {
+		this.height = window.innerHeight / 1.29;
 	}
 
 	onFailure = (err) => {
@@ -42,18 +35,19 @@ class Login extends Component {
 				'Content-Type': 'application/json',
 				'Accept': 'application/json',
 				'Access-Control-Allow': true,
-			}
+			},
+			credentials: 'include'
 		};
 
 		fetch('/api/users/auth', options).then(r => {
-			//This is the token we'll use to authenticate each of the user's 
-			//actions (things that require auth: make class, remove assignment, etc.)
-			const token = r.headers.get('x-auth-token');
 			r.json().then(user => {
-				this.props.passInfoLogin(true, token, user);
+				localStorage.setItem('user', JSON.stringify({
+					isAuthenticated: true,
+					user: user
+				  }));
+				this.props.passInfoLogin(true, user);
 			});
 		});
-
 	};
 
 	render() {

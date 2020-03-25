@@ -12,18 +12,35 @@ import logo from "./logoCiting.svg";
 class Navibar extends Component {
     constructor(props) {
         super(props);
+
         this.responseGoogle = this.responseGoogle.bind(this);
         this.onFailure = this.onFailure.bind(this);
     }
 
 
     responseGoogle = () => {
-        this.props.passInfoLogout();
-        //Need to link to function in App.js, to reset our state to nothing
-        return (<Redirect to={{
-            pathname: '/login',
-            state: { from: this.props.location }
-        }} />);
+        fetch('/api/logout', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => {
+                if (response.status === 200 || response.ok) {
+                    this.props.passInfoLogout();
+                    return (
+                        <Redirect to={{
+                            pathname: '/login',
+                            state: { from: this.props.location }
+                        }} />
+                    );
+                }
+                else {
+                    alert("Error Logging out");
+                }
+            });
+
     };
 
     onFailure = (err) => {
@@ -38,8 +55,6 @@ class Navibar extends Component {
                 secondary: { main: this.props.configurations.secondaryColor } // light green
             },
         });
-
-        const { router, params, location, routes } = this.props
 
         return (
             <MuiThemeProvider theme={theme}>

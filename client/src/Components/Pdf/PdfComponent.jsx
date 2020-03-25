@@ -7,7 +7,7 @@ import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
-
+import PdfControls from "./PdfControls";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "./pdfComponent.css";
 
@@ -15,7 +15,7 @@ pdfjs.GlobalWorkerOptions.workerSrc =
     `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 
-class PdfComponent extends PureComponent {
+class PdfComponent extends PureComponent {  
     constructor(props) {
         super(props);
         this.state = {
@@ -46,18 +46,8 @@ class PdfComponent extends PureComponent {
         this.GUTTER_SIZE = 5;
         this.gridRef = React.createRef();
 
-        const innerElementType = forwardRef(({ style, ...rest }, ref) => (
-            <div
-                ref={ref}
-                style={{
-                    ...style,
-                    paddingLeft: this.GUTTER_SIZE,
-                    paddingTop: this.GUTTER_SIZE,
-                    marginBottom: this.GUTTER_SIZE,
-                }}
-                {...rest}
-            />
-        ));
+
+
     }
 
     removeTextLayerOffset() {
@@ -71,10 +61,11 @@ class PdfComponent extends PureComponent {
         });
     }
 
-    PassUpText(rawText) {
+    PassUpText(rawText, num) {
         let that = this;
-        that.setState( ({
-            rawText: rawText,
+        that.setState(({
+            rawText:rawText,
+            pageNumber: num,
         }));
     };
 
@@ -92,12 +83,23 @@ class PdfComponent extends PureComponent {
         console.log('unmounting pdf');
     }
 
-    onDocumentLoadSuccess = (document) => {
-        const { numPages } = document;
-        this.setState({
-            numPages,
-            pageNumber: 1,
-        });
+    onDocumentLoadSuccess = (nPages) => {
+        if (this.state.pageNumber == null) {
+            this.setState({
+                numPages: nPages,
+                pageNumber: 1,
+            });
+        } else if (this.state.pageNumber > nPages) {
+            this.setState({
+                numPages: nPages,
+                pageNumber: nPages - 1,
+            })
+        } else {
+            this.setState({
+                pageNumber: nPages,
+                numPages: nPages
+            });
+        }
     };
 
     highlightPattern = (text, pattern) => {
@@ -219,7 +221,7 @@ class PdfComponent extends PureComponent {
         let page = event.target.value;
 
         that.gridRef.current.scrollToItem({
-            align: "start",
+            align: "center",
             columnIndex: 1,
             rowIndex: page - 1,
         });
@@ -228,12 +230,25 @@ class PdfComponent extends PureComponent {
 
     GenerateGrid = () => {
 
-        const Cell = ({ columnIndex, rowIndex, style }) => (
+        const innerElementType = forwardRef(({ style, ...rest }, ref) => (
+            <div
+                ref={ref}
+                style={{
+                    ...style,
+                    paddingLeft: this.GUTTER_SIZE,
+                    paddingTop: this.GUTTER_SIZE,
+                    marginBottom: this.GUTTER_SIZE,
+                }}
+                {...rest}
+            />
+        ));
+
+        const Cell = ({ columnIndex, data, rowIndex, style }) => (
             <div
                 className={"GridItem"}
                 style={{
                     ...style,
-                    left:((this.windowWidth - this.state.columnWidth) /2 )+ this.GUTTER_SIZE,
+                    left: ((this.windowWidth - this.state.columnWidth) / 2) + this.GUTTER_SIZE,
                     top: style.top + this.GUTTER_SIZE,
                     width: style.width - this.GUTTER_SIZE,
                     height: style.height - this.GUTTER_SIZE,
@@ -252,9 +267,11 @@ class PdfComponent extends PureComponent {
             </div>
         );
 
+        // cacheCount++;
+
         return (
             <FixedSizeGrid
-                style={{justifyContent:'center', alignContent:'center'}}
+                style={{ justifyContent: 'center', alignContent: 'center' }}
                 className="Grid"
                 columnCount={1}
                 columnWidth={this.state.columnWidth + this.GUTTER_SIZE}
@@ -271,43 +288,44 @@ class PdfComponent extends PureComponent {
     };
 
 
-  render() {
-    return (
-      <div className="document-wrapper">
-          {/*<Container maxWidth="md">*/}
-          <AppBar color={'transparent'} position="sticky" className={'pdf-ToolBar'}>
-              <Toolbar className={'pdf-ToolBar'} disableGutters={true}>
-                  <TextField
-                    name={'searchText'}
-                    onChange={this.handleInputChange}
-                    placeholder={"search"}
-                    InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <SearchIcon />
-                            </InputAdornment>
-                        ),
-                    }}
-                  />
-                  <p> {this.state.currentMatch ? this.state.currentMatch + " of ": null} {this.state.matches.length} matches</p>
-                  <Tooltip title="Previous">
-                      <IconButton
-                          aria-label="previous-search-result"
-                          color="primary"
-                          disabled={this.state.currentMatch <= 1}
-                          onClick={() =>this.PreviousResult()}>
-                          <NavigateBeforeIcon />
-                      </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Next">
-                      <IconButton
-                          aria-label="next-search-result"
-                          color="primary"
-                          disabled={this.state.currentMatch >= this.state.matches.length}
-                          onClick={() => this.NextResult()}>
-                          <NavigateNextIcon />
-                      </IconButton>
-                  </Tooltip>
+    render() {
+        console.log('pageNum' + this.state.pageNumber);
+        return (
+            <div className="document-wrapper">
+                {/*<Container maxWidth="md">*/}
+                <AppBar color={'transparent'} position="sticky" className={'pdf-ToolBar'}>
+                    <Toolbar className={'pdf-ToolBar'} disableGutters={true}>
+                        <TextField
+                            name={'searchText'}
+                            onChange={this.handleInputChange}
+                            placeholder={"search"}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <SearchIcon />
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                        <p> {this.state.currentMatch ? this.state.currentMatch + " of " : null} {this.state.matches.length} matches</p>
+                        <Tooltip title="Previous">
+                            <IconButton
+                                aria-label="previous-search-result"
+                                color="primary"
+                                disabled={this.state.currentMatch <= 1}
+                                onClick={() => this.PreviousResult()}>
+                                <NavigateBeforeIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Next">
+                            <IconButton
+                                aria-label="next-search-result"
+                                color="primary"
+                                disabled={this.state.currentMatch >= this.state.matches.length}
+                                onClick={() => this.NextResult()}>
+                                <NavigateNextIcon />
+                            </IconButton>
+                        </Tooltip>
                         <p> Go to Page </p>
                         <TextField
                             onChange={this.ScrollTo}
@@ -342,18 +360,22 @@ class PdfComponent extends PureComponent {
                 {/*</Container>*/}
                 <Document
                     file={this.state.pdf}
-                    onLoadSuccess={this.onDocumentLoadSuccess}
+                    onLoadSuccess={(pdf) => {
+                        this.onDocumentLoadSuccess(pdf.numPages)
+                    }}
                     className="pdf-container"
                     error={"Loading may take a few seconds...."}
                 >
-                    {this.GenerateGrid()}
+                        {this.GenerateGrid()}
+                        {/*pdf controls is not shown with a css display:hidden eventually I need to make mode efficiant*/}
+
+                    <PdfControls
+                        PassUpText={this.PassUpText}
+                        pageNum={this.state.pageNumber}
+                        pdf={this.state.pdf}
+                    />
                 </Document>
-                {/*pdf controls is not shown with a css display:hidden eventually I need to make mode efficiant*/}
-                {/*    <PdfControls*/}
-                {/*        PassUpText={this.PassUpText}*/}
-                {/*        pageNum={this.state.pageNumber}*/}
-                {/*        pdf={this.state.pdf}*/}
-                {/*    />*/}
+
             </div>
         );
     }

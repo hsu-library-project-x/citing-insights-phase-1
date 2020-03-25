@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -8,10 +9,14 @@ const config = require("./config.js");
 const upload = require('./upload');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo')(session);
+const passport = require("passport");
+const helmet = require('helmet');
 // const multer = require('multer');
 const fs = require('fs');
+
 const url = `mongodb://${config.db.host}:${config.db.port}/${config.db.name}`;
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true , useFindAndModify: false });
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 
 let routes = require('./routes/index');
 let users = require('./routes/userRoutes');
@@ -24,6 +29,15 @@ let feedback = require("./routes/feedbackRoutes");
 let configurations = require("./routes/configurationsRoutes");
 
 let app = express();
+
+app.use(helmet());
+
+app.use(session({
+  'secret': 'nufv98y984hfouijdso8fu32089r32tpbgg0bg01n2',
+  'store': new MongoStore({ mongooseConnection: mongoose.connection }),
+  'resave': true,
+  'saveUninitialized': false
+}));
 
 //this line is just for the file uypload test
 app.engine('html', require('ejs').renderFile);
@@ -47,6 +61,10 @@ if (app.get('env') === 'production') {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(express.static(path.join(__dirname, '../client/build')));
 app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -62,6 +80,11 @@ app.use('/api/citations', citations);
 app.use('/api/rubrics', rubrics);
 app.use('/api/feedback', feedback);
 app.use('/api/configurations', configurations);
+
+app.get('/api/logout', function (req, res) {
+  req.session.destroy();
+  return res.status(200).json();
+});
 
 if (app.get('env') === 'production') {
   app.get('/*', (req, res) => {
