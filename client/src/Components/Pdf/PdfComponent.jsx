@@ -7,7 +7,7 @@ import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
-import PdfControls from "./PdfControls";
+
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "./pdfComponent.css";
 
@@ -349,11 +349,11 @@ class PdfComponent extends PureComponent {
                     {this.GenerateGrid()}
                 </Document>
                 {/*pdf controls is not shown with a css display:hidden eventually I need to make mode efficiant*/}
-                    <PdfControls
-                        PassUpText={this.PassUpText}
-                        pageNum={this.state.pageNumber}
-                        pdf={this.state.pdf}
-                    />
+                {/*    <PdfControls*/}
+                {/*        PassUpText={this.PassUpText}*/}
+                {/*        pageNum={this.state.pageNumber}*/}
+                {/*        pdf={this.state.pdf}*/}
+                {/*    />*/}
             </div>
         );
     }
