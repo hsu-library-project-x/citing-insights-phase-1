@@ -37,6 +37,7 @@ class Analyze extends PureComponent {
       raw_pdf_data:null,
       snackbarOpen: true,
       messageInfo:"",
+      action:false,
     };
 
     this.componentWillMount = this.componentWillMount.bind(this);
@@ -74,6 +75,7 @@ class Analyze extends PureComponent {
   };
 
   handleQueueAlert(message, severity){
+    if(this.state.action === false){ this.setState({action:true});}
     this.queueRef.current.push({
       message: message,
       severity:severity,
@@ -100,7 +102,7 @@ class Analyze extends PureComponent {
   };
 
   DisplayAlerts = () => {
-    // if(this.state.messageInfo !== "") {
+    if(this.state.action) {
       return <Snackbar
           key={this.state.messageInfo ? this.state.messageInfo.key : undefined}
           anchorOrigin={{
@@ -119,9 +121,9 @@ class Analyze extends PureComponent {
           {this.state.messageInfo ? this.state.messageInfo.message : undefined}
         </Alert>
       </Snackbar>
-    // } else{
-    //   return null;
-    // }
+    } else{
+      return null;
+    }
   };
 
   AssessmentScore(newScore, title) {
@@ -299,52 +301,52 @@ class Analyze extends PureComponent {
 
     }
     if (assessments.length !== 0) {
-
       //Look at each assessment
       for (let index in assessments) {
 
-        //console.log(`current rub: ${that.state.rubricId} and \nnew rub: ${assessments[index].rubric_id}`);
+        // console.log(`current rub: ${that.state.rubricId} and \nnew rub: ${assessments[index].rubric_id}`);
 
         //If true, assessment already exists
         if (assessments[index].rubric_id === that.state.rubricId) {
 
-          //Ask user to confirm rewrite
-          if (window.confirm('Rewrite existing assessment?')) {
+            //Ask user to confirm rewrite
+            if (window.confirm('Rewrite existing assessment?')) {
+              //Delete Existing
+              let resp = await fetch(`/api/citations/remove_assessment/${that.state.current_citation_id}`, {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify(assessment)
+              })
+                .then((response) => {
+                  if (response.ok || response.status === 200) {
+                    return fetch(`/api/citations/add_assessment/${that.state.current_citation_id}`, {
+                      method: "PUT",
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify(assessment)
+                    })
+                      .then((response) => {
+                        if (response.ok || response.status === 201) {
+                          that.handleQueueAlert('Assessment Save Success', 'success');
+                        }
+                        else {
+                          that.handleQueueAlert('Could not Save Assessment', 'error');
 
-            //Delete Existing
-            let resp = await fetch(`/api/citations/remove_assessment/${that.state.current_citation_id}`, {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify(assessment)
-            })
-              .then((response) => {
-                if (response.ok || response.status === 201) {
-                  return fetch(`/api/citations/add_assessment/${that.state.current_citation_id}`, {
-                    method: "PUT",
-                    headers: {
-                      'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(assessment)
-                  })
-                    .then((response) => {
-                      if (response.ok || response.status === 201) {
-                        that.handleQueueAlert('Assessment Save Success', 'success');
-                      }
-                      else {
-                        that.handleQueueAlert('Could not Save Assessment', 'error');
-                      }
-                    });
-                } else {
-                  that.handleQueueAlert('Could not Save Assessment', 'error');
-                }
-              });
-          } else {
-            //User declined to overwrite
-            window.alert('Keeping Previous Assessment.');
-            break;
-          }
+                        }
+                      });
+                  }
+                  else {
+                    that.handleQueueAlert('Could not Save Assessment', 'error');
+                  }
+                });
+            } else {
+              //User declined to overwrite
+              window.alert('Keeping Previous Assessment.');
+              break;
+            }
         } else {
           fetch(`/api/citations/add_assessment/${that.state.current_citation_id}`, {
             method: "PUT",
@@ -364,6 +366,7 @@ class Analyze extends PureComponent {
         }
       }
     }
+
     else {
       //Doesn't exist yet; good to go
       fetch(`/api/citations/add_assessment/${that.state.current_citation_id}`, {
@@ -465,7 +468,7 @@ class Analyze extends PureComponent {
         justify="flex-start"
         alignItems="flex-start"
       >
-        {this.state.messageInfo ? this.DisplayAlerts() : undefined}
+        {this.DisplayAlerts()}
         <Grid item xs={12} sm={4} md={2}>
           {/*<Paper variant="outlined">*/}
           <Tooltip title="Change Assignment">
