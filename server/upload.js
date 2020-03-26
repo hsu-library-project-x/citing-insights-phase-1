@@ -2,9 +2,10 @@ const IncomingForm = require("formidable").IncomingForm;
 const mongoose = require("mongoose");
 const fs = require("fs");
 const pdf = require('pdf-parse');
+const pdfreader = require('pdfreader');
 const shell = require("shelljs");
 
-let Chance = require("chance");
+//let Chance = require("chance");
 // let chance = new Chance();
 
 let paperModel = require("./models/paperModel.js");
@@ -23,12 +24,16 @@ function render_page(pageData) {
         //do not attempt to combine same line TextItem's. The default value is `false`.
         disableCombineTextItems: false
     };
-
     return pageData.getTextContent(render_options)
         .then(function(textContent) {
             let lastY, text = '';
             for (let item of textContent.items) {
-                if (lastY == item.transform[5] || !lastY){
+                // console.log('-------------------');
+                // console.log(item.transform[5]);
+                // console.log(textContent.items.indexOf(item));
+                // console.log(item);
+                // console.log('-------------------');
+                if (lastY === item.transform[5] || !lastY){
                     text += item.str;
                 }
                 else{
@@ -38,6 +43,7 @@ function render_page(pageData) {
             }
             return text;
         });
+
 }
 
 
@@ -62,11 +68,31 @@ module.exports = function upload(req, res) {
 
     form
         .on("file", (field, file) => {
+            function printRows() {
+                Object.keys(rows) // => array of y-positions (type: float)
+                    .sort((y1, y2) => parseFloat(y1) - parseFloat(y2)) // sort float positions
+                    .forEach(y => console.log((rows[y] || []).join("")));
+            }
             let textByLine = fs.readFileSync(file.path);
             let body="";
+            var rows = {};
+            new pdfreader.PdfReader().parseFileItems(file.path, function(
+                err,
+                i
+            ) {
+                if ( (!i) || (i.page)) {
+                    // end of file, or page
+                    printRows();
+                    rows = {}; // clear rows for next page
+                } else if (i.text) {
+                    // accumulate text items into rows object, per line
+                    (rows[i.y] = rows[i.y] || []).push(i.text);
+                }
+            });
 
             pdf(textByLine, options).then((data)=>{
                 body = JSON.stringify(data.text);
+                // console.log(body);
                 let raw_text = {
                     "body": body,
                     "pdf": textByLine,
