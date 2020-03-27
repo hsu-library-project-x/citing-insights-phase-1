@@ -1,8 +1,7 @@
 const IncomingForm = require("formidable").IncomingForm;
 const mongoose = require("mongoose");
 const fs = require("fs");
-const pdf = require('pdf-parse');
-const pdfreader = require('pdfreader');
+
 const shell = require("shelljs");
 
 //let Chance = require("chance");
@@ -13,47 +12,11 @@ let citationModel = require("./models/citationModel.js");
 
 //For use with CrossRef + SemanticScholar calls
 const controller = require("./controllers/webCallsController.js");
+const pdfController = require("./controllers/pdfTextController.js");
 
 let check = true;
 
-function render_page(pageData) {
-    //check documents https://mozilla.github.io/pdf.js/
-    let render_options = {
-        //replaces all occurrences of whitespace with standard spaces (0x20). The default value is `false`.
-        normalizeWhitespace: false,
-        //do not attempt to combine same line TextItem's. The default value is `false`.
-        disableCombineTextItems: false
-    };
-    return pageData.getTextContent(render_options)
-        .then(function(textContent) {
-            let lastY, text = '';
-            for (let item of textContent.items) {
-                // console.log('-------------------');
-                // console.log(item.transform[5]);
-                // console.log(textContent.items.indexOf(item));
-                // console.log(item);
-                // console.log('-------------------');
-                if (lastY === item.transform[5] || !lastY){
-                    text += item.str;
-                }
-                else{
-                    text += '\n' + item.str;
-                }
-                lastY = item.transform[5];
-            }
-            return text;
-        });
-
-}
-
-
-let options = {
-    pagerender: render_page
-};
-
-module.exports = function upload(req, res) {
-
-
+module.exports =  function upload(req, res) {
     let form = new IncomingForm();
 
     //Set the directory where uploads will be placed
@@ -67,32 +30,12 @@ module.exports = function upload(req, res) {
     form.type = "multipart";
 
     form
-        .on("file", (field, file) => {
-            function printRows() {
-                Object.keys(rows) // => array of y-positions (type: float)
-                    .sort((y1, y2) => parseFloat(y1) - parseFloat(y2)) // sort float positions
-                    .forEach(y => console.log((rows[y] || []).join("")));
-            }
+        .on("file", async (field, file) => {
             let textByLine = fs.readFileSync(file.path);
-            let body="";
-            var rows = {};
-            new pdfreader.PdfReader().parseFileItems(file.path, function(
-                err,
-                i
-            ) {
-                if ( (!i) || (i.page)) {
-                    // end of file, or page
-                    printRows();
-                    rows = {}; // clear rows for next page
-                } else if (i.text) {
-                    // accumulate text items into rows object, per line
-                    (rows[i.y] = rows[i.y] || []).push(i.text);
-                }
-            });
-
-            pdf(textByLine, options).then((data)=>{
-                body = JSON.stringify(data.text);
-                // console.log(body);
+            console.log(file.path);
+             let body = await pdfController.getData(file.path);
+              body = await JSON.stringify(body);
+             console.log(body);
                 let raw_text = {
                     "body": body,
                     "pdf": textByLine,
@@ -166,16 +109,9 @@ module.exports = function upload(req, res) {
                     })
                 }
 
-
                 shell.exec('rm ' + full_json_path);
                 shell.exec('rm ' + file.path);
             })
-            .catch((error)=>{
-                console.log(error);
-            });
-
-
-        })
         .on("end", () => {
             //we want to check a bool set in paper.save to see if we cool
             if (check) {
