@@ -7,7 +7,7 @@ import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
-import PdfControls from "./PdfControls";
+
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "./pdfComponent.css";
 
@@ -137,11 +137,9 @@ class PdfComponent extends PureComponent {
                 });
             }
         }
-
     }
 
-
-    Search(subject, objects) {
+    Search(subject) {
         let matches = [];
         let current = null;
 
@@ -150,19 +148,18 @@ class PdfComponent extends PureComponent {
         let regexp = new RegExp(newString, 'gi');
 
         if (newString !== "") {
-
-            for (let k = 1; k < Object.keys(objects).length; k++) {
-                for (let i = 0; i < objects[k].length; i++) {
-                    if (objects[k][i]['str'].match(regexp)) {
-                        //string, page, line
-                        matches.push([objects[k][i]['str'], k, i]);
+            for (let k = 0; k < this.props.rawText.length; k++) {
+                for (let i = 0; i < this.props.rawText[k].length; i++) {
+                    if (this.props.rawText[k][i][0].match(regexp)) {
+                        // string, page, line
+                        // console.log(this.props.rawText[k][i][0]);
+                        matches.push([this.props.rawText[k][i], k, i]);
                     }
                 }
             }
             if (matches.length >= 1) {
                 current = 1;
             }
-
         }
 
         this.setState({
@@ -170,6 +167,7 @@ class PdfComponent extends PureComponent {
             currentMatch: current,
         }, () => this.SearchScroll());
 
+        console.log(matches);
         return matches;
     };
 
@@ -286,6 +284,7 @@ class PdfComponent extends PureComponent {
 
 
     render() {
+
         return (
             <div className="document-wrapper">
                 {/*<Container maxWidth="md">*/}
@@ -338,7 +337,6 @@ class PdfComponent extends PureComponent {
                                     min: 1
                                 }
                             }}
-
                         />
                         <p> of {this.state.numPages} </p>
                         <Tooltip title="Zoom Out">
@@ -364,14 +362,7 @@ class PdfComponent extends PureComponent {
                 >
                         {this.GenerateGrid()}
                         {/*pdf controls is not shown with a css display:hidden eventually I need to make mode efficiant*/}
-
-                    <PdfControls
-                        PassUpText={this.PassUpText}
-                        pageNum={this.state.pageNumber}
-                        pdf={this.state.pdf}
-                    />
                 </Document>
-
             </div>
         );
     }

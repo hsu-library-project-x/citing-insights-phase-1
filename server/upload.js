@@ -32,9 +32,9 @@ module.exports =  function upload(req, res) {
     form
         .on("file", async (field, file) => {
               let textByLine = await fs.readFileSync(file.path);
-              let b = await pdfController.getData(textByLine);
+              let body = await pdfController.getData(textByLine);
                 let raw_text = {
-                    "body": b,
+                    "body": body,
                     "pdf": textByLine,
                     "title": file.name,
                     "name": null,
