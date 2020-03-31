@@ -31,13 +31,10 @@ module.exports =  function upload(req, res) {
 
     form
         .on("file", async (field, file) => {
-            let textByLine = fs.readFileSync(file.path);
-            console.log(file.path);
-             let body = await pdfController.getData(file.path);
-              body = await JSON.stringify(body);
-             console.log(body);
+              let textByLine = await fs.readFileSync(file.path);
+              let b = await pdfController.getData(textByLine);
                 let raw_text = {
-                    "body": body,
+                    "body": b,
                     "pdf": textByLine,
                     "title": file.name,
                     "name": null,
