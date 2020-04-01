@@ -15,7 +15,7 @@ pdfjs.GlobalWorkerOptions.workerSrc =
     `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 
-class PdfComponent extends PureComponent {  
+class PdfComponent extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -64,7 +64,7 @@ class PdfComponent extends PureComponent {
     PassUpText(rawText, num) {
         let that = this;
         that.setState(({
-            rawText:rawText,
+            rawText: rawText,
             pageNumber: num,
         }));
     };
@@ -129,12 +129,17 @@ class PdfComponent extends PureComponent {
         let that = this;
         let match = this.state.matches[this.state.currentMatch];
 
+        console.log('match');
+        console.log(match);
         if (match !== undefined) {
             if (match[1] === this.state.loadedPage) {
                 return;
             }
             else {
                 that.gridRef.current.scrollToItem({
+                    behaivor: 'smooth',
+                    inline: 'closest',
+                    align: 'center',
                     columnIndex: 1,
                     rowIndex: match[1] - 1,
                 });
@@ -145,17 +150,25 @@ class PdfComponent extends PureComponent {
 
 
     Search(subject, objects) {
+        //Subject is searched term, objects is the current page 
         let matches = [];
         let current = null;
 
+        //Remove anything thats not a word of chars or whitespace
         let newString = subject.replace(/[^\w\s]/, "");
-        newString = newString.replace(/\\/g, '');
+        newString = newString.replace(/\\/g, "");
         let regexp = new RegExp(newString, 'gi');
 
+        console.log(subject);
         if (newString !== "") {
 
             for (let k = 1; k < Object.keys(objects).length; k++) {
+                console.log(Object.keys(objects).length);
+
                 for (let i = 0; i < objects[k].length; i++) {
+                    //always 21 - the number of lines in first page
+                    console.log(objects[k].length);
+
                     if (objects[k][i]['str'].match(regexp)) {
                         //string, page, line
                         matches.push([objects[k][i]['str'], k, i]);
@@ -219,13 +232,15 @@ class PdfComponent extends PureComponent {
         event.preventDefault();
         let that = this;
         let page = event.target.value;
-
         that.gridRef.current.scrollToItem({
-            align: "center",
+            behavior: 'smooth',
+            inline: 'nearest',
+            align: "start",
             columnIndex: 1,
             rowIndex: page - 1,
         });
     }
+
     makeTextRenderer = searchText => textItem => this.highlightPattern((textItem.str).replace(/[^\w\s]/, ""), searchText);
 
     GenerateGrid = () => {
@@ -267,8 +282,6 @@ class PdfComponent extends PureComponent {
             </div>
         );
 
-        // cacheCount++;
-
         return (
             <FixedSizeGrid
                 style={{ justifyContent: 'center', alignContent: 'center' }}
@@ -289,7 +302,6 @@ class PdfComponent extends PureComponent {
 
 
     render() {
-        console.log('pageNum' + this.state.pageNumber);
         return (
             <div className="document-wrapper">
                 {/*<Container maxWidth="md">*/}
@@ -366,15 +378,17 @@ class PdfComponent extends PureComponent {
                     className="pdf-container"
                     error={"Loading may take a few seconds...."}
                 >
-                        {this.GenerateGrid()}
-                        {/*pdf controls is not shown with a css display:hidden eventually I need to make mode efficiant*/}
+                    {this.GenerateGrid()}
+                    {/*pdf controls is not shown with a css display:hidden eventually I need to make mode efficiant*/}
 
                     <PdfControls
                         PassUpText={this.PassUpText}
                         pageNum={this.state.pageNumber}
                         pdf={this.state.pdf}
                     />
+
                 </Document>
+
 
             </div>
         );
