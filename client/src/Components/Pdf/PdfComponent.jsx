@@ -1,7 +1,7 @@
 import React, { forwardRef, PureComponent } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { FixedSizeGrid } from "react-window";
-import { TextField, Toolbar, InputAdornment, IconButton, Tooltip, AppBar } from '@material-ui/core';
+import { TextField, Toolbar, InputAdornment, IconButton, Tooltip, AppBar, Button } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search'
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
@@ -26,7 +26,7 @@ class PdfComponent extends PureComponent {
             scale: 1.0,
             columnWidth: window.innerWidth / 1.5,
             rowHeight: 1.5 * window.innerHeight,
-            rawText: [{}],
+            rawText: [],
             matches: [],
             loadedPage: 1,
             currentMatch: null,
@@ -103,6 +103,7 @@ class PdfComponent extends PureComponent {
         let newPattern = pattern.replace(/[^\w\s]/, "");
         newPattern = newPattern.replace(/\\/g, '');
 
+        // let color = current ? 'orange' : 'yellow';
         let regexp = new RegExp(newPattern, 'gi');
 
         const splitText = text.split(regexp);
@@ -116,7 +117,7 @@ class PdfComponent extends PureComponent {
         return splitText.reduce((arr, element, index) => (matches[index] ? [
             ...arr,
             element,
-            <mark>
+            <mark style={{'backgroundColor': 'pink' }}>
                 {matches[index]}
             </mark>,
         ] : [...arr, element]), []);
@@ -124,8 +125,8 @@ class PdfComponent extends PureComponent {
 
     SearchScroll() {
         let that = this;
-        let match = this.state.matches[this.state.currentMatch];
-
+        let match = this.state.matches[this.state.currentMatch - 1];
+        console.log(match);
         if (match !== undefined) {
             if (match[1] === this.state.loadedPage) {
                 return;
@@ -133,7 +134,7 @@ class PdfComponent extends PureComponent {
             else {
                 that.gridRef.current.scrollToItem({
                     columnIndex: 1,
-                    rowIndex: match[1] - 1,
+                    rowIndex: match[1],
                 });
             }
         }
@@ -147,13 +148,13 @@ class PdfComponent extends PureComponent {
         newString = newString.replace(/\\/g, '');
         let regexp = new RegExp(newString, 'gi');
 
+
         if (newString !== "") {
             for (let k = 0; k < this.props.rawText.length; k++) {
                 for (let i = 0; i < this.props.rawText[k].length; i++) {
                     if (this.props.rawText[k][i][0].match(regexp)) {
                         // string, page, line
-                        // console.log(this.props.rawText[k][i][0]);
-                        matches.push([this.props.rawText[k][i], k, i]);
+                        matches.push([this.props.rawText[k][i][0], k, i]);
                     }
                 }
             }
@@ -177,19 +178,18 @@ class PdfComponent extends PureComponent {
         const value = target.value.replace(/[^\w\s]/, "");
         const name = target.name;
         this.setState({ [name]: value });
-        this.Search(value, this.state.rawText);
     }
 
     PreviousResult() {
         this.setState((prevState) => ({
             currentMatch: prevState.currentMatch - 1
-        }), this.SearchScroll());
+        }), () => this.SearchScroll());
     }
 
     NextResult() {
         this.setState((prevState) => ({
             currentMatch: prevState.currentMatch + 1
-        }), this.SearchScroll());
+        }), () =>this.SearchScroll());
     }
 
     ZoomIn() {
@@ -216,9 +216,8 @@ class PdfComponent extends PureComponent {
         let page = event.target.value;
 
         that.gridRef.current.scrollToItem({
-            align: "center",
             columnIndex: 1,
-            rowIndex: page - 1,
+            rowIndex: page -1 ,
         });
     }
     makeTextRenderer = searchText => textItem => this.highlightPattern((textItem.str).replace(/[^\w\s]/, ""), searchText);
@@ -300,9 +299,20 @@ class PdfComponent extends PureComponent {
                                         <SearchIcon />
                                     </InputAdornment>
                                 ),
+                                endAdornment:(
+                                    <Button size={'small'} variant='contained' color={'primary'} aria-label={'search'}
+                                            onClick={()=> this.Search(this.state.searchText)}>
+                                        Search
+                                    </Button>
+                                )
                             }}
+
                         />
-                        <p> {this.state.currentMatch ? this.state.currentMatch + " of " : null} {this.state.matches.length} matches</p>
+
+                        <p> {this.state.currentMatch ? this.state.currentMatch + " of " : null}
+                        {` ${this.state.matches.length} matches`}</p>
+
+
                         <Tooltip title="Previous">
                             <IconButton
                                 aria-label="previous-search-result"
