@@ -60,10 +60,10 @@ module.exports = {
   checkAuthor,
   checkTitle,
   getData: async (url, citation) => {
-    let data = await crossRef(url)
-    let metaData = await s2(data)
-    let finalCitation = await buildCitation(metaData, citation)
-    let saved = await saveCitation(finalCitation)
+    let data = await crossRef(url);
+    let metaData = await s2(data);
+    let finalCitation = await buildCitation(metaData, citation);
+    let saved = await saveCitation(finalCitation);
     return saved;
   }
-}
+};

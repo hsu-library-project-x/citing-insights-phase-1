@@ -11,16 +11,26 @@ import {
 import ClassIcon from "@material-ui/icons/Class";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AssignmentIcon from "@material-ui/icons/Assignment";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 class CreateList extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            list:[],
+        };
+
         this.nestItems = this.nestItems.bind(this);
         this.handleDeleteAssignment = this.handleDeleteAssignment.bind(this);
         this.handleDeleteCourse = this.handleDeleteCourse.bind(this);
         this.handleAlert = this.handleAlert.bind(this);
+        this.tick= this.tick.bind(this);
 
+    }
+
+    tick(oldProgress){
+        this.setState({progress: oldProgress + 1});
     }
 
     handleAlert(message, severity){
@@ -69,7 +79,7 @@ class CreateList extends Component {
     }
 
     nestItems(classes, assignments) {
-        return classes.map(d => {
+        let list = classes.map(d => {
             let notes = d.course_note ? d.course_note : "";
             return (
                 <List key={d._id} dense={true} style={{ padding: 0, margin: 0 }}>
@@ -134,6 +144,7 @@ class CreateList extends Component {
                 </List>
             );
         });
+        return list;
 
     }
 
@@ -144,7 +155,7 @@ class CreateList extends Component {
                     this.nestItems(this.props.classList, this.props.assignmentList)
                 }
             </List>
-        )
+        );
     }
 }
 
