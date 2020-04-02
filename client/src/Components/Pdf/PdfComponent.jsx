@@ -126,18 +126,12 @@ class PdfComponent extends PureComponent {
     SearchScroll() {
         let that = this;
         let match = this.state.matches[this.state.currentMatch - 1];
-        console.log(match);
-        console.log(this.state.loadedPage);
         if (match !== undefined) {
-            if (match[1] === this.state.loadedPage - 1) {
-                return;
-            } else {
                 that.gridRef.current.scrollToItem({
                     align: "start",
                     columnIndex: 1,
                     rowIndex: match[1]
-                })
-            }
+                });
         }
     }
 
