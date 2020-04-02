@@ -127,15 +127,16 @@ class PdfComponent extends PureComponent {
         let that = this;
         let match = this.state.matches[this.state.currentMatch - 1];
         console.log(match);
+        console.log(this.state.loadedPage);
         if (match !== undefined) {
-            if (match[1] === this.state.loadedPage) {
+            if (match[1] === this.state.loadedPage - 1) {
                 return;
-            }
-            else {
+            } else {
                 that.gridRef.current.scrollToItem({
+                    align: "start",
                     columnIndex: 1,
-                    rowIndex: match[1],
-                });
+                    rowIndex: match[1]
+                })
             }
         }
     }
@@ -216,6 +217,7 @@ class PdfComponent extends PureComponent {
         let page = event.target.value;
 
         that.gridRef.current.scrollToItem({
+            align: "start",
             columnIndex: 1,
             rowIndex: page -1 ,
         });
