@@ -15,7 +15,7 @@ pdfjs.GlobalWorkerOptions.workerSrc =
     `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 
-class PdfComponent extends PureComponent {  
+class PdfComponent extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -61,7 +61,7 @@ class PdfComponent extends PureComponent {
     PassUpText(rawText, num) {
         let that = this;
         that.setState(({
-            rawText:rawText,
+            rawText: rawText,
             pageNumber: num,
         }));
     };
@@ -117,7 +117,7 @@ class PdfComponent extends PureComponent {
         return splitText.reduce((arr, element, index) => (matches[index] ? [
             ...arr,
             element,
-            <mark style={{'backgroundColor': 'pink' }}>
+            <mark>
                 {matches[index]}
             </mark>,
         ] : [...arr, element]), []);
@@ -145,8 +145,9 @@ class PdfComponent extends PureComponent {
         let matches = [];
         let current = null;
 
+        //Remove anything thats not a word of chars or whitespace
         let newString = subject.replace(/[^\w\s]/, "");
-        newString = newString.replace(/\\/g, '');
+        newString = newString.replace(/\\/g, "");
         let regexp = new RegExp(newString, 'gi');
 
 
@@ -215,13 +216,15 @@ class PdfComponent extends PureComponent {
         event.preventDefault();
         let that = this;
         let page = event.target.value;
-
         that.gridRef.current.scrollToItem({
+            behavior: 'smooth',
+            inline: 'nearest',
             align: "start",
             columnIndex: 1,
             rowIndex: page -1 ,
         });
     }
+
     makeTextRenderer = searchText => textItem => this.highlightPattern((textItem.str).replace(/[^\w\s]/, ""), searchText);
 
     GenerateGrid = () => {
@@ -263,8 +266,6 @@ class PdfComponent extends PureComponent {
             </div>
         );
 
-        // cacheCount++;
-
         return (
             <FixedSizeGrid
                 style={{ justifyContent: 'center', alignContent: 'center' }}
@@ -285,7 +286,6 @@ class PdfComponent extends PureComponent {
 
 
     render() {
-
         return (
             <div className="document-wrapper">
                 {/*<Container maxWidth="md">*/}
@@ -375,6 +375,8 @@ class PdfComponent extends PureComponent {
                         {this.GenerateGrid()}
                         {/*pdf controls is not shown with a css display:hidden eventually I need to make mode efficiant*/}
                 </Document>
+
+
             </div>
         );
     }
