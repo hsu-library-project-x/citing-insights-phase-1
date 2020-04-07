@@ -30,6 +30,8 @@ class PdfComponent extends PureComponent {
             matches: [],
             loadedPage: 1,
             currentMatch: null,
+            checked:false
+
         };
 
         this.ZoomIn = this.ZoomIn.bind(this);
@@ -45,7 +47,11 @@ class PdfComponent extends PureComponent {
 
         this.GUTTER_SIZE = 5;
         this.gridRef = React.createRef();
+        this.markRef = React.createRef();
     }
+
+
+
 
     removeTextLayerOffset() {
         const textLayers = document.querySelectorAll(".react-pdf__Page__textContent");
@@ -100,11 +106,10 @@ class PdfComponent extends PureComponent {
     };
 
     highlightPattern = (text, pattern) => {
-        let newPattern = pattern.replace(/[^\w\s]/, "");
-        newPattern = newPattern.replace(/\\/g, '');
+        let newString = pattern.replace(/[^\w\s]/, "");
+        newString = newString.replace(/\\/g, "");
 
-        // let color = current ? 'orange' : 'yellow';
-        let regexp = new RegExp(newPattern, 'gi');
+        let regexp = new RegExp(newString, 'gi');
 
         const splitText = text.split(regexp);
 
@@ -114,10 +119,14 @@ class PdfComponent extends PureComponent {
 
         const matches = text.match(regexp);
 
-        return splitText.reduce((arr, element, index) => (matches[index] ? [
+        return splitText.reduce((arr, element, index) =>
+        (
+            matches[index] ? [
             ...arr,
             element,
-            <mark>
+            <mark ref={this.markRef} key={index}
+                  style={{backgroundColor:
+                    (index === this.state.currentMatch -1 )  ? 'orange':'yellow'}}>
                 {matches[index]}
             </mark>,
         ] : [...arr, element]), []);
@@ -159,12 +168,12 @@ class PdfComponent extends PureComponent {
             }
         }
 
+
         this.setState({
             matches: matches,
             currentMatch: current,
         }, () => this.SearchScroll());
 
-        console.log(matches);
         return matches;
     };
 
@@ -173,6 +182,7 @@ class PdfComponent extends PureComponent {
         const target = event.target;
         const value = target.value.replace(/[^\w\s]/, "");
         const name = target.name;
+
         this.setState({ [name]: value });
     }
 
@@ -219,7 +229,9 @@ class PdfComponent extends PureComponent {
         });
     }
 
-    makeTextRenderer = searchText => textItem => this.highlightPattern((textItem.str).replace(/[^\w\s]/, ""), searchText);
+    makeTextRenderer = (searchText) => (textItem) => this.highlightPattern((textItem.str).replace(/[^\w\s]/, ""), searchText);
+
+
 
     GenerateGrid = () => {
 
@@ -280,6 +292,7 @@ class PdfComponent extends PureComponent {
 
 
     render() {
+
         return (
             <div className="document-wrapper">
                 {/*<Container maxWidth="md">*/}
