@@ -19,6 +19,10 @@ span::selection {
      justify-content: center;
 }
 
+.GridItem{
+    max-height: 800px;
+}
+
 .outline-list {
     display: block;
     overflow-y: scroll;
@@ -41,4 +45,4 @@ span::selection {
 .document-wrapper {
     max-height: 800px;
     overflow-y: auto;
-}
+}   
