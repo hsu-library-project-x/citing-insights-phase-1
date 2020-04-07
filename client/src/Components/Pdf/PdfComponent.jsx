@@ -48,6 +48,7 @@ class PdfComponent extends PureComponent {
         this.GUTTER_SIZE = 5;
         this.gridRef = React.createRef();
         this.markRef = React.createRef();
+        this.scrollableContainerRef = React.createRef();
     }
 
 
@@ -132,16 +133,35 @@ class PdfComponent extends PureComponent {
         ] : [...arr, element]), []);
     };
 
+    calculateAlignment(){
+        let offset = this.state.matches[this.state.currentMatch - 1][2];
+        let alignment = '';
+        if(offset < 6){
+            alignment = 'start';
+        }
+        else if(offset < 10){
+            alignment = 'smart';
+        }
+        else if(offset >= 10){
+            alignment = 'end';
+        }
+        return alignment;
+    }
+
     SearchScroll() {
+        console.log(this.gridRef);
         let that = this;
         let match = this.state.matches[this.state.currentMatch - 1];
         if (match !== undefined) {
                 that.gridRef.current.scrollToItem({
-                    align: "start",
+                    behavior: 'smooth',
+                    inline: 'smart',
+                    align: this.calculateAlignment(),
                     columnIndex: 1,
                     rowIndex: match[1]
                 });
-        }
+            }
+
     }
 
     Search(subject) {
@@ -223,7 +243,7 @@ class PdfComponent extends PureComponent {
         that.gridRef.current.scrollToItem({
             behavior: 'smooth',
             inline: 'nearest',
-            align: "start",
+            align: "smart",
             columnIndex: 1,
             rowIndex: page -1 ,
         });
@@ -237,6 +257,7 @@ class PdfComponent extends PureComponent {
 
         const innerElementType = forwardRef(({ style, ...rest }, ref) => (
             <div
+                id="contDiv"
                 ref={ref}
                 style={{
                     ...style,
@@ -250,6 +271,8 @@ class PdfComponent extends PureComponent {
 
         const Cell = ({ columnIndex, data, rowIndex, style }) => (
             <div
+                ref={ el => this.container = el}
+                id="containerDiv"
                 className={"GridItem"}
                 style={{
                     ...style,
@@ -274,16 +297,19 @@ class PdfComponent extends PureComponent {
 
         return (
             <FixedSizeGrid
+                id="Grid"
                 style={{ justifyContent: 'center', alignContent: 'center' }}
                 className="Grid"
                 columnCount={1}
                 columnWidth={this.state.columnWidth + this.GUTTER_SIZE}
                 height={this.windowHeight}
-                innerElementType={this.innerElementType}
+                innerElementType={innerElementType}
                 rowCount={this.state.numPages}
                 rowHeight={this.state.rowHeight + this.GUTTER_SIZE}
                 width={this.windowWidth}
                 ref={this.gridRef}
+                outerRef={this.scrollableContainerRef}
+                onScroll={this.onScroll}
             >
                 {Cell}
             </FixedSizeGrid>
