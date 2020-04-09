@@ -149,7 +149,7 @@ class PdfComponent extends PureComponent {
     }
 
     SearchScroll() {
-        console.log(this.gridRef);
+
         let that = this;
         let match = this.state.matches[this.state.currentMatch - 1];
         if (match !== undefined) {
@@ -249,7 +249,7 @@ class PdfComponent extends PureComponent {
         });
     }
 
-    makeTextRenderer = (searchText) => (textItem) => this.highlightPattern((textItem.str).replace(/[^\w\s]/, ""), searchText);
+   // makeTextRenderer = (searchText) => (textItem) =>
 
 
 
@@ -284,7 +284,12 @@ class PdfComponent extends PureComponent {
                 }}
             >
                 <Page
-                    customTextRenderer={this.makeTextRenderer(this.state.searchText)}
+                    customTextRenderer={({ str, itemIndex }) =>{
+                        if (this.state.searchText !== null){
+                            this.highlightPattern(str.replace(/[^\w\s]/, ""), this.state.searchText, itemIndex);
+                        }
+
+                    }}
                     onLoadSuccess={() => this.removeTextLayerOffset()}
                     height={this.state.rowHeight}
                     key={`page_${rowIndex + 1}`}
