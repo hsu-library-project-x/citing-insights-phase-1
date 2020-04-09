@@ -106,32 +106,7 @@ class PdfComponent extends PureComponent {
         }
     };
 
-    highlightPattern = (text, pattern) => {
-        let newString = pattern.replace(/[^\w\s]/, "");
-        newString = newString.replace(/\\/g, "");
 
-        let regexp = new RegExp(newString, 'gi');
-
-        const splitText = text.split(regexp);
-
-        if (splitText.length <= 1) {
-            return text;
-        }
-
-        const matches = text.match(regexp);
-
-        return splitText.reduce((arr, element, index) =>
-        (
-            matches[index] ? [
-            ...arr,
-            element,
-            <mark ref={this.markRef} key={index}
-                  style={{backgroundColor:
-                    (index === this.state.currentMatch -1 )  ? 'orange':'yellow'}}>
-                {matches[index]}
-            </mark>,
-        ] : [...arr, element]), []);
-    };
 
     calculateAlignment(){
         let offset = this.state.matches[this.state.currentMatch - 1][2];
@@ -249,10 +224,6 @@ class PdfComponent extends PureComponent {
         });
     }
 
-   // makeTextRenderer = (searchText) => (textItem) =>
-
-
-
     GenerateGrid = () => {
 
         const innerElementType = forwardRef(({ style, ...rest }, ref) => (
@@ -285,11 +256,53 @@ class PdfComponent extends PureComponent {
             >
                 <Page
                     customTextRenderer={({ str, itemIndex }) =>{
-                        if (this.state.searchText !== null){
-                            this.highlightPattern(str.replace(/[^\w\s]/, ""), this.state.searchText, itemIndex);
-                        }
+                            let newString = this.state.searchText.replace(/[^\w\s]/, "");
+                            newString = newString.replace(/\\/g, "");
 
-                    }}
+                            let regexp = new RegExp(newString, 'gi');
+
+                            const splitText = str.split(regexp);
+
+                            if (splitText.length <= 1) {
+                                return str;
+                            }
+
+                            const matches = str.match(regexp);
+
+
+                            let curMatch = this.state.matches[this.state.currentMatch  -1];
+                            let curLine, curPage;
+
+
+                            if(matches.length > 1){
+                                //do something
+                            }
+
+
+                            if (curMatch) {
+                                 curLine = curMatch[2];
+                                 curPage = curMatch[1];
+
+                            }
+
+                            return splitText.reduce((arr, element, index) =>
+                                (
+                                    matches[index] ? [
+                                        ...arr,
+                                        element,
+                                        <mark ref={this.markRef} key={index}
+                                              style={{backgroundColor:
+                                                     (itemIndex === curLine) && (curPage === rowIndex)
+                                                          ? 'orange':'yellow'}}>
+
+                                            {console.log(`itemIndex: ${itemIndex} curLine: ${curLine}`)}
+                                            {console.log(`rowIndex: ${rowIndex} curPage: ${curPage}`)}
+
+                                            {matches[index]}
+                                        </mark>,
+                                    ] : [...arr, element]), []);
+                        }
+                    }
                     onLoadSuccess={() => this.removeTextLayerOffset()}
                     height={this.state.rowHeight}
                     key={`page_${rowIndex + 1}`}
