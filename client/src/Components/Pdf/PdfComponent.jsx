@@ -143,7 +143,7 @@ class PdfComponent extends PureComponent {
         let matches = [];
         let current = null;
 
-        //Remove anything thats not a word of chars or whitespace
+        //Remove anything that is not a word of chars or whitespace
         let newString = subject.replace(/[^\w\s]/, "");
         newString = newString.replace(/\\/g, "");
         let regexp = new RegExp(newString, 'gi');
@@ -224,6 +224,10 @@ class PdfComponent extends PureComponent {
         });
     }
 
+    TestFunction(matches){
+        console.log('Here');
+
+    }
     GenerateGrid = () => {
 
         const innerElementType = forwardRef(({ style, ...rest }, ref) => (
@@ -272,10 +276,10 @@ class PdfComponent extends PureComponent {
 
                             let curMatch = this.state.matches[this.state.currentMatch  -1];
                             let curLine, curPage;
+                            let test = 0;
 
-
-                            if(matches.length > 1){
-                                //do something
+                            if(matches.length > 2){
+                               this.TestFunction(matches);
                             }
 
 
@@ -292,11 +296,10 @@ class PdfComponent extends PureComponent {
                                         element,
                                         <mark ref={this.markRef} key={index}
                                               style={{backgroundColor:
-                                                     (itemIndex === curLine) && (curPage === rowIndex)
+                                                      (index === test) &&  (itemIndex === curLine) && (curPage === rowIndex)
                                                           ? 'orange':'yellow'}}>
 
-                                            {console.log(`itemIndex: ${itemIndex} curLine: ${curLine}`)}
-                                            {console.log(`rowIndex: ${rowIndex} curPage: ${curPage}`)}
+
 
                                             {matches[index]}
                                         </mark>,
