@@ -142,19 +142,23 @@ class PdfComponent extends PureComponent {
     Search(subject) {
         let matches = [];
         let current = null;
-
-        //Remove anything that is not a word of chars or whitespace
+        //Remove anything thats not a word of chars or whitespace
         let newString = subject.replace(/[^\w\s]/, "");
         newString = newString.replace(/\\/g, "");
         let regexp = new RegExp(newString, 'gi');
-
-
         if (newString !== "") {
+            //for every page
             for (let k = 0; k < this.props.rawText.length; k++) {
+                //for every line
                 for (let i = 0; i < this.props.rawText[k].length; i++) {
+                    //if the string(line) has a match, push that string.
                     if (this.props.rawText[k][i][0].match(regexp)) {
-                        // string, page, line
-                        matches.push([this.props.rawText[k][i][0], k, i]);
+                        //find the number of times regex appears in string
+                        let numOccurances = (this.props.rawText[k][i][0].match(regexp) || []).length;
+                        for(let j=0; j < numOccurances; j++){
+                            // string, page, line, lineIndex, number of occurances
+                            matches.push([this.props.rawText[k][i][0], k, i, j, numOccurances]);
+                        }
                     }
                 }
             }
@@ -275,8 +279,8 @@ class PdfComponent extends PureComponent {
 
 
                             let curMatch = this.state.matches[this.state.currentMatch  -1];
-                            let curLine, curPage;
-                            let test = 0;
+                            let curLine, curPage, curLineIndex;
+
 
                             if(matches.length > 2){
                                this.TestFunction(matches);
@@ -286,6 +290,7 @@ class PdfComponent extends PureComponent {
                             if (curMatch) {
                                  curLine = curMatch[2];
                                  curPage = curMatch[1];
+                                 curLineIndex = curMatch[3];
 
                             }
 
@@ -296,7 +301,7 @@ class PdfComponent extends PureComponent {
                                         element,
                                         <mark ref={this.markRef} key={index}
                                               style={{backgroundColor:
-                                                      (index === test) &&  (itemIndex === curLine) && (curPage === rowIndex)
+                                                      (index === curLineIndex) &&  (itemIndex === curLine) && (curPage === rowIndex)
                                                           ? 'orange':'yellow'}}>
 
 
