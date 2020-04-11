@@ -228,10 +228,7 @@ class PdfComponent extends PureComponent {
         });
     }
 
-    TestFunction(matches){
-        console.log('Here');
 
-    }
     GenerateGrid = () => {
 
         const innerElementType = forwardRef(({ style, ...rest }, ref) => (
@@ -279,20 +276,16 @@ class PdfComponent extends PureComponent {
 
 
                             let curMatch = this.state.matches[this.state.currentMatch  -1];
-                            let curLine, curPage, curLineIndex;
-
-
-                            if(matches.length > 2){
-                               this.TestFunction(matches);
-                            }
-
+                            let curPage, curLineIndex;
+                            
 
                             if (curMatch) {
-                                 curLine = curMatch[2];
                                  curPage = curMatch[1];
                                  curLineIndex = curMatch[3];
 
                             }
+
+                        {console.log(`str: ${str}: index: ${itemIndex}`)}
 
                             return splitText.reduce((arr, element, index) =>
                                 (
@@ -301,12 +294,9 @@ class PdfComponent extends PureComponent {
                                         element,
                                         <mark ref={this.markRef} key={index}
                                               style={{backgroundColor:
-                                                      (index === curLineIndex) &&  (itemIndex === curLine) && (curPage === rowIndex)
+                                                      (index === curLineIndex) &&  (curPage === rowIndex)
                                                           ? 'orange':'yellow'}}>
-
-
-
-                                            {matches[index]}
+                                                                                        {matches[index]}
                                         </mark>,
                                     ] : [...arr, element]), []);
                         }
