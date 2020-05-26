@@ -9,6 +9,7 @@ import RubricEditor from "../Rubric/RubricEditor";
 import AnalyzeSubMenu from "../Analyze/AnalyzeSubMenu.jsx";
 import Overview from '../Overview/Overview.jsx';
 import OverviewTable from "../Overview/OverviewTable";
+import ManageGroups from "../Groups/ManageGroups";
 
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
@@ -36,16 +37,19 @@ class Tasks extends PureComponent {
 			message:null,
 		};
 
-		this.steps = ['Manage Courses', 'Upload Papers', 'Edit Rubrics', 'Analyze', 'Overview'];
-		this.stepContent = ['Step 1: Add / Remove / Edit Classes and Assignments',
+		this.steps = ['Manage Courses', 'Upload Papers', 'Edit Rubrics', 'Analyze', 'Overview', "Manage Groups"];
+		this.stepContent = [
+			'Step 1: Add / Remove / Edit Classes and Assignments',
 			'Step 2: Upload Student Papers',
 			'Step 3: Customize Rubrics or Use pre-loaded Rubrics. Either way add a rubric for Analyze Mode',
 			"Step 4: Assess Student's citations using rubric and our Discovery tools",
-			"Step 5: See how you rated a student's citations"];
+			"Step 5: See how you rated a student's citations",
+			'Step 6: Manage Groups',
+			];
 
 		this.pathnames = {
 			'/tasks/api/courses': 0, '/tasks/api/upload': 1, '/tasks/rubric': 2, '/tasks/rubriceditor': 2,
-			'/tasks/analyzemenu': 3, '/tasks/analyze': 3, '/tasks/overview': 4
+			'/tasks/analyzemenu': 3, '/tasks/analyze': 3, '/tasks/overview': 4, '/tasks/managegroups': 5
 		};
 
 		this.renderPage();
@@ -169,6 +173,9 @@ class Tasks extends PureComponent {
 					return;
 				}
 			case 5:
+				this.props.history.push('/tasks/managegroups');
+				return;
+			case 6:
 				return <p align={"center"}> Click on the Reset Button to reset your progress or click on any step to go back </p>;
 			default:
 				return 'Unknown step';
@@ -255,7 +262,7 @@ class Tasks extends PureComponent {
 														<IconButton
 															aria-label="next-button"
 															size="small"
-															disabled={this.state.ActiveStep >= 4}
+															disabled={this.state.ActiveStep >= this.totalSteps() -1}
 															onClick={this.handleNext}
 														>
 															<ArrowForwardIosIcon />
@@ -341,6 +348,11 @@ class Tasks extends PureComponent {
 									user={this.props.user}
 									citations={this.state.citations}
 									ChangeOverview={this.ChangeOverview}
+									{...props} />}
+							/>
+							<Route path="/tasks/managegroups" render={(props) =>
+								<ManageGroups
+									user={this.props.user}
 									{...props} />}
 							/>
 						</Switch>
