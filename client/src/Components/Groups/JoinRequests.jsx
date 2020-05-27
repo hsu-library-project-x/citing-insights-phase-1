@@ -12,27 +12,26 @@ import {
     IconButton,
     ListItemSecondaryAction, ListItemAvatar, Avatar, ListItemText
 } from "@material-ui/core";
-import {withRouter} from "react-router-dom";
-import EditIcon from "@material-ui/icons/Edit";
+
+
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import DeleteIcon from "@material-ui/icons/Delete";
+import ClearIcon from '@material-ui/icons/Clear';
+import AddAlertIcon from "@material-ui/icons/AddAlert";
+import CheckIcon from '@material-ui/icons/Check';
 
-;
 
-
-class EditGroup extends Component {
+class JoinRequests extends Component {
     constructor(props) {
         super(props);
         this.state = {
             open: false,
-            GroupName: '',
-            GroupNode: '',
+            pending: [],
             Members: [],
         };
 
         this.handleOpen = this.handleOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
-        this.handleInputChange = this.handleInputChange.bind(this);
+
     }
 
     handleOpen = () => {
@@ -43,29 +42,20 @@ class EditGroup extends Component {
         this.setState({open: false});
     };
 
-    //call when input changes to update the state
-    handleInputChange(event) {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
-        this.setState({
-            [name]: value
-        });
-    }
 
     render(){
         return(
             <span>
-                <Tooltip title="Edit Group" aria-label="edit group">
-                    <IconButton edge="end"
-                                aria-label="edit"
-                                onClick={this.handleOpen}
-                    >
-                        <EditIcon />
-                    </IconButton>
-                </Tooltip>
+                 <Tooltip title="Join Requests" aria-label="requests to join group">
+                        <IconButton edge="end"
+                                    aria-label="notification"
+                                    onClick={this.handleOpen}
+                        >
+                            <AddAlertIcon />
+                        </IconButton>
+                 </Tooltip>
                 <Modal
-                    aria-labelledby="edit-group-modal"
+                    aria-labelledby="join-group-modal"
                     open={this.state.open}
                     onClose={this.handleClose}
                     closeAfterTransition = {true}
@@ -73,25 +63,9 @@ class EditGroup extends Component {
                 >
                     <Paper>
                         <Typography style={{paddingTop: "1em"}} align={"center"} variant={"h4"}
-                                    component={"h2"} gutterBottom={true}> Edit Group   </Typography>
+                                    component={"h2"} gutterBottom={true}> Join Requests   </Typography>
                         <form className={'modal_form'} >
-                            <FormControl>
-                                <TextField
-                                    label={'Group Name'}
-                                    onChange={this.handleInputChange}
-                                    name="GroupName"
-                                    value={"Current Groupname"} //change eventually
-                                    required
-                                    style={{marginBottom: "1em"}} />
-                                <br />
-                                <TextField
-                                    onChange={this.handleInputChange}
-                                    name="GroupNotes"
-                                    label={"Current Notes"}
-                                    multiline
-                                    rowsMax="4"
-                                    style={{marginBottom: "1em"}} />
-                                <br />
+
                                 <List>
                                     <ListItem>
                                           <ListItemAvatar>
@@ -104,12 +78,20 @@ class EditGroup extends Component {
                                             // secondary={'group 1 notes'}
                                         />
                                           <ListItemSecondaryAction>
-                                               <Tooltip title="Remove Member" aria-label="remove member">
+                                               <Tooltip title="Add Member" aria-label="add member">
                                                      <IconButton edge="end"
-                                                        aria-label="remove"
-                                                        // onClick={e => this.handleDeleteGroup(e)}
-                                                    >
-                                                         <DeleteIcon />
+                                                                 aria-label="add"
+                                                         // onClick={e => this.handleDeleteGroup(e)}
+                                                     >
+                                                         <CheckIcon />
+                                                    </IconButton>
+                                                 </Tooltip>
+                                               <Tooltip title="Reject Member" aria-label="reject member">
+                                                     <IconButton edge="end"
+                                                                 aria-label="reject"
+                                                         // onClick={e => this.handleDeleteGroup(e)}
+                                                     >
+                                                         <ClearIcon />
                                                     </IconButton>
                                                  </Tooltip>
                                           </ListItemSecondaryAction>
@@ -125,25 +107,27 @@ class EditGroup extends Component {
                                                // secondary={'group 1 notes'}
                                            />
                                           <ListItemSecondaryAction>
+                                                  <Tooltip title="Add Member" aria-label="add member">
+                                                     <IconButton edge="end"
+                                                                 aria-label="add"
+                                                         // onClick={e => this.handleDeleteGroup(e)}
+                                                     >
+                                                         <CheckIcon />
+                                                    </IconButton>
+                                                 </Tooltip>
                                                     <Tooltip title="Remove Member" aria-label="remove member">
                                                      <IconButton edge="end"
                                                                  aria-label="remove"
                                                          // onClick={e => this.handleDeleteGroup(e)}
                                                      >
-                                                         <DeleteIcon />
+                                                         <ClearIcon />
                                                     </IconButton>
                                                  </Tooltip>
                                           </ListItemSecondaryAction>
                                         </ListItem>
                                 </List>
-                                <TextField
-                                    label="Add Member (by Emails)"
-                                    multiline
-                                    rows={4}
-                                    variant="outlined"
-                                />
-                                <br />
-                                <Button  variant="contained" type="submit" color="primary"> Submit </Button>
+                            <FormControl>
+                                <Button  variant="contained" type="submit" color="primary" onClick={this.handleClose}> Ok </Button>
                             </FormControl>
                         </form>
                     </Paper>
@@ -152,4 +136,4 @@ class EditGroup extends Component {
         );
     }
 }
-export default (EditGroup);
+export default (JoinRequests);
