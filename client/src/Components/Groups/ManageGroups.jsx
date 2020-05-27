@@ -49,7 +49,8 @@ class ManageGroups extends Component {
                         alignItems="flex-end"
                     >
                         <Grid item >
-                            <CreateGroup />
+                            <CreateGroup 
+                              user={this.props.user} />
                         </Grid>
                         <Grid item>
                             <RequestGroup />
