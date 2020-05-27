@@ -1,5 +1,16 @@
 import React, {Component} from "react";
-import {TextField, Modal, Paper, Button, Fab,  Typography} from "@material-ui/core";
+import {
+    TextField,
+    Modal,
+    Paper,
+    Button,
+    Fab,
+    Typography,
+    InputLabel,
+    Select,
+    MenuItem,
+    FormControl
+} from "@material-ui/core";
 import ClassIcon from '@material-ui/icons/Class';
 
 class CreateClass extends Component {
@@ -9,6 +20,7 @@ class CreateClass extends Component {
             open: false,
             ClassName: '',
             ClassNote: '',
+            GroupName: '',
         };
         this.handleOpen = this.handleOpen.bind(this);
         this.handleClose= this.handleClose.bind(this);
@@ -71,6 +83,7 @@ class CreateClass extends Component {
     }
 
     render(){
+        let groups = <MenuItem> Test </MenuItem>;
         return(
                 <div>
                     <Fab type="button"
@@ -94,8 +107,7 @@ class CreateClass extends Component {
                         <Paper>
                             <Typography style={{paddingTop: "1em"}} align={"center"} variant={"h4"} component={"h2"} gutterBottom={true}> Create Class </Typography>
                             <form className={'modal_form'} onSubmit={this.handleSubmitClass}>
-                                <fieldset className={'modal_fieldset'}>
-                                    <legend> Class Information </legend>
+                                <FormControl >
                                     <TextField
                                         label={'Class Name'}
                                         onChange={this.handleInputChange}
@@ -103,7 +115,6 @@ class CreateClass extends Component {
                                         // variant="filled"
                                         required
                                         style={{marginBottom: "1em"}}/>
-                                        <br />
                                     <TextField
                                         label={'Notes (optional)'}
                                         onChange={this.handleInputChange}
@@ -111,8 +122,22 @@ class CreateClass extends Component {
                                         rowsMax="4"
                                         name="ClassNote"
                                         style={{marginBottom: "1em"}} />
-                                </fieldset>
+
+                                        <FormControl>
+                                        <InputLabel id="groupSelect-label-coursepg">Select a Group</InputLabel>
+                                        <Select
+                                            labelId={"groupSelect-label-coursepg"}
+                                            name="GroupName"
+                                            onChange={this.handleInputChange}
+                                            value={this.state.GroupName}
+                                            style={{minWidth: 150, marginBottom: "1em"}}
+                                        >
+                                            <MenuItem value={""} disabled> Select a Group</MenuItem>
+                                            {groups}
+                                        </Select>
+                                        </FormControl>
                                 <Button  variant="contained" type="submit" color="primary"> Submit </Button>
+                                </FormControl>
                             </form>
                         </Paper>
                     </Modal>

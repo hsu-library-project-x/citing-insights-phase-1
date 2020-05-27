@@ -87,6 +87,7 @@ class CreateAssignment extends Component {
             );
 
         });
+        let groups = <MenuItem> Test </MenuItem>;
 
         return(
            <div>
@@ -111,7 +112,8 @@ class CreateAssignment extends Component {
                     <Paper>
                         <Typography style={{paddingTop: "1em"}} align={"center"} variant={"h4"} component={"h2"} gutterBottom={true}> Create Assignment   </Typography>
                         <form className={'modal_form'} onSubmit={this.handleSubmitAssign}>
-                            <FormControl style={{minWidth:180}}>
+                            <FormControl >
+                                <FormControl >
                                 <InputLabel id="classAssign-label">Select a Class</InputLabel>
                                     <Select
                                         required
@@ -120,20 +122,18 @@ class CreateAssignment extends Component {
                                         name="ClassId"
                                         onChange={this.handleInputChange}
                                         value={this.state.ClassId}
+                                        style={{marginBottom: "1em"}}
                                     >
                                         <MenuItem value={""} disabled> Select a Class</MenuItem>
                                         {classes}
                                     </Select>
                             </FormControl>
-                            <fieldset className={'modal_fieldset'}>
-                                <legend> Assignment Information </legend>
                                     <TextField
                                         label={'Assignment Name'}
                                         onChange={this.handleInputChange}
                                         name="AssignName"
                                         required
                                         style={{marginBottom: "1em"}} />
-                                        <br />
                                     <TextField
                                         onChange={this.handleInputChange}
                                         name="AssignNote"
@@ -141,8 +141,21 @@ class CreateAssignment extends Component {
                                         multiline
                                         rowsMax="4"
                                         style={{marginBottom: "1em"}} />
-                            </fieldset>
+                                     <FormControl>
+                                    <InputLabel id="groupSelect-label-assign">Select a Group</InputLabel>
+                                    <Select
+                                        labelId={"groupSelect-label-assign"}
+                                        name="GroupName"
+                                        onChange={this.handleInputChange}
+                                        value={this.state.GroupName}
+                                        style={{minWidth: 150, marginBottom: "1em"}}
+                                    >
+                                        <MenuItem value={""} disabled> Select a Group</MenuItem>
+                                        {groups}
+                                    </Select>
+                                </FormControl>
                             <Button  variant="contained" type="submit" color="primary"> Submit </Button>
+                            </FormControl>
                         </form>
                     </Paper>
                 </Modal>

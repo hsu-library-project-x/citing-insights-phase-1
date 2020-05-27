@@ -27,6 +27,7 @@ class EditGroup extends Component {
             open: false,
             GroupName: '',
             GroupNode: '',
+            owner: "some human",
             Members: [],
         };
 
@@ -84,6 +85,13 @@ class EditGroup extends Component {
                                     required
                                     style={{marginBottom: "1em"}} />
                                 <br />
+                                 <TextField
+                                     onChange={this.handleInputChange}
+                                     name="owner"
+                                     value={this.state.owner}
+                                     label={"Current Owner"}
+                                     style={{marginBottom: "1em"}} />
+                                 <br />
                                 <TextField
                                     onChange={this.handleInputChange}
                                     name="GroupNotes"
@@ -92,6 +100,7 @@ class EditGroup extends Component {
                                     rowsMax="4"
                                     style={{marginBottom: "1em"}} />
                                 <br />
+
                                 <List>
                                     <ListItem>
                                           <ListItemAvatar>

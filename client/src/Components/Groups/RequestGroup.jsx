@@ -96,7 +96,6 @@ class RequestGroup extends Component {
                                 multiline
                                 rowsMax="4"
                                 style={{marginBottom: "1em"}} />
-
                             <Button  variant="contained" type="submit" color="primary"> Submit </Button>
                             </FormControl>
                         </form>
