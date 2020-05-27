@@ -23,7 +23,32 @@ import RequestGroup from "./RequestGroup";
 class ManageGroups extends Component {
     constructor(props) {
         super(props);
+
+        this.handleDeleteGroup = this.handleDeleteGroup.bind(this);
     }
+
+    handleDeleteGroup(e, id) {
+        if (window.confirm("Are you sure you wish to delete this group?")) {
+            if (window.confirm("WARNING!! If you delete this group, this group will stop existing for you and other members")) {
+                // fetch('api/courses/' + id, {
+                //     method: 'Delete',
+                //     headers: {
+                //         'Accept': 'application/json',
+                //         'Content-Type': 'application/json'
+                //     },
+                // }).then((response) => {
+                //         if (response.status === 204) {
+                //             this.handleAlert('Course Deleted', 'success');
+                //         }
+                //         else {
+                //             this.handleAlert('Could not Delete Course', 'error');
+                //         }
+                //     }
+                // );
+            }
+        }
+    }
+
     render() {
         return(
             <Container maxWidth={"md"}>
@@ -94,7 +119,7 @@ class ManageGroups extends Component {
                                 <Tooltip title="Delete Group" aria-label="delete group">
                                     <IconButton edge="end"
                                                 aria-label="delete"
-                                                // onClick={e => this.handleDeleteAssignment(e, a._id)}
+                                                onClick={e => this.handleDeleteGroup(e)}
                                     >
                                         <DeleteIcon />
                                     </IconButton>
@@ -122,14 +147,6 @@ class ManageGroups extends Component {
                                 secondary={'group 2 notes'}
                             />
                             <ListItemSecondaryAction>
-                                {/*<Tooltip title="Add to Group" aria-label="add to group">*/}
-                                {/*    <IconButton edge="end"*/}
-                                {/*                aria-label="delete"*/}
-                                {/*        // onClick={e => this.handleDeleteAssignment(e, a._id)}*/}
-                                {/*    >*/}
-                                {/*        <PersonAddIcon />*/}
-                                {/*    </IconButton>*/}
-                                {/*</Tooltip>*/}
                                 <Tooltip title="Edit Group" aria-label="edit group">
                                     <IconButton edge="end"
                                                 aria-label="edit"
@@ -141,7 +158,7 @@ class ManageGroups extends Component {
                                 <Tooltip title="Delete Group" aria-label="delete group">
                                     <IconButton edge="end"
                                                 aria-label="delete"
-                                        // onClick={e => this.handleDeleteAssignment(e, a._id)}
+                                            onClick={e => this.handleDeleteGroup(e)}
                                     >
                                         <DeleteIcon />
                                     </IconButton>
@@ -180,7 +197,7 @@ class ManageGroups extends Component {
                                 <Tooltip title="Delete Group" aria-label="delete group">
                                     <IconButton edge="end"
                                                 aria-label="delete"
-                                        // onClick={e => this.handleDeleteAssignment(e, a._id)}
+                                         onClick={e => this.handleDeleteGroup(e)}
                                     >
                                         <DeleteIcon />
                                     </IconButton>

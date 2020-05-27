@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {TextField, Modal, Paper, Fab, Button, Typography} from "@material-ui/core";
+import {TextField, Modal, Paper, Fab, Button, Typography, FormControl} from "@material-ui/core";
 import {withRouter} from "react-router-dom";
 
 class CreateGroup extends Component {
@@ -61,8 +61,7 @@ class CreateGroup extends Component {
                         <Typography style={{paddingTop: "1em"}} align={"center"} variant={"h4"}
                                     component={"h2"} gutterBottom={true}> Create Group   </Typography>
                         <form className={'modal_form'} >
-
-                                <legend> Group Information </legend>
+                            <FormControl>
                                 <TextField
                                     label={'Group Name'}
                                     onChange={this.handleInputChange}
@@ -85,8 +84,8 @@ class CreateGroup extends Component {
                                     variant="outlined"
                                 />
                                 <br />
-                                <br />
                             <Button  variant="contained" type="submit" color="primary"> Submit </Button>
+                        </FormControl>
                         </form>
                     </Paper>
                 </Modal>
