@@ -27,6 +27,7 @@ let citations = require('./routes/citationRoutes');
 let rubrics = require('./routes/rubricRoutes');
 let feedback = require("./routes/feedbackRoutes");
 let configurations = require("./routes/configurationsRoutes");
+let groups = require("./routes/groupsRoutes");
 
 let app = express();
 
@@ -80,6 +81,7 @@ app.use('/api/citations', citations);
 app.use('/api/rubrics', rubrics);
 app.use('/api/feedback', feedback);
 app.use('/api/configurations', configurations);
+app.use('/api/groups', groups);
 
 app.get('/api/logout', function (req, res) {
   req.session.destroy();

@@ -8,13 +8,14 @@ class CreateGroup extends Component {
         this.state = {
             open: false,
             GroupName: '',
-            GroupNode: '',
+            GroupNote: '',
             Members: [],
         };
         this.handleOpen = this.handleOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
       //  this.handleAlert = this.handleAlert.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     // handleAlert(message, severity){
@@ -38,6 +39,31 @@ class CreateGroup extends Component {
             [name]: value
         });
     }
+
+    handleSubmit() {
+        let data = {
+            creator: this.props.user.email,
+            name: this.state.GroupName,
+            note: this.state.GroupNote,
+            members: this.state.members
+        };
+    
+        let json = JSON.stringify(data);
+    
+        fetch("/api/groups/", {
+          method: "POST",
+          body: json,
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(() => {
+          this.handleClose();
+          alert("Group saved");
+        })
+      }
+
     render() {
         return(
             <div>
@@ -84,7 +110,8 @@ class CreateGroup extends Component {
                                     variant="outlined"
                                 />
                                 <br />
-                            <Button  variant="contained" type="submit" color="primary"> Submit </Button>
+                            <Button  variant="contained" type="submit" color="primary"
+                            onClick={this.handleSubmit}> Submit </Button>
                         </FormControl>
                         </form>
                     </Paper>
