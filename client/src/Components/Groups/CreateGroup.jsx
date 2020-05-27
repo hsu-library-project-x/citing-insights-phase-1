@@ -15,6 +15,7 @@ class CreateGroup extends Component {
         this.handleClose = this.handleClose.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
       //  this.handleAlert = this.handleAlert.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     // handleAlert(message, severity){
@@ -59,7 +60,7 @@ class CreateGroup extends Component {
         })
         .then(() => {
           this.handleClose();
-          alert("");
+          alert("Group saved");
         })
       }
 
@@ -109,7 +110,8 @@ class CreateGroup extends Component {
                                     variant="outlined"
                                 />
                                 <br />
-                            <Button  variant="contained" type="submit" color="primary"> Submit </Button>
+                            <Button  variant="contained" type="submit" color="primary"
+                            onClick={this.handleSubmit}> Submit </Button>
                         </FormControl>
                         </form>
                     </Paper>
