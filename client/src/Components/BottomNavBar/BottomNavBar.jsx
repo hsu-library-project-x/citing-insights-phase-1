@@ -4,7 +4,6 @@ import {createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import InfoIcon from '@material-ui/icons/Info';
 import ContactMailIcon from '@material-ui/icons/ContactMail';
 import EmailIcon from '@material-ui/icons/Email';
-import Feedback from "../Feedback/Feedback";
 import {withRouter} from "react-router-dom";
 
 class BottomNavBar extends Component {
@@ -94,12 +93,6 @@ class BottomNavBar extends Component {
                 <MuiThemeProvider theme={theme}>
                     <AppBar color='primary' position="static" style={{bottom:0 , top:'auto'}}>
                         <Toolbar>
-                                {this.props.isAuthenticated ?
-                                    <div style={{margin: '0 auto'}} >
-                                        <Feedback />
-                                    </div>
-                                    : null
-                                }
                                 <Button
                                     onClick={this.handleAboutOpen}
                                     style={{margin: '0 auto'}}

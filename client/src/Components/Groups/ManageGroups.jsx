@@ -19,11 +19,38 @@ import AddAlertIcon from '@material-ui/icons/AddAlert';
 
 import CreateGroup from "./CreateGroup";
 import RequestGroup from "./RequestGroup";
+import EditGroup from "./EditGroup";
+import JoinRequests from "./JoinRequests";
 
 class ManageGroups extends Component {
     constructor(props) {
         super(props);
+
+        this.handleDeleteGroup = this.handleDeleteGroup.bind(this);
     }
+
+    handleDeleteGroup(e, id) {
+        if (window.confirm("Are you sure you wish to delete this group?")) {
+            if (window.confirm("WARNING!! If you delete this group, this group will stop existing for you and other members")) {
+                // fetch('api/courses/' + id, {
+                //     method: 'Delete',
+                //     headers: {
+                //         'Accept': 'application/json',
+                //         'Content-Type': 'application/json'
+                //     },
+                // }).then((response) => {
+                //         if (response.status === 204) {
+                //             this.handleAlert('Course Deleted', 'success');
+                //         }
+                //         else {
+                //             this.handleAlert('Could not Delete Course', 'error');
+                //         }
+                //     }
+                // );
+            }
+        }
+    }
+
     render() {
         return(
             <Container maxWidth={"md"}>
@@ -76,38 +103,16 @@ class ManageGroups extends Component {
                                 secondary={'group 1 notes'}
                             />
                             <ListItemSecondaryAction>
-                                {/*<Tooltip title="Add to Group" aria-label="add to group">*/}
-                                {/*    <IconButton edge="end"*/}
-                                {/*                aria-label="delete"*/}
-                                {/*        // onClick={e => this.handleDeleteAssignment(e, a._id)}*/}
-                                {/*    >*/}
-                                {/*        <PersonAddIcon />*/}
-                                {/*    </IconButton>*/}
-                                {/*</Tooltip>*/}
-                                <Tooltip title="Edit Group" aria-label="edit group">
-                                    <IconButton edge="end"
-                                                aria-label="edit"
-                                        // onClick={e => this.handleDeleteAssignment(e, a._id)}
-                                    >
-                                        <EditIcon />
-                                    </IconButton>
-                                </Tooltip>
+                          <EditGroup />
                                 <Tooltip title="Delete Group" aria-label="delete group">
                                     <IconButton edge="end"
                                                 aria-label="delete"
-                                                // onClick={e => this.handleDeleteAssignment(e, a._id)}
+                                                onClick={e => this.handleDeleteGroup(e)}
                                     >
                                         <DeleteIcon />
                                     </IconButton>
                                 </Tooltip>
-                                <Tooltip title="Join Requests" aria-label="requests to join group">
-                                    <IconButton edge="end"
-                                                aria-label="notification"
-                                        // onClick={e => this.handleDeleteAssignment(e, a._id)}
-                                    >
-                                        <AddAlertIcon />
-                                    </IconButton>
-                                </Tooltip>
+                              <JoinRequests />
 
 
                             </ListItemSecondaryAction>
@@ -123,38 +128,16 @@ class ManageGroups extends Component {
                                 secondary={'group 2 notes'}
                             />
                             <ListItemSecondaryAction>
-                                {/*<Tooltip title="Add to Group" aria-label="add to group">*/}
-                                {/*    <IconButton edge="end"*/}
-                                {/*                aria-label="delete"*/}
-                                {/*        // onClick={e => this.handleDeleteAssignment(e, a._id)}*/}
-                                {/*    >*/}
-                                {/*        <PersonAddIcon />*/}
-                                {/*    </IconButton>*/}
-                                {/*</Tooltip>*/}
-                                <Tooltip title="Edit Group" aria-label="edit group">
-                                    <IconButton edge="end"
-                                                aria-label="edit"
-                                        // onClick={e => this.handleDeleteAssignment(e, a._id)}
-                                    >
-                                        <EditIcon />
-                                    </IconButton>
-                                </Tooltip>
+                                <EditGroup />
                                 <Tooltip title="Delete Group" aria-label="delete group">
                                     <IconButton edge="end"
                                                 aria-label="delete"
-                                        // onClick={e => this.handleDeleteAssignment(e, a._id)}
+                                            onClick={e => this.handleDeleteGroup(e)}
                                     >
                                         <DeleteIcon />
                                     </IconButton>
                                 </Tooltip>
-                                <Tooltip title="Join Requests" aria-label="requests to join group">
-                                    <IconButton edge="end"
-                                                aria-label="notification"
-                                        // onClick={e => this.handleDeleteAssignment(e, a._id)}
-                                    >
-                                        <AddAlertIcon />
-                                    </IconButton>
-                                </Tooltip>
+                                <JoinRequests />
 
 
                             </ListItemSecondaryAction>
@@ -170,30 +153,16 @@ class ManageGroups extends Component {
                                 secondary={'group 3 notes'}
                             />
                             <ListItemSecondaryAction>
-                                <Tooltip title="Edit Group" aria-label="edit group">
-                                    <IconButton edge="end"
-                                                aria-label="edit"
-                                        // onClick={e => this.handleDeleteAssignment(e, a._id)}
-                                    >
-                                        <EditIcon />
-                                    </IconButton>
-                                </Tooltip>
+                                <EditGroup />
                                 <Tooltip title="Delete Group" aria-label="delete group">
                                     <IconButton edge="end"
                                                 aria-label="delete"
-                                        // onClick={e => this.handleDeleteAssignment(e, a._id)}
+                                         onClick={e => this.handleDeleteGroup(e)}
                                     >
                                         <DeleteIcon />
                                     </IconButton>
                                 </Tooltip>
-                                <Tooltip title="Join Requests" aria-label="requests to join group">
-                                    <IconButton edge="end"
-                                                aria-label="notification"
-                                        // onClick={e => this.handleDeleteAssignment(e, a._id)}
-                                    >
-                                        <AddAlertIcon />
-                                    </IconButton>
-                                </Tooltip>
+                                <JoinRequests />
 
 
                             </ListItemSecondaryAction>
