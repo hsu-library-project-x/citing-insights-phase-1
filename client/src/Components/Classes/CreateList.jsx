@@ -2,15 +2,13 @@ import React, {Component} from "react";
 import {
     Avatar, Divider, IconButton,
     List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText,
-    Tooltip,Popover, Typography,
+    Tooltip, Popover, Typography, MenuItem, Select, InputLabel, FormControl,
 
 } from "@material-ui/core";
 import ClassIcon from "@material-ui/icons/Class";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-
-
 
 class CreateList extends Component {
     constructor(props) {
@@ -19,7 +17,11 @@ class CreateList extends Component {
         this.state = {
             list:[],
             anchorEl: null,
+            AvailableGroups: [],
+            GroupName: ""
         };
+
+        this.getGroups();
 
         this.nestItems = this.nestItems.bind(this);
         this.handleDeleteAssignment = this.handleDeleteAssignment.bind(this);
@@ -28,6 +30,7 @@ class CreateList extends Component {
         this.tick= this.tick.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleClick = this.handleClick.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
     }
 
     handleClick(event){
@@ -44,6 +47,15 @@ class CreateList extends Component {
 
     handleAlert(message, severity){
         this.props.handleQueueAlert(message, severity);
+    }
+
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+        this.setState({
+            [name]: value
+        });
     }
 
     handleDeleteCourse(e, id) {
@@ -87,7 +99,21 @@ class CreateList extends Component {
         }
     }
 
+    getGroups() {
+        let that = this;
+        fetch('/api/groups/').then(function (response) {
+            return response.json();
+        })
+            .then(function (myJson) {
+                that.setState({ AvailableGroups: myJson })
+            });
+    }
+
     nestItems(classes, assignments) {
+        let groupList = this.state.AvailableGroups;
+        let optionGroups = groupList.map((group) =>
+            <MenuItem value={group._id} key={group._id}> {group.name}</MenuItem>
+        );
         let list = classes.map(d => {
             let notes = d.course_note ? d.course_note : "";
             return (
@@ -177,7 +203,21 @@ class CreateList extends Component {
                                         </ListItemSecondaryAction>
                                     </ListItem>
                                 </List>
-                                <Typography style={{ padding: "0.5em" }}> Add Group </Typography>
+                                <FormControl
+                                    style={{ padding: "0.5em" }}>
+                                    <InputLabel id="groupSelect-label-addgroup" style={{ padding: "0.5em" }}>Add  a Group</InputLabel>
+                                <Select
+                                    name="GroupName"
+                                    required
+                                    labelId={"groupSelect-label-addgroup"}
+                                    onChange={this.handleInputChange}
+                                    value={this.state.GroupName}
+                                    style={{ minWidth: 150}}
+                                >
+                                    <MenuItem value={""} disabled> Select a Group</MenuItem>
+                                    {optionGroups}
+                                </Select>
+                                </FormControl>
                                 <Typography style={{ padding: "0.5em" }}> Associated Members </Typography>
                             </Popover>
                         </ListItemSecondaryAction>
