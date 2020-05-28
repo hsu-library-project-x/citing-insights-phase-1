@@ -65,7 +65,7 @@ class AnalyzeSubMenu extends Component {
     this.props.updateSelectedId(this.state.selectedAssignmentId);
   }
 
-  //In each render, map out Courses and Assignments into letiables so we can place them in a drop down
+  //In each render, map out Courses and Assignments into variables so we can place them in a drop down
   render() {
 
     let courses = this.state.AvailableCourses;
