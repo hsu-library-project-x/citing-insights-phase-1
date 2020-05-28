@@ -5,7 +5,11 @@ var groupsSchema = new Schema({
 	'creator' : String,
 	'name' : String,
 	'note' : String,
-	'members' : Array
+	'members' : Array,
+	'pendingMembers': [{
+		email:String,
+		message: String
+	}]
 });
 
 module.exports = mongoose.model('groups', groupsSchema);

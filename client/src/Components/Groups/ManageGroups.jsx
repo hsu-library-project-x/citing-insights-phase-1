@@ -92,6 +92,8 @@ class ManageGroups extends Component {
                         style={{ paddingLeft: "4em" }}
                         dense={true}
                     >
+
+
                         <ListItem>
                             <ListItemAvatar>
                                 <Avatar>
@@ -117,6 +119,8 @@ class ManageGroups extends Component {
 
                             </ListItemSecondaryAction>
                         </ListItem>
+
+
                         <ListItem>
                             <ListItemAvatar>
                                 <Avatar>
@@ -139,9 +143,10 @@ class ManageGroups extends Component {
                                 </Tooltip>
                                 <JoinRequests />
 
-
                             </ListItemSecondaryAction>
                         </ListItem>
+                        
+                        
                         <ListItem>
                             <ListItemAvatar>
                                 <Avatar>
@@ -164,8 +169,8 @@ class ManageGroups extends Component {
                                 </Tooltip>
                                 <JoinRequests />
 
-
                             </ListItemSecondaryAction>
+
                         </ListItem>
                     </List>
                 </Grid>
