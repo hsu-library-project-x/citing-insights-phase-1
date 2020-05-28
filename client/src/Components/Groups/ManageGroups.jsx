@@ -80,7 +80,8 @@ class ManageGroups extends Component {
                               user={this.props.user} />
                         </Grid>
                         <Grid item>
-                            <RequestGroup />
+                            <RequestGroup 
+                              user={this.props.user} />
                         </Grid>
                     </Grid>
                 </Grid>
