@@ -97,34 +97,52 @@ class RequestGroup extends Component {
                         <form className={'modal_form'} onSubmit={(event) => {
                             event.preventDefault();
 
-                            
+                            let pending_member = {
+                                id: this.state.GroupName,
+                                email: this.props.user.email,
+                                message: this.state.Message
+                            };
 
+                            let json = JSON.stringify(pending_member);
+
+                            fetch("/api/groups/pending", {
+                                method: "PUT",
+                                body: json,
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then((response) => {
+                                    this.handleClose();
+                                    alert("Request to join sent to group's administrator");
+                                })
 
 
                         }}>
                             <FormControl >
-                            <InputLabel id="groupSelect-label">Select a Group</InputLabel>
-                        <Select
-                            name="GroupName"
-                            required
-                            labelId={"groupSelect-label"}
-                            onChange={this.handleInputChange}
-                            value={this.state.GroupName}
-                            style={{ minWidth: 150 }}
-                        >
-                            <MenuItem value={""} disabled> Select a Group</MenuItem>
-                            {optionGroups}
-                        </Select>
-                        <br />
-                        <TextField
-                            name="Message"
-                            label={"Message (optional)"}
-                            onChange={this.handleInputChange}
-                            multiline
-                            rowsMax="4"
-                            style={{ marginBottom: "1em" }} />
+                                <InputLabel id="groupSelect-label">Select a Group</InputLabel>
+                                <Select
+                                    name="GroupName"
+                                    required
+                                    labelId={"groupSelect-label"}
+                                    onChange={this.handleInputChange}
+                                    value={this.state.GroupName}
+                                    style={{ minWidth: 150 }}
+                                >
+                                    <MenuItem value={""} disabled> Select a Group</MenuItem>
+                                    {optionGroups}
+                                </Select>
+                                <br />
+                                <TextField
+                                    name="Message"
+                                    label={"Message (optional)"}
+                                    onChange={this.handleInputChange}
+                                    multiline
+                                    rowsMax="4"
+                                    style={{ marginBottom: "1em" }} />
 
-                        <Button variant="contained" type="submit" color="primary"> Submit </Button>
+                                <Button variant="contained" type="submit" color="primary"> Submit </Button>
                             </FormControl>
                         </form>
                     </Paper>

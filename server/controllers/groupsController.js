@@ -27,7 +27,7 @@ module.exports = {
      */
     show: function (req, res) {
         var id = req.params.id;
-        groupsModel.findOne({_id: id}, function (err, groups) {
+        groupsModel.findOne({ _id: id }, function (err, groups) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when getting groups.',
@@ -48,10 +48,10 @@ module.exports = {
      */
     create: function (req, res) {
         var groups = new groupsModel({
-			creator : req.body.creator,
-			name : req.body.name,
-			note : req.body.note,
-			members : req.body.members
+            creator: req.body.creator,
+            name: req.body.name,
+            note: req.body.note,
+            members: req.body.members
 
         });
 
@@ -70,36 +70,26 @@ module.exports = {
      * groupsController.update()
      */
     update: function (req, res) {
-        var id = req.params.id;
-        groupsModel.findOne({_id: id}, function (err, groups) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when getting groups',
-                    error: err
-                });
-            }
-            if (!groups) {
-                return res.status(404).json({
-                    message: 'No such groups'
-                });
-            }
+        var groupId = req.body.id;
 
-            groups.creator = req.body.creator ? req.body.creator : groups.creator;
-			groups.name = req.body.name ? req.body.name : groups.name;
-			groups.note = req.body.note ? req.body.note : groups.note;
-			groups.members = req.body.members ? req.body.members : groups.members;
-			
-            groups.save(function (err, groups) {
+        console.log(groupId);
+        var pending = {
+            "email": req.body.email,
+            "message": req.body.message
+        }
+
+        groupsModel.findOneAndUpdate(
+            { _id: groupId },
+            { $push: { pendingMembers: pending } },
+            function (err, groups) {
                 if (err) {
                     return res.status(500).json({
-                        message: 'Error when updating groups.',
+                        message: 'Error when getting groups.',
                         error: err
                     });
                 }
-
                 return res.json(groups);
             });
-        });
     },
 
     /**

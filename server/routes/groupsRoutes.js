@@ -20,7 +20,7 @@ router.post('/', groupsController.create);
 /*
  * PUT
  */
-router.put('/:id', groupsController.update);
+router.put('/pending', groupsController.update);
 
 /*
  * DELETE
