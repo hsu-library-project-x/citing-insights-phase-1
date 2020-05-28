@@ -124,7 +124,7 @@ class CreateClass extends Component {
                                         style={{marginBottom: "1em"}} />
 
                                         <FormControl>
-                                        <InputLabel id="groupSelect-label-coursepg">Select a Group</InputLabel>
+                                        <InputLabel id="groupSelect-label-coursepg">Select Group (optional)</InputLabel>
                                         <Select
                                             labelId={"groupSelect-label-coursepg"}
                                             name="GroupName"

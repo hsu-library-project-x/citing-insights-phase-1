@@ -142,7 +142,7 @@ class CreateAssignment extends Component {
                                         rowsMax="4"
                                         style={{marginBottom: "1em"}} />
                                      <FormControl>
-                                    <InputLabel id="groupSelect-label-assign">Select a Group</InputLabel>
+                                    <InputLabel id="groupSelect-label-assign">Select Group (optional)</InputLabel>
                                     <Select
                                         labelId={"groupSelect-label-assign"}
                                         name="GroupName"

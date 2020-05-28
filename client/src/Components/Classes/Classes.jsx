@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-    Container, Typography, Snackbar
+    Container, Typography, Snackbar, Grid
 } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import { withRouter } from 'react-router-dom';
@@ -8,6 +8,8 @@ import { withRouter } from 'react-router-dom';
 import CreateClass from "./CreateClass";
 import CreateAssignment from "./CreateAssignment";
 import CreateList from "./CreateList";
+import CreateGroup from "../Groups/CreateGroup";
+import RequestGroup from "../Groups/RequestGroup";
 
 class Classes extends Component {
     constructor(props) {
@@ -124,32 +126,50 @@ class Classes extends Component {
 
     render() {
         return (
-                    <Container maxWidth={'md'}>
-                        <Typography style={{ marginTop: "1em" }} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}>
-                            Manage Coursework
-                        </Typography>
-
-                        <Container maxWidth={"sm"}>
-                            <CreateList
-                                classList={this.state.classList}
-                                assignmentList={this.state.assignmentList}
+            <Container maxWidth={"md"}>
+                {this.DisplayAlerts()}
+            <Grid
+                container
+                direction="row"
+                justify="space-evenly"
+                alignItems="center"
+            >
+                <Grid item xs={12}>
+                    <Typography style={{ marginTop: "1em" }} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}>
+                        Manage Coursework
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    <Grid
+                        container
+                        direction="row"
+                        justify="flex-end"
+                        alignItems="flex-end"
+                    >
+                        <Grid item >
+                            <CreateClass
+                                user_id={this.props.user.id}
                                 handleQueueAlert={this.handleQueueAlert}
                             />
-                        </Container>
-
-                        {this.DisplayAlerts()}
-
-                        <CreateAssignment
-                            user_id={this.props.user.id}
-                            classList={this.state.classList}
-                            handleQueueAlert={this.handleQueueAlert}
-                        />
-
-                        <CreateClass
-                            user_id={this.props.user.id}
-                            handleQueueAlert={this.handleQueueAlert}
-                        />
-                    </Container>
+                        </Grid>
+                        <Grid item>
+                            <CreateAssignment
+                                user_id={this.props.user.id}
+                                classList={this.state.classList}
+                                handleQueueAlert={this.handleQueueAlert}
+                            />
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                    <CreateList
+                        classList={this.state.classList}
+                        assignmentList={this.state.assignmentList}
+                        handleQueueAlert={this.handleQueueAlert}
+                    />
+                </Grid>
+            </Grid>
+        </Container>
         );
     }
 }

@@ -1,16 +1,14 @@
 import React, {Component} from "react";
 import {
     Avatar, Divider, IconButton,
-    List,
-    ListItem,
-    ListItemAvatar,
-    ListItemSecondaryAction,
-    ListItemText,
-    Tooltip
+    List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText,
+    Tooltip,Popover, Typography,
+
 } from "@material-ui/core";
 import ClassIcon from "@material-ui/icons/Class";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AssignmentIcon from "@material-ui/icons/Assignment";
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 
 
@@ -20,6 +18,7 @@ class CreateList extends Component {
 
         this.state = {
             list:[],
+            anchorEl: null,
         };
 
         this.nestItems = this.nestItems.bind(this);
@@ -27,7 +26,16 @@ class CreateList extends Component {
         this.handleDeleteCourse = this.handleDeleteCourse.bind(this);
         this.handleAlert = this.handleAlert.bind(this);
         this.tick= this.tick.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+    }
 
+    handleClick(event){
+        this.setState({anchorEl: event.currentTarget});
+    }
+
+    handleClose(){
+        this.setState({anchorEl: null});
     }
 
     tick(oldProgress){
@@ -83,7 +91,11 @@ class CreateList extends Component {
         let list = classes.map(d => {
             let notes = d.course_note ? d.course_note : "";
             return (
-                <List key={d._id} dense={true} style={{ padding: 0, margin: 0 }}>
+                <List key={d._id}  component={"div"}
+                      disablePadding={true}
+                      style={{ paddingLeft: "4em" }}
+                      dense={true}
+                >
                     <ListItem key={d._id} id={d._id} >
                         <ListItemAvatar>
                             <Avatar>
@@ -101,6 +113,73 @@ class CreateList extends Component {
                                     <DeleteIcon />
                                 </IconButton>
                             </Tooltip>
+                            <Tooltip title="Groups" aria-label="groups">
+                                <IconButton edge="end" aria-label="groups"
+                                             onClick={ this.handleClick}
+                                >
+                                    <MoreVertIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <Popover
+                                open={Boolean(this.state.anchorEl)}
+                                anchorEl={this.state.anchorEl}
+                                onClose={this.handleClose}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'left',
+                                }}
+                            >
+                                <Typography style={{ padding: "0.5em" }}> Current Groups: </Typography>
+                                <List
+                                      style={{ paddingLeft: "1em" }}
+                                >
+                                    <ListItem>
+                                        <ListItemText
+                                        style={{ padding: 0, margin: 0 }}
+                                        primary={'Group 1'}
+                                        />
+                                        <ListItemSecondaryAction>
+                                            <Tooltip title="Delete Group" aria-label="delete course">
+                                                <IconButton edge="end" aria-label="delete">
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            </Tooltip>
+                                        </ListItemSecondaryAction>
+                                    </ListItem>
+                                    <ListItem>
+                                        <ListItemText
+                                            style={{ padding: 0, margin: 0 }}
+                                            primary={'Group 2'}
+                                        />
+                                        <ListItemSecondaryAction>
+                                            <Tooltip title="Delete Group" aria-label="delete course">
+                                                <IconButton edge="end" aria-label="delete">
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            </Tooltip>
+                                        </ListItemSecondaryAction>
+                                    </ListItem>
+                                    <ListItem>
+                                        <ListItemText
+                                            style={{ padding: 0, margin: 0 }}
+                                            primary={'Group 3'}
+                                        />
+                                        <ListItemSecondaryAction>
+                                            <Tooltip title="Delete Group" aria-label="delete course">
+                                                <IconButton edge="end" aria-label="delete">
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            </Tooltip>
+                                        </ListItemSecondaryAction>
+                                    </ListItem>
+                                </List>
+                                <Typography style={{ padding: "0.5em" }}> Add Group </Typography>
+                                <Typography style={{ padding: "0.5em" }}> Associated Members </Typography>
+                            </Popover>
                         </ListItemSecondaryAction>
                     </ListItem>
                     <Divider variant="inset" />
@@ -134,6 +213,32 @@ class CreateList extends Component {
                                                         <DeleteIcon />
                                                     </IconButton>
                                                 </Tooltip>
+                                                {/*<Tooltip title="Groups" aria-label="groups">*/}
+                                                {/*    <IconButton edge="end" aria-label="groups"*/}
+                                                {/*                onClick={ this.handleClick}*/}
+                                                {/*    >*/}
+                                                {/*        <MoreVertIcon />*/}
+                                                {/*    </IconButton>*/}
+                                                {/*</Tooltip>*/}
+                                                {/*<Popover*/}
+                                                {/*    open={Boolean(this.state.anchorEl)}*/}
+                                                {/*    anchorEl={this.state.anchorEl}*/}
+                                                {/*    onClose={this.handleClose}*/}
+                                                {/*    anchorOrigin={{*/}
+                                                {/*        vertical: 'top',*/}
+                                                {/*        horizontal: 'right',*/}
+                                                {/*    }}*/}
+                                                {/*    transformOrigin={{*/}
+                                                {/*        vertical: 'top',*/}
+                                                {/*        horizontal: 'left',*/}
+                                                {/*    }}*/}
+                                                {/*    style={{padding: '2em'}}*/}
+                                                {/*>*/}
+                                                {/*    <Typography> Group Info </Typography>*/}
+                                                {/*    <Typography> Group Info </Typography>*/}
+                                                {/*    <Typography> Group Info </Typography>*/}
+                                                {/*    <Typography> Group Info </Typography>*/}
+                                                {/*</Popover>*/}
                                             </ListItemSecondaryAction>
                                         </ListItem>
                                         <Divider variant="inset" />
