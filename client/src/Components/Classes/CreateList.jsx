@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
     Avatar, Divider, IconButton,
     List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, ListItemIcon,
@@ -23,16 +23,16 @@ class CreateList extends Component {
         super(props);
 
         this.state = {
-            list:[],
+            list: [],
             anchorEl: null,
             AvailableGroups: [],
             GroupName: "",
             hoverAnchorEl: null,
             open: {
-                popover:false,
+                popover: false,
                 current_groups: false,
                 add_group: false,
-                see_members:false,
+                see_members: false,
             }
         };
 
@@ -42,7 +42,7 @@ class CreateList extends Component {
         this.handleDeleteAssignment = this.handleDeleteAssignment.bind(this);
         this.handleDeleteCourse = this.handleDeleteCourse.bind(this);
         this.handleAlert = this.handleAlert.bind(this);
-        this.tick= this.tick.bind(this);
+        this.tick = this.tick.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.handlePopoverOpen = this.handlePopoverOpen.bind(this);
@@ -51,35 +51,35 @@ class CreateList extends Component {
         this.expandClick = this.expandClick.bind(this);
     }
 
-    expandClick(item){
+    expandClick(item) {
         this.setState({
-            open: {[item]: !this.state.open[item]}
+            open: { [item]: !this.state.open[item] }
         });
     }
 
-    handleClick(event){
-        this.setState({anchorEl: event.currentTarget});
+    handleClick(event) {
+        this.setState({ anchorEl: event.currentTarget });
     }
 
-    handleClose(){
-        this.setState({anchorEl: null});
+    handleClose() {
+        this.setState({ anchorEl: null });
     }
 
-    tick(oldProgress){
-        this.setState({progress: oldProgress + 1});
+    tick(oldProgress) {
+        this.setState({ progress: oldProgress + 1 });
     }
 
-    handleAlert(message, severity){
+    handleAlert(message, severity) {
         this.props.handleQueueAlert(message, severity);
     }
 
-    handlePopoverClose(){
+    handlePopoverClose() {
         this.setState({
             hoverAnchorEl: null
         });
     }
 
-    handlePopoverOpen(event){
+    handlePopoverOpen(event) {
         console.log("mouse enter");
         this.setState({
             hoverAnchorEl: event.currentTarget
@@ -105,13 +105,13 @@ class CreateList extends Component {
                         'Content-Type': 'application/json'
                     },
                 }).then((response) => {
-                        if (response.status === 204) {
-                            this.handleAlert('Course Deleted', 'success');
-                        }
-                        else {
-                            this.handleAlert('Could not Delete Course', 'error');
-                        }
+                    if (response.status === 204) {
+                        this.handleAlert('Course Deleted', 'success');
                     }
+                    else {
+                        this.handleAlert('Could not Delete Course', 'error');
+                    }
+                }
                 );
             }
         }
@@ -146,15 +146,15 @@ class CreateList extends Component {
             });
     }
 
-    getAssociatedMembers(memberList){
-        let listed =[];
+    getAssociatedMembers(memberList) {
+        let listed = [];
         let listItems = [];
-        for (let i=0; i<memberList.length; i++){
+        for (let i = 0; i < memberList.length; i++) {
             let member = memberList[i];
 
-            if( listed.includes(member) === false){
+            if (listed.includes(member) === false) {
                 listed.push(member);
-                listItems.push (
+                listItems.push(
                     <ListItem
                         key={member} /* member email */
                     >
@@ -175,7 +175,7 @@ class CreateList extends Component {
     }
 
 
-    groupMenu(){
+    groupMenu() {
         let groupList = this.state.AvailableGroups;
         let open = Boolean(this.state.anchorEl);
         let groupsOpen = this.state.open['current_groups'];
@@ -183,24 +183,24 @@ class CreateList extends Component {
         let membersOpen = this.state.open['see_members'];
 
 
-        let optionGroups = groupList.map((group) =>{
+        let optionGroups = groupList.map((group) => {
             // if this is not an added group
-            return(
-            <ListItem
-                key={group._id}
-            >
-                <ListItemText
-                    style={{ padding: 0, margin: 0 }}
-                    primary={group.name}
-                />
-                <ListItemSecondaryAction>
-                    <Tooltip title="Add Group" aria-label="add group">
-                        <IconButton edge="end" aria-label="add group">
-                            <AddIcon />
-                        </IconButton>
-                    </Tooltip>
-                </ListItemSecondaryAction>
-            </ListItem>
+            return (
+                <ListItem
+                    key={group._id}
+                >
+                    <ListItemText
+                        style={{ padding: 0, margin: 0 }}
+                        primary={group.name}
+                    />
+                    <ListItemSecondaryAction>
+                        <Tooltip title="Add Group" aria-label="add group">
+                            <IconButton edge="end" aria-label="add group">
+                                <AddIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </ListItemSecondaryAction>
+                </ListItem>
             );
         });
 
@@ -223,9 +223,9 @@ class CreateList extends Component {
 
 
         // wrong but the best I could do for now
-        let groupMemberArrays = this.state.AvailableGroups.map(group => group.members[0]);
+        let groupMemberArrays = this.state.AvailableGroups.map(group => group.members);
         let toReturn = [];
-        for (let j=0; j<groupMemberArrays.length; j++) {
+        for (let j = 0; j < groupMemberArrays.length; j++) {
             let groupList = groupMemberArrays[j];
             for (let i = 0; i < groupList.length; i++) {
                 toReturn.push(groupList[i]);
@@ -236,78 +236,78 @@ class CreateList extends Component {
 
 
 
-        return(
-        <Popover
-            open={open}
-            anchorEl={this.state.anchorEl}
-            onClose={this.handleClose}
-            anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-            }}
-        >
-            <List
-                aria-labeledby={"group management menu"}
-                dense={true}
-                style={{ paddingLeft: "1em" }}
+        return (
+            <Popover
+                open={open}
+                anchorEl={this.state.anchorEl}
+                onClose={this.handleClose}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
             >
-                <ListItem button onClick={() => this.expandClick('current_groups')}>
-                    <ListItemIcon>
-                        <GroupWorkIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={"current groups"} />
-                    {groupsOpen ? <ExpandLess />: <ExpandMore />}
-                </ListItem>
-                <Collapse
+                <List
+                    aria-labeledby={"group management menu"}
+                    dense={true}
+                    style={{ paddingLeft: "1em" }}
+                >
+                    <ListItem button onClick={() => this.expandClick('current_groups')}>
+                        <ListItemIcon>
+                            <GroupWorkIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={"current groups"} />
+                        {groupsOpen ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse
                         in={groupsOpen}
                         timeout={'auto'}
                         unmountOnExit
-                >
-                    <List
-                        desnse={true}
                     >
-                        {currentGroups}
-                    </List>
-                </Collapse>
-                <ListItem button onClick={() => this.expandClick('add_group')}>
-                    <ListItemIcon>
-                        <AddCircleIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={"Add group"} />
-                    {addOpen ? <ExpandLess />: <ExpandMore />}
-                </ListItem>
-                <Collapse
-                    in={addOpen}
-                    timeout={'auto'}
-                    unmountOnExit
-                >
-                    <List dense={true}>
+                        <List
+                            desnse={true}
+                        >
+                            {currentGroups}
+                        </List>
+                    </Collapse>
+                    <ListItem button onClick={() => this.expandClick('add_group')}>
+                        <ListItemIcon>
+                            <AddCircleIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={"Add group"} />
+                        {addOpen ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse
+                        in={addOpen}
+                        timeout={'auto'}
+                        unmountOnExit
+                    >
+                        <List dense={true}>
                             {optionGroups}
-                    </List>
-                </Collapse>
-                <ListItem button onClick={() => this.expandClick('see_members')}>
-                    <ListItemIcon>
-                        <SupervisedUserCircleIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={"See Associated Members"} />
-                    {membersOpen ? <ExpandLess />: <ExpandMore />}
-                </ListItem>
-                <Collapse
-                    in={membersOpen}
-                    timeout={'auto'}
-                    unmountOnExit
-                >
-                    <List dense={true}>
-                        {members}
-                    </List>
-                </Collapse>
+                        </List>
+                    </Collapse>
+                    <ListItem button onClick={() => this.expandClick('see_members')}>
+                        <ListItemIcon>
+                            <SupervisedUserCircleIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={"See Associated Members"} />
+                        {membersOpen ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse
+                        in={membersOpen}
+                        timeout={'auto'}
+                        unmountOnExit
+                    >
+                        <List dense={true}>
+                            {members}
+                        </List>
+                    </Collapse>
 
-            </List>
-        </Popover>
+                </List>
+            </Popover>
         );
     }
 
@@ -315,10 +315,10 @@ class CreateList extends Component {
         let list = classes.map(d => {
             let notes = d.course_note ? d.course_note : "";
             return (
-                <List key={d._id}  component={"div"}
-                      disablePadding={true}
-                      style={{ paddingLeft: "4em" }}
-                      dense={true}
+                <List key={d._id} component={"div"}
+                    disablePadding={true}
+                    style={{ paddingLeft: "4em" }}
+                    dense={true}
                 >
                     <ListItem key={d._id} id={d._id} >
                         <ListItemAvatar>
@@ -339,7 +339,7 @@ class CreateList extends Component {
                             </Tooltip>
                             <Tooltip title="Groups" aria-label="groups">
                                 <IconButton edge="end" aria-label="groups"
-                                             onClick={ this.handleClick}
+                                    onClick={this.handleClick}
                                 >
                                     <MoreVertIcon />
                                 </IconButton>
@@ -372,15 +372,15 @@ class CreateList extends Component {
                                             <ListItemSecondaryAction>
                                                 <Tooltip title="Delete Assignment" aria-label="delete assignment">
                                                     <IconButton edge="end"
-                                                                aria-label="delete"
-                                                                onClick={e => this.handleDeleteAssignment(e, a._id)}
+                                                        aria-label="delete"
+                                                        onClick={e => this.handleDeleteAssignment(e, a._id)}
                                                     >
                                                         <DeleteIcon />
                                                     </IconButton>
                                                 </Tooltip>
                                                 <Tooltip title="Groups" aria-label="groups">
                                                     <IconButton edge="end" aria-label="groups"
-                                                                onClick={ this.handleClick}
+                                                        onClick={this.handleClick}
                                                     >
                                                         <MoreVertIcon />
                                                     </IconButton>
@@ -402,7 +402,7 @@ class CreateList extends Component {
     }
 
     render() {
-        return(
+        return (
             <List dense={true} style={{ padding: 0 }} >
                 {
                     this.nestItems(this.props.classList, this.props.assignmentList)

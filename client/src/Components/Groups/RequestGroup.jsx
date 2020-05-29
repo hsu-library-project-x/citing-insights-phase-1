@@ -36,22 +36,6 @@ class RequestGroup extends Component {
         })
             .then(function (myJson) {
                 that.setState({ AvailableGroups: myJson })
-
-                // for(let i=0; i< myJson.length; i++){
-
-                //     if(myJson.creator === this.props.user.email){
-                //         //Set boolean stating user IS the creator
-                //     }
-                //     let current = myJson[i].pendingMembers
-
-                //     let pending_len = current.length
-
-                //     for(let j=0; j < pending_len; j++){
-                //         if(current[j] === this.props.user.email){
-                //             //Set boolean stating user has already requested
-                //         }
-                //     }
-                // }
             });
     }
 
@@ -120,28 +104,36 @@ class RequestGroup extends Component {
 
                             for (var i = 0; i < groupList.length; i++) {
                                 //Check to see if the user is the creator of group
-                                if (groupList[i].creator === this.props.user.email) {
+                                console.log(groupList[i]);
+                                console.log(this.props.user.email);
+                                if (groupList[i].creator === this.props.user.email &&
+                                    groupList[i]._id === this.state.GroupId) {
                                     creatorCheck = true;
                                     alert("Can't request to join group; You are the creator.");
                                     this.handleClose();
                                     break;
                                 }
-                                //Check to see if user is already a member
-                                for (var j = 0; j < groupList.pendingMembers.length; j++) {
-                                    if (groupList.pendingMembers[j] === this.props.user.email) {
-                                        pendingCheck = true;
-                                        alert("You have already requested to join this group.");
-                                        this.handleClose();
-                                        break;
+                                //Check to see if user is already a pending member
+                                if (groupList.pendingMembers !== undefined) {
+                                    for (var j = 0; j < groupList.pendingMembers.length; j++) {
+                                        if (groupList.pendingMembers[j] === this.props.user.email) {
+                                            pendingCheck = true;
+                                            alert("You have already requested to join this group.");
+                                            this.handleClose();
+                                            break;
+                                        }
                                     }
                                 }
-                                //check to see if user is already in pending members
-                                for (var k = 0; k < groupList.members.length; k++) {
-                                    if (groupList.members[k] === this.props.user.email) {
-                                        memberCheck = true;
-                                        alert("You are already a member of this group.");
-                                        this.handleClose();
-                                        break;
+
+                                //check to see if user is already in members
+                                if (groupList.members !== undefined) {
+                                    for (var k = 0; k < groupList.members.length; k++) {
+                                        if (groupList.members[k] === this.props.user.email) {
+                                            memberCheck = true;
+                                            alert("You are already a member of this group.");
+                                            this.handleClose();
+                                            break;
+                                        }
                                     }
                                 }
                             }
