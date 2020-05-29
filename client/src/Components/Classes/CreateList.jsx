@@ -16,6 +16,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import GroupWorkIcon from '@material-ui/icons/GroupWork'
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import AddIcon from '@material-ui/icons/Add';
+import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 
 class CreateList extends Component {
     constructor(props) {
@@ -145,9 +146,17 @@ class CreateList extends Component {
             });
     }
 
+
     groupMenu(){
         let groupList = this.state.AvailableGroups;
+        let open = Boolean(this.state.anchorEl);
+        let groupsOpen = this.state.open['current_groups'];
+        let addOpen = this.state.open['add_group'];
+        let membersOpen = this.state.open['see_members'];
+
+
         let optionGroups = groupList.map((group) =>{
+            // if this is not an added group
             return(
             <ListItem
                 key={group._id}
@@ -167,10 +176,43 @@ class CreateList extends Component {
             );
         });
 
-        let open = Boolean(this.state.anchorEl);
-        let groupsOpen = this.state.open['current_groups'];
-        let addOpen = this.state.open['add_group'];
-        let membersOpen = this.state.open['see_members'];
+        let currentGroups = groupList.map((group) => {
+            // if this IS an added group
+            return (<ListItem key={group._id}>
+                <ListItemText
+                    style={{ padding: 0, margin: 0 }}
+                    primary={group.name}
+                />
+                <ListItemSecondaryAction>
+                    <Tooltip title="Remove Group" aria-label="remove group">
+                        <IconButton edge="end" aria-label="remove group">
+                            <ClearIcon />
+                        </IconButton>
+                    </Tooltip>
+                </ListItemSecondaryAction>
+            </ListItem>);
+        });
+
+
+        // wrong but the best I could do for now
+        let members = groupList.map(group =>{
+            // for loop does not loop
+            for (let i=0; i<group.members.length; i++) {
+                return (
+                    <ListItem>
+                        <ListItemIcon>
+                            <PersonOutlineIcon/>
+                        </ListItemIcon>
+                        <ListItemText
+                            style={{padding: 0, margin: 0}}
+                            primary={group.members[i]}
+                        />
+                    </ListItem>
+                );
+            }
+        });
+
+
 
 
         return(
@@ -207,48 +249,9 @@ class CreateList extends Component {
                     <List
                         desnse={true}
                     >
-                        <ListItem>
-                            <ListItemText
-                                style={{ padding: 0, margin: 0 }}
-                                primary={'Group 1'}
-                            />
-                            <ListItemSecondaryAction>
-                                <Tooltip title="Remove Group" aria-label="remove group">
-                                    <IconButton edge="end" aria-label="remove group">
-                                        <ClearIcon />
-                                    </IconButton>
-                                </Tooltip>
-                            </ListItemSecondaryAction>
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText
-                                style={{ padding: 0, margin: 0 }}
-                                primary={'Group 2'}
-                            />
-                            <ListItemSecondaryAction>
-                                <Tooltip title="Remove Group" aria-label="remove group">
-                                    <IconButton edge="end" aria-label="remove group">
-                                        <ClearIcon />
-                                    </IconButton>
-                                </Tooltip>
-                            </ListItemSecondaryAction>
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText
-                                style={{ padding: 0, margin: 0 }}
-                                primary={'Group 3'}
-                            />
-                            <ListItemSecondaryAction>
-                                <Tooltip title="Remove Group" aria-label="remove group">
-                                    <IconButton edge="end" aria-label="remove group">
-                                        <ClearIcon />
-                                    </IconButton>
-                                </Tooltip>
-                            </ListItemSecondaryAction>
-                        </ListItem>
+                        {currentGroups}
                     </List>
                 </Collapse>
-
                 <ListItem button onClick={() => this.expandClick('add_group')}>
                     <ListItemIcon>
                         <AddCircleIcon />
@@ -256,7 +259,6 @@ class CreateList extends Component {
                     <ListItemText primary={"Add group"} />
                     {addOpen ? <ExpandLess />: <ExpandMore />}
                 </ListItem>
-
                 <Collapse
                     in={addOpen}
                     timeout={'auto'}
@@ -266,7 +268,6 @@ class CreateList extends Component {
                             {optionGroups}
                     </List>
                 </Collapse>
-
                 <ListItem button onClick={() => this.expandClick('see_members')}>
                     <ListItemIcon>
                         <SupervisedUserCircleIcon />
@@ -274,17 +275,13 @@ class CreateList extends Component {
                     <ListItemText primary={"See Associated Members"} />
                     {membersOpen ? <ExpandLess />: <ExpandMore />}
                 </ListItem>
-
                 <Collapse
                     in={membersOpen}
                     timeout={'auto'}
                     unmountOnExit
                 >
                     <List dense={true}>
-                        <ListItem> Member  </ListItem>
-                        <ListItem> Member </ListItem>
-                        <ListItem> Member </ListItem>
-                        <ListItem> Member  </ListItem>
+                        {members}
                     </List>
                 </Collapse>
 
