@@ -1,14 +1,21 @@
 import React, {Component} from "react";
 import {
     Avatar, Divider, IconButton,
-    List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText,
-    Tooltip, Popover, Typography, MenuItem, Select, InputLabel, FormControl,
+    List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, ListItemIcon,
+    Tooltip, Popover, Typography, MenuItem, Select, InputLabel, FormControl, Collapse, Button
 
 } from "@material-ui/core";
 import ClassIcon from "@material-ui/icons/Class";
 import DeleteIcon from "@material-ui/icons/Delete";
+import ClearIcon from '@material-ui/icons/Clear';
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import GroupWorkIcon from '@material-ui/icons/GroupWork'
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import AddIcon from '@material-ui/icons/Add';
 
 class CreateList extends Component {
     constructor(props) {
@@ -18,7 +25,14 @@ class CreateList extends Component {
             list:[],
             anchorEl: null,
             AvailableGroups: [],
-            GroupName: ""
+            GroupName: "",
+            hoverAnchorEl: null,
+            open: {
+                popover:false,
+                current_groups: false,
+                add_group: false,
+                see_members:false,
+            }
         };
 
         this.getGroups();
@@ -30,7 +44,16 @@ class CreateList extends Component {
         this.tick= this.tick.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleClick = this.handleClick.bind(this);
+        this.handlePopoverOpen = this.handlePopoverOpen.bind(this);
+        this.handlePopoverClose = this.handlePopoverClose.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.expandClick = this.expandClick.bind(this);
+    }
+
+    expandClick(item){
+        this.setState({
+            open: {[item]: !this.state.open[item]}
+        });
     }
 
     handleClick(event){
@@ -47,6 +70,19 @@ class CreateList extends Component {
 
     handleAlert(message, severity){
         this.props.handleQueueAlert(message, severity);
+    }
+
+    handlePopoverClose(){
+        this.setState({
+            hoverAnchorEl: null
+        });
+    }
+
+    handlePopoverOpen(event){
+        console.log("mouse enter");
+        this.setState({
+            hoverAnchorEl: event.currentTarget
+        });
     }
 
     handleInputChange(event) {
@@ -109,11 +145,155 @@ class CreateList extends Component {
             });
     }
 
-    nestItems(classes, assignments) {
+    groupMenu(){
         let groupList = this.state.AvailableGroups;
-        let optionGroups = groupList.map((group) =>
-            <MenuItem value={group._id} key={group._id}> {group.name}</MenuItem>
+        let optionGroups = groupList.map((group) =>{
+            return(
+            <ListItem
+                key={group._id}
+            >
+                <ListItemText
+                    style={{ padding: 0, margin: 0 }}
+                    primary={group.name}
+                />
+                <ListItemSecondaryAction>
+                    <Tooltip title="Add Group" aria-label="add group">
+                        <IconButton edge="end" aria-label="add group">
+                            <AddIcon />
+                        </IconButton>
+                    </Tooltip>
+                </ListItemSecondaryAction>
+            </ListItem>
+            );
+        });
+
+        let open = Boolean(this.state.anchorEl);
+        let groupsOpen = this.state.open['current_groups'];
+        let addOpen = this.state.open['add_group'];
+        let membersOpen = this.state.open['see_members'];
+
+
+        return(
+        <Popover
+            open={open}
+            anchorEl={this.state.anchorEl}
+            onClose={this.handleClose}
+            anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+            }}
+        >
+            <List
+                aria-labeledby={"group management menu"}
+                dense={true}
+                style={{ paddingLeft: "1em" }}
+            >
+                <ListItem button onClick={() => this.expandClick('current_groups')}>
+                    <ListItemIcon>
+                        <GroupWorkIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={"current groups"} />
+                    {groupsOpen ? <ExpandLess />: <ExpandMore />}
+                </ListItem>
+                <Collapse
+                        in={groupsOpen}
+                        timeout={'auto'}
+                        unmountOnExit
+                >
+                    <List
+                        desnse={true}
+                    >
+                        <ListItem>
+                            <ListItemText
+                                style={{ padding: 0, margin: 0 }}
+                                primary={'Group 1'}
+                            />
+                            <ListItemSecondaryAction>
+                                <Tooltip title="Remove Group" aria-label="remove group">
+                                    <IconButton edge="end" aria-label="remove group">
+                                        <ClearIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            </ListItemSecondaryAction>
+                        </ListItem>
+                        <ListItem>
+                            <ListItemText
+                                style={{ padding: 0, margin: 0 }}
+                                primary={'Group 2'}
+                            />
+                            <ListItemSecondaryAction>
+                                <Tooltip title="Remove Group" aria-label="remove group">
+                                    <IconButton edge="end" aria-label="remove group">
+                                        <ClearIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            </ListItemSecondaryAction>
+                        </ListItem>
+                        <ListItem>
+                            <ListItemText
+                                style={{ padding: 0, margin: 0 }}
+                                primary={'Group 3'}
+                            />
+                            <ListItemSecondaryAction>
+                                <Tooltip title="Remove Group" aria-label="remove group">
+                                    <IconButton edge="end" aria-label="remove group">
+                                        <ClearIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            </ListItemSecondaryAction>
+                        </ListItem>
+                    </List>
+                </Collapse>
+
+                <ListItem button onClick={() => this.expandClick('add_group')}>
+                    <ListItemIcon>
+                        <AddCircleIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={"Add group"} />
+                    {addOpen ? <ExpandLess />: <ExpandMore />}
+                </ListItem>
+
+                <Collapse
+                    in={addOpen}
+                    timeout={'auto'}
+                    unmountOnExit
+                >
+                    <List dense={true}>
+                            {optionGroups}
+                    </List>
+                </Collapse>
+
+                <ListItem button onClick={() => this.expandClick('see_members')}>
+                    <ListItemIcon>
+                        <SupervisedUserCircleIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={"See Associated Members"} />
+                    {membersOpen ? <ExpandLess />: <ExpandMore />}
+                </ListItem>
+
+                <Collapse
+                    in={membersOpen}
+                    timeout={'auto'}
+                    unmountOnExit
+                >
+                    <List dense={true}>
+                        <ListItem> Member  </ListItem>
+                        <ListItem> Member </ListItem>
+                        <ListItem> Member </ListItem>
+                        <ListItem> Member  </ListItem>
+                    </List>
+                </Collapse>
+
+            </List>
+        </Popover>
         );
+    }
+
+    nestItems(classes, assignments) {
         let list = classes.map(d => {
             let notes = d.course_note ? d.course_note : "";
             return (
@@ -146,80 +326,7 @@ class CreateList extends Component {
                                     <MoreVertIcon />
                                 </IconButton>
                             </Tooltip>
-                            <Popover
-                                open={Boolean(this.state.anchorEl)}
-                                anchorEl={this.state.anchorEl}
-                                onClose={this.handleClose}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'left',
-                                }}
-                            >
-                                <Typography style={{ padding: "0.5em" }}> Current Groups: </Typography>
-                                <List
-                                      style={{ paddingLeft: "1em" }}
-                                >
-                                    <ListItem>
-                                        <ListItemText
-                                        style={{ padding: 0, margin: 0 }}
-                                        primary={'Group 1'}
-                                        />
-                                        <ListItemSecondaryAction>
-                                            <Tooltip title="Delete Group" aria-label="delete course">
-                                                <IconButton edge="end" aria-label="delete">
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </Tooltip>
-                                        </ListItemSecondaryAction>
-                                    </ListItem>
-                                    <ListItem>
-                                        <ListItemText
-                                            style={{ padding: 0, margin: 0 }}
-                                            primary={'Group 2'}
-                                        />
-                                        <ListItemSecondaryAction>
-                                            <Tooltip title="Delete Group" aria-label="delete course">
-                                                <IconButton edge="end" aria-label="delete">
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </Tooltip>
-                                        </ListItemSecondaryAction>
-                                    </ListItem>
-                                    <ListItem>
-                                        <ListItemText
-                                            style={{ padding: 0, margin: 0 }}
-                                            primary={'Group 3'}
-                                        />
-                                        <ListItemSecondaryAction>
-                                            <Tooltip title="Delete Group" aria-label="delete course">
-                                                <IconButton edge="end" aria-label="delete">
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </Tooltip>
-                                        </ListItemSecondaryAction>
-                                    </ListItem>
-                                </List>
-                                <FormControl
-                                    style={{ padding: "0.5em" }}>
-                                    <InputLabel id="groupSelect-label-addgroup" style={{ padding: "0.5em" }}>Add  a Group</InputLabel>
-                                <Select
-                                    name="GroupName"
-                                    required
-                                    labelId={"groupSelect-label-addgroup"}
-                                    onChange={this.handleInputChange}
-                                    value={this.state.GroupName}
-                                    style={{ minWidth: 150}}
-                                >
-                                    <MenuItem value={""} disabled> Select a Group</MenuItem>
-                                    {optionGroups}
-                                </Select>
-                                </FormControl>
-                                <Typography style={{ padding: "0.5em" }}> Associated Members </Typography>
-                            </Popover>
+                            {this.groupMenu()}
                         </ListItemSecondaryAction>
                     </ListItem>
                     <Divider variant="inset" />
@@ -253,32 +360,14 @@ class CreateList extends Component {
                                                         <DeleteIcon />
                                                     </IconButton>
                                                 </Tooltip>
-                                                {/*<Tooltip title="Groups" aria-label="groups">*/}
-                                                {/*    <IconButton edge="end" aria-label="groups"*/}
-                                                {/*                onClick={ this.handleClick}*/}
-                                                {/*    >*/}
-                                                {/*        <MoreVertIcon />*/}
-                                                {/*    </IconButton>*/}
-                                                {/*</Tooltip>*/}
-                                                {/*<Popover*/}
-                                                {/*    open={Boolean(this.state.anchorEl)}*/}
-                                                {/*    anchorEl={this.state.anchorEl}*/}
-                                                {/*    onClose={this.handleClose}*/}
-                                                {/*    anchorOrigin={{*/}
-                                                {/*        vertical: 'top',*/}
-                                                {/*        horizontal: 'right',*/}
-                                                {/*    }}*/}
-                                                {/*    transformOrigin={{*/}
-                                                {/*        vertical: 'top',*/}
-                                                {/*        horizontal: 'left',*/}
-                                                {/*    }}*/}
-                                                {/*    style={{padding: '2em'}}*/}
-                                                {/*>*/}
-                                                {/*    <Typography> Group Info </Typography>*/}
-                                                {/*    <Typography> Group Info </Typography>*/}
-                                                {/*    <Typography> Group Info </Typography>*/}
-                                                {/*    <Typography> Group Info </Typography>*/}
-                                                {/*</Popover>*/}
+                                                <Tooltip title="Groups" aria-label="groups">
+                                                    <IconButton edge="end" aria-label="groups"
+                                                                onClick={ this.handleClick}
+                                                    >
+                                                        <MoreVertIcon />
+                                                    </IconButton>
+                                                </Tooltip>
+                                                {this.groupMenu()}
                                             </ListItemSecondaryAction>
                                         </ListItem>
                                         <Divider variant="inset" />
