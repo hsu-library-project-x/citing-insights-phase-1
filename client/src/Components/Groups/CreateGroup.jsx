@@ -15,7 +15,6 @@ class CreateGroup extends Component {
         this.handleOpen = this.handleOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleValidation = this.handleValidation.bind(this);
     }
 
@@ -49,39 +48,6 @@ class CreateGroup extends Component {
         this.setState({
             [name]: value
         });
-    }
-
-
-    handleSubmit(event) {
-        event.preventDefault();
-        this.handleClose();
-
-        console.log(event);
-
-        let memberArray = this.handleValidation(this.state.members);
-
-        let data = {
-            creator: this.props.user.email,
-            name: this.state.GroupName,
-            note: this.state.GroupNote,
-            members: memberArray
-        };
-
-        let json = JSON.stringify(data);
-
-        console.log('about to post');
-        fetch("/api/groups/", {
-            method: "POST",
-            body: json,
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(() => {
-                this.handleClose();
-                alert("Group created");
-            })
     }
 
     render() {

@@ -49,23 +49,27 @@ class ManageGroups extends Component {
     handleDeleteGroup(e, id) {
         if (window.confirm("Are you sure you wish to delete this group?")) {
             if (window.confirm("WARNING!! If you delete this group, this group will stop existing for you and other members")) {
-                // fetch('api/courses/' + id, {
-                //     method: 'Delete',
-                //     headers: {
-                //         'Accept': 'application/json',
-                //         'Content-Type': 'application/json'
-                //     },
-                // }).then((response) => {
-                //         if (response.status === 204) {
-                //             this.handleAlert('Course Deleted', 'success');
-                //         }
-                //         else {
-                //             this.handleAlert('Could not Delete Course', 'error');
-                //         }
-                //     }
-                // );
+                fetch('api/groups/' + id, {
+                    method: 'Delete',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                }).then((response) => {
+                        if (response.status === 204) {
+                            alert('Group Deleted');
+                            //this.handleAlert('Group Deleted', 'success');
+                        }
+                        else {
+                            alert('Cannot delete group');
+                            //this.handleAlert('Could not Delete Group', 'error');
+                        }
+                        this.getGroups();
+                    }
+                );
             }
         }
+
     }
 
     GenList() {
@@ -94,7 +98,7 @@ class ManageGroups extends Component {
                             <Tooltip title="Delete Group" aria-label="delete group">
                                 <IconButton edge="end"
                                     aria-label="delete"
-                                    onClick={e => that.handleDeleteGroup(e)}
+                                    onClick={e => that.handleDeleteGroup(e, group._id)}
                                 >
                                     <DeleteIcon />
                                 </IconButton>
@@ -109,6 +113,7 @@ class ManageGroups extends Component {
             })}
         </List>;
     }
+
 
     render() {
         return (
@@ -136,7 +141,8 @@ class ManageGroups extends Component {
                         >
                             <Grid item >
                                 <CreateGroup
-                                    user={this.props.user} />
+                                    user={this.props.user}
+                                    getGroups={this.props.getGroups} />
                             </Grid>
                             <Grid item>
                                 <RequestGroup
