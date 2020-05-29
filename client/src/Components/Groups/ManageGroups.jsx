@@ -9,7 +9,7 @@ import {
     ListItem,
     List,
     ListItemAvatar,
-    Avatar, ListItemText, ListItemSecondaryAction, Tooltip, IconButton, Grid
+    Avatar, ListItemText, ListItemSecondaryAction, Tooltip, IconButton, Grid, Snackbar
 } from '@material-ui/core';
 import { withRouter } from "react-router-dom";
 import GroupWorkIcon from '@material-ui/icons/GroupWork';
@@ -21,12 +21,16 @@ import CreateGroup from "./CreateGroup";
 import RequestGroup from "./RequestGroup";
 import EditGroup from "./EditGroup";
 import JoinRequests from "./JoinRequests";
+import Alert from "@material-ui/lab/Alert";
+import CreateClass from "../Classes/CreateClass";
 
 class ManageGroups extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            AvailableGroups: []
+            AvailableGroups: [],
+            snackbarOpen:false, //we get away with only one snackbar vairable because mat-ui only allows one snackbar to be open
+            messageInfo: undefined,
         };
 
         this.getGroups();
@@ -34,6 +38,68 @@ class ManageGroups extends Component {
         this.getGroups = this.getGroups.bind(this);
         this.handleDeleteGroup = this.handleDeleteGroup.bind(this);
         this.GenList = this.GenList.bind(this);
+        this.processQueue = this.processQueue.bind(this);
+        this.handleQueueAlert = this.handleQueueAlert.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.handleExited = this.handleExited.bind(this);
+
+        this.queueRef = React.createRef();
+        this.queueRef.current = [];
+    }
+
+    processQueue(){
+        if(this.queueRef.current.length >0){
+            this.setState({
+                messageInfo: this.queueRef.current.shift(),
+                snackbarOpen:true}
+            );
+        }
+    };
+
+    handleQueueAlert(message, severity){
+        this.queueRef.current.push({
+            message: message,
+            severity:severity,
+            key: new Date().getTime(),
+        });
+        if(this.state.snackbarOpen){
+            this.setState({snackbarOpen:false});
+        }else{
+            this.processQueue();
+        }
+        this.getGroups();
+    };
+
+    handleClose(event, reason){
+        if(reason === 'clickaway'){
+            return;
+        }
+        this.setState({snackbarOpen:false});
+    };
+
+    handleExited(){
+        this.processQueue();
+    };
+
+    DisplayAlerts(){
+        return <Snackbar
+            key={this.state.messageInfo ? this.state.messageInfo.key : undefined}
+            anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            open={this.state.snackbarOpen}
+            autoHideDuration={3000}
+            onClose={this.handleClose}
+            onExited={this.handleExited}
+        >
+            <Alert variant={'filled'}
+                   severity={this.state.messageInfo ? this.state.messageInfo.severity : undefined}
+                   onClose={this.handleClose}
+            >
+                {this.state.messageInfo ? this.state.messageInfo.message : undefined}
+            </Alert>
+        </Snackbar>
     }
 
     getGroups() {
@@ -118,6 +184,7 @@ class ManageGroups extends Component {
     render() {
         return (
             <Container maxWidth={"md"}>
+                {this.DisplayAlerts()}
                 <Grid
                     container
                     direction="row"
@@ -142,11 +209,14 @@ class ManageGroups extends Component {
                             <Grid item >
                                 <CreateGroup
                                     user={this.props.user}
-                                    getGroups={this.props.getGroups} />
+                                    handleQueueAlert={this.handleQueueAlert}
+                                />
                             </Grid>
                             <Grid item>
                                 <RequestGroup
-                                    user={this.props.user} />
+                                    user={this.props.user}
+                                    handleQueueAlert={this.handleQueueAlert}
+                                />
                             </Grid>
                         </Grid>
                     </Grid>

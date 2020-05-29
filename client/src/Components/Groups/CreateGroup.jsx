@@ -16,6 +16,11 @@ class CreateGroup extends Component {
         this.handleClose = this.handleClose.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleValidation = this.handleValidation.bind(this);
+        this.handleAlert = this.handleAlert.bind(this);
+    }
+
+    handleAlert(message, severity){
+        this.props.handleQueueAlert(message, severity);
     }
 
     handleValidation = (members) => {
@@ -30,7 +35,7 @@ class CreateGroup extends Component {
 
         //expression.test(String(email).toLowerCase())
 
-    }
+    };
 
     handleOpen = () => {
         this.setState({ open: true });
@@ -96,9 +101,14 @@ class CreateGroup extends Component {
                                     'Content-Type': 'application/json'
                                 }
                             })
-                                .then(() => {
+                                .then((response) => {
+                                    if (response.status === 201){
+                                        this.handleAlert("Group Created", "success");
+                                    }
+                                    else{
+                                        this.handleAlert("Unable to Create Group", "error");
+                                    }
                                     this.handleClose();
-                                    alert("Group created");
                                 })
                         }}
                         >

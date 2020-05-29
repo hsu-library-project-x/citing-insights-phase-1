@@ -76,7 +76,7 @@ module.exports = {
         var pending = {
             "email": req.body.email,
             "message": req.body.message
-        }
+        };
 
         groupsModel.findOneAndUpdate(
             { _id: groupId },
@@ -88,7 +88,7 @@ module.exports = {
                         error: err
                     });
                 }
-                return res.json(groups);
+                return res.status(201).json(groups);
             });
     },
 

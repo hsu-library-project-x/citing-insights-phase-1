@@ -14,6 +14,7 @@ class RequestGroup extends Component {
             AvailableGroups: [],
             GroupId: '',
             Message: '',
+            Name: "",
         };
 
         this.getGroups();
@@ -22,12 +23,12 @@ class RequestGroup extends Component {
         this.handleOpen = this.handleOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        //  this.handleAlert = this.handleAlert.bind(this);
+        this.handleAlert = this.handleAlert.bind(this);
     }
 
-    // handleAlert(message, severity){
-    //     this.props.handleQueueAlert(message, severity);
-    // }
+    handleAlert(message, severity){
+        this.props.handleQueueAlert(message, severity);
+    }
 
     getGroups() {
         let that = this;
@@ -109,7 +110,7 @@ class RequestGroup extends Component {
                                 if (groupList[i].creator === this.props.user.email &&
                                     groupList[i]._id === this.state.GroupId) {
                                     creatorCheck = true;
-                                    alert("Can't request to join group; You are the creator.");
+                                    this.handleAlert("Can't request to join group; You are the creator.", "error");
                                     this.handleClose();
                                     break;
                                 }
@@ -118,7 +119,7 @@ class RequestGroup extends Component {
                                     for (var j = 0; j < groupList.pendingMembers.length; j++) {
                                         if (groupList.pendingMembers[j] === this.props.user.email) {
                                             pendingCheck = true;
-                                            alert("You have already requested to join this group.");
+                                            this.handleAlert("You have already requested to join this group.", "error");
                                             this.handleClose();
                                             break;
                                         }
@@ -130,7 +131,7 @@ class RequestGroup extends Component {
                                     for (var k = 0; k < groupList.members.length; k++) {
                                         if (groupList.members[k] === this.props.user.email) {
                                             memberCheck = true;
-                                            alert("You are already a member of this group.");
+                                            this.handleAlert("You are already a member of this group.", "error");
                                             this.handleClose();
                                             break;
                                         }
@@ -156,8 +157,10 @@ class RequestGroup extends Component {
                                     }
                                 })
                                     .then((response) => {
+                                        if(response.status === 201){
+                                            this.handleAlert("Request to join sent to group's administrator", "success");
+                                        }
                                         this.handleClose();
-                                        alert("Request to join sent to group's administrator");
                                     })
                             }
 
@@ -177,6 +180,13 @@ class RequestGroup extends Component {
                                     {optionGroups}
                                 </Select>
                                 <br />
+
+                                <TextField
+                                    name="Name"
+                                    label={"Name"}
+                                    onChange={this.handleInputChange}
+                                    style={{ marginBottom: "1em" }} />
+
                                 <TextField
                                     name="Message"
                                     label={"Message (optional)"}
