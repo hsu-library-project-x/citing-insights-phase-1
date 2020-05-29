@@ -146,6 +146,34 @@ class CreateList extends Component {
             });
     }
 
+    getAssociatedMembers(memberList){
+        let listed =[];
+        let listItems = [];
+        for (let i=0; i<memberList.length; i++){
+            let member = memberList[i];
+
+            if( listed.includes(member) === false){
+                listed.push(member);
+                listItems.push (
+                    <ListItem
+                        key={member} /* member email */
+                    >
+                        <ListItemIcon>
+                            <PersonOutlineIcon />
+                        </ListItemIcon>
+
+                        <ListItemText
+                            style={{ padding: 0, margin: 0 }}
+                            primary={member}
+                        />
+                    </ListItem>
+                );
+            }
+        }
+
+        return listItems;
+    }
+
 
     groupMenu(){
         let groupList = this.state.AvailableGroups;
@@ -195,23 +223,16 @@ class CreateList extends Component {
 
 
         // wrong but the best I could do for now
-        let members = groupList.map(group =>{
-            // for loop does not loop
-            for (let i=0; i<group.members.length; i++) {
-                return (
-                    <ListItem>
-                        <ListItemIcon>
-                            <PersonOutlineIcon/>
-                        </ListItemIcon>
-                        <ListItemText
-                            style={{padding: 0, margin: 0}}
-                            primary={group.members[i]}
-                        />
-                    </ListItem>
-                );
+        let groupMemberArrays = this.state.AvailableGroups.map(group => group.members[0]);
+        let toReturn = [];
+        for (let j=0; j<groupMemberArrays.length; j++) {
+            let groupList = groupMemberArrays[j];
+            for (let i = 0; i < groupList.length; i++) {
+                toReturn.push(groupList[i]);
             }
-        });
+        }
 
+        let members = this.getAssociatedMembers(toReturn);
 
 
 

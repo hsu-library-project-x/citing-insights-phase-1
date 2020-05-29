@@ -10,7 +10,7 @@ import {
     FormControl,
     Tooltip,
     IconButton,
-    ListItemSecondaryAction, ListItemAvatar, Avatar, ListItemText
+    ListItemSecondaryAction, ListItemAvatar, Avatar, ListItemText, Badge
 } from "@material-ui/core";
 
 
@@ -46,14 +46,21 @@ class JoinRequests extends Component {
     render(){
         return(
             <span>
+
                  <Tooltip title="Join Requests" aria-label="requests to join group">
                         <IconButton edge="end"
                                     aria-label="notification"
                                     onClick={this.handleOpen}
                         >
-                            <AddAlertIcon />
+                            {/*If pending.length is 0 then badge simply won't appear*/}
+                            <Badge  color='primary' badgeContent={this.state.pending.length}>
+                                <AddAlertIcon />
+                            </Badge>
                         </IconButton>
+
+
                  </Tooltip>
+
                 <Modal
                     aria-labelledby="join-group-modal"
                     open={this.state.open}
