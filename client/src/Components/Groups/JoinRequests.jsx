@@ -46,7 +46,6 @@ class JoinRequests extends Component {
     render(){
         return(
             <span>
-
                  <Tooltip title="Join Requests" aria-label="requests to join group">
                         <IconButton edge="end"
                                     aria-label="notification"
