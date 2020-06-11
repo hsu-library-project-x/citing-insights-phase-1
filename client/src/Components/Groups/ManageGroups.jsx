@@ -29,7 +29,7 @@ class ManageGroups extends Component {
         super(props);
         this.state = {
             AvailableGroups: [],
-            snackbarOpen:false, //we get away with only one snackbar vairable because mat-ui only allows one snackbar to be open
+            snackbarOpen: false, //we get away with only one snackbar vairable because mat-ui only allows one snackbar to be open
             messageInfo: undefined,
         };
 
@@ -47,41 +47,42 @@ class ManageGroups extends Component {
         this.queueRef.current = [];
     }
 
-    processQueue(){
-        if(this.queueRef.current.length >0){
+    processQueue() {
+        if (this.queueRef.current.length > 0) {
             this.setState({
                 messageInfo: this.queueRef.current.shift(),
-                snackbarOpen:true}
+                snackbarOpen: true
+            }
             );
         }
     };
 
-    handleQueueAlert(message, severity){
+    handleQueueAlert(message, severity) {
         this.queueRef.current.push({
             message: message,
-            severity:severity,
+            severity: severity,
             key: new Date().getTime(),
         });
-        if(this.state.snackbarOpen){
-            this.setState({snackbarOpen:false});
-        }else{
+        if (this.state.snackbarOpen) {
+            this.setState({ snackbarOpen: false });
+        } else {
             this.processQueue();
         }
         this.getGroups();
     };
 
-    handleClose(event, reason){
-        if(reason === 'clickaway'){
+    handleClose(event, reason) {
+        if (reason === 'clickaway') {
             return;
         }
-        this.setState({snackbarOpen:false});
+        this.setState({ snackbarOpen: false });
     };
 
-    handleExited(){
+    handleExited() {
         this.processQueue();
     };
 
-    DisplayAlerts(){
+    DisplayAlerts() {
         return <Snackbar
             key={this.state.messageInfo ? this.state.messageInfo.key : undefined}
             anchorOrigin={{
@@ -94,8 +95,8 @@ class ManageGroups extends Component {
             onExited={this.handleExited}
         >
             <Alert variant={'filled'}
-                   severity={this.state.messageInfo ? this.state.messageInfo.severity : undefined}
-                   onClose={this.handleClose}
+                severity={this.state.messageInfo ? this.state.messageInfo.severity : undefined}
+                onClose={this.handleClose}
             >
                 {this.state.messageInfo ? this.state.messageInfo.message : undefined}
             </Alert>
@@ -104,7 +105,8 @@ class ManageGroups extends Component {
 
     getGroups() {
         let that = this;
-        fetch('/api/groups/').then(function (response) {
+        let id = this.props.user.email;
+        fetch('/api/groups/findOwner/' + id).then(function (response) {
             return response.json();
         })
             .then(function (myJson) {
@@ -122,16 +124,16 @@ class ManageGroups extends Component {
                         'Content-Type': 'application/json'
                     },
                 }).then((response) => {
-                        if (response.status === 204) {
-                            alert('Group Deleted');
-                            //this.handleAlert('Group Deleted', 'success');
-                        }
-                        else {
-                            alert('Cannot delete group');
-                            //this.handleAlert('Could not Delete Group', 'error');
-                        }
-                        this.getGroups();
+                    if (response.status === 204) {
+                        alert('Group Deleted');
+                        //this.handleAlert('Group Deleted', 'success');
                     }
+                    else {
+                        alert('Cannot delete group');
+                        //this.handleAlert('Could not Delete Group', 'error');
+                    }
+                    this.getGroups();
+                }
                 );
             }
         }
@@ -149,7 +151,7 @@ class ManageGroups extends Component {
             {that.state.AvailableGroups.map((group) => {
                 return (
                     <ListItem
-                     key={group._id}>
+                        key={group._id}>
                         <ListItemAvatar>
                             <Avatar>
                                 <GroupWorkIcon />
@@ -169,7 +171,11 @@ class ManageGroups extends Component {
                                     <DeleteIcon />
                                 </IconButton>
                             </Tooltip>
-                            <JoinRequests />
+                            <JoinRequests
+                                id={group._id}
+                                pendingMembers={group.pendingMembers}
+                                handleQueueAlert={this.handleQueueAlert}
+                            />
 
 
                         </ListItemSecondaryAction>

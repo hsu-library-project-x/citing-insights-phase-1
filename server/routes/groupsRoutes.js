@@ -10,6 +10,12 @@ router.get('/', groupsController.list);
 /*
  * GET
  */
+router.get('/findOwner/:id', groupsController.findOwner);
+
+
+/*
+ * GET
+ */
 router.get('/:id', groupsController.show);
 
 /*
@@ -21,6 +27,17 @@ router.post('/', groupsController.create);
  * PUT
  */
 router.put('/pending', groupsController.update);
+
+
+/*
+ * PUT
+ */
+router.put('/pendingAdd/', groupsController.pendingAdd);
+
+/*
+ * PUT
+ */
+router.put('/pendingReject/', groupsController.pendingReject);
 
 /*
  * DELETE
