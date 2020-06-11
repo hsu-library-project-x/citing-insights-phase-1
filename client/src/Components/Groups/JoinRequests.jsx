@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
     TextField,
     Modal,
@@ -34,22 +34,27 @@ class JoinRequests extends Component {
 
     }
 
+    handleAlert(message, severity) {
+        this.props.handleQueueAlert(message, severity);
+    }
+
     handleOpen = () => {
-        this.setState({open: true});
+        this.setState({ open: true });
     };
 
     handleClose = () => {
-        this.setState({open: false});
+        this.setState({ open: false });
     };
 
 
-    render(){
-        return(
+    render() {
+        return (
             <span>
                  <Tooltip title="Join Requests" aria-label="requests to join group">
                         <IconButton edge="end"
                                     aria-label="notification"
-                                    onClick={this.handleOpen}
+                                    onClick={e => this.handleOpen(e, this.props.id)}
+
                         >
                             {/*If pending.length is 0 then badge simply won't appear*/}
                             <Badge  color='primary' badgeContent={this.state.pending.length}>
@@ -58,87 +63,84 @@ class JoinRequests extends Component {
                         </IconButton>
 
 
-                 </Tooltip>
+                </Tooltip>
 
                 <Modal
                     aria-labelledby="join-group-modal"
                     open={this.state.open}
                     onClose={this.handleClose}
-                    closeAfterTransition = {true}
-                    style={{marginTop:'5%', width:'50%', marginRight:'auto', marginLeft:'auto'}}
+                    closeAfterTransition={true}
+                    style={{ marginTop: '5%', width: '50%', marginRight: 'auto', marginLeft: 'auto' }}
                 >
                     <Paper>
-                        <Typography style={{paddingTop: "1em"}} align={"center"} variant={"h4"}
-                                    component={"h2"} gutterBottom={true}> Join Requests   </Typography>
+                        <Typography style={{ paddingTop: "1em" }} align={"center"} variant={"h4"}
+                            component={"h2"} gutterBottom={true}> Join Requests   </Typography>
                         <form className={'modal_form'} >
 
-                                <List>
-                                    <ListItem>
-                                          <ListItemAvatar>
-                                            <Avatar>
-                                                <AccountCircleIcon />
-                                            </Avatar>
-                                          </ListItemAvatar>
-                                        <ListItemText
-                                            primary={'Group Member 1'}
-                                            // secondary={'group 1 notes'}
-                                        />
-                                          <ListItemSecondaryAction>
-                                               <Tooltip title="Add Member" aria-label="add member">
-                                                     <IconButton edge="end"
-                                                                 aria-label="add"
-                                                         // onClick={e => this.handleDeleteGroup(e)}
-                                                     >
-                                                         <CheckIcon />
+                            <List>
+                                {this.props.pendingMembers.map((member) => {
+                                    return (
+                                        <ListItem>
+                                            <ListItemAvatar>
+                                                <Avatar>
+                                                    <AccountCircleIcon />
+                                                </Avatar>
+                                            </ListItemAvatar>
+                                            <ListItemText
+                                                primary={member.email}
+                                                secondary={member.message}
+                                            />
+                                            <ListItemSecondaryAction>
+                                                <Tooltip title="Add Member" aria-label="add member">
+                                                    <IconButton edge="end"
+                                                        aria-label="add"
+                                                        onClick={e => {
+                                                            let body = {
+                                                                groupId: this.props.id,
+                                                                pendingEmail: member.email,
+                                                                pendingId: member._id
+                                                            };
+                                                            let json = JSON.stringify(body);
+
+                                                            fetch("/api/groups/pendingAdd/", {
+                                                                method: "PUT",
+                                                                body: json,
+                                                                headers: {
+                                                                    'Accept': 'application/json',
+                                                                    'Content-Type': 'application/json'
+                                                                }
+                                                            })
+                                                                .then((response) => {
+                                                                    if (response.status === 201) {
+                                                                        this.handleAlert("Member successfully added to group.", "success");
+                                                                    }
+                                                                    this.handleClose();
+                                                                });
+                                                        }}>
+
+                                                        <CheckIcon />
                                                     </IconButton>
-                                                 </Tooltip>
-                                               <Tooltip title="Reject Member" aria-label="reject member">
-                                                     <IconButton edge="end"
-                                                                 aria-label="reject"
-                                                         // onClick={e => this.handleDeleteGroup(e)}
-                                                     >
-                                                         <ClearIcon />
-                                                    </IconButton>
-                                                 </Tooltip>
-                                          </ListItemSecondaryAction>
-                                    </ListItem>
-                                    <ListItem>
-                                         <ListItemAvatar>
-                                            <Avatar>
-                                                <AccountCircleIcon />
-                                            </Avatar>
-                                          </ListItemAvatar>
-                                           <ListItemText
-                                               primary={'Group Member 2'}
-                                               // secondary={'group 1 notes'}
-                                           />
-                                          <ListItemSecondaryAction>
-                                                  <Tooltip title="Add Member" aria-label="add member">
-                                                     <IconButton edge="end"
-                                                                 aria-label="add"
-                                                         // onClick={e => this.handleDeleteGroup(e)}
-                                                     >
-                                                         <CheckIcon />
-                                                    </IconButton>
-                                                 </Tooltip>
-                                                    <Tooltip title="Remove Member" aria-label="remove member">
-                                                     <IconButton edge="end"
-                                                                 aria-label="remove"
-                                                         // onClick={e => this.handleDeleteGroup(e)}
-                                                     >
-                                                         <ClearIcon />
-                                                    </IconButton>
-                                                 </Tooltip>
-                                          </ListItemSecondaryAction>
+                                                </Tooltip>
+                                            <Tooltip title="Reject Member" aria-label="reject member">
+                                                <IconButton edge="end"
+                                                    aria-label="reject"
+                                                    onClick={e => this.handleDeleteGroup(e)}
+                                                >
+                                                    <ClearIcon />
+                                                </IconButton>
+                                            </Tooltip>
+                                            </ListItemSecondaryAction>
                                         </ListItem>
-                                </List>
-                            <FormControl>
-                                <Button  variant="contained" type="submit" color="primary" onClick={this.handleClose}> Ok </Button>
-                            </FormControl>
+                            );
+                        })}
+                            </List>
+                        <FormControl>
+                            <Button variant="contained" type="submit" color="primary" onClick={this.handleClose}> Ok </Button>
+                        </FormControl>
                         </form>
                     </Paper>
                 </Modal>
-            </span>
+            </span >
         );
     }
 }

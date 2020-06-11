@@ -21,6 +21,20 @@ module.exports = {
             return res.json(groupss);
         });
     },
+    
+    /** find groups that belong to user (user is creator) */
+    findOwner: function (req, res) {
+        var userId = req.params.id;
+        groupsModel.find({creator: userId},function (err, groupss) {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Error when getting groups.',
+                    error: err
+                });
+            }
+            return res.json(groupss);
+        });
+    },
 
     /**
      * groupsController.show()
@@ -52,9 +66,8 @@ module.exports = {
             name: req.body.name,
             note: req.body.note,
             members: req.body.members
-
         });
-
+        
         groups.save(function (err, groups) {
             if (err) {
                 return res.status(500).json({
@@ -91,7 +104,60 @@ module.exports = {
                 return res.status(201).json(groups);
             });
     },
+    
+    /**
+     * groupsController.pendingAdd()
+     */
+    pendingAdd: function (req, res) {
+        var groupId = req.body.groupId;
+        var pendingEmail= req.body.pendingEmail;
+        var pendingId = req.body.pendingId;
 
+        groupsModel.findOneAndUpdate(
+            { _id: groupId },
+            // { $push: { members: pendingEmail } },
+            { $pull: { pendingMembers: {_id: pendingId}}},
+            function (err, groups) {
+                if (err) {
+                    return res.status(500).json({
+                        message: 'Error when getting groups.',
+                        error: err
+                    });
+                }
+                else{
+                    groupsModel.findOneAndUpdate(
+                        { _id: groupId },
+                        { $push: {members: pendingEmail}},
+                        function (err, groups) {
+                            if (err) {
+                                return res.status(500).json({
+                                    message: 'Error when getting groups.',
+                                    error: err
+                                });
+                            }
+                        });
+                }
+                return res.status(201).json(groups);
+            });
+    },
+
+    pendingReject: function (req, res) {
+        var groupId = req.body.groupId;
+        var pendingId = req.body.pendingEmail;
+
+        groupsModel.findOneAndUpdate(
+            { _id: groupId },
+            { $push: { members: pendingId } },
+            function (err, groups) {
+                if (err) {
+                    return res.status(500).json({
+                        message: 'Error when getting groups.',
+                        error: err
+                    });
+                }
+                return res.status(201).json(groups);
+            });
+    },
     /**
      * groupsController.remove()
      */

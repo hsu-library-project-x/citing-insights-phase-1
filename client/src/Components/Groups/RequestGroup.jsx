@@ -26,7 +26,7 @@ class RequestGroup extends Component {
         this.handleAlert = this.handleAlert.bind(this);
     }
 
-    handleAlert(message, severity){
+    handleAlert(message, severity) {
         this.props.handleQueueAlert(message, severity);
     }
 
@@ -104,6 +104,7 @@ class RequestGroup extends Component {
                                 memberCheck = false;
 
                             for (var i = 0; i < groupList.length; i++) {
+
                                 //Check to see if the user is the creator of group
                                 console.log(groupList[i]);
                                 console.log(this.props.user.email);
@@ -114,6 +115,7 @@ class RequestGroup extends Component {
                                     this.handleClose();
                                     break;
                                 }
+
                                 //Check to see if user is already a pending member
                                 if (groupList.pendingMembers !== undefined) {
                                     for (var j = 0; j < groupList.pendingMembers.length; j++) {
@@ -157,7 +159,7 @@ class RequestGroup extends Component {
                                     }
                                 })
                                     .then((response) => {
-                                        if(response.status === 201){
+                                        if (response.status === 201) {
                                             this.handleAlert("Request to join sent to group's administrator", "success");
                                         }
                                         this.handleClose();

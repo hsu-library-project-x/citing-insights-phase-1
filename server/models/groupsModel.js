@@ -5,7 +5,7 @@ var groupsSchema = new Schema({
 	'creator' : String,
 	'name' : String,
 	'note' : String,
-	'members' : Array,
+	'members' : [String],
 	'pendingMembers': [{
 		email:String,
 		message: String
