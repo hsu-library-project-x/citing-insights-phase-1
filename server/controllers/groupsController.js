@@ -115,7 +115,6 @@ module.exports = {
 
         groupsModel.findOneAndUpdate(
             { _id: groupId },
-            // { $push: { members: pendingEmail } },
             { $pull: { pendingMembers: {_id: pendingId}}},
             function (err, groups) {
                 if (err) {
@@ -143,11 +142,11 @@ module.exports = {
 
     pendingReject: function (req, res) {
         var groupId = req.body.groupId;
-        var pendingId = req.body.pendingEmail;
-
+        var pendingId = req.body.pendingId;
+ 
         groupsModel.findOneAndUpdate(
             { _id: groupId },
-            { $push: { members: pendingId } },
+            { $pull: { pendingMembers: {_id: pendingId } } },
             function (err, groups) {
                 if (err) {
                     return res.status(500).json({

@@ -124,7 +124,28 @@ class JoinRequests extends Component {
                                             <Tooltip title="Reject Member" aria-label="reject member">
                                                 <IconButton edge="end"
                                                     aria-label="reject"
-                                                    onClick={e => this.handleDeleteGroup(e)}
+                                                    onClick={e => {
+                                                        let body = {
+                                                            groupId: this.props.id,
+                                                            pendingId: member._id
+                                                        };
+                                                        let json = JSON.stringify(body);
+
+                                                        fetch("/api/groups/pendingReject/", {
+                                                            method: "PUT",
+                                                            body: json,
+                                                            headers: {
+                                                                'Accept': 'application/json',
+                                                                'Content-Type': 'application/json'
+                                                            }
+                                                        })
+                                                            .then((response) => {
+                                                                if (response.status === 201) {
+                                                                    this.handleAlert("Request rejected.", "success");
+                                                                }
+                                                                this.handleClose();
+                                                            });
+                                                    }}
                                                 >
                                                     <ClearIcon />
                                                 </IconButton>
