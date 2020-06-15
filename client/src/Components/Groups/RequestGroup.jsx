@@ -60,15 +60,7 @@ class RequestGroup extends Component {
     }
 
     render() {
-        // let groups = this.props.groupList.map(d => {
-        //     return (
-        //         <MenuItem value={d._id} key={d._id + d.name}>
-        //             {d.name}
-        //         </MenuItem>
-        //     );
-        //
-        // });
-        console.log(this.state);
+
         let groupList = this.state.AvailableGroups;
         let optionGroups = groupList.map((group) =>
             <MenuItem value={group._id} key={group._id}> {group.name}</MenuItem>
@@ -106,8 +98,7 @@ class RequestGroup extends Component {
                             for (var i = 0; i < groupList.length; i++) {
 
                                 //Check to see if the user is the creator of group
-                                console.log(groupList[i]);
-                                console.log(this.props.user.email);
+
                                 if (groupList[i].creator === this.props.user.email &&
                                     groupList[i]._id === this.state.GroupId) {
                                     creatorCheck = true;
@@ -131,9 +122,7 @@ class RequestGroup extends Component {
                                 //check to see if user is already in members
                                 if (groupList[i].members !== undefined) {
                                     for (var k = 0; k < groupList[i].members.length; k++) {
-                                        console.log(groupList[i].members[k] === this.props.user.email);
-                                        console.log(groupList[i].members[k]);
-                                        console.log(this.props.user.email);
+
                                         if (groupList[i].members[k] === this.props.user.email) {
                                             memberCheck = true;
                                             this.handleAlert("You are already a member of this group.", "error");

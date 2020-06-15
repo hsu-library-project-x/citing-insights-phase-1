@@ -87,8 +87,6 @@ class JoinRequests extends Component {
                                         message = member.message;
                                     }
                                     
-                                    console.log(message);
-
                                     return (
                                         <ListItem>
                                             <ListItemAvatar>

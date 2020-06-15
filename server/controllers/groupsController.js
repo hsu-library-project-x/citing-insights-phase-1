@@ -83,15 +83,14 @@ module.exports = {
      * groupsController.update()
      */
     update: function (req, res) {
-        console.log(req.body);
 
         let groupId = req.body.id;
 
         var group = {
-            "name": req.body.name,
-            "creator": req.body.creator,
-            "note": req.body.note,
-            "members": req.body.members
+            name: req.body.name,
+            creator: req.body.creator,
+            note: req.body.note,
+            members: req.body.members
         };
         
         groupsModel.findOneAndUpdate(
@@ -114,7 +113,6 @@ module.exports = {
     pendingAdd: function (req, res) {
         var groupId = req.body.id;
 
-        console.log(groupId);
         var pending = {
             "email": req.body.email,
             "message": req.body.message,
