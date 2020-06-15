@@ -36,6 +36,7 @@ class EditGroup extends Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.getGroup = this.getGroup.bind(this);
         this.handleAlert = this.handleAlert.bind(this);
+        this.handleValidation = this.handleValidation.bind(this);
 
         this.getGroup();
     }
@@ -63,6 +64,31 @@ class EditGroup extends Component {
         });
     }
 
+    handleValidation = (members) => {
+
+        console.log(members);
+        //Need to delimit CSV, and validate emails
+        const expression = /(?!.*\.{2})^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+
+        let valid = true;
+        let invalid_email = "";
+
+        //Validate each email
+        for (let i = 0; i < members.length; i++) {
+            if (expression.test(String(members[i]).toLowerCase()) === false) {
+                valid = false;
+                invalid_email = members[i];
+            }
+        }
+
+        if (valid) {
+            return "true";
+        }
+        else {
+            return invalid_email;
+        }
+    };
+
     getGroup() {
         let that = this;
         let id = this.props.id;
@@ -70,7 +96,6 @@ class EditGroup extends Component {
             return response.json();
         })
             .then(function (myJson) {
-                console.log(myJson)
                 that.setState({
                     groupName: myJson.name,
                     creator: myJson.creator,
@@ -81,8 +106,6 @@ class EditGroup extends Component {
     }
 
     render() {
-        let staticMembers = this.state.members;
-        console.log(this.state);
         return (
             <span>
                 <Tooltip title="Edit Group" aria-label="edit group">
@@ -108,40 +131,47 @@ class EditGroup extends Component {
 
                             let member_array_parsed = Papa.parse(this.state.newMembers).data;
 
-                            for(let l=0; l < member_array_parsed.length; l++){
-                                this.state.members.push(member_array_parsed[l][0]);
-                            };
+                            let validationCheck = this.handleValidation(member_array_parsed);
 
-                            let group = {
-                                id: this.props.id,
-                                name: this.state.groupName,
-                                creator: this.state.creator,
-                                note: this.state.groupNote,
-                                members: this.state.members 
-                            };
+                            if (validationCheck !== "true") {
+                                this.handleAlert(validationCheck + ' is not a valid email. Please try again.', 'error');
+                            }
+                            else {
 
-                            let body = JSON.stringify(group);
-                            
-                            console.log(body);
+                                for (let l = 0; l < member_array_parsed.length; l++) {
+                                    this.state.members.push(member_array_parsed[l][0]);
+                                };
 
-                            fetch('/api/groups/update/', {
-                                method: "PUT",
-                                body: body,
-                                header: {
-                                    'Accept': 'application/json',
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                            .then((response) => {
-                                if(response.status === 201){
-                                    this.handleAlert("Group details updated", "success");
-                                }
-                                else{
-                                    this.handleAlert("Unable to update group, please try again", "error");
-                                }
-                                this.handleClose();
-                                this.getGroup();
-                            })
+                                let group = {
+                                    id: this.props.id,
+                                    name: this.state.groupName,
+                                    creator: this.state.creator,
+                                    note: this.state.groupNote,
+                                    members: this.state.members
+                                };
+
+                                let body = JSON.stringify(group);
+
+
+                                fetch("/api/groups/update/", {
+                                    method: "PUT",
+                                    body: body,
+                                    headers: {
+                                        "Accept": "application/json",
+                                        "Content-Type": "application/json"
+                                    }
+                                })
+                                    .then((response) => {
+                                        if (response.status === 201) {
+                                            this.handleAlert("Group details updated", "success");
+                                        }
+                                        else {
+                                            this.handleAlert("Unable to update group, please try again", "error");
+                                        }
+                                        this.handleClose();
+                                        this.getGroup();
+                                    });
+                            }
 
 
                         }}>
@@ -212,28 +242,28 @@ class EditGroup extends Component {
                                                                             this.handleClose();
                                                                             this.getGroup();
                                                                         });
-                                                                
-                                                            }}
-                                                        >
-                                                            <DeleteIcon />
-                                                        </IconButton>
-                                                    </Tooltip>
-                                                </ListItemSecondaryAction>
-                                            </ListItem>
-                                );
-                            }) : null}
+
+                                                                }}
+                                                            >
+                                                                <DeleteIcon />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                    </ListItemSecondaryAction>
+                                                </ListItem>
+                                            );
+                                        }) : null}
                                 </List>
-                            <TextField
-                                label="Add Member (by Emails)"
-                                name="newMembers"
-                                value={this.state.newMembers}
-                                onChange={this.handleInputChange}
-                                multiline
-                                rows={4}
-                                variant="outlined"
-                            />
-                            <br />
-                            <Button variant="contained" type="submit" color="primary"> Submit </Button>
+                                <TextField
+                                    label="Add Member (by Emails)"
+                                    name="newMembers"
+                                    value={this.state.newMembers}
+                                    onChange={this.handleInputChange}
+                                    multiline
+                                    rows={4}
+                                    variant="outlined"
+                                />
+                                <br />
+                                <Button variant="contained" type="submit" color="primary"> Submit </Button>
                             </FormControl>
                         </form>
                     </Paper>
