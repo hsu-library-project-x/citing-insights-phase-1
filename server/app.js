@@ -68,7 +68,7 @@ app.use(passport.session());
 
 app.use(express.static(path.join(__dirname, '../client/build')));
 app.use(cors(corsOptions));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.post('/api/upload', upload);

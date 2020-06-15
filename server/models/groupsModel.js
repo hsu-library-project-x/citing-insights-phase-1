@@ -8,7 +8,8 @@ var groupsSchema = new Schema({
 	'members' : [String],
 	'pendingMembers': [{
 		email:String,
-		message: String
+		message: String,
+		name: String
 	}]
 });
 

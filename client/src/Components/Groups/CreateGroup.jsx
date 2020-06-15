@@ -105,11 +105,7 @@ class CreateGroup extends Component {
                                 this.handleAlert(validationCheck + ' is not a valid email. Please try again.', 'error');
                             }
                             else {
-
-                                console.log(member_array);
-                                for (let k = 0; k < member_array.length; k++) {
-
-                                }
+                                
                                 let data = {
                                     creator: this.props.user.email,
                                     name: this.state.GroupName,
