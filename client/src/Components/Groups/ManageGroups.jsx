@@ -162,7 +162,10 @@ class ManageGroups extends Component {
                             secondary={group.note}
                         />
                         <ListItemSecondaryAction>
-                            <EditGroup />
+                            <EditGroup 
+                             id={group._id}
+                             handleQueueAlert={this.handleQueueAlert}
+                             />
                             <Tooltip title="Delete Group" aria-label="delete group">
                                 <IconButton edge="end"
                                     aria-label="delete"

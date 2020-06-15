@@ -117,9 +117,9 @@ class RequestGroup extends Component {
                                 }
 
                                 //Check to see if user is already a pending member
-                                if (groupList.pendingMembers !== undefined) {
-                                    for (var j = 0; j < groupList.pendingMembers.length; j++) {
-                                        if (groupList.pendingMembers[j] === this.props.user.email) {
+                                if (groupList[i].pendingMembers !== undefined) {
+                                    for (var j = 0; j < groupList[i].pendingMembers.length; j++) {
+                                        if (groupList[i].pendingMembers[j] === this.props.user.email) {
                                             pendingCheck = true;
                                             this.handleAlert("You have already requested to join this group.", "error");
                                             this.handleClose();
@@ -129,9 +129,12 @@ class RequestGroup extends Component {
                                 }
 
                                 //check to see if user is already in members
-                                if (groupList.members !== undefined) {
-                                    for (var k = 0; k < groupList.members.length; k++) {
-                                        if (groupList.members[k] === this.props.user.email) {
+                                if (groupList[i].members !== undefined) {
+                                    for (var k = 0; k < groupList[i].members.length; k++) {
+                                        console.log(groupList[i].members[k] === this.props.user.email);
+                                        console.log(groupList[i].members[k]);
+                                        console.log(this.props.user.email);
+                                        if (groupList[i].members[k] === this.props.user.email) {
                                             memberCheck = true;
                                             this.handleAlert("You are already a member of this group.", "error");
                                             this.handleClose();
@@ -145,12 +148,13 @@ class RequestGroup extends Component {
                                 let pending_member = {
                                     id: this.state.GroupId,
                                     email: this.props.user.email,
-                                    message: this.state.Message
+                                    message: this.state.Message,
+                                    name: this.state.Name
                                 };
 
                                 let json = JSON.stringify(pending_member);
 
-                                fetch("/api/groups/pending", {
+                                fetch("/api/groups/pendingAdd", {
                                     method: "PUT",
                                     body: json,
                                     headers: {

@@ -26,18 +26,29 @@ router.post('/', groupsController.create);
 /*
  * PUT
  */
-router.put('/pending', groupsController.update);
+router.put('/pendingAdd', groupsController.pendingAdd);
 
 
 /*
  * PUT
  */
-router.put('/pendingAdd/', groupsController.pendingAdd);
+router.put('/pendingAccept/', groupsController.pendingAccept);
 
 /*
  * PUT
  */
 router.put('/pendingReject/', groupsController.pendingReject);
+
+/*
+ * PUT
+ */
+router.put('/update/', groupsController.update);
+
+
+/*
+ * PUT
+ */
+router.put('/removeMember/', groupsController.removeMember);
 
 /*
  * DELETE

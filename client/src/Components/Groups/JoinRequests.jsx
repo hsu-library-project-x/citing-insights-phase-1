@@ -79,6 +79,16 @@ class JoinRequests extends Component {
 
                             <List>
                                 {this.props.pendingMembers.map((member) => {
+                                    let message = '';
+                                    if (member.name !== "") {
+                                        message = `${member.name} - ${member.message}`;
+                                    }
+                                    else {
+                                        message = member.message;
+                                    }
+                                    
+                                    console.log(message);
+
                                     return (
                                         <ListItem>
                                             <ListItemAvatar>
@@ -88,7 +98,7 @@ class JoinRequests extends Component {
                                             </ListItemAvatar>
                                             <ListItemText
                                                 primary={member.email}
-                                                secondary={member.message}
+                                                secondary={message}
                                             />
                                             <ListItemSecondaryAction>
                                                 <Tooltip title="Add Member" aria-label="add member">
@@ -102,7 +112,7 @@ class JoinRequests extends Component {
                                                             };
                                                             let json = JSON.stringify(body);
 
-                                                            fetch("/api/groups/pendingAdd/", {
+                                                            fetch("/api/groups/pendingAccept/", {
                                                                 method: "PUT",
                                                                 body: json,
                                                                 headers: {
@@ -121,43 +131,43 @@ class JoinRequests extends Component {
                                                         <CheckIcon />
                                                     </IconButton>
                                                 </Tooltip>
-                                            <Tooltip title="Reject Member" aria-label="reject member">
-                                                <IconButton edge="end"
-                                                    aria-label="reject"
-                                                    onClick={e => {
-                                                        let body = {
-                                                            groupId: this.props.id,
-                                                            pendingId: member._id
-                                                        };
-                                                        let json = JSON.stringify(body);
+                                                <Tooltip title="Reject Member" aria-label="reject member">
+                                                    <IconButton edge="end"
+                                                        aria-label="reject"
+                                                        onClick={e => {
+                                                            let body = {
+                                                                groupId: this.props.id,
+                                                                pendingId: member._id
+                                                            };
+                                                            let json = JSON.stringify(body);
 
-                                                        fetch("/api/groups/pendingReject/", {
-                                                            method: "PUT",
-                                                            body: json,
-                                                            headers: {
-                                                                'Accept': 'application/json',
-                                                                'Content-Type': 'application/json'
-                                                            }
-                                                        })
-                                                            .then((response) => {
-                                                                if (response.status === 201) {
-                                                                    this.handleAlert("Request rejected.", "success");
+                                                            fetch("/api/groups/pendingReject/", {
+                                                                method: "PUT",
+                                                                body: json,
+                                                                headers: {
+                                                                    'Accept': 'application/json',
+                                                                    'Content-Type': 'application/json'
                                                                 }
-                                                                this.handleClose();
-                                                            });
-                                                    }}
-                                                >
-                                                    <ClearIcon />
-                                                </IconButton>
-                                            </Tooltip>
+                                                            })
+                                                                .then((response) => {
+                                                                    if (response.status === 201) {
+                                                                        this.handleAlert("Request rejected.", "success");
+                                                                    }
+                                                                    this.handleClose();
+                                                                });
+                                                        }}
+                                                    >
+                                                        <ClearIcon />
+                                                    </IconButton>
+                                                </Tooltip>
                                             </ListItemSecondaryAction>
                                         </ListItem>
-                            );
-                        })}
+                                    );
+                                })}
                             </List>
-                        <FormControl>
-                            <Button variant="contained" type="submit" color="primary" onClick={this.handleClose}> Ok </Button>
-                        </FormControl>
+                            <FormControl>
+                                <Button variant="contained" type="submit" color="primary" onClick={this.handleClose}> Ok </Button>
+                            </FormControl>
                         </form>
                     </Paper>
                 </Modal>

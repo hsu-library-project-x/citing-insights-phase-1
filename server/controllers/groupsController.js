@@ -21,11 +21,11 @@ module.exports = {
             return res.json(groupss);
         });
     },
-    
+
     /** find groups that belong to user (user is creator) */
     findOwner: function (req, res) {
         var userId = req.params.id;
-        groupsModel.find({creator: userId},function (err, groupss) {
+        groupsModel.find({ creator: userId }, function (err, groupss) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when getting groups.',
@@ -67,7 +67,7 @@ module.exports = {
             note: req.body.note,
             members: req.body.members
         });
-        
+
         groups.save(function (err, groups) {
             if (err) {
                 return res.status(500).json({
@@ -83,12 +83,42 @@ module.exports = {
      * groupsController.update()
      */
     update: function (req, res) {
+        console.log(req.body);
+
+        let groupId = req.body.id;
+
+        var group = {
+            "name": req.body.name,
+            "creator": req.body.creator,
+            "note": req.body.note,
+            "members": req.body.members
+        };
+        
+        groupsModel.findOneAndUpdate(
+            { _id: groupId },
+            group,
+            function (err, groups) {
+                if (err) {
+                    return res.status(500).json({
+                        message: 'Error when getting groups.',
+                        error: err
+                    });
+                }
+                return res.status(201).json(groups);
+            });
+    },
+
+    /**
+     * groupsController.update()
+     */
+    pendingAdd: function (req, res) {
         var groupId = req.body.id;
 
         console.log(groupId);
         var pending = {
             "email": req.body.email,
-            "message": req.body.message
+            "message": req.body.message,
+            "name": req.body.name
         };
 
         groupsModel.findOneAndUpdate(
@@ -104,18 +134,18 @@ module.exports = {
                 return res.status(201).json(groups);
             });
     },
-    
+
     /**
      * groupsController.pendingAdd()
      */
-    pendingAdd: function (req, res) {
+    pendingAccept: function (req, res) {
         var groupId = req.body.groupId;
-        var pendingEmail= req.body.pendingEmail;
+        var pendingEmail = req.body.pendingEmail;
         var pendingId = req.body.pendingId;
 
         groupsModel.findOneAndUpdate(
             { _id: groupId },
-            { $pull: { pendingMembers: {_id: pendingId}}},
+            { $pull: { pendingMembers: { _id: pendingId } } },
             function (err, groups) {
                 if (err) {
                     return res.status(500).json({
@@ -123,10 +153,10 @@ module.exports = {
                         error: err
                     });
                 }
-                else{
+                else {
                     groupsModel.findOneAndUpdate(
                         { _id: groupId },
-                        { $push: {members: pendingEmail}},
+                        { $push: { members: pendingEmail } },
                         function (err, groups) {
                             if (err) {
                                 return res.status(500).json({
@@ -143,10 +173,10 @@ module.exports = {
     pendingReject: function (req, res) {
         var groupId = req.body.groupId;
         var pendingId = req.body.pendingId;
- 
+
         groupsModel.findOneAndUpdate(
             { _id: groupId },
-            { $pull: { pendingMembers: {_id: pendingId } } },
+            { $pull: { pendingMembers: { _id: pendingId } } },
             function (err, groups) {
                 if (err) {
                     return res.status(500).json({
@@ -171,5 +201,22 @@ module.exports = {
             }
             return res.status(204).json();
         });
+    },
+
+    removeMember: function (req, res) {
+        var groupId = req.body.id;
+        var member = req.body.member;
+        groupsModel.findOneAndUpdate(
+            { _id: groupId },
+            { $pull: { members: member } },
+            function (err, groups) {
+                if (err) {
+                    return res.status(500).json({
+                        message: 'Error when getting groups.',
+                        error: err
+                    });
+                }
+                return res.status(201).json(groups);
+            });
     }
 };
