@@ -36,7 +36,7 @@ class CreateList extends Component {
             }
         };
 
-        this.getGroups();
+        // this.getGroups();
 
         this.nestItems = this.nestItems.bind(this);
         this.handleDeleteAssignment = this.handleDeleteAssignment.bind(this);
@@ -136,180 +136,180 @@ class CreateList extends Component {
         }
     }
 
-    getGroups() {
-        let that = this;
-        fetch('/api/groups/').then(function (response) {
-            return response.json();
-        })
-            .then(function (myJson) {
-                that.setState({ AvailableGroups: myJson })
-            });
-    }
+    // getGroups() {
+    //     let that = this;
+    //     fetch('/api/groups/').then(function (response) {
+    //         return response.json();
+    //     })
+    //         .then(function (myJson) {
+    //             that.setState({ AvailableGroups: myJson })
+    //         });
+    // }
 
-    getAssociatedMembers(memberList) {
-        let listed = [];
-        let listItems = [];
-        for (let i = 0; i < memberList.length; i++) {
-            let member = memberList[i];
-
-            if (listed.includes(member) === false) {
-                listed.push(member);
-                listItems.push(
-                    <ListItem
-                        key={member} /* member email */
-                    >
-                        <ListItemIcon>
-                            <PersonOutlineIcon />
-                        </ListItemIcon>
-
-                        <ListItemText
-                            style={{ padding: 0, margin: 0 }}
-                            primary={member}
-                        />
-                    </ListItem>
-                );
-            }
-        }
-
-        return listItems;
-    }
-
-
-    groupMenu() {
-        let groupList = this.state.AvailableGroups;
-        let open = Boolean(this.state.anchorEl);
-        let groupsOpen = this.state.open['current_groups'];
-        let addOpen = this.state.open['add_group'];
-        let membersOpen = this.state.open['see_members'];
+    // getAssociatedMembers(memberList) {
+    //     let listed = [];
+    //     let listItems = [];
+    //     for (let i = 0; i < memberList.length; i++) {
+    //         let member = memberList[i];
+    //
+    //         if (listed.includes(member) === false) {
+    //             listed.push(member);
+    //             listItems.push(
+    //                 <ListItem
+    //                     key={member} /* member email */
+    //                 >
+    //                     <ListItemIcon>
+    //                         <PersonOutlineIcon />
+    //                     </ListItemIcon>
+    //
+    //                     <ListItemText
+    //                         style={{ padding: 0, margin: 0 }}
+    //                         primary={member}
+    //                     />
+    //                 </ListItem>
+    //             );
+    //         }
+    //     }
+    //
+    //     return listItems;
+    // }
 
 
-        let optionGroups = groupList.map((group) => {
-            // if this is not an added group
-            return (
-                <ListItem
-                    key={group._id}
-                >
-                    <ListItemText
-                        style={{ padding: 0, margin: 0 }}
-                        primary={group.name}
-                    />
-                    <ListItemSecondaryAction>
-                        <Tooltip title="Add Group" aria-label="add group">
-                            <IconButton edge="end" aria-label="add group">
-                                <AddIcon />
-                            </IconButton>
-                        </Tooltip>
-                    </ListItemSecondaryAction>
-                </ListItem>
-            );
-        });
+    // groupMenu() {
+    //     let groupList = this.state.AvailableGroups;
+    //     let open = Boolean(this.state.anchorEl);
+    //     let groupsOpen = this.state.open['current_groups'];
+    //     let addOpen = this.state.open['add_group'];
+    //     let membersOpen = this.state.open['see_members'];
+    //
+    //
+    //     let optionGroups = groupList.map((group) => {
+    //         // if this is not an added group
+    //         return (
+    //             <ListItem
+    //                 key={group._id}
+    //             >
+    //                 <ListItemText
+    //                     style={{ padding: 0, margin: 0 }}
+    //                     primary={group.name}
+    //                 />
+    //                 <ListItemSecondaryAction>
+    //                     <Tooltip title="Add Group" aria-label="add group">
+    //                         <IconButton edge="end" aria-label="add group">
+    //                             <AddIcon />
+    //                         </IconButton>
+    //                     </Tooltip>
+    //                 </ListItemSecondaryAction>
+    //             </ListItem>
+    //         );
+    //     });
+    //
+    //     let currentGroups = groupList.map((group) => {
+    //         // if this IS an added group
+    //         return (<ListItem key={group._id}>
+    //             <ListItemText
+    //                 style={{ padding: 0, margin: 0 }}
+    //                 primary={group.name}
+    //             />
+    //             <ListItemSecondaryAction>
+    //                 <Tooltip title="Remove Group" aria-label="remove group">
+    //                     <IconButton edge="end" aria-label="remove group">
+    //                         <ClearIcon />
+    //                     </IconButton>
+    //                 </Tooltip>
+    //             </ListItemSecondaryAction>
+    //         </ListItem>);
+    //     });
+    //
+    //
+    //     // wrong but the best I could do for now
+    //     let groupMemberArrays = this.state.AvailableGroups.map(group => group.members);
+    //     let toReturn = [];
+    //     for (let j = 0; j < groupMemberArrays.length; j++) {
+    //         let groupList = groupMemberArrays[j];
+    //         for (let i = 0; i < groupList.length; i++) {
+    //             toReturn.push(groupList[i]);
+    //         }
+    //     }
+    //
+    //     let members = this.getAssociatedMembers(toReturn);
 
-        let currentGroups = groupList.map((group) => {
-            // if this IS an added group
-            return (<ListItem key={group._id}>
-                <ListItemText
-                    style={{ padding: 0, margin: 0 }}
-                    primary={group.name}
-                />
-                <ListItemSecondaryAction>
-                    <Tooltip title="Remove Group" aria-label="remove group">
-                        <IconButton edge="end" aria-label="remove group">
-                            <ClearIcon />
-                        </IconButton>
-                    </Tooltip>
-                </ListItemSecondaryAction>
-            </ListItem>);
-        });
 
 
-        // wrong but the best I could do for now
-        let groupMemberArrays = this.state.AvailableGroups.map(group => group.members);
-        let toReturn = [];
-        for (let j = 0; j < groupMemberArrays.length; j++) {
-            let groupList = groupMemberArrays[j];
-            for (let i = 0; i < groupList.length; i++) {
-                toReturn.push(groupList[i]);
-            }
-        }
-
-        let members = this.getAssociatedMembers(toReturn);
-
-
-
-        return (
-            <Popover
-                open={open}
-                anchorEl={this.state.anchorEl}
-                onClose={this.handleClose}
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                }}
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                }}
-            >
-                <List
-                    aria-labeledby={"group management menu"}
-                    dense={true}
-                    style={{ paddingLeft: "1em" }}
-                >
-                    <ListItem button onClick={() => this.expandClick('current_groups')}>
-                        <ListItemIcon>
-                            <GroupWorkIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={"current groups"} />
-                        {groupsOpen ? <ExpandLess /> : <ExpandMore />}
-                    </ListItem>
-                    <Collapse
-                        in={groupsOpen}
-                        timeout={'auto'}
-                        unmountOnExit
-                    >
-                        <List
-                            desnse={true}
-                        >
-                            {currentGroups}
-                        </List>
-                    </Collapse>
-                    <ListItem button onClick={() => this.expandClick('add_group')}>
-                        <ListItemIcon>
-                            <AddCircleIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={"Add group"} />
-                        {addOpen ? <ExpandLess /> : <ExpandMore />}
-                    </ListItem>
-                    <Collapse
-                        in={addOpen}
-                        timeout={'auto'}
-                        unmountOnExit
-                    >
-                        <List dense={true}>
-                            {optionGroups}
-                        </List>
-                    </Collapse>
-                    <ListItem button onClick={() => this.expandClick('see_members')}>
-                        <ListItemIcon>
-                            <SupervisedUserCircleIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={"See Associated Members"} />
-                        {membersOpen ? <ExpandLess /> : <ExpandMore />}
-                    </ListItem>
-                    <Collapse
-                        in={membersOpen}
-                        timeout={'auto'}
-                        unmountOnExit
-                    >
-                        <List dense={true}>
-                            {members}
-                        </List>
-                    </Collapse>
-
-                </List>
-            </Popover>
-        );
-    }
+    //     return (
+    //         <Popover
+    //             open={open}
+    //             anchorEl={this.state.anchorEl}
+    //             onClose={this.handleClose}
+    //             anchorOrigin={{
+    //                 vertical: 'top',
+    //                 horizontal: 'right',
+    //             }}
+    //             transformOrigin={{
+    //                 vertical: 'top',
+    //                 horizontal: 'left',
+    //             }}
+    //         >
+    //             <List
+    //                 aria-labeledby={"group management menu"}
+    //                 dense={true}
+    //                 style={{ paddingLeft: "1em" }}
+    //             >
+    //                 <ListItem button onClick={() => this.expandClick('current_groups')}>
+    //                     <ListItemIcon>
+    //                         <GroupWorkIcon />
+    //                     </ListItemIcon>
+    //                     <ListItemText primary={"current groups"} />
+    //                     {groupsOpen ? <ExpandLess /> : <ExpandMore />}
+    //                 </ListItem>
+    //                 <Collapse
+    //                     in={groupsOpen}
+    //                     timeout={'auto'}
+    //                     unmountOnExit
+    //                 >
+    //                     <List
+    //                         desnse={true}
+    //                     >
+    //                         {currentGroups}
+    //                     </List>
+    //                 </Collapse>
+    //                 <ListItem button onClick={() => this.expandClick('add_group')}>
+    //                     <ListItemIcon>
+    //                         <AddCircleIcon />
+    //                     </ListItemIcon>
+    //                     <ListItemText primary={"Add group"} />
+    //                     {addOpen ? <ExpandLess /> : <ExpandMore />}
+    //                 </ListItem>
+    //                 <Collapse
+    //                     in={addOpen}
+    //                     timeout={'auto'}
+    //                     unmountOnExit
+    //                 >
+    //                     <List dense={true}>
+    //                         {optionGroups}
+    //                     </List>
+    //                 </Collapse>
+    //                 <ListItem button onClick={() => this.expandClick('see_members')}>
+    //                     <ListItemIcon>
+    //                         <SupervisedUserCircleIcon />
+    //                     </ListItemIcon>
+    //                     <ListItemText primary={"See Associated Members"} />
+    //                     {membersOpen ? <ExpandLess /> : <ExpandMore />}
+    //                 </ListItem>
+    //                 <Collapse
+    //                     in={membersOpen}
+    //                     timeout={'auto'}
+    //                     unmountOnExit
+    //                 >
+    //                     <List dense={true}>
+    //                         {members}
+    //                     </List>
+    //                 </Collapse>
+    //
+    //             </List>
+    //         </Popover>
+    //     );
+    // }
 
     nestItems(classes, assignments) {
         let list = classes.map(d => {
@@ -337,14 +337,14 @@ class CreateList extends Component {
                                     <DeleteIcon />
                                 </IconButton>
                             </Tooltip>
-                            <Tooltip title="Groups" aria-label="groups">
-                                <IconButton edge="end" aria-label="groups"
-                                    onClick={this.handleClick}
-                                >
-                                    <MoreVertIcon />
-                                </IconButton>
-                            </Tooltip>
-                            {this.groupMenu()}
+                            {/*<Tooltip title="Groups" aria-label="groups">*/}
+                            {/*    <IconButton edge="end" aria-label="groups"*/}
+                            {/*        onClick={this.handleClick}*/}
+                            {/*    >*/}
+                            {/*        <MoreVertIcon />*/}
+                            {/*    </IconButton>*/}
+                            {/*</Tooltip>*/}
+                            {/*{this.groupMenu()}*/}
                         </ListItemSecondaryAction>
                     </ListItem>
                     <Divider variant="inset" />
@@ -378,14 +378,14 @@ class CreateList extends Component {
                                                         <DeleteIcon />
                                                     </IconButton>
                                                 </Tooltip>
-                                                <Tooltip title="Groups" aria-label="groups">
-                                                    <IconButton edge="end" aria-label="groups"
-                                                        onClick={this.handleClick}
-                                                    >
-                                                        <MoreVertIcon />
-                                                    </IconButton>
-                                                </Tooltip>
-                                                {this.groupMenu()}
+                                                {/*<Tooltip title="Groups" aria-label="groups">*/}
+                                                {/*    <IconButton edge="end" aria-label="groups"*/}
+                                                {/*        onClick={this.handleClick}*/}
+                                                {/*    >*/}
+                                                {/*        <MoreVertIcon />*/}
+                                                {/*    </IconButton>*/}
+                                                {/*</Tooltip>*/}
+                                                {/*{this.groupMenu()}*/}
                                             </ListItemSecondaryAction>
                                         </ListItem>
                                         <Divider variant="inset" />

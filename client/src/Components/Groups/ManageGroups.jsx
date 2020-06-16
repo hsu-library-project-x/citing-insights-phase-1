@@ -17,12 +17,15 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddAlertIcon from '@material-ui/icons/AddAlert';
 
+
 import CreateGroup from "./CreateGroup";
 import RequestGroup from "./RequestGroup";
 import EditGroup from "./EditGroup";
 import JoinRequests from "./JoinRequests";
+import AddAssignment from "./AddAssignment";
+import RemoveAssignment from "./RemoveAssignment";
+
 import Alert from "@material-ui/lab/Alert";
-import CreateClass from "../Classes/CreateClass";
 
 class ManageGroups extends Component {
     constructor(props) {
@@ -34,8 +37,10 @@ class ManageGroups extends Component {
         };
 
         this.getGroups();
+        // this.getAssignments();
 
         this.getGroups = this.getGroups.bind(this);
+        // this.getAssignments = this.getAssignments.bind(this);
         this.handleDeleteGroup = this.handleDeleteGroup.bind(this);
         this.GenList = this.GenList.bind(this);
         this.processQueue = this.processQueue.bind(this);
@@ -46,6 +51,14 @@ class ManageGroups extends Component {
         this.queueRef = React.createRef();
         this.queueRef.current = [];
     }
+
+    // getAssignments() {
+    //     fetch('/api/assignments/by_user_id/' + this.props.user.id)
+    //         .then(function (response) {
+    //             return response.json();
+    //         }).then(allAssignments => this.setState({assignments:allAssignments}));
+    // }
+
 
     processQueue() {
         if (this.queueRef.current.length > 0) {
@@ -162,6 +175,18 @@ class ManageGroups extends Component {
                             secondary={group.note}
                         />
                         <ListItemSecondaryAction>
+                            <AddAssignment
+                                id={group._id}
+                                user={this.props.user}
+                                handleQueueAlert={this.handleQueueAlert}
+                                assignments={this.state.assignments}
+                                />
+                            <RemoveAssignment
+                                id={group._id}
+                                user={this.props.user}
+                                handleQueueAlert={this.handleQueueAlert}
+                                assignments={this.state.assignments}
+                            />
                             <EditGroup 
                              id={group._id}
                              handleQueueAlert={this.handleQueueAlert}
