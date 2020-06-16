@@ -91,19 +91,24 @@ class CreateGroup extends Component {
                         <form className={'modal_form'} onSubmit={(event) => {
                             event.preventDefault();
 
+
                             console.log(this.state.Members);
                             let member_array_parsed = Papa.parse(this.state.Members).data;
+
 
                             let member_array = [];
                             for(let l=0; l < member_array_parsed.length; l++){
                                 member_array.push(member_array_parsed[l][0]);
                             };
 
+
                             let validationCheck = this.handleValidation(member_array);
+
 
                             if (validationCheck !== "true") {
                                 this.handleAlert(validationCheck + ' is not a valid email. Please try again.', 'error');
                             }
+
                             else {
                                 
                                 let data = {

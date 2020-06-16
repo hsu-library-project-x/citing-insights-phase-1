@@ -62,7 +62,14 @@ class RequestGroup extends Component {
     render() {
 
         let groupList = this.state.AvailableGroups;
-        let optionGroups = groupList.map((group) =>
+        let requestGroups = [];
+        for (let x = 0; x < groupList.length; x++) {
+            if (groupList[x].creator !== this.props.user.email) {
+                requestGroups.push(groupList[x]);
+            };
+        };
+        console.log(requestGroups);
+        let optionGroups = requestGroups.map((group) => 
             <MenuItem value={group._id} key={group._id}> {group.name}</MenuItem>
         );
         return (
