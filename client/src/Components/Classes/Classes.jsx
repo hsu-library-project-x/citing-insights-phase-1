@@ -69,7 +69,6 @@ class Classes extends Component {
 
     createTreeItems(json, state) {
         let list = [];
-        console.log(json);
         for (let i = 0; i < json.length; i++) {
             list.push(json[i]);
         }

@@ -64,7 +64,7 @@ module.exports = {
                         message: 'No such assignment'
                     });
                 }
-                console.log(assignment);
+
                 return res.json(assignment);
             });
         }

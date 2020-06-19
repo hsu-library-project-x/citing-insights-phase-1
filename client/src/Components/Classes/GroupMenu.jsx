@@ -22,7 +22,7 @@ import GroupWorkIcon from '@material-ui/icons/GroupWork'
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import AddIcon from '@material-ui/icons/Add';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
-import list from "less/lib/less/functions/list";
+// import list from "less/lib/less/functions/list";
 // import list from "less/lib/less/functions/list";
 
 class GroupMenu extends Component {
@@ -61,7 +61,13 @@ class GroupMenu extends Component {
     }
 
     handleClose() {
-        this.setState({ anchorEl: null });
+        this.setState({ anchorEl: null,
+            open: {
+                popover: false,
+                current_groups: true,
+                add_group: false,
+                see_members: false,
+            }});
     }
 
     handleAlert(message, severity) {
@@ -187,10 +193,6 @@ class GroupMenu extends Component {
             listItem = [];
         }
 
-        console.log('listItem');
-        console.log(listItem);
-
-
         if(this.props.availableGroups !== undefined){
             this.props.availableGroups.forEach(g => {
                 if(listItem.includes(g._id) === true){
@@ -201,12 +203,6 @@ class GroupMenu extends Component {
                 }
             });
         }
-
-        console.log('currentGroupList');
-        console.log(currentGroupList);
-
-        console.log('couldAddList');
-        console.log(couldAddList);
 
         let open = Boolean(this.state.anchorEl);
         let groupsOpen = this.state.open['current_groups'];
@@ -278,6 +274,7 @@ class GroupMenu extends Component {
                     vertical: 'top',
                     horizontal: 'left',
                 }}
+                style={{overflow: 'auto'}}
             >
                 <List
                     aria-labelledby={"group management menu"}
@@ -334,7 +331,6 @@ class GroupMenu extends Component {
                             {members}
                         </List>
                     </Collapse>
-
                 </List>
             </Popover>
         );
