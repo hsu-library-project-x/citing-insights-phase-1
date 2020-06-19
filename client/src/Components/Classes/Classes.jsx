@@ -8,8 +8,7 @@ import { withRouter } from 'react-router-dom';
 import CreateClass from "./CreateClass";
 import CreateAssignment from "./CreateAssignment";
 import CreateList from "./CreateList";
-import CreateGroup from "../Groups/CreateGroup";
-import RequestGroup from "../Groups/RequestGroup";
+
 
 class Classes extends Component {
     constructor(props) {
@@ -17,6 +16,7 @@ class Classes extends Component {
         this.state = {
             classList: [],
             assignmentList: [],
+            availableGroups:[],
             loading:true, // currently not used
             messageInfo: undefined,
             snackbarOpen:false, //we get away with only one snackbar vairable because mat-ui only allows one snackbar to be open
@@ -25,7 +25,7 @@ class Classes extends Component {
 
         this.getClasses();
         this.getAssignments();
-
+        this.getGroups();
 
         this.getClasses = this.getClasses.bind(this);
         this.getAssignments = this.getAssignments.bind(this);
@@ -57,8 +57,19 @@ class Classes extends Component {
             });
     }
 
+    getGroups() {
+        fetch('/api/groups/').then(function (response) {
+            return response.json();
+        })
+        .then(d => {
+            this.createTreeItems(d, 'availableGroups');
+        });
+
+    }
+
     createTreeItems(json, state) {
         let list = [];
+        console.log(json);
         for (let i = 0; i < json.length; i++) {
             list.push(json[i]);
         }
@@ -101,7 +112,7 @@ class Classes extends Component {
     };
 
     DisplayAlerts(){
-       return <Snackbar
+        return <Snackbar
             key={this.state.messageInfo ? this.state.messageInfo.key : undefined}
             anchorOrigin={{
                 vertical: 'top',
@@ -111,14 +122,14 @@ class Classes extends Component {
             autoHideDuration={3000}
             onClose={this.handleClose}
             onExited={this.handleExited}
+        >
+            <Alert variant={'filled'}
+                   severity={this.state.messageInfo ? this.state.messageInfo.severity : undefined}
+                   onClose={this.handleClose}
             >
-                <Alert variant={'filled'}
-                       severity={this.state.messageInfo ? this.state.messageInfo.severity : undefined}
-                       onClose={this.handleClose}
-                >
-                    {this.state.messageInfo ? this.state.messageInfo.message : undefined}
-                </Alert>
-         </Snackbar>
+                {this.state.messageInfo ? this.state.messageInfo.message : undefined}
+            </Alert>
+        </Snackbar>
     }
 
 
@@ -128,48 +139,50 @@ class Classes extends Component {
         return (
             <Container maxWidth={"md"}>
                 {this.DisplayAlerts()}
-            <Grid
-                container
-                direction="row"
-                justify="space-evenly"
-                alignItems="center"
-            >
-                <Grid item xs={12}>
-                    <Typography style={{ marginTop: "1em" }} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}>
-                        Manage Coursework
-                    </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                    <Grid
-                        container
-                        direction="row"
-                        justify="flex-end"
-                        alignItems="flex-end"
-                    >
-                        <Grid item >
-                            <CreateClass
-                                user_id={this.props.user.id}
-                                handleQueueAlert={this.handleQueueAlert}
-                            />
-                        </Grid>
-                        <Grid item>
-                            <CreateAssignment
-                                user_id={this.props.user.id}
-                                classList={this.state.classList}
-                                handleQueueAlert={this.handleQueueAlert}
-                            />
+                <Grid
+                    container
+                    direction="row"
+                    justify="space-evenly"
+                    alignItems="center"
+                >
+                    <Grid item xs={12}>
+                        <Typography style={{ marginTop: "1em" }} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}>
+                            Manage Coursework
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Grid
+                            container
+                            direction="row"
+                            justify="flex-end"
+                            alignItems="flex-end"
+                        >
+                            <Grid item >
+                                <CreateClass
+                                    user_id={this.props.user.id}
+                                    handleQueueAlert={this.handleQueueAlert}
+                                />
+                            </Grid>
+                            <Grid item>
+                                <CreateAssignment
+                                    user_id={this.props.user.id}
+                                    classList={this.state.classList}
+                                    handleQueueAlert={this.handleQueueAlert}
+                                />
+                            </Grid>
                         </Grid>
                     </Grid>
+                    <Grid item xs={12}>
+                        <CreateList
+                            classList={this.state.classList}
+                            assignmentList={this.state.assignmentList}
+                            availableGroups={this.state.availableGroups}
+                            handleQueueAlert={this.handleQueueAlert}
+                            user_id={this.props.user.id}
+                        />
+                    </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                    <CreateList
-                        classList={this.state.classList}
-                        assignmentList={this.state.assignmentList}
-                        handleQueueAlert={this.handleQueueAlert}
-                    />
-                </Grid>
-            </Grid>
-        </Container>
+            </Container>
         );
     }
 }

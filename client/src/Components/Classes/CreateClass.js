@@ -6,9 +6,6 @@ import {
     Button,
     Fab,
     Typography,
-    InputLabel,
-    Select,
-    MenuItem,
     FormControl
 } from "@material-ui/core";
 import ClassIcon from '@material-ui/icons/Class';
@@ -56,7 +53,7 @@ class CreateClass extends Component {
         const data = {
             "name": this.state.ClassName,
             "note": this.state.ClassNote,
-            "user_id": this.props.user_id
+            "user_id": this.props.user_id,
         };
 
         let newClass = JSON.stringify(data);

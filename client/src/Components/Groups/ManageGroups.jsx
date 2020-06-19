@@ -175,18 +175,6 @@ class ManageGroups extends Component {
                             secondary={group.note}
                         />
                         <ListItemSecondaryAction>
-                            <AddAssignment
-                                id={group._id}
-                                user={this.props.user}
-                                handleQueueAlert={this.handleQueueAlert}
-                                assignments={this.state.assignments}
-                                />
-                            <RemoveAssignment
-                                id={group._id}
-                                user={this.props.user}
-                                handleQueueAlert={this.handleQueueAlert}
-                                assignments={this.state.assignments}
-                            />
                             <EditGroup 
                              id={group._id}
                              handleQueueAlert={this.handleQueueAlert}

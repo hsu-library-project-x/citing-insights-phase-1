@@ -26,6 +26,26 @@ module.exports = {
         }
     },
 
+    //assignmentController.get_groups
+    get_groups: function(req,res){
+        let id = req.params.id;
+
+        if (req.session.user !== undefined) {
+            assignmentModel.findOne({_id: id}, 'group_ids', function (err, groupIds) {
+                if (err) {
+                    return res.status(500).json({
+                        message: 'Error when getting assignment.',
+                        error: err
+                    });
+                }
+
+                return res.status(201).json(groupIds);
+
+
+            });
+        }
+    },
+
     //assignmentController.by_class_id
 
     by_user_id: function (req, res) {
@@ -44,6 +64,7 @@ module.exports = {
                         message: 'No such assignment'
                     });
                 }
+                console.log(assignment);
                 return res.json(assignment);
             });
         }
@@ -65,6 +86,7 @@ module.exports = {
                         message: 'No such assignment'
                     });
                 }
+
                 return res.json(assignment);
             });
         }
@@ -106,7 +128,8 @@ module.exports = {
                 name: req.body.name,
                 note: req.body.note,
                 class_id: req.body.class_id,
-                user_id: req.params.user_id
+                user_id: req.params.user_id,
+
             });
 
             assignment.save(function (err, assignment) {
@@ -127,8 +150,11 @@ module.exports = {
     update: function (req, res) {
         if (req.session.user !== undefined) {
 
-            var id = req.params.id;
-            assignmentModel.findOne({ _id: id }, function (err, assignment) {
+            let id = req.params.id;
+            console.log(id);
+
+            assignmentModel.findOneAndUpdate({ _id: id },
+                {  $push: {group_ids: req.body} }, function (err, assignment) {
                 if (err) {
                     return res.status(500).json({
                         message: 'Error when getting assignment',
@@ -141,20 +167,35 @@ module.exports = {
                     });
                 }
 
-                assignment.name = req.body.name ? req.body.name : assignment.name;
-                assignment.class_id = req.body.class_id ? req.body.class_id : assignment.class_id;
+                    return res.status(201).json(assignment);
+                });
 
-                assignment.save(function (err, assignment) {
+        }
+    },
+
+    removeGroup: function (req, res) {
+        if (req.session.user !== undefined) {
+
+            let id = req.params.id;
+
+            assignmentModel.findOneAndUpdate({ _id: id },
+                {$pull: {group_ids: req.body._id}}, function (err, assignment) {
                     if (err) {
                         return res.status(500).json({
-                            message: 'Error when updating assignment.',
+                            message: 'Error when getting assignment',
                             error: err
                         });
                     }
+                    if (!assignment) {
+                        return res.status(404).json({
+                            message: 'No such assignment'
+                        });
+                    }
 
-                    return res.json(assignment);
+
+                    return res.status(202).json(assignment);
                 });
-            });
+
         }
     },
 

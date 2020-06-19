@@ -50,7 +50,7 @@ class CreateAssignment extends Component {
       const data = {
         "name": this.state.AssignName,
         "note": this.state.AssignNote,
-        "class_id": this.state.ClassId
+        "class_id": this.state.ClassId,
       };
 
       let dataString = JSON.stringify(data);
