@@ -17,6 +17,8 @@ router.get('/by_user_id/:id', assignmentController.by_user_id);
 
 router.get('/by_class_id/:id', assignmentController.by_class_id);
 
+router.get('by_group_id/:id/:group_id', assignmentController.by_group_id);
+
 
 /*
  * POST

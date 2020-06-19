@@ -12,6 +12,8 @@ router.get('/:id', courseController.list);
  */
 router.get('/:id', courseController.show);
 
+router.get('by_group_id/:id/:group_id', courseController.by_group_id);
+
 
 /*
  * POST

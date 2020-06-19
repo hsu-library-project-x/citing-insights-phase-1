@@ -92,7 +92,30 @@ module.exports = {
         }
     },
 
+    by_group_id: function(req, res){
+        if (req.session.user !== undefined) {
 
+            let id = req.params.id;
+            let group_id = req.params.groupid;
+
+            assignmentModel.find({
+                $and: [ {group_ids: group_id }, {user_id: {$not: {id}}}]}, function (err, assignments) {
+                if (err) {
+                    return res.status(500).json({
+                        message: 'Error when getting assignment.',
+                        error: err
+                    });
+                }
+                if (!assignments) {
+                    return res.status(404).json({
+                        message: 'No such assignment'
+                    });
+                }
+
+                return res.json(assignments);
+            });
+        }
+    },
 
     /**
      * assignmentController.show()

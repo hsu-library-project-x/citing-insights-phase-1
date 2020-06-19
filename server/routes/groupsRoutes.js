@@ -18,6 +18,8 @@ router.get('/findOwner/:id', groupsController.findOwner);
  */
 router.get('/:id', groupsController.show);
 
+router.get('/by_email/:email', groupsController.getGroupsByEmail);
+
 /*
  * POST
  */

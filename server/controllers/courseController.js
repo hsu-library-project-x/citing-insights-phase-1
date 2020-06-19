@@ -59,6 +59,30 @@ module.exports = {
         }
     },
 
+    by_group_id: function(req, res){
+        if (req.session.user !== undefined) {
+
+            let id = req.params.id;
+            let group_id= req.params.group_id;
+            courseModel.find({
+                $and: [ {group_ids: group_id }, {user_id: {$not: {id}}}]}, function (err, courses) {
+                if (err) {
+                    return res.status(500).json({
+                        message: 'Error when getting courses.',
+                        error: err
+                    });
+                }
+                if (!courses) {
+                    return res.status(404).json({
+                        message: 'No such course'
+                    });
+                }
+
+                return res.json(courses);
+            });
+        }
+    },
+
     /**
      * courseController.show()
      */
@@ -167,21 +191,6 @@ module.exports = {
                             message: 'No such course'
                         });
                     }
-
-
-
-                    // assignment.name = req.body.name ? req.body.name : assignment.name;
-                    // assignment.class_id = req.body.class_id ? req.body.class_id : assignment.class_id;
-
-                    // assignment.group_ids = req.body.group_ids;
-                    //
-                    // assignment.save(function (err, assignment) {
-                    //     if (err) {
-                    //         return res.status(500).json({
-                    //             message: 'Error when updating assignment.',
-                    //             error: err
-                    //         });
-                    //     }
 
                     return res.status(201).json(course);
                 });

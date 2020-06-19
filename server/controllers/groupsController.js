@@ -216,5 +216,22 @@ module.exports = {
                 }
                 return res.status(201).json(groups);
             });
-    }
+    },
+
+    getGroupsByEmail: function(req,res){
+      let email = req.params.email;
+
+      //groupsModel.find({ members: {"$in" : [emial]}});
+      groupsModel.find({ $or: [ {members: email}, {creator: email}], function(err, groups){
+          if (err) {
+              return res.status(500).json({
+                  message: 'Error when getting groups.',
+                  error: err
+              });
+          }
+          return res.status(201).json(groups);
+      }});
+
+
+    },
 };
