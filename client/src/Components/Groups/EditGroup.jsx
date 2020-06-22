@@ -195,7 +195,7 @@ class EditGroup extends Component {
                                     onChange={this.handleInputChange}
                                     name="groupNote"
                                     value={this.state.groupNote}
-                                    label={"Current Notes"}
+                                    label={"Current Description"}
                                     multiline
                                     rowsMax="4"
                                     style={{ marginBottom: "1em" }} />
