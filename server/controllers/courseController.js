@@ -30,6 +30,35 @@ module.exports = {
     }
     },
 
+    //courseController.get_groups
+    get_groups: function(req,res){
+        let id = req.params.id;
+
+        if (req.session.user !== undefined) {
+            courseModel.findOne({_id: id}, function (err, course) {
+                if (err) {
+                    return res.status(500).json({
+                        message: 'Error when getting assignment.',
+                        error: err
+                    });
+                }
+                if (!course) {
+                    return res.status(404).json({
+                        message: 'No such course'
+                    });
+                }
+
+                if(course.group_ids === undefined){
+                    return res.json({});
+                }else{
+                    return res.json(course.group_ids);
+                }
+
+
+            });
+        }
+    },
+
     /**
      * courseController.show()
      */
@@ -64,7 +93,7 @@ module.exports = {
         let course = new courseModel({
 			name : req.body.name,
             course_note: req.body.note,
-			user_id : req.body.user_id
+			user_id : req.body.user_id,
 
         });
 
@@ -117,6 +146,72 @@ module.exports = {
     }
     },
 
+
+
+    updateGroup: function (req, res) {
+        if (req.session.user !== undefined) {
+
+            let id = req.params.id;
+            console.log(id);
+
+            courseModel.findOneAndUpdate({ _id: id },
+                {  $push: {group_ids: req.body} }, function (err, course) {
+                    if (err) {
+                        return res.status(500).json({
+                            message: 'Error when getting course',
+                            error: err
+                        });
+                    }
+                    if (!course) {
+                        return res.status(404).json({
+                            message: 'No such course'
+                        });
+                    }
+
+
+
+                    // assignment.name = req.body.name ? req.body.name : assignment.name;
+                    // assignment.class_id = req.body.class_id ? req.body.class_id : assignment.class_id;
+
+                    // assignment.group_ids = req.body.group_ids;
+                    //
+                    // assignment.save(function (err, assignment) {
+                    //     if (err) {
+                    //         return res.status(500).json({
+                    //             message: 'Error when updating assignment.',
+                    //             error: err
+                    //         });
+                    //     }
+
+                    return res.status(201).json(course);
+                });
+
+        }
+    },
+
+    removeGroup: function (req, res){
+        if (req.session.user !== undefined) {
+
+            let id = req.params.id;
+
+            courseModel.findOneAndUpdate({_id: id},
+                {$pull: {group_ids:  req.body._id}}, function (err, course) {
+                    if (err) {
+                        return res.status(500).json({
+                            message: 'Error when getting assignment',
+                            error: err
+                        });
+                    }
+                    if (!course) {
+                        return res.status(404).json({
+                            message: 'No such assignment'
+                        });
+                    }
+
+                    return res.status(202).json(course);
+                });
+        }
+    },
     /**
      * courseController.remove()
      */

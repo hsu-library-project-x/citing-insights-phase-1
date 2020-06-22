@@ -6,9 +6,6 @@ import {
     Button,
     Fab,
     Typography,
-    InputLabel,
-    Select,
-    MenuItem,
     FormControl
 } from "@material-ui/core";
 import ClassIcon from '@material-ui/icons/Class';
@@ -56,7 +53,7 @@ class CreateClass extends Component {
         const data = {
             "name": this.state.ClassName,
             "note": this.state.ClassNote,
-            "user_id": this.props.user_id
+            "user_id": this.props.user_id,
         };
 
         let newClass = JSON.stringify(data);
@@ -83,7 +80,7 @@ class CreateClass extends Component {
     }
 
     render(){
-        let groups = <MenuItem> Test </MenuItem>;
+        // let groups = <MenuItem> Test </MenuItem>;
         return(
                 <div>
                     <Fab type="button"
@@ -123,19 +120,19 @@ class CreateClass extends Component {
                                         name="ClassNote"
                                         style={{marginBottom: "1em"}} />
 
-                                        <FormControl>
-                                        <InputLabel id="groupSelect-label-coursepg">Select Group (optional)</InputLabel>
-                                        <Select
-                                            labelId={"groupSelect-label-coursepg"}
-                                            name="GroupName"
-                                            onChange={this.handleInputChange}
-                                            value={this.state.GroupName}
-                                            style={{minWidth: 150, marginBottom: "1em"}}
-                                        >
-                                            <MenuItem value={""} disabled> Select a Group</MenuItem>
-                                            {groups}
-                                        </Select>
-                                        </FormControl>
+                                        {/*<FormControl>*/}
+                                        {/*<InputLabel id="groupSelect-label-coursepg">Select Group (optional)</InputLabel>*/}
+                                        {/*<Select*/}
+                                        {/*    labelId={"groupSelect-label-coursepg"}*/}
+                                        {/*    name="GroupName"*/}
+                                        {/*    onChange={this.handleInputChange}*/}
+                                        {/*    value={this.state.GroupName}*/}
+                                        {/*    style={{minWidth: 150, marginBottom: "1em"}}*/}
+                                        {/*>*/}
+                                        {/*    <MenuItem value={""} disabled> Select a Group</MenuItem>*/}
+                                        {/*    {groups}*/}
+                                        {/*</Select>*/}
+                                        {/*</FormControl>*/}
                                 <Button  variant="contained" type="submit" color="primary"> Submit </Button>
                                 </FormControl>
                             </form>

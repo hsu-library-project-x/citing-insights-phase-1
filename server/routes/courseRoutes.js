@@ -12,6 +12,7 @@ router.get('/:id', courseController.list);
  */
 router.get('/:id', courseController.show);
 
+
 /*
  * POST
  */
@@ -21,6 +22,10 @@ router.post('/', courseController.create);
  * PUT
  */
 router.put('/:id', courseController.update);
+
+router.put('/update/:id', courseController.updateGroup);
+
+router.put('/remove/:id', courseController.removeGroup);
 
 /*
  * DELETE

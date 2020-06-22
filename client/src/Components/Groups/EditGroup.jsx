@@ -140,7 +140,7 @@ class EditGroup extends Component {
 
                                 for (let l = 0; l < member_array_parsed.length; l++) {
                                     this.state.members.push(member_array_parsed[l][0]);
-                                };
+                                }
 
                                 let group = {
                                     id: this.props.id,

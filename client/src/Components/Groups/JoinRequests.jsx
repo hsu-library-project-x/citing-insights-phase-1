@@ -50,17 +50,17 @@ class JoinRequests extends Component {
     render() {
         return (
             <span>
+                 <Tooltip title="Join Requests" aria-label="requests to join group">
+                        <IconButton edge="end"
+                                    aria-label="notification"
+                                    onClick={e => this.handleOpen(e, this.props.id)}
 
-                <Tooltip title="Join Requests" aria-label="requests to join group">
-                    <IconButton edge="end"
-                        aria-label="notification"
-                        onClick={e => this.handleOpen(e, this.props.id)}
-                    >
-                        {/*If pending.length is 0 then badge simply won't appear*/}
-                        <Badge color='primary' badgeContent={this.props.pendingMembers.length}>
-                            <AddAlertIcon />
-                        </Badge>
-                    </IconButton>
+                        >
+                            {/*If pending.length is 0 then badge simply won't appear*/}
+                            <Badge  color='primary' badgeContent={this.state.pending.length}>
+                                <AddAlertIcon />
+                            </Badge>
+                        </IconButton>
 
 
                 </Tooltip>

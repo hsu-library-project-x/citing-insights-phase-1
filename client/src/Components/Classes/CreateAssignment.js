@@ -50,7 +50,7 @@ class CreateAssignment extends Component {
       const data = {
         "name": this.state.AssignName,
         "note": this.state.AssignNote,
-        "class_id": this.state.ClassId
+        "class_id": this.state.ClassId,
       };
 
       let dataString = JSON.stringify(data);
@@ -87,8 +87,7 @@ class CreateAssignment extends Component {
             );
 
         });
-        let groups = <MenuItem> Test </MenuItem>;
-
+        
         return(
            <div>
                 <Fab type="button"
@@ -141,19 +140,19 @@ class CreateAssignment extends Component {
                                         multiline
                                         rowsMax="4"
                                         style={{marginBottom: "1em"}} />
-                                     <FormControl>
-                                    <InputLabel id="groupSelect-label-assign">Select Group (optional)</InputLabel>
-                                    <Select
-                                        labelId={"groupSelect-label-assign"}
-                                        name="GroupName"
-                                        onChange={this.handleInputChange}
-                                        value={this.state.GroupName}
-                                        style={{minWidth: 150, marginBottom: "1em"}}
-                                    >
-                                        <MenuItem value={""} disabled> Select a Group</MenuItem>
-                                        {groups}
-                                    </Select>
-                                </FormControl>
+                                {/*     <FormControl>*/}
+                                {/*    <InputLabel id="groupSelect-label-assign">Select Group (optional)</InputLabel>*/}
+                                {/*    <Select*/}
+                                {/*        labelId={"groupSelect-label-assign"}*/}
+                                {/*        name="GroupName"*/}
+                                {/*        onChange={this.handleInputChange}*/}
+                                {/*        value={this.state.GroupName}*/}
+                                {/*        style={{minWidth: 150, marginBottom: "1em"}}*/}
+                                {/*    >*/}
+                                {/*        <MenuItem value={""} disabled> Select a Group</MenuItem>*/}
+                                {/*        {groups}*/}
+                                {/*    </Select>*/}
+                                {/*</FormControl>*/}
                             <Button  variant="contained" type="submit" color="primary"> Submit </Button>
                             </FormControl>
                         </form>
