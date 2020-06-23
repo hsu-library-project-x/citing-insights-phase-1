@@ -191,6 +191,7 @@ class ManageGroups extends Component {
                                 id={group._id}
                                 pendingMembers={group.pendingMembers}
                                 handleQueueAlert={this.handleQueueAlert}
+                                getGroups={this.getGroups}
                             />
 
 
@@ -224,7 +225,7 @@ class ManageGroups extends Component {
                     <Grid item xs={12}>
                         <Container maxWidth={'md'}>
                             <Typography style={{ marginTop: "1em" }} align={"center"} variant={"h4"} component={"h1"} gutterBottom={true}>
-                                Owned Groups
+                                My Groups
                             </Typography>
                             </Container>
 

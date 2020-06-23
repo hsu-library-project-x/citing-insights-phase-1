@@ -57,7 +57,7 @@ class JoinRequests extends Component {
 
                         >
                             {/*If pending.length is 0 then badge simply won't appear*/}
-                            <Badge  color='primary' badgeContent={this.state.pending.length}>
+                            <Badge  color='primary' badgeContent={this.props.pendingMembers.length}>
                                 <AddAlertIcon />
                             </Badge>
                         </IconButton>
@@ -123,6 +123,7 @@ class JoinRequests extends Component {
                                                                         this.handleAlert("Member successfully added to group.", "success");
                                                                     }
                                                                     this.handleClose();
+                                                                    this.props.getGroups();
                                                                 });
                                                         }}>
 

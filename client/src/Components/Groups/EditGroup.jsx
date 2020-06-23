@@ -47,6 +47,7 @@ class EditGroup extends Component {
     }
 
     handleOpen = () => {
+        this.getGroup();
         this.setState({ open: true });
     };
 
