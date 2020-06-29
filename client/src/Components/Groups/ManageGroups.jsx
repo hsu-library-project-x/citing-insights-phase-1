@@ -175,10 +175,10 @@ class ManageGroups extends Component {
                             secondary={group.note}
                         />
                         <ListItemSecondaryAction>
-                            <EditGroup 
-                             id={group._id}
-                             handleQueueAlert={this.handleQueueAlert}
-                             />
+                            <EditGroup
+                                id={group._id}
+                                handleQueueAlert={this.handleQueueAlert}
+                            />
                             <Tooltip title="Delete Group" aria-label="delete group">
                                 <IconButton edge="end"
                                     aria-label="delete"
@@ -191,6 +191,7 @@ class ManageGroups extends Component {
                                 id={group._id}
                                 pendingMembers={group.pendingMembers}
                                 handleQueueAlert={this.handleQueueAlert}
+                                getGroups={this.getGroups}
                             />
 
 
@@ -222,35 +223,41 @@ class ManageGroups extends Component {
                     </Grid>
 
                     <Grid item xs={12}>
-                        <Grid
-                            container
-                            direction="row"
-                            justify="flex-end"
-                            alignItems="flex-end"
-                        >
-                            <Grid item >
-                                <CreateGroup
-                                    user={this.props.user}
-                                    handleQueueAlert={this.handleQueueAlert}
-                                />
+                        <Container maxWidth={'md'}>
+                            <Typography style={{ marginTop: "1em" }} align={"center"} variant={"h4"} component={"h1"} gutterBottom={true}>
+                                My Groups
+                            </Typography>
+                            </Container>
+
+                            <Grid
+                                container
+                                direction="row"
+                                justify="flex-end"
+                                alignItems="flex-end"
+                            >
+                                <Grid item >
+                                    <CreateGroup
+                                        user={this.props.user}
+                                        handleQueueAlert={this.handleQueueAlert}
+                                    />
+                                </Grid>
+                                <Grid item>
+                                    <RequestGroup
+                                        user={this.props.user}
+                                        handleQueueAlert={this.handleQueueAlert}
+                                    />
+                                </Grid>
                             </Grid>
-                            <Grid item>
-                                <RequestGroup
-                                    user={this.props.user}
-                                    handleQueueAlert={this.handleQueueAlert}
-                                />
-                            </Grid>
+                    </Grid>
+
+                        <Grid item xs={12}>
+                            {this.GenList()}
                         </Grid>
                     </Grid>
-
-                    <Grid item xs={12}>
-                        {this.GenList()}
-                    </Grid>
-                </Grid>
             </Container>
-        );
-    }
-
-}
-
+                );
+            }
+        
+        }
+        
 export default withRouter(ManageGroups);

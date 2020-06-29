@@ -72,7 +72,7 @@ class Login extends Component {
 
 			return (
 				<MuiThemeProvider theme={theme}>
-					<Grid container spacing={0} style={{ margin: '-1em' }}>
+					<Grid container spacing={0} style={{ margin: '.01em', padding: '.01em' }}>
 						<Grid item xs={7}>
 							<Base64Image imageBase64String={imageBase64String} />
 							{/* <Box style={{backgroundImage: `url(${`data:image/jpeg;base64,${img}`} )`, height: this.height}} /> */}

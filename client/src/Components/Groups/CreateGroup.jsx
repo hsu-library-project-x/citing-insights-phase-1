@@ -152,7 +152,7 @@ class CreateGroup extends Component {
                                     style={{ marginBottom: "1em" }} />
                                 <br />
                                 <TextField
-                                    label={"Notes (optional)"}
+                                    label={"Description (optional)"}
                                     name="GroupNote"
                                     value={this.state.GroupNote}
                                     onChange={this.handleInputChange}
