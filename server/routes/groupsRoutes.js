@@ -11,6 +11,7 @@ router.get('/', groupsController.list);
  * GET
  */
 router.get('/findOwner/:id', groupsController.findOwner);
+router.get('/findMember/:id', groupsController.findMember);
 
 
 /*

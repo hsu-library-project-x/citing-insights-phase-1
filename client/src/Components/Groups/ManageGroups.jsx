@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import {
-    Button,
-    Select,
-    MenuItem,
+    Paper, Tabs, Tab,
     Container,
     Typography,
-    Fab,
     ListItem,
     List,
     ListItemAvatar,
@@ -34,17 +31,21 @@ class ManageGroups extends Component {
             AvailableGroups: [],
             snackbarOpen: false, //we get away with only one snackbar vairable because mat-ui only allows one snackbar to be open
             messageInfo: undefined,
+            tab: 0,
         };
 
-        this.getGroups();
+        this.getOwnedGroups();
+        this.getMemberGroups();
 
-        this.getGroups = this.getGroups.bind(this);
+        this.getOwnedGroups = this.getOwnedGroups.bind(this);
+        this.getMemberGroups = this.getMemberGroups.bind(this);
         this.handleDeleteGroup = this.handleDeleteGroup.bind(this);
         this.GenList = this.GenList.bind(this);
         this.processQueue = this.processQueue.bind(this);
         this.handleQueueAlert = this.handleQueueAlert.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleExited = this.handleExited.bind(this);
+        this.handleTabChange = this.handleTabChange.bind(this);
 
         this.queueRef = React.createRef();
         this.queueRef.current = [];
@@ -109,7 +110,7 @@ class ManageGroups extends Component {
         </Snackbar>
     }
 
-    getGroups() {
+    getOwnedGroups() {
         let that = this;
         let id = this.props.user.email;
         fetch('/api/groups/findOwner/' + id).then(function (response) {
@@ -117,6 +118,17 @@ class ManageGroups extends Component {
         })
             .then(function (myJson) {
                 that.setState({ AvailableGroups: myJson })
+            });
+    }
+
+    getMemberGroups(){
+        let that = this;
+        let id = this.props.user.email;
+        fetch('/api/groups/findMember/' + id).then(function (response) {
+            return response.json();
+        })
+            .then(function (myJson) {
+                that.setState({ MemberGroups: myJson })
             });
     }
 
@@ -131,12 +143,11 @@ class ManageGroups extends Component {
                     },
                 }).then((response) => {
                     if (response.status === 204) {
-                        alert('Group Deleted');
-                        //this.handleAlert('Group Deleted', 'success');
+                        this.handleAlert('Group Deleted', 'success');
                     }
                     else {
-                        alert('Cannot delete group');
-                        //this.handleAlert('Could not Delete Group', 'error');
+                     
+                        this.handleAlert('Could not Delete Group', 'error');
                     }
                     this.getGroups();
                 }
@@ -146,7 +157,72 @@ class ManageGroups extends Component {
 
     }
 
-    GenList() {
+    handleTabChange(event, newValue){
+        this.setState({tab: newValue});
+    }
+
+     // from mat-ui
+     a11yProps(index) {
+        return {
+            id: `groups-tab-${index}`,
+            'aria-controls': `groups-tabpanel-${index}`,
+        };
+    }
+
+    TabPanel(value, index){
+        return (
+            <Grid item xs={12}>
+            <div
+                role="tabpanel"
+                hidden={value !== index}
+                id={`groups-tabpanel-${index}`}
+                aria-labelledby={`groups-tab-${index}`}
+
+            >
+                {value === index && (
+                    <Grid item xs={12}>
+
+                        <Grid
+                            container
+                            direction="row"
+                            justify="flex-end"
+                            alignItems="flex-end"
+                        >
+                            {index === 0 ?
+                            <Grid item >
+                                <CreateGroup
+                                    user={this.props.user}
+                                    handleQueueAlert={this.handleQueueAlert}
+                                />
+                            </Grid> : 
+                            <Grid item>
+                                    <RequestGroup
+                                        user={this.props.user}
+                                        handleQueueAlert={this.handleQueueAlert}
+                                    />
+                                </Grid>
+                            }
+                        </Grid>
+                 
+                    {index === 0 ?
+                         this.GenList("owner") :  this.GenList("member")
+                    }
+                    </Grid>
+
+                )}
+            </div>
+            </Grid>
+        );
+    }
+
+    GenList(type) {
+        let groupList = [];
+        if(type === 'owner'){
+            groupList = this.state.AvailableGroups;
+        }
+        if(type === 'member'){
+            groupList = this.state.MemberGroups;
+        }
         let that = this;
         return <List
             component={"div"}
@@ -154,7 +230,7 @@ class ManageGroups extends Component {
             style={{ paddingLeft: "4em" }}
             dense={true}
         >
-            {that.state.AvailableGroups.map((group) => {
+            {groupList.map((group) => {
                 return (
                     <ListItem
                         key={group._id}>
@@ -167,6 +243,7 @@ class ManageGroups extends Component {
                             primary={group.name}
                             secondary={group.note}
                         />
+                        {type === "owner" ? 
                         <ListItemSecondaryAction>
                             <EditGroup
                                 id={group._id}
@@ -188,7 +265,7 @@ class ManageGroups extends Component {
                             />
 
 
-                        </ListItemSecondaryAction>
+                        </ListItemSecondaryAction> : null}
                     </ListItem>
 
                 )
@@ -222,30 +299,28 @@ class ManageGroups extends Component {
                             </Typography>
                             </Container>
 
-                            <Grid
-                                container
-                                direction="row"
-                                justify="flex-end"
-                                alignItems="flex-end"
-                            >
-                                <Grid item >
-                                    <CreateGroup
-                                        user={this.props.user}
-                                        handleQueueAlert={this.handleQueueAlert}
-                                    />
-                                </Grid>
-                                <Grid item>
-                                    <RequestGroup
-                                        user={this.props.user}
-                                        handleQueueAlert={this.handleQueueAlert}
-                                    />
-                                </Grid>
-                            </Grid>
+                            
                     </Grid>
 
-                        <Grid item xs={12}>
-                            {this.GenList()}
-                        </Grid>
+                    <Grid xs={12}>
+                        <Paper square>
+                            <Tabs
+                                value={this.state.tab}
+                                indicatorColor={"primary"}
+                                textColor={"primary"}
+                                onChange={this.handleTabChange}
+                                aria-label={"my courses vs shared courses"}
+                                centered
+                            >
+                                <Tab label={"Owner"} {...this.a11yProps(0)} />
+                                <Tab label={"Member"} {...this.a11yProps(1)} />
+                            </Tabs>
+                        </Paper>
+                    </Grid>
+
+                    {this.TabPanel(this.state.tab, 0)}
+                    {this.TabPanel(this.state.tab, 1)}
+                       
                     </Grid>
             </Container>
                 );

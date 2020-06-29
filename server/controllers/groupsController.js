@@ -36,6 +36,20 @@ module.exports = {
         });
     },
 
+      /** find groups that user belongs to (user is member) */
+      findMember: function (req, res) {
+        var userId = req.params.id;
+        groupsModel.find({ members: {$in: userId }}, function (err, groupss) {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Error when getting groups.',
+                    error: err
+                });
+            }
+            return res.json(groupss);
+        });
+    },
+
     /**
      * groupsController.show()
      */
