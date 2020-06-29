@@ -37,10 +37,8 @@ class ManageGroups extends Component {
         };
 
         this.getGroups();
-        // this.getAssignments();
 
         this.getGroups = this.getGroups.bind(this);
-        // this.getAssignments = this.getAssignments.bind(this);
         this.handleDeleteGroup = this.handleDeleteGroup.bind(this);
         this.GenList = this.GenList.bind(this);
         this.processQueue = this.processQueue.bind(this);
@@ -52,12 +50,7 @@ class ManageGroups extends Component {
         this.queueRef.current = [];
     }
 
-    // getAssignments() {
-    //     fetch('/api/assignments/by_user_id/' + this.props.user.id)
-    //         .then(function (response) {
-    //             return response.json();
-    //         }).then(allAssignments => this.setState({assignments:allAssignments}));
-    // }
+    
 
 
     processQueue() {

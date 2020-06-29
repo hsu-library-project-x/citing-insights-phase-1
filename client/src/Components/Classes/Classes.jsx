@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-    Container, Typography, Snackbar, Grid
+    Container, Typography, Snackbar, Grid, Paper, Tabs, Tab, AppBar, Box
 } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import { withRouter } from 'react-router-dom';
@@ -16,16 +16,20 @@ class Classes extends Component {
         this.state = {
             classList: [],
             assignmentList: [],
-            availableGroups:[],
+            availableGroups:[], // all of the groups in database
+            myGroups: [], //groups that user is a creator or member of
+            sharedAssignments:[],
+            sharedCourses:[],
             loading:true, // currently not used
             messageInfo: undefined,
             snackbarOpen:false, //we get away with only one snackbar vairable because mat-ui only allows one snackbar to be open
+            tab: 0,
         };
-
 
         this.getClasses();
         this.getAssignments();
         this.getGroups();
+        this.getSharedGroups();
 
         this.getClasses = this.getClasses.bind(this);
         this.getAssignments = this.getAssignments.bind(this);
@@ -34,6 +38,7 @@ class Classes extends Component {
         this.handleQueueAlert = this.handleQueueAlert.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleExited = this.handleExited.bind(this);
+        this.handleTabChange = this.handleTabChange.bind(this);
 
         this.queueRef = React.createRef();
         this.queueRef.current = [];
@@ -67,11 +72,84 @@ class Classes extends Component {
 
     }
 
+    getSharedGroups(){
+        fetch(`/api/groups/by_email/${this.props.user.email}/`).then(function (response) {
+                return response.json();
+        }).then(d => {
+            this.createTreeItems(d, 'myGroups');
+        });
+    }
+
+    getAssignmentsByGroupId(groupidArray){
+        let arrayInJson = JSON.stringify(groupidArray);
+
+        fetch(`/api/assignments/by_group_id/${this.props.user.id}/${arrayInJson}`,
+        {headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+           }
+        }).then(function (response) {
+           try{
+                if(response.staus === 201){
+                    return response.json();
+                }
+                if(response.status === 500 || response.status === 404){
+                    return {};
+                }
+            
+           } 
+           
+               
+            catch(e){
+                
+                console.log(e)
+            }
+            
+            
+        }).then(d => {
+            this.createTreeItems(d, 'sharedAssignments');
+        });
+    }
+
+    getClassesByGroupId(groupidArray){
+        let arrayInJson = JSON.stringify(groupidArray);
+        fetch(`/api/courses/by_group_id/${this.props.user.id}/${arrayInJson}`, 
+        {headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+           }
+         }).then(function (response) {
+            try{
+                if(response.staus === 201){
+                    return response.json();
+                }
+                if(response.status === 500 || response.status === 404){
+                    return {};
+                }
+            
+           } 
+                   
+                catch(e){
+                    console.log(e)
+                }
+        }).then(d => {
+            this.createTreeItems(d, 'sharedCourses');
+        });
+    }
+
+
     createTreeItems(json, state) {
         let list = [];
-        for (let i = 0; i < json.length; i++) {
-            list.push(json[i]);
+        if(state === 'myGroups'){
+            for (let i = 0; i < json.length; i++) {
+                list.push(json[i]["_id"]);
+            }
+        }else{
+            for (let i = 0; i < json.length; i++) {
+                list.push(json[i]);
+            }
         }
+
         this.setState({ [state]: list });
     }
 
@@ -110,6 +188,10 @@ class Classes extends Component {
         this.processQueue();
     };
 
+    handleTabChange(event, newValue){
+        this.setState({tab: newValue});
+    }
+
     DisplayAlerts(){
         return <Snackbar
             key={this.state.messageInfo ? this.state.messageInfo.key : undefined}
@@ -131,10 +213,72 @@ class Classes extends Component {
         </Snackbar>
     }
 
+    // from mat-ui
+     a11yProps(index) {
+        return {
+            id: `simple-tab-${index}`,
+            'aria-controls': `simple-tabpanel-${index}`,
+        };
+    }
+
+     TabPanel(value, index){
+        return (
+            <Grid item xs={12}>
+            <div
+                role="tabpanel"
+                hidden={value !== index}
+                id={`simple-tabpanel-${index}`}
+                aria-labelledby={`simple-tab-${index}`}
+
+            >
+                {value === index && (
+                    <Grid item xs={12}>
+                        <Grid
+                            container
+                            direction="row"
+                            justify="flex-end"
+                            alignItems="flex-end"
+                        >
+                            {index === 0 ?
+                            <Grid item >
+                                <CreateClass
+                                    user_id={this.props.user.id}
+                                    handleQueueAlert={this.handleQueueAlert}
+                                />
+                            </Grid> : null}
+                            {index === 0 ?
+                            <Grid item>
+                                <CreateAssignment
+                                    user_id={this.props.user.id}
+                                    classList={this.state.classList}
+                                    handleQueueAlert={this.handleQueueAlert}
+                                />
+                            </Grid> : null}
+                        </Grid>
+                    {/*</Grid>*/}
+                    {/*    <Grid xs={12}>*/}
+                    {index === 0 ?
+                        <CreateList
+                            classList={this.state.classList}
+                            assignmentList={this.state.assignmentList}
+                            availableGroups={this.state.availableGroups}
+                            handleQueueAlert={this.handleQueueAlert}
+                            user_id={this.props.user.id}
+                        /> :null
+                         //this.getAssignmentsByGroupId(this.state.myGroups)
+                         }
+                    </Grid>
+
+                )}
+            </div>
+            </Grid>
+        );
+    }
 
 
 
     render() {
+       
         return (
             <Container maxWidth={"md"}>
                 {this.DisplayAlerts()}
@@ -149,37 +293,26 @@ class Classes extends Component {
                             Manage Coursework
                         </Typography>
                     </Grid>
-                    <Grid item xs={12}>
-                        <Grid
-                            container
-                            direction="row"
-                            justify="flex-end"
-                            alignItems="flex-end"
-                        >
-                            <Grid item >
-                                <CreateClass
-                                    user_id={this.props.user.id}
-                                    handleQueueAlert={this.handleQueueAlert}
-                                />
-                            </Grid>
-                            <Grid item>
-                                <CreateAssignment
-                                    user_id={this.props.user.id}
-                                    classList={this.state.classList}
-                                    handleQueueAlert={this.handleQueueAlert}
-                                />
-                            </Grid>
-                        </Grid>
+
+                    <Grid xs={12}>
+                        <Paper square>
+                            <Tabs
+                                value={this.state.tab}
+                                indicatorColor={"primary"}
+                                textColor={"primary"}
+                                onChange={this.handleTabChange}
+                                aria-label={"my courses vs shared courses"}
+                                centered
+                            >
+                                <Tab label={"My Coursework"} {...this.a11yProps(0)} />
+                                <Tab label={"Shared Coursework"} {...this.a11yProps(1)} />
+                            </Tabs>
+                        </Paper>
                     </Grid>
-                    <Grid item xs={12}>
-                        <CreateList
-                            classList={this.state.classList}
-                            assignmentList={this.state.assignmentList}
-                            availableGroups={this.state.availableGroups}
-                            handleQueueAlert={this.handleQueueAlert}
-                            user_id={this.props.user.id}
-                        />
-                    </Grid>
+
+                    {this.TabPanel(this.state.tab, 0)}
+                    {this.TabPanel(this.state.tab, 1)}
+
                 </Grid>
             </Container>
         );

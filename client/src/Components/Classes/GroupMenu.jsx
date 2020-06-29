@@ -181,7 +181,6 @@ class GroupMenu extends Component {
 
         else if(type === 'courses' && this.props.classList){
             this.props.classList.forEach(c => {
-                console.log(c);
                 if( c._id === id){
                     if(c.group_ids !== undefined){
                         listItem = c.group_ids;

@@ -96,11 +96,12 @@ module.exports = {
         if (req.session.user !== undefined) {
 
             let id = req.params.id;
-            let group_id = req.params.groupid;
+            let group_id_array = JSON.parse(req.params.group_array);
 
             assignmentModel.find({
-                $and: [ {group_ids: group_id }, {user_id: {$not: {id}}}]}, function (err, assignments) {
+                $and: [ {group_ids: {$in: group_id_array} }, {user_id: {$ne: {id}}}]}, function (err, assignments) {
                 if (err) {
+                    console.log(err);
                     return res.status(500).json({
                         message: 'Error when getting assignment.',
                         error: err
@@ -111,8 +112,9 @@ module.exports = {
                         message: 'No such assignment'
                     });
                 }
-
-                return res.json(assignments);
+                //status?
+                console.log(res);
+                return res.status(201).json(assignments);
             });
         }
     },

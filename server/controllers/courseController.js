@@ -60,12 +60,18 @@ module.exports = {
     },
 
     by_group_id: function(req, res){
-        if (req.session.user !== undefined) {
 
+        if (req.session.user !== undefined) {
+          
             let id = req.params.id;
-            let group_id= req.params.group_id;
+            let group_id_array = JSON.parse(req.params.group_array);
+    
             courseModel.find({
-                $and: [ {group_ids: group_id }, {user_id: {$not: {id}}}]}, function (err, courses) {
+                $and: [
+                     {group_ids: {$in: group_id_array} }, 
+                     {user_id: {$ne: {id}}}
+                    ]
+                }, function (err, courses) {
                 if (err) {
                     return res.status(500).json({
                         message: 'Error when getting courses.',
@@ -78,7 +84,8 @@ module.exports = {
                     });
                 }
 
-                return res.json(courses);
+                //status?
+                return res.status(201).json(courses);
             });
         }
     },
