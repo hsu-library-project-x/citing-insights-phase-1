@@ -259,8 +259,6 @@ class GroupMenu extends Component {
             </ListItem>);
         });
 
-
-        // wrong but the best I could do for now
         let groupMemberArrays = currentGroupList.map(group => group.members);
         let toReturn = [];
         for (let j = 0; j < groupMemberArrays.length; j++) {

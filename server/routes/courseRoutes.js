@@ -12,7 +12,7 @@ router.get('/:id', courseController.list);
  */
 router.get('/:id', courseController.show);
 
-router.get('/by_group_id/:id/:group_array', courseController.by_group_id);
+router.get('/by_email/:email/', courseController.sharedCourses);
 
 
 /*

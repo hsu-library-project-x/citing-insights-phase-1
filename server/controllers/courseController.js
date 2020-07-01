@@ -59,19 +59,13 @@ module.exports = {
         }
     },
 
-    by_group_id: function(req, res){
-
+    sharedCourses: function(req, res){
         if (req.session.user !== undefined) {
-          
-            let id = req.params.id;
-            let group_id_array = JSON.parse(req.params.group_array);
-    
+            let email = req.params.email;
+
             courseModel.find({
-                $and: [
-                     {group_ids: {$in: group_id_array} }, 
-                     {user_id: {$ne: {id}}}
-                    ]
-                }, function (err, courses) {
+                members: {$in: email}
+            }, function (err, courses) {
                 if (err) {
                     return res.status(500).json({
                         message: 'Error when getting courses.',
@@ -83,8 +77,9 @@ module.exports = {
                         message: 'No such course'
                     });
                 }
+   
 
-                //status?
+                console.log(courses);
                 return res.status(201).json(courses);
             });
         }
@@ -177,13 +172,9 @@ module.exports = {
     }
     },
 
-
-
     updateGroup: function (req, res) {
         if (req.session.user !== undefined) {
-
             let id = req.params.id;
-            console.log(req.body);
             courseModel.findOneAndUpdate({ _id: id },
                 {  $push: {group_ids: req.body.group_id, members: req.body.members} }, function (err, course) {
                     if (err) {
@@ -206,11 +197,7 @@ module.exports = {
 
     removeGroup: function (req, res){
         if (req.session.user !== undefined) {
-
             let id = req.params.id;
-            console.log("SUCK A DICK");
-            console.log(req.body);
-
             courseModel.findOneAndUpdate({_id: id},
                 {$pull: 
                     { 

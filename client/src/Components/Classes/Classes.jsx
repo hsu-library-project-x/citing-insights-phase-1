@@ -30,9 +30,15 @@ class Classes extends Component {
         this.getAssignments();
         this.getGroups();
         this.getSharedGroups();
+        this.getSharedAssignments();
+        this.getSharedCourses();
 
+       
         this.getClasses = this.getClasses.bind(this);
         this.getAssignments = this.getAssignments.bind(this);
+        this.getSharedAssignments = this.getSharedAssignments.bind(this);
+        this.getSharedCourses = this.getSharedCourses.bind(this);
+
         this.createTreeItems = this.createTreeItems.bind(this);
         this.processQueue = this.processQueue.bind(this);
         this.handleQueueAlert = this.handleQueueAlert.bind(this);
@@ -80,58 +86,25 @@ class Classes extends Component {
         });
     }
 
-    getAssignmentsByGroupId(groupidArray){
-        let arrayInJson = JSON.stringify(groupidArray);
-
-        fetch(`/api/assignments/by_group_id/${this.props.user.id}/${arrayInJson}`,
-        {headers : { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-           }
-        }).then(function (response) {
-           try{
-                if(response.staus === 201){
-                    return response.json();
-                }
-                if(response.status === 500 || response.status === 404){
-                    return {};
-                }
-            
-           } 
-           
-               
-            catch(e){
-                
-                console.log(e)
+    getSharedAssignments(){
+        fetch(`/api/assignments/by_email/${this.props.user.email}`,).then(function (response) {
+            if(response.status === 201){
+                return response.json();
             }
-            
-            
         }).then(d => {
             this.createTreeItems(d, 'sharedAssignments');
         });
     }
 
-    getClassesByGroupId(groupidArray){
-        let arrayInJson = JSON.stringify(groupidArray);
-        fetch(`/api/courses/by_group_id/${this.props.user.id}/${arrayInJson}`, 
-        {headers : { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-           }
-         }).then(function (response) {
-            try{
-                if(response.staus === 201){
-                    return response.json();
-                }
-                if(response.status === 500 || response.status === 404){
-                    return {};
-                }
-            
-           } 
-                   
-                catch(e){
-                    console.log(e)
-                }
+    getSharedCourses(){
+
+        fetch(`/api/courses/by_email/${this.props.user.email}`).then(function (response) {
+
+            if(response.status === 201){
+               
+                return response.json();
+            }
+
         }).then(d => {
             this.createTreeItems(d, 'sharedCourses');
         });
@@ -140,17 +113,20 @@ class Classes extends Component {
 
     createTreeItems(json, state) {
         let list = [];
-        if(state === 'myGroups'){
-            for (let i = 0; i < json.length; i++) {
-                list.push(json[i]["_id"]);
+        if(json !== undefined){
+            if(state === 'myGroups'){
+                for (let i = 0; i < json.length; i++) {
+                    list.push(json[i]["_id"]);
+                }
+            }else{
+                for (let i = 0; i < json.length; i++) {
+                    list.push(json[i]);
+                }
             }
-        }else{
-            for (let i = 0; i < json.length; i++) {
-                list.push(json[i]);
-            }
-        }
 
-        this.setState({ [state]: list });
+            this.setState({ [state]: list });
+        }
+     
     }
 
     processQueue(){
@@ -229,7 +205,6 @@ class Classes extends Component {
                 hidden={value !== index}
                 id={`simple-tabpanel-${index}`}
                 aria-labelledby={`simple-tab-${index}`}
-
             >
                 {value === index && (
                     <Grid item xs={12}>
@@ -278,7 +253,7 @@ class Classes extends Component {
 
 
     render() {
-       
+        console.log(this.state.sharedCourses);
         return (
             <Container maxWidth={"md"}>
                 {this.DisplayAlerts()}
