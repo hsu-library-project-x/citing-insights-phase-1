@@ -6,21 +6,22 @@ import {
     ListItem,
     List,
     ListItemAvatar,
-    Avatar, ListItemText, ListItemSecondaryAction, Tooltip, IconButton, Grid, Snackbar
+    Avatar, 
+    ListItemText,
+    ListItemSecondaryAction, 
+    Tooltip, 
+    IconButton, 
+    Grid, 
+    Snackbar
 } from '@material-ui/core';
 import { withRouter } from "react-router-dom";
 import GroupWorkIcon from '@material-ui/icons/GroupWork';
-import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from "@material-ui/icons/Delete";
-import AddAlertIcon from '@material-ui/icons/AddAlert';
-
 
 import CreateGroup from "./CreateGroup";
 import RequestGroup from "./RequestGroup";
 import EditGroup from "./EditGroup";
 import JoinRequests from "./JoinRequests";
-import AddAssignment from "./AddAssignment";
-import RemoveAssignment from "./RemoveAssignment";
 
 import Alert from "@material-ui/lab/Alert";
 
@@ -51,9 +52,6 @@ class ManageGroups extends Component {
         this.queueRef.current = [];
     }
 
-    
-
-
     processQueue() {
         if (this.queueRef.current.length > 0) {
             this.setState({
@@ -75,7 +73,7 @@ class ManageGroups extends Component {
         } else {
             this.processQueue();
         }
-        this.getGroups();
+        this.getOwnedGroups();
     };
 
     handleClose(event, reason) {
@@ -149,12 +147,11 @@ class ManageGroups extends Component {
                      
                         this.handleAlert('Could not Delete Group', 'error');
                     }
-                    this.getGroups();
+                    this.getOwnedGroups();
                 }
                 );
             }
         }
-
     }
 
     handleTabChange(event, newValue){
@@ -181,7 +178,6 @@ class ManageGroups extends Component {
             >
                 {value === index && (
                     <Grid item xs={12}>
-
                         <Grid
                             container
                             direction="row"
@@ -261,13 +257,10 @@ class ManageGroups extends Component {
                                 id={group._id}
                                 pendingMembers={group.pendingMembers}
                                 handleQueueAlert={this.handleQueueAlert}
-                                getGroups={this.getGroups}
+                                getGroups={this.getOwnedGroups}
                             />
-
-
                         </ListItemSecondaryAction> : null}
                     </ListItem>
-
                 )
             })}
         </List>;
@@ -278,6 +271,7 @@ class ManageGroups extends Component {
         return (
             <Container maxWidth={"md"}>
                 {this.DisplayAlerts()}
+
                 <Grid
                     container
                     direction="row"

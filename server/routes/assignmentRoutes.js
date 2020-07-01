@@ -29,7 +29,7 @@ router.post('/:user_id', assignmentController.create);
  * PUT
  */
 router.put('/update/:id', assignmentController.update);
-router.put('/remove/:id', assignmentController.removeGroup);
+router.put('/removeGroup/:id', assignmentController.removeGroup);
 
 
 

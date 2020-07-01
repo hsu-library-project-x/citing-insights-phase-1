@@ -91,8 +91,6 @@ class CreateGroup extends Component {
                         <form className={'modal_form'} onSubmit={(event) => {
                             event.preventDefault();
 
-
-                            console.log(this.state.Members);
                             let member_array_parsed = Papa.parse(this.state.Members).data;
 
 

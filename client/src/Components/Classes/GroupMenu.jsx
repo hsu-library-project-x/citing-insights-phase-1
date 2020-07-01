@@ -115,8 +115,14 @@ class GroupMenu extends Component {
         return listItems;
     }
 
-    addGroup(id, type, group){
-        let body = JSON.stringify(group);
+    addGroup(id, type, group, members){
+
+        let toAdd= {
+            'group_id': group,
+            'members': members,
+        }
+        
+        let body = JSON.stringify(toAdd);
 
         fetch(`/api/${type}/update/${id}`, {
             method: "PUT",
@@ -139,10 +145,16 @@ class GroupMenu extends Component {
 
     }
 
-    removeGroup( id, type, group){
-        let body = JSON.stringify(group);
+    removeGroup( id, type, group, members){
+       
+        let toRemove = {
+            'group_id': group,
+            'members': members,
+        }
 
-        fetch(`/api/${type}/remove/${id}`, {
+        let body = JSON.stringify(toRemove);
+
+        fetch(`/api/${type}/removeGroup/${id}`, {
             method: "PUT",
             body: body,
             headers: {
@@ -221,7 +233,7 @@ class GroupMenu extends Component {
                     />
                     <ListItemSecondaryAction>
                         <Tooltip title="Add Group" aria-label="add group">
-                            <IconButton edge="end" aria-label="add group" onClick={() => this.addGroup(id, type, group)}>
+                            <IconButton edge="end" aria-label="add group" onClick={() => this.addGroup(id, type, group._id, group.members)}>
                                 <AddIcon />
                             </IconButton>
                         </Tooltip>
@@ -239,7 +251,7 @@ class GroupMenu extends Component {
                 />
                 <ListItemSecondaryAction>
                     <Tooltip title="Remove Group" aria-label="remove group">
-                        <IconButton edge="end" aria-label="remove group" onClick={()=> this.removeGroup(id,type,group)}>
+                        <IconButton edge="end" aria-label="remove group" onClick={()=> this.removeGroup(id,type,group._id, group.members)}>
                             <ClearIcon />
                         </IconButton>
                     </Tooltip>

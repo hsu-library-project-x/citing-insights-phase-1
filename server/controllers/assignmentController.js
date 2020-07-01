@@ -113,7 +113,7 @@ module.exports = {
                     });
                 }
                 //status?
-                console.log(res);
+              
                 return res.status(201).json(assignments);
             });
         }
@@ -176,10 +176,9 @@ module.exports = {
         if (req.session.user !== undefined) {
 
             let id = req.params.id;
-            console.log(id);
-
+    
             assignmentModel.findOneAndUpdate({ _id: id },
-                {  $push: {group_ids: req.body} }, function (err, assignment) {
+                {  $push: {group_ids: req.body.group_id, members: req.body.members} }, function (err, assignment) {
                 if (err) {
                     return res.status(500).json({
                         message: 'Error when getting assignment',
@@ -202,9 +201,15 @@ module.exports = {
         if (req.session.user !== undefined) {
 
             let id = req.params.id;
-
+            console.log("SUCK A DICK");
+            console.log(req.body);
             assignmentModel.findOneAndUpdate({ _id: id },
-                {$pull: {group_ids: req.body._id}}, function (err, assignment) {
+                {$pull: 
+                     { 
+                         group_ids: req.body.group_id,
+                         members: {$in: req.body.members }
+                    }
+                }, function (err, assignment) {
                     if (err) {
                         return res.status(500).json({
                             message: 'Error when getting assignment',
@@ -216,11 +221,8 @@ module.exports = {
                             message: 'No such assignment'
                         });
                     }
-
-
                     return res.status(202).json(assignment);
                 });
-
         }
     },
 

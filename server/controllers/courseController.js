@@ -183,10 +183,9 @@ module.exports = {
         if (req.session.user !== undefined) {
 
             let id = req.params.id;
-            console.log(id);
-
+            console.log(req.body);
             courseModel.findOneAndUpdate({ _id: id },
-                {  $push: {group_ids: req.body} }, function (err, course) {
+                {  $push: {group_ids: req.body.group_id, members: req.body.members} }, function (err, course) {
                     if (err) {
                         return res.status(500).json({
                             message: 'Error when getting course',
@@ -209,9 +208,18 @@ module.exports = {
         if (req.session.user !== undefined) {
 
             let id = req.params.id;
+            console.log("SUCK A DICK");
+            console.log(req.body);
 
             courseModel.findOneAndUpdate({_id: id},
-                {$pull: {group_ids:  req.body._id}}, function (err, course) {
+                {$pull: 
+                    { 
+                        group_ids: req.body.group_id,
+                        members: {$in: req.body.members }
+                   }
+               },
+                
+                function (err, course) {
                     if (err) {
                         return res.status(500).json({
                             message: 'Error when getting assignment',

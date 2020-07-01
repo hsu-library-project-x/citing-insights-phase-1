@@ -27,7 +27,7 @@ router.put('/:id', courseController.update);
 
 router.put('/update/:id', courseController.updateGroup);
 
-router.put('/remove/:id', courseController.removeGroup);
+router.put('/removeGroup/:id', courseController.removeGroup);
 
 /*
  * DELETE

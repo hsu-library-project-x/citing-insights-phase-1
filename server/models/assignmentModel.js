@@ -16,6 +16,7 @@ var assignmentSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'groups',
 	}],
+	'members' : [String],
 });
 
 module.exports = mongoose.model('assignment', assignmentSchema);
