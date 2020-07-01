@@ -8,6 +8,7 @@ import { withRouter } from 'react-router-dom';
 import CreateClass from "./CreateClass";
 import CreateAssignment from "./CreateAssignment";
 import CreateList from "./CreateList";
+import CreateSharedList from "./CreateSharedList";
 
 
 class Classes extends Component {
@@ -239,9 +240,14 @@ class Classes extends Component {
                             availableGroups={this.state.availableGroups}
                             handleQueueAlert={this.handleQueueAlert}
                             user_id={this.props.user.id}
-                        /> :null
-                         //this.getAssignmentsByGroupId(this.state.myGroups)
-                         }
+                        /> :
+                        <CreateSharedList 
+                            sharedClassList={this.state.sharedCourses}
+                            assignmentList={this.state.sharedAssignments}
+                            handleQueueAlert={this.handleQueueAlert}
+                            user_id={this.props.user.id}
+                        />    
+                    }
                     </Grid>
 
                 )}
@@ -253,7 +259,6 @@ class Classes extends Component {
 
 
     render() {
-        console.log(this.state.sharedCourses);
         return (
             <Container maxWidth={"md"}>
                 {this.DisplayAlerts()}

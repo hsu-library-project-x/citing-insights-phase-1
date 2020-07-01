@@ -92,11 +92,6 @@ class CreateList extends Component {
         }
     }
 
-
-
-
-
-
     nestItems(classes, assignments) {
         //
         return classes.map(d => {
