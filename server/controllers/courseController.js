@@ -112,9 +112,9 @@ module.exports = {
     /**
      * courseController.create()
      */
-    create: function (req, res) {        
+    create: function (req, res) { 
+    
         if(req.session.user !== undefined) {
-
 
         let course = new courseModel({
 			name : req.body.name,
@@ -123,6 +123,7 @@ module.exports = {
 
         });
 
+        console.log(course);
         course.save(function (err, course) {
             if (err) {
                 return res.status(500).json({
