@@ -77,9 +77,7 @@ module.exports = {
                         message: 'No such course'
                     });
                 }
-   
-
-                console.log(courses);
+ 
                 return res.status(201).json(courses);
             });
         }
@@ -123,7 +121,7 @@ module.exports = {
 
         });
 
-        console.log(course);
+
         course.save(function (err, course) {
             if (err) {
                 return res.status(500).json({

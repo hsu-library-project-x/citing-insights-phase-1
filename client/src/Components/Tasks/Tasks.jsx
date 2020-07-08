@@ -23,7 +23,7 @@ class Tasks extends PureComponent {
 		this.state = {
 			ActiveStep: 0,
 			completed: {},
-			selectedAssignmentId: null,
+			selectedId: null,
 			isEditing: null,
 			rubricExists: null,
 			rubricTitle: "",
@@ -121,7 +121,7 @@ class Tasks extends PureComponent {
 	};
 
 	updateSelectedId(newId) {
-		this.setState({ selectedAssignmentId: newId }, this.renderPage);
+		this.setState({ selectedId: newId }, this.renderPage);
 	}
 
 	updateOverviewPage(citations) {
@@ -157,7 +157,7 @@ class Tasks extends PureComponent {
 					return;
 				}
 			case 3:
-				if (this.state.selectedAssignmentId !== null) {
+				if (this.state.selectedId !== null) {
 					this.props.history.push('/tasks/analyze');
 					return;
 				} else {
@@ -334,7 +334,7 @@ class Tasks extends PureComponent {
 									user={this.props.user}
 									oneSearchUrl={this.props.configurations.oneSearchUrl}
 									oneSearchViewId={this.props.configurations.oneSearchViewId}
-									selectedAssignmentId={this.state.selectedAssignmentId}
+									selectedId={this.state.selectedId}
 									{...props} />}
 							/>
 							<Route path="/tasks/overview" render={(props) =>

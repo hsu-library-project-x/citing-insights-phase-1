@@ -6,10 +6,7 @@ var paperSchema = new Schema({
 	'name': String,
 	'body': {},
 	'pdf': Buffer,
-	'assignment_id': {
-		type: Schema.Types.ObjectId,
-		ref: 'assignment'
-	}
+	'ref_id': String
 });
 
 module.exports = mongoose.model('paper', paperSchema);

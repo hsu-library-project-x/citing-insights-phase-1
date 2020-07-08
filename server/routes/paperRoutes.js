@@ -12,7 +12,7 @@ router.get('/', paperController.list);
  */
 router.get('/:id', paperController.show);
 
-router.get('/by_assignment_id/:id', paperController.by_assignment_id);
+router.get('/by_ref_id/:id', paperController.by_ref_id);
 
 /*
  * POST

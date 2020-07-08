@@ -31,18 +31,22 @@ module.exports =  function upload(req, res) {
 
     form
         .on("file", async (field, file) => {
+        
               let textByLine = await fs.readFileSync(file.path);
               let body = await pdfController.getData(textByLine);
-                let raw_text = {
+             
+              let raw_text = {
                     "body": body,
                     "pdf": textByLine,
                     "title": file.name,
                     "name": null,
-                    "assignment_id": field
+                    "ref_id": field
                 };
 
                 // we actually want to set a variable to see whether or not things happenned successfully
                 // instantiate the paper and save to db
+
+                
                 let paper = new paperModel(raw_text);
 
                 paper.save(function (err, paper) {
