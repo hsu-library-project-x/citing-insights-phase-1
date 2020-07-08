@@ -6,39 +6,96 @@ class Overview extends Component {
         super(props);
         this.state = {
             className: '',
-            selectedAssignmentId: '',
+            selectedId: '',
+            classList: [],
+            assignmentList: [],
+            sharedAssignments:[],
+            sharedCourses:[],
             selectedPaperId: '',
-            AvailableCourses: [],
-            AvailableAssignments: [],
             AvailablePapers: [],
             rubrics: [], //TODO: CHECK THAT WE ACTUALLY USE THIS
             citations: [],
         };
 
-        this.getCourses();
+        this.getClasses();
+        this.getAssignments();
+        this.getSharedAssignments();
+        this.getSharedCourses();
         this.getRubrics();
 
-        this.getCourses = this.getCourses.bind(this);
+        this.getClasses = this.getClasses.bind(this);
+        this.getAssignments = this.getAssignments.bind(this);
+        this.getSharedAssignments = this.getSharedAssignments.bind(this);
+        this.getSharedCourses = this.getSharedCourses.bind(this);
         this.getRubrics = this.getRubrics.bind(this);
-        this.handleClassSelection = this.handleClassSelection.bind(this);
-        this.handleAssignmentSelection = this.handleAssignmentSelection.bind(this);
+
+        // this.handleClassSelection = this.handleClassSelection.bind(this);
+        this.handleSelection = this.handleSelection.bind(this);
         this.handlePaperSelection = this.handlePaperSelection.bind(this);
         this.handleResultsChange = this.handleResultsChange.bind(this);
     }
 
 
 
-    getCourses(){
-        let that = this;
-        return(
-            fetch('/api/courses/' + this.props.user.id)
-                .then(response => {
-                    return response.json();
-                })
-                .then(myJson => {
-                    that.setState({ AvailableCourses: myJson });
-                })
-        );
+    getClasses() {
+        fetch('/api/courses/' + this.props.user.id)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(d => this.createTreeItems(d, 'classList'));
+      }
+    
+      getAssignments() {
+          fetch('/api/assignments/by_user_id/' + this.props.user.id)
+              .then(function (response) {
+                  return response.json();
+              })
+              .then(d => {
+                  this.createTreeItems(d, 'assignmentList');
+              });
+      }
+    
+    
+      getSharedAssignments(){
+        fetch(`/api/assignments/by_email/${this.props.user.email}`,).then(function (response) {
+            if(response.status === 201){
+                return response.json();
+            }
+        }).then(d => {
+            this.createTreeItems(d, 'sharedAssignments');
+        });
+      }
+    
+      getSharedCourses(){
+    
+        fetch(`/api/courses/by_email/${this.props.user.email}`).then(function (response) {
+    
+            if(response.status === 201){
+              
+                return response.json();
+            }
+    
+        }).then(d => {
+            this.createTreeItems(d, 'sharedCourses');
+        });
+      }
+    
+    
+    createTreeItems(json, state) {
+      let list = [];
+      if(json !== undefined){
+          if(state === 'myGroups'){
+              for (let i = 0; i < json.length; i++) {
+                  list.push(json[i]["_id"]);
+              }
+          }else{
+              for (let i = 0; i < json.length; i++) {
+                  list.push(json[i]);
+              }
+          }
+    
+          this.setState({ [state]: list });
+      }
     }
 
     getRubrics(){
@@ -54,23 +111,23 @@ class Overview extends Component {
         );
     }
 
-    //Given a Class, this function makes a call to get all assignments in that class.
-    handleClassSelection(event) {
-        let that = this;
-        let target = event.target;
-        fetch('/api/assignments/by_class_id/' + target.value)
-            .then(response =>  {
-                return response.json();
-            })
-            .then(myJson => {
-                that.setState({ AvailableAssignments: myJson });
-            });
-    }
+    // //Given a Class, this function makes a call to get all assignments in that class.
+    // handleClassSelection(event) {
+    //     let that = this;
+    //     let target = event.target;
+    //     fetch('/api/assignments/by_class_id/' + target.value)
+    //         .then(response =>  {
+    //             return response.json();
+    //         })
+    //         .then(myJson => {
+    //             that.setState({ AvailableAssignments: myJson });
+    //         });
+    // }
 
-    handleAssignmentSelection(event) {
+    handleSelection(event) {
         let that = this;
         let target = event.target;
-        fetch('/api/papers/by_assignment_id/' + target.value)
+        fetch('/api/papers/by_ref_id/' + target.value)
             .then(function (response) {
                 return response.json();
             })
@@ -97,16 +154,17 @@ class Overview extends Component {
     }
 
     render() {
-        let courses = this.state.AvailableCourses;
+
+        let courses = this.state.classList.concat(this.state.sharedCourses);
         let optionItems = courses.map((course) =>
-            <MenuItem value={course._id} key={course._id}>{course.name}</MenuItem>
+          <MenuItem value={course._id} key={course._id}>{course.name}</MenuItem>
         );
-
-        let assignments = this.state.AvailableAssignments;
+    
+        let assignments = this.state.assignmentList.concat(this.state.sharedAssignments);
         let optionAssignments = assignments.map((assignment) =>
-            <MenuItem value={assignment._id} key={assignment._id}>{assignment.name}</MenuItem>
+          <MenuItem value={assignment._id} key={assignment._id}>{assignment.name}</MenuItem>
         );
-
+    
         let papers = this.state.AvailablePapers;
         let optionPapers = papers.map((paper) =>
             <MenuItem value={paper._id} key={paper._id}>{paper.title}</MenuItem>
@@ -123,16 +181,15 @@ class Overview extends Component {
                 </Typography>
 
                 <form style={{textAlign:"center", margin:"1em"}} onSubmit={this.handleResultsChange}>
-                    <FormControl required={true} style={{minWidth: 250}}>
+                    <FormControl  style={{minWidth: 250}}>
                         <InputLabel id="selectClasslabelOverview">Select a Class</InputLabel>
                         <Select
                             style={{textAlign:"center"}}
                             labelId={"selectClasslabelOverview"}
                             defaultValue={""}
-                            onChange={this.handleClassSelection}
+                            onChange={this.handleSelection}
                             inputProps={{
-                                name: 'className',
-                                id: 'assignForAnalyze',
+                                name: 'selectedId',
                             }}
                         >
                             <MenuItem value="" disabled >select class</MenuItem>
@@ -140,15 +197,14 @@ class Overview extends Component {
                         </Select>
                     </FormControl>
                     <br />
-                    <FormControl  required={true} style={{minWidth: 250}}>
+                    <FormControl style={{minWidth: 250}}>
                         <InputLabel id="selectAssignmentLabelOverview">Select an Assignment</InputLabel>
                         <Select
                             style={{textAlign:"center"}}
                             defaultValue={""}
-                            onChange={this.handleAssignmentSelection}
+                            onChange={this.handleSelection}
                             inputProps={{
-                                name: 'selectedAssignmentId',
-                                id: 'assignForAnalyze',
+                                name: 'selectedId',
                             }}
                         >
                             <MenuItem value="" disabled> select assignment</MenuItem>
@@ -164,7 +220,6 @@ class Overview extends Component {
                             defaultValue={""}
                             inputProps={{
                                 name: 'selectedPaperId',
-                                id: 'assignForAnalyze',
                             }}
                         >
                             <MenuItem value="" disabled> select paper </MenuItem>
