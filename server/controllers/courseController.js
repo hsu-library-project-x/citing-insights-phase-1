@@ -293,5 +293,18 @@ module.exports = {
                 return res.status(204).json();
             });
         }
+    },
+
+    getCoursesByGroup: function(req, res){
+        let groupId = req.params.groupId;
+        courseModel.find({"group_ids": groupId}), function(err, course){
+            if(err){
+                return res.status(500).json({
+                    message: "Error when finding course",
+                    error: err
+                });
+            }
+            return res.status(200).json();
+        }
     }
 };

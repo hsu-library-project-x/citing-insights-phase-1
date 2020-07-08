@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import {Button, Typography, Table , TableBody, TableCell, TableHead, TableRow} from '@material-ui/core';
+import { Button, Typography, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { CSVLink } from "react-csv";
 
 class OverviewTable extends Component {
@@ -26,14 +26,13 @@ class OverviewTable extends Component {
     formatCitation(citation, assessment) {
         return (
             {
-                'author':  `${this.getAuthors(citation.author)} ${citation.date}. ${citation.title}`,
+                'author': `${this.getAuthors(citation.author)} ${citation.date}. ${citation.title}`,
                 'title': citation.title,
                 'comments': assessment.annotation,
                 'rubric_title': assessment.rubric_title,
-                'rubric_value' : assessment.rubric_score,
+                'rubric_value': assessment.rubric_score,
             }
         );
-
     }
 
     showCitations() {
@@ -43,7 +42,7 @@ class OverviewTable extends Component {
         if (this.props.citations !== []) {
             this.props.citations.forEach((citation) => {
                 if (citation.evaluated === true) { //fetch call also checks this
-                    citation.assessments.forEach((assessment =>{
+                    citation.assessments.forEach((assessment => {
                         data.push(this.formatCitation(citation, assessment));
                     }));
 
@@ -54,17 +53,17 @@ class OverviewTable extends Component {
         return data;
     }
 
-    render(){
+    render() {
         let rows = this.showCitations();
-        return(
+        return (
             <div>
                 <Typography align={"center"} variant={"subtitle1"} component={"p"} gutterBottom={true}>
                     Download PDF Comming Soon
                 </Typography>
 
                 <Button color={'primary'}
-                        variant={'contained'}
-                        onClick={() => this.props.history.push('/tasks/overview')}>
+                    variant={'contained'}
+                    onClick={() => this.props.history.push('/tasks/overview')}>
                     Back to Overview Selection
                 </Button>
 
@@ -81,7 +80,7 @@ class OverviewTable extends Component {
                 <Table aria-label="overview table">
                     <TableHead>
                         <TableRow>
-                            <TableCell  align="left">Author(s)</TableCell>
+                            <TableCell align="left">Author(s)</TableCell>
                             <TableCell align="left">Title</TableCell>
                             <TableCell align="left">Comments</TableCell>
                             <TableCell align="left">Rubric Used</TableCell>

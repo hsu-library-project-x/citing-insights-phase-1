@@ -14,11 +14,13 @@ router.get('/:id', courseController.show);
 
 router.get('/by_email/:email/', courseController.sharedCourses);
 
+router.get('getCoursesByGroup/:groupId', courseController.getCoursesByGroup)
 
 /*
  * POST
  */
-router.post('/', courseController.create);
+
+ router.post('/', courseController.create);
 
 /*
  * PUT
