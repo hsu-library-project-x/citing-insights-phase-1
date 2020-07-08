@@ -51,11 +51,13 @@ module.exports = {
         }
     },
 
-    by_assignment_id: function (req, res) {
+    by_ref_id: function (req, res) {
+       
         if (req.session.user !== undefined) {
 
             var id = req.params.id;
-            paperModel.find({ assignment_id: id }, "_id title", function (err, paper) {
+        
+            paperModel.find({ ref_id: id }, function (err, paper) {
                 if (err) {
                     return res.status(500).json({
                         message: 'Error when getting paper.',
@@ -67,6 +69,8 @@ module.exports = {
                         message: 'No such paper'
                     });
                 }
+
+                // console.log(paper);
                 return res.json(paper);
             });
         }

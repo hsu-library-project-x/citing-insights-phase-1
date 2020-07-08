@@ -40,7 +40,9 @@ class Analyze extends PureComponent {
       action:false,
     };
 
-    this.componentWillMount = this.componentWillMount.bind(this);
+    this.getPapers();
+
+    this.getPapers = this.getPapers.bind(this);
     this.handleGetRubric = this.handleGetRubric.bind(this);
     this.handleChildUnmount = this.handleChildUnmount.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -145,23 +147,42 @@ class Analyze extends PureComponent {
         });
   }
 
-  componentDidMount() {
-    let that = this;
-    //Grab info about the assignment
-    fetch('/api/assignments/' + this.props.selectedAssignmentId)
-      .then(function (response) {
-        if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
-          return response.json();
-        }else{
-          that.handleQueueAlert('Could not Access Paper', 'error');
+  // componentDidMount() {
+  //   let that = this;
+  //   //Grab info about the assignment
+  //   fetch('/api/assignments/' + this.props.selectedAssignmentId)
+      // .then(function (response) {
+      //   if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
+      //     return response.json();
+      //   }else{
+      //     that.handleQueueAlert('Could not Access Paper', 'error');
           
-        }
-      })
-      .then(function (myJson) {
-        that.setState({
-          assignment: myJson
-        });
+      //   }
+      // })
+      // .then(function (myJson) {
+      //   that.setState({
+      //     assignment: myJson
+      //   });
+      // });
+  // }
+
+  getPapers(){
+    let that = this;
+ 
+    fetch('/api/papers/by_ref_id/' + this.props.selectedId)
+    .then(function (response) {
+      if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
+        return response.json();
+      }else{
+        that.handleQueueAlert('Could not Access Paper', 'error');
+        
+      }
+    })
+    .then(function (myJson) {
+      that.setState({
+        assignment: myJson
       });
+    });
   }
 
   componentWillUnmount() {
@@ -195,8 +216,8 @@ class Analyze extends PureComponent {
   componentWillMount() {
     let that = this;
 
-    if (this.props.selectedAssignmentId !== undefined) {
-      fetch('/api/papers/by_assignment_id/' + this.props.selectedAssignmentId)
+    if (this.props.selectedId !== undefined) {
+      fetch('/api/papers/by_ref_id/' + this.props.selectedId)
         .then(function (response) {
           if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
             return response.json();

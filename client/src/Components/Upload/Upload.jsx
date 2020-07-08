@@ -13,7 +13,7 @@ class Upload extends Component {
         assignments:[],
         files: [],
         classId: "",
-        assignmentId: "",
+        refId: "",
         openSnack:false,
         progress:0,
         uploading:false,
@@ -80,19 +80,18 @@ class Upload extends Component {
       this.setState({uploading:true});
 
       const data= {
-          class_id: this.state.classId,
-          assignment_id: this.state.assignmentId,
+          ref_id: this.state.refId,
           files: this.state.files,
       };
 
-       if(data.classId === "" || data.assignment_id === "" || data.files === []){
+       if(data.ref_id === "" || data.files === []){
           alert('Cannot upload without a file, class, or assignment');
           return;
        }
 
         data.files.forEach(file => {
             const formData = new FormData();
-            formData.append(data.assignment_id, file, file.name);
+            formData.append(data.ref_id, file, file.name);
 
             fetch('/api/upload/',{
                 method: 'POST',
@@ -145,7 +144,7 @@ class Upload extends Component {
 
                     <Container maxWidth={'md'} className={"container"}>
                         <form style={{textAlign:"center", margin:"1em"}} onSubmit={this.handleSubmitFiles}>
-                            <FormControl required={true} style={{minWidth: 250}}>
+                            <FormControl style={{minWidth: 250}}>
                                 <InputLabel id="selectClasslabel">Select a Class</InputLabel>
                                 <Select
                                     style={{textAlign:"center"}}
@@ -153,8 +152,7 @@ class Upload extends Component {
                                     onChange={this.handleClassSelection}
                                     defaultValue={""}
                                     inputProps={{
-                                        name: 'classId',
-                                        id: 'selectClass',
+                                        name: 'refId',
                                     }}
                                 >
                                     <MenuItem value="" disabled >select class</MenuItem>
@@ -162,15 +160,14 @@ class Upload extends Component {
                                 </Select>
                             </FormControl>
                             <br />
-                            <FormControl  required={true} style={{minWidth: 250, marginBottom:"1em"}}>
+                            <FormControl   style={{minWidth: 250, marginBottom:"1em"}}>
                                 <InputLabel id="selectAssignmentLabel">Select an Assignment</InputLabel>
                                 <Select
                                     style={{textAlign:"center"}}
                                     onChange={this.handleInputChange}
                                     defaultValue={""}
                                     inputProps={{
-                                        name: 'assignmentId',
-                                        id: 'selectAssignment',
+                                        name: 'refId',
                                     }}
                                 >
                                     <MenuItem value="" disabled> select assignment</MenuItem>
@@ -196,7 +193,7 @@ class Upload extends Component {
                             <Button type='submit'
                                     variant='contained'
                                     color='primary'
-                                    disabled={(this.state.classId === "" || this.state.assignmentId === "")}>
+                                    disabled={(this.state.refId === "" || this.state.files === [])}>
                                 Upload
                             </Button>
                         </form>

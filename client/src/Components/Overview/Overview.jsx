@@ -6,7 +6,11 @@ class Overview extends Component {
         super(props);
         this.state = {
             className: '',
-            selectedAssignmentId: '',
+            selectedId: '',
+            classList: [],
+            assignmentList: [],
+            sharedAssignments:[],
+            sharedCourses:[],
             selectedPaperId: '',
             AvailableGroups: [],
             AvailableCourses: [],
@@ -24,8 +28,9 @@ class Overview extends Component {
         this.getGroups = this.getGroups.bind(this);
         this.getCourses = this.getCourses.bind(this);
         this.getRubrics = this.getRubrics.bind(this);
-        this.handleClassSelection = this.handleClassSelection.bind(this);
-        this.handleAssignmentSelection = this.handleAssignmentSelection.bind(this);
+
+        // this.handleClassSelection = this.handleClassSelection.bind(this);
+        this.handleSelection = this.handleSelection.bind(this);
         this.handlePaperSelection = this.handlePaperSelection.bind(this);
         this.handleResultsChange = this.handleResultsChange.bind(this);
         this.handleTabChange = this.handleTabChange.bind(this);
@@ -102,7 +107,7 @@ class Overview extends Component {
     handleAssignmentSelection(event) {
         let that = this;
         let target = event.target;
-        fetch('/api/papers/by_assignment_id/' + target.value)
+        fetch('/api/papers/by_ref_id/' + target.value)
             .then(function (response) {
                 return response.json();
             })
@@ -150,14 +155,14 @@ class Overview extends Component {
 
         let courses = this.state.AvailableCourses;
         let optionItems = courses.map((course) =>
-            <MenuItem value={course._id} key={course._id}>{course.name}</MenuItem>
+          <MenuItem value={course._id} key={course._id}>{course.name}</MenuItem>
         );
-
-        let assignments = this.state.AvailableAssignments;
+    
+        let assignments = this.state.assignmentList.concat(this.state.sharedAssignments);
         let optionAssignments = assignments.map((assignment) =>
-            <MenuItem value={assignment._id} key={assignment._id}>{assignment.name}</MenuItem>
+          <MenuItem value={assignment._id} key={assignment._id}>{assignment.name}</MenuItem>
         );
-
+    
         let papers = this.state.AvailablePapers;
         let optionPapers = papers.map((paper) =>
             <MenuItem value={paper._id} key={paper._id}>{paper.title}</MenuItem>

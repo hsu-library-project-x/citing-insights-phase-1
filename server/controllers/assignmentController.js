@@ -96,7 +96,7 @@ module.exports = {
         if (req.session.user !== undefined) {
 
             let email = req.params.email;
-            console.log(email);
+         
             assignmentModel.find({
                 members: email 
             }, function (err, assignments) {
@@ -200,8 +200,7 @@ module.exports = {
         if (req.session.user !== undefined) {
 
             let id = req.params.id;
-            console.log("SUCK A DICK");
-            console.log(req.body);
+  
             assignmentModel.findOneAndUpdate({ _id: id },
                 {$pull: 
                      { 

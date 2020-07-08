@@ -77,9 +77,7 @@ module.exports = {
                         message: 'No such course'
                     });
                 }
-   
-
-                console.log(courses);
+ 
                 return res.status(201).json(courses);
             });
         }
@@ -112,9 +110,9 @@ module.exports = {
     /**
      * courseController.create()
      */
-    create: function (req, res) {        
+    create: function (req, res) { 
+    
         if(req.session.user !== undefined) {
-
 
         let course = new courseModel({
 			name : req.body.name,
@@ -122,6 +120,7 @@ module.exports = {
 			user_id : req.body.user_id,
 
         });
+
 
         course.save(function (err, course) {
             if (err) {

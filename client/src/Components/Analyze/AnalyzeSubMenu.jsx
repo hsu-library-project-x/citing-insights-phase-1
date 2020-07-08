@@ -8,45 +8,91 @@ class AnalyzeSubMenu extends Component {
     super(props);
     this.state = {
       className: '',
-      selectedAssignmentId: null,
+      selectedId: null,
       assignmentName: '',
-      AvailableCourses: [],
-      AvailableAssignments: [],
+      classList: [],
+      assignmentList: [],
+      sharedAssignments:[],
+      sharedCourses:[],
       redirect: false,
     };
 
+    this.getClasses();
+    this.getAssignments();
+    this.getSharedAssignments();
+    this.getSharedCourses();
+
+    this.getClasses = this.getClasses.bind(this);
+    this.getAssignments = this.getAssignments.bind(this);
+    this.getSharedAssignments = this.getSharedAssignments.bind(this);
+    this.getSharedCourses = this.getSharedCourses.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleClassSelection = this.handleClassSelection.bind(this);
+
   }
 
-  //On mount, makes a call to retrieve all Classes for the user
-  componentWillMount() {
 
-    let that = this;
-
+  getClasses() {
     fetch('/api/courses/' + this.props.user.id)
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (myJson) {
-        that.setState({ AvailableCourses: myJson });
-      });
+        .then(function (response) {
+            return response.json();
+        })
+        .then(d => this.createTreeItems(d, 'classList'));
   }
 
-  //Given a Class, this function makes a call to get all assignments in that class.
-  handleClassSelection(event) {
-    let that = this;
-    let target = event.target;
-    fetch('/api/assignments/by_class_id/' + target.value)
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (myJson) {
-
-        that.setState({ AvailableAssignments: myJson });
-      });
+  getAssignments() {
+      fetch('/api/assignments/by_user_id/' + this.props.user.id)
+          .then(function (response) {
+              return response.json();
+          })
+          .then(d => {
+              this.createTreeItems(d, 'assignmentList');
+          });
   }
+
+
+  getSharedAssignments(){
+    fetch(`/api/assignments/by_email/${this.props.user.email}`,).then(function (response) {
+        if(response.status === 201){
+            return response.json();
+        }
+    }).then(d => {
+        this.createTreeItems(d, 'sharedAssignments');
+    });
+  }
+
+  getSharedCourses(){
+
+    fetch(`/api/courses/by_email/${this.props.user.email}`).then(function (response) {
+
+        if(response.status === 201){
+          
+            return response.json();
+        }
+
+    }).then(d => {
+        this.createTreeItems(d, 'sharedCourses');
+    });
+  }
+
+
+createTreeItems(json, state) {
+  let list = [];
+  if(json !== undefined){
+      if(state === 'myGroups'){
+          for (let i = 0; i < json.length; i++) {
+              list.push(json[i]["_id"]);
+          }
+      }else{
+          for (let i = 0; i < json.length; i++) {
+              list.push(json[i]);
+          }
+      }
+
+      this.setState({ [state]: list });
+  }
+}
+
 
   handleInputChange(event) {
     const target = event.target;
@@ -62,18 +108,18 @@ class AnalyzeSubMenu extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    this.props.updateSelectedId(this.state.selectedAssignmentId);
+    this.props.updateSelectedId(this.state.selectedId);
   }
 
   //In each render, map out Courses and Assignments into variables so we can place them in a drop down
   render() {
 
-    let courses = this.state.AvailableCourses;
+    let courses = this.state.classList.concat(this.state.sharedCourses);
     let optionItems = courses.map((course) =>
       <MenuItem value={course._id} key={course._id}>{course.name}</MenuItem>
     );
 
-    let assignments = this.state.AvailableAssignments;
+    let assignments = this.state.assignmentList.concat(this.state.sharedAssignments);
     let optionAssignments = assignments.map((assignment) =>
       <MenuItem value={assignment._id} key={assignment._id}>{assignment.name}</MenuItem>
     );
@@ -86,24 +132,23 @@ class AnalyzeSubMenu extends Component {
         </Typography>
 
         <form style={{textAlign:"center", margin:"1em"}} onSubmit={this.handleSubmit}>
-          <FormControl required={true} style={{minWidth: 250, marginBottom:"1em"}}>
+          <FormControl  style={{minWidth: 250, marginBottom:"1em"}}>
               <InputLabel id={"selectClasslabel"}>Select a Class</InputLabel>
               <Select
                   style={{textAlign:"center"}}
                   labelId={"selectClasslabel"}
-                  onChange={this.handleClassSelection}
+                  onChange={this.handleInputChange}
                   defaultValue={""}
                   inputProps={{
-                    name: 'className',
-                    id: 'assignForAnalyze',
+                    name: 'selectedId',
                   }}
               >
                 <MenuItem value="" disabled >select class</MenuItem>
                 {optionItems}
               </Select>
           </FormControl>
-            <br />
-          <FormControl required={true} style={{minWidth: 250, marginBottom:"1em"}}>
+            <br /> <p> OR </p>
+          <FormControl  style={{minWidth: 250, marginBottom:"1em"}}>
               <InputLabel id={'selectAssignmentlabel'}>Select an Assignment </InputLabel>
               <Select
                   style={{textAlign:"center"}}
@@ -111,8 +156,7 @@ class AnalyzeSubMenu extends Component {
                   onChange={this.handleInputChange}
                   defaultValue={""}
                   inputProps={{
-                    name: 'selectedAssignmentId',
-                    id: 'assignForAnalyze',
+                    name: 'selectedId',
                   }}
               >
                 <MenuItem value="" disabled >select an assignment </MenuItem>
@@ -120,7 +164,7 @@ class AnalyzeSubMenu extends Component {
             </Select>
           </FormControl>
             <br />
-          <Button type="submit" color={"primary"} variant={"contained"} disabled={this.state.selectedAssignmentId === null}> Submit </Button>
+          <Button type="submit" color={"primary"} variant={"contained"} disabled={this.state.selectedId === null}> Submit </Button>
         </form>
       </Container>
     );
