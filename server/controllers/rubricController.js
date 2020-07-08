@@ -76,7 +76,11 @@ module.exports = {
                 cards: req.body.cards,
                 user_id: req.body.user_id
             });
-            rubricModel.findOne({ name: req.body.name }, function (err, foundRubric) {
+            rubricModel.findOne({ $and:[
+                { name: req.body.name },
+                {user_id: req.body.user_id}
+             ]
+             }, function (err, foundRubric) {
                 if (err) {
                     return res.status(500).json({
                         message: 'Error when getting rubric',

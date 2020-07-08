@@ -30,7 +30,7 @@ class Overview extends Component {
         this.getRubrics = this.getRubrics.bind(this);
 
         // this.handleClassSelection = this.handleClassSelection.bind(this);
-        this.handleSelection = this.handleSelection.bind(this);
+        // this.handleSelection = this.handleSelection.bind(this);
         this.handlePaperSelection = this.handlePaperSelection.bind(this);
         this.handleResultsChange = this.handleResultsChange.bind(this);
         this.handleTabChange = this.handleTabChange.bind(this);
