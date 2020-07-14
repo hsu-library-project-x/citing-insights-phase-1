@@ -147,6 +147,60 @@ module.exports = {
         }
     },
 
+    updateGroup: function(req,res){
+        if (req.session.user !== undefined) {
+
+            let id = req.params.id;
+    
+            rubricModel.findOneAndUpdate({ _id: id },
+                {  $push: {group_ids: req.body.group_id, members: req.body.members} }, function (err, rubric) {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).json({
+                        message: 'Error when getting rubric',
+                        error: err
+                    });
+                }
+                if (!rubric) {
+                    return res.status(404).json({
+                        message: 'No such rubric'
+                    });
+                }
+
+
+                    return res.status(201).json(rubric);
+                });
+
+        }
+    },
+
+    sharedRubrics: function(req,res){
+        if (req.session.user !== undefined) {
+
+            let email = req.params.email;
+            console.log(email);
+            rubricModel.find({
+                members: email 
+            }, function (err, rubrics) {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).json({
+                        message: 'Error when getting rubrics.',
+                        error: err
+                    });
+                }
+                if (!rubrics) {
+                    return res.status(404).json({
+                        message: 'No such member'
+                    });
+                }
+
+                console.log(rubrics);
+                return res.status(201).json(rubrics);
+            });
+        }
+    },
+
     /**
      * rubricController.remove()
      */

@@ -10,7 +10,12 @@ var rubricSchema = new Schema({
 	'user_id' : {
 	 	type: Schema.Types.ObjectId,
 	 	ref: 'user'
-	}
+	},
+	'group_ids':[{
+		type: Schema.Types.ObjectId,
+		ref: 'groups',
+	}],
+	'members' : [String],
 });
 
 module.exports = mongoose.model('rubric', rubricSchema);

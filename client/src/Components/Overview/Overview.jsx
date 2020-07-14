@@ -163,6 +163,8 @@ class Overview extends Component {
           <MenuItem value={assignment._id} key={assignment._id}>{assignment.name}</MenuItem>
         );
     
+        console.log(assignments);
+        
         let papers = this.state.AvailablePapers;
         let optionPapers = papers.map((paper) =>
             <MenuItem value={paper._id} key={paper._id}>{paper.title}</MenuItem>

@@ -5,19 +5,23 @@ import {
     Link,
     List,
     ListItem,
+    ListItemText,
     ListItemSecondaryAction,
+    ListItemAvatar,
+    Avatar,
     Toolbar,
     Tooltip,
     Typography
 } from "@material-ui/core";
+import GroupMenuRubric from "./GroupMenuRubric";
 import DeleteIcon from "@material-ui/icons/Delete";
+import BallotRoundedIcon from '@material-ui/icons/BallotRounded';
+import EditIcon from "@material-ui/icons/Edit";
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 class CreateRubricList extends Component{
     constructor(props) {
         super(props);
-        this.state={
-            checked: [],
-        };
 
         this.handleToggle = this.handleToggle.bind(this);
         this.handleDeleteRubric = this.handleDeleteRubric.bind(this);
@@ -29,12 +33,12 @@ class CreateRubricList extends Component{
         this.props.handleQueueAlert(message, severity);
     }
 
-    //called when clicking on the rubric list
-    handleEditRubric(event) {
-        const target = event.target;
-        const curId = target.id;
-        let rubric = null;
 
+    //called when clicking on the rubric list
+    handleEditRubric(event, curId) {
+        event.preventDefault(); 
+ 
+        let rubric = null;
         this.props.rubrics.forEach(function (r) {
             if (r._id === curId) {
                 rubric = r;
@@ -52,29 +56,28 @@ class CreateRubricList extends Component{
     }
 
     //handles deleting a rubric
-    handleDeleteRubric(event) {
+    handleDeleteRubric(toDelete) {
         let that = this;
-        event.preventDefault();
-        let toDelete = this.state.checked;
 
-        for (let i = 0; i < toDelete.length; i++) {    //TODO: OPTOMIZE FOR LOOP CALLS
-            fetch('/api/rubrics/' + toDelete[i], {
-                method: 'Delete',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-            }).then(response => {
-                if (response.status === 201 || response.ok) {
-                    that.setState({
-                        checked: [],
-                    }, ()=>that.handleAlert('Rubric(s) Deleted', 'success'));
-                }else{
-                    that.handleAlert('Could not Delete Rubric(s)', 'error');
-                }
-            });
-        }
+        fetch('/api/rubrics/' + toDelete, {
+            method: 'Delete',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        }).then(response => {
+            if (response.status === 201 || response.ok) {
+                that.setState({
+                    checked: [],
+                }, ()=>that.handleAlert('Rubric Deleted', 'success'));
+            }else{
+                that.handleAlert('Could not Delete Rubric', 'error');
+            }
+        });
+    
     }
+
+
 
     handleToggle = value => () => {
         const currentIndex = this.state.checked.indexOf(value);
@@ -90,55 +93,73 @@ class CreateRubricList extends Component{
     };
 
     GenList(){
-        return <List dense={true}>
-            {this.props.rubrics.map((rubric) => {
+        return  <List 
+                component={"div"}
+                disablePadding={true}
+                style={{ paddingLeft: "4em" }}
+                dense={false}
+                >
+                 {this.props.rubrics.map((rubric) => {
                     const labelId = `rubric-list-label-${rubric._id}`;
                     return (
                         <ListItem
-                            dense={true}
-                            button
-                            onClick={this.handleToggle(rubric._id)}
                             key={labelId}
                         >
-                            <Link style={{ textAlign: "left", color: 'blue' }}
-                                  id={rubric._id}
-                                  component={'button'}
-                                  onClick={this.handleEditRubric}
-                            >
-                                {rubric.name}
-                            </Link>
+                            <ListItemAvatar>
+                                <Avatar>
+                                    <BallotRoundedIcon />
+                                </Avatar>
+                            </ListItemAvatar>
+                       
+                            <ListItemText
+                                 primary={rubric.name}
+                            />
+                            
                             <ListItemSecondaryAction>
-                                <Checkbox
-                                    edge={'end'}
-                                    checked={this.state.checked.indexOf(rubric._id) !== -1}
-                                    tabIndex={-1}
-                                    inputProps={{ 'aria-labelledby': labelId }}
-                                    onClick={this.handleToggle(rubric._id)}
-                                    value={"delete"}
+
+                                <Tooltip title="Edit Rubric" aria-label="edit rubric">
+                                    
+                                        <IconButton
+                                            edge="end"
+                                            aria-label="edit"
+                                        >
+                                            <Link
+                                                color="inherit"
+                                                id={rubric._id}
+                                                component={'div'}
+                                                onClick={(e) => this.handleEditRubric(e,rubric._id)}
+                                            > 
+                                            <EditIcon />
+                                            </Link>
+                                        </IconButton>
+                                   
+                                </Tooltip>
+                            
+                                <Tooltip title="Delete Rubric" aria-label="delete rubric">
+                                    <IconButton edge="end" aria-label="delete"
+                                                onClick={() => this.handleDeleteRubric(rubric._id)}>
+                                        <DeleteIcon/>
+                                    </IconButton>
+                                </Tooltip>
+                                <GroupMenuRubric
+                                    id={rubric._id}
+                                    handleQueueAlert={this.props.handleQueueAlert}
+                                    availableGroups={this.props.availableGroups}
+                                    rubricList={this.props.rubrics}
                                 />
                             </ListItemSecondaryAction>
                         </ListItem>
-                    );
+                     ); 
 
-                }
-            )}
-        </List>;
+                 } 
+         )} 
+        </List>
     }
+
     render() {
+        
         return(
        <div>
-           {this.state.checked.length > 0 ?
-            <Toolbar>
-                <Typography align={"right"} variant={"subtitle2"} component={"p"} >
-                    {this.state.checked.length} selected
-                </Typography>
-
-                <Tooltip title="Delete">
-                    <IconButton edge={'end'} aria-label="delete" onClick={this.handleDeleteRubric}>
-                        <DeleteIcon edge={'end'} />
-                    </IconButton>
-                </Tooltip>
-            </Toolbar> : null}
            {this.GenList()}
        </div>
         );

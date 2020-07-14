@@ -37,7 +37,7 @@ class Tasks extends PureComponent {
 			message:null,
 		};
 
-		this.steps = ['Manage Courses', 'Upload Papers', 'Edit Rubrics', 'Analyze', 'Overview', "Manage Groups"];
+		this.steps = ['Manage Courses', 'Upload Papers', 'Manage Rubrics', 'Analyze', 'Overview', "Manage Groups"];
 		this.stepContent = [
 			'Step 1: Add / Remove / Edit Classes and Assignments',
 			'Step 2: Upload Student Papers',

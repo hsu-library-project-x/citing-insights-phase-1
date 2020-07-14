@@ -1,43 +1,61 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Container, Grid, TextField, InputLabel, Select, MenuItem,
-	FormControl, Typography, Button, Snackbar } from "@material-ui/core";
-import defaultRubricsJson from '../../default_rubrics/defaultRubric.json';
+import { Container, Grid,  Typography, Paper, Tab, Tabs, Snackbar } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import CreateRubricList from "./CreateRubricList";
+import CreateSharedRubricList from "./CreateSharedRubricList";
+import AddDefaultRubric from './AddDefaultRubric';
+import CreateRubric from "./CreateRubric";
 
 class Rubric extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			rubricData: [], // I think redundant
+			availableGroups:[], 
 			rubricElements: null,
 			rubricTitle: "",
 			AvailableRubrics: [],
+			sharedRubrics: [],
 			rubricExists: false,
 			selectedRubric: "",
 			currentlyEditing: false,
 			snackbarOpen:true,
 			messageInfo:null,
+			tab:0,
 		};
 
 		this.queueRef = React.createRef();
 		this.queueRef.current = [];
 
 		this.getRubrics();
+		this.getSharedRubrics();
+		this.getGroups();
 
 
 		this.handleEditState = this.handleEditState.bind(this);
 		this.handleStandardInputChange = this.handleStandardInputChange.bind(this);
-		this.handleDefaultRubric = this.handleDefaultRubric.bind(this);
+		this.handleEditExistingRubric = this.handleEditExistingRubric.bind(this);
 		this.DisplayAlerts = this.DisplayAlerts.bind(this);
 		this.processQueue = this.processQueue.bind(this);
 		this.handleQueueAlert = this.handleQueueAlert.bind(this);
 		this.handleClose = this.handleClose.bind(this);
 		this.handleExited = this.handleExited.bind(this);
+		this.handleTabChange = this.handleTabChange.bind(this);
+
 
 
 	}
+
+	getGroups() {
+        fetch('/api/groups/').then(function (response) {
+            return response.json();
+        })
+        .then(d => {
+            this.createTreeItems(d, 'availableGroups');
+        });
+
+    }
 
 	componentDidMount() {
 		if(this.props.message !== null && this.props.severity !== null){
@@ -80,6 +98,11 @@ class Rubric extends Component {
 		this.processQueue();
 	};
 
+	handleTabChange(event, newValue){
+        this.setState({tab: newValue});
+    }
+
+
 
 	handleStandardInputChange(event) {
 		const target = event.target;
@@ -90,34 +113,6 @@ class Rubric extends Component {
 		});
 	}
 
-	handleDefaultRubric(event) {
-		event.preventDefault();
-
-		let rubricToAdd = defaultRubricsJson[event.target.value];
-		
-		console.log(rubricToAdd);
-		
-		rubricToAdd.user_id = this.props.user.id;
-		const defaultString = JSON.stringify(rubricToAdd);
-
-		fetch('/api/rubrics/', {
-			method: 'POST',
-			body: defaultString,
-			mode: 'cors',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			}
-		}).then(response => {
-			if (response.status === 304) {
-				this.handleQueueAlert('Rubric Already Added', 'warning');
-			} else if (response.status === 201) {
-				this.handleQueueAlert('Rubric Added', 'success');
-			} else {
-				this.handleQueueAlert('Could not Add Rubric', 'error');
-			}
-		});
-	}
 
 	getRubrics() {
 		let that = this;
@@ -134,6 +129,39 @@ class Rubric extends Component {
 			}
 			).then(function (myJson) {
 				that.setState({ AvailableRubrics: myJson });
+			});
+	}
+
+	
+    createTreeItems(json, state) {
+        let list = [];
+        if(json !== undefined){
+           
+            for (let i = 0; i < json.length; i++) {
+                list.push(json[i]);
+            }
+        
+
+            this.setState({ [state]: list });
+        }
+     
+    }
+
+
+	getSharedRubrics(){
+		let that = this;
+
+		fetch('/api/rubrics/by_email/' + this.props.user.email)
+			.then(function (response) {
+				if (response.ok || response.status === 201) {
+					return response.json();
+				}
+				else {
+					that.handleQueueAlert('Could not Get Rubrics', 'error');
+					return {};
+				}
+			}).then(d => {
+				this.createTreeItems(d, 'sharedRubrics');
 			});
 	}
 
@@ -173,90 +201,102 @@ class Rubric extends Component {
 				</Alert>
 			</Snackbar>
 		}
-
-
 	}
 
+	
+    // from mat-ui
+	a11yProps(index) {
+        return {
+            id: `simple-tab-${index}`,
+            'aria-controls': `simple-tabpanel-${index}`,
+        };
+	}
+	
+	TabPanel(value, index){
+        return (
+            <Grid item xs={12}>
+            <div
+                role="tabpanel"
+                hidden={value !== index}
+                id={`rubric-tabpanel-${index}`}
+                aria-labelledby={`rubric-tab-${index}`}
+            >
+                {value === index && (
+                    <Grid item xs={12}>
+							{index === 0 ?
+							<Grid
+                            container
+                            direction="row"
+                            justify="flex-end"
+                            alignItems="flex-end"
+                       		>
+								<Grid item >
+									<AddDefaultRubric
+											user={this.props.user}
+											handleQueueAlert={this.handleQueueAlert}
+									/>
+								</Grid>
+								
+								<Grid item>
+									<CreateRubric
+										updateisEditing={this.props.updateisEditing}
+									/>
+								</Grid>
+                            </Grid> : null}
+                  
+                    {index === 0 ?
+                       	<CreateRubricList
+						   rubrics={this.state.AvailableRubrics}
+						   handleEditExistingRubric={this.handleEditExistingRubric}
+						   handleQueueAlert={this.handleQueueAlert}
+						   user_id={this.props.user.id}
+						   availableGroups={this.state.availableGroups}
+					   />	 
+					   :
+						<CreateSharedRubricList
+							SharedRubrics={this.state.sharedRubrics}
+							user_id={this.props.user.id}
+						/>   
+                    }
+                    </Grid>
 
-	//renders the page
+                )}
+            </div>
+            </Grid>
+        );
+	}
+	
 	render() {
+
 		return (
 			<Container maxWidth={'md'}>
 
 				{this.DisplayAlerts()}
 				<Typography style={{ marginTop: "1em" }} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}>
-					Edit Rubrics
+					Manage Rubrics
 				</Typography>
 
 				<Typography align={"center"} variant={"subtitle1"} component={"p"} gutterBottom={true}>
 					You can add AAC&U Rubrics,Edit an Existing Rubric , or Create your own Rubric
 				</Typography>
 
-				<Grid container spacing={3}>
-					<Grid item>
-						<Typography align={"left"} variant={"h6"} component={"h3"} gutterBottom={true}>
-							Use AAC&U Rubrics
-						</Typography>
-
-						<Typography align={"left"} variant={"subtitle2"} component={"p"} gutterBottom={true}>
-							Select AAC&U Rubric to add to Existing
-						</Typography>
-
-						<FormControl style={{ minWidth: 200, marginBottom: "1em" }}>
-							<InputLabel id={'selectRubriclabel'}> Select a Rubric </InputLabel>
-							<Select
-								labelId={"selectRubriclabel"}
-								onChange={this.handleDefaultRubric}
-								defaultValue={""}
-								inputProps={{
-									name: 'rubDefaultbutton',
-								}}
-							>
-								<MenuItem value="" disabled >select rubric </MenuItem>
-								<MenuItem value={0}> Determine the Extent of Information Needed </MenuItem>
-								<MenuItem value={1}>Evaluate Information and its Sources Critically</MenuItem>
-								<MenuItem value={2}>Use Information Effectively to Accomplish a Specific Purpose</MenuItem>
-								<MenuItem value={3}>Access and Use Information Ethically and Legally</MenuItem>
-								<MenuItem value={4}>Sources and Evidence</MenuItem>
-								<MenuItem value={5}>Evidence</MenuItem>
-							</Select>
-						</FormControl>
-						<Typography align={"left"} variant={"h6"} component={"h3"} gutterBottom={true}>
-							Edit Existing
-						</Typography>
-
-						<CreateRubricList
-							rubrics={this.state.AvailableRubrics}
-							handleEditExistingRubric={this.handleEditExistingRubric}
-							handleQueueAlert={this.handleQueueAlert}
-						/>
-					</Grid>
-					<Grid item style={{ marginTop: '4em' }}> OR </Grid>
-					<Grid item>
-						<Typography align={"left"} variant={"h6"} component={"h3"}>
-							Create New
-						</Typography>
-						<FormControl fullWidth style={{ minWidth: 250, marginBottom: "1em" }}>
-							<TextField
-								onChange={this.handleStandardInputChange}
-								type="number"
-								label={"Number of Elements (1-5)"}
-								// helperText={"Number of Elements (1-5)"}
-								placeholder="Rubric Elements"
-								name="rubricElements"
-								inputProps={{
-									min: "1", max: "5", step: "1"
-								}} />
-						</FormControl>
-						<br />
-						<Button style={{ float: 'right' }}
-							color='primary'
-							variant={'contained'}
-							onClick={this.handleEditState}>
-							Go
-							</Button>
-					</Grid>
-				</Grid>
+				<Grid xs={12}>
+					<Paper square>
+						<Tabs
+							value={this.state.tab}
+							indicatorColor={"primary"}
+							textColor={"primary"}
+							onChange={this.handleTabChange}
+							aria-label={"my rubrics vs rubrics shared"}
+							centered
+						>
+							<Tab label={"My Rubrics"} {...this.a11yProps(0)} />
+							<Tab label={"Rubrics Shared with Me"} {...this.a11yProps(1)} />
+						</Tabs>
+					</Paper>
+                </Grid>
+                    {this.TabPanel(this.state.tab, 0)}
+                    {this.TabPanel(this.state.tab, 1)}	
 			</Container>
 		);
 	}
