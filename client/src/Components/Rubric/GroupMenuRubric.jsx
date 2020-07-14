@@ -176,13 +176,13 @@ class GroupMenuRubric extends Component {
                     style={{ padding: 0, margin: 0 }}
                     primary={group.name}
                 />
-                <ListItemSecondaryAction>
+                {/* <ListItemSecondaryAction>
                     <Tooltip title="Remove Group" aria-label="remove group">
                         <IconButton edge="end" aria-label="remove group" onClick={()=> this.removeGroup(id,group._id, group.members)}>
                             <ClearIcon />
                         </IconButton>
                     </Tooltip>
-                </ListItemSecondaryAction>
+                </ListItemSecondaryAction> */}
             </ListItem>);
         });
 
