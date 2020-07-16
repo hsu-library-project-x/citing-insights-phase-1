@@ -32,8 +32,6 @@ class CreateList extends Component {
         this.tick = this.tick.bind(this);
     }
 
-
-
     tick(oldProgress) {
         this.setState({ progress: oldProgress + 1 });
     }
@@ -93,104 +91,119 @@ class CreateList extends Component {
     }
 
     nestItems(classes, assignments) {
-        //
-        return classes.map(d => {
-            let notes = d.course_note ? d.course_note : "";
-            return (
-                <List key={d._id} component={"div"}
-                      disablePadding={true}
-                      style={{paddingLeft: "4em"}}
-                      dense={true}
-                >
-                    <ListItem key={d._id} id={d._id}>
-                        <ListItemAvatar>
-                            <Avatar>
-                                <ClassIcon/>
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText
-                            style={{padding: 0, margin: 0}}
-                            primary={d.name}
-                            secondary={notes}
-                        />
-                        <ListItemSecondaryAction>
-                            <Tooltip title="Delete Course" aria-label="delete course">
-                                <IconButton edge="end" aria-label="delete"
-                                            onClick={(e) => this.handleDeleteCourse(e, d._id)}>
-                                    <DeleteIcon/>
-                                </IconButton>
-                            </Tooltip>
-                            <GroupMenu
-                                type={'courses'}
-                                id={d._id}
-                                handleQueueAlert={this.props.handleQueueAlert}
-                                availableGroups={this.props.availableGroups}
-                                classList={this.props.classList}
-                                assignmentList={this.props.assignmentList}
-                            />
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                    <Divider variant="inset"/>
-                    <List
-                        component={"div"}
-                        disablePadding={true}
-                        style={{paddingLeft: "4em"}}
-                        dense={true}
+        if(classes.length < 1 && assignments.length <1){
+            return <p align='center'> You currently do not have any coursework </p>
+        } else{
+            return classes.map(d => {
+                let notes = d.course_note ? d.course_note : "";
+                return (
+                    <List key={d._id} component={"div"}
+                          disablePadding={true}
+                          style={{paddingLeft: "4em"}}
+                          dense={true}
                     >
-                        {assignments.map(a => {
-                            if (a.class_id === d._id) {
-                                let a_notes = a.note ? a.note : "";
-                                return (
-                                    <div key={`divider-${a._id}`}>
-                                        <ListItem id={a._id} style={{margin: 0}} key={a._id}>
-                                            <ListItemAvatar>
-                                                <Avatar>
-                                                    <AssignmentIcon/>
-                                                </Avatar>
-                                            </ListItemAvatar>
-                                            <ListItemText
-                                                primary={a.name}
-                                                secondary={a_notes}
-                                            />
-                                            <ListItemSecondaryAction>
-                                                <Tooltip title="Delete Assignment" aria-label="delete assignment">
-                                                    <IconButton edge="end"
-                                                                aria-label="delete"
-                                                                onClick={e => this.handleDeleteAssignment(e, a._id)}
-                                                    >
-                                                        <DeleteIcon/>
-                                                    </IconButton>
-                                                </Tooltip>
-                                                <GroupMenu
-                                                    type={'assignments'}
-                                                    id={a._id}
-                                                    handleQueueAlert={this.props.handleQueueAlert}
-                                                    availableGroups={this.props.availableGroups}
-                                                    classList={this.props.classList}
-                                                    assignmentList={this.props.assignmentList}
+                        <ListItem key={d._id} id={d._id}>
+                            <ListItemAvatar>
+                                <Avatar>
+                                    <ClassIcon/>
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText
+                                style={{padding: 0, margin: 0}}
+                                primary={d.name}
+                                secondary={notes}
+                            />
+                            <ListItemSecondaryAction>
+                                <Tooltip title="Delete Course" aria-label="delete course">
+                                    <IconButton edge="end" aria-label="delete"
+                                                onClick={(e) => this.handleDeleteCourse(e, d._id)}>
+                                        <DeleteIcon/>
+                                    </IconButton>
+                                </Tooltip>
+                                <GroupMenu
+                                    type={'courses'}
+                                    id={d._id}
+                                    handleQueueAlert={this.props.handleQueueAlert}
+                                    availableGroups={this.props.availableGroups}
+                                    classList={this.props.classList}
+                                    assignmentList={this.props.assignmentList}
+                                />
+                            </ListItemSecondaryAction>
+                        </ListItem>
+                        <Divider variant="inset"/>
+                        <List
+                            component={"div"}
+                            disablePadding={true}
+                            style={{paddingLeft: "4em"}}
+                            dense={true}
+                        >
+                            {assignments.map(a => {
+                                if (a.class_id === d._id) {
+                                    let a_notes = a.note ? a.note : "";
+                                    return (
+                                        <div key={`divider-${a._id}`}>
+                                            <ListItem id={a._id} style={{margin: 0}} key={a._id}>
+                                                <ListItemAvatar>
+                                                    <Avatar>
+                                                        <AssignmentIcon/>
+                                                    </Avatar>
+                                                </ListItemAvatar>
+                                                <ListItemText
+                                                    primary={a.name}
+                                                    secondary={a_notes}
                                                 />
-                                            </ListItemSecondaryAction>
-                                        </ListItem>
-                                        <Divider variant="inset"/>
-                                    </div>
-                                );
-                            } else return null;
-                        })}
+                                                <ListItemSecondaryAction>
+                                                    <Tooltip title="Delete Assignment" aria-label="delete assignment">
+                                                        <IconButton edge="end"
+                                                                    aria-label="delete"
+                                                                    onClick={e => this.handleDeleteAssignment(e, a._id)}
+                                                        >
+                                                            <DeleteIcon/>
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                    <GroupMenu
+                                                        type={'assignments'}
+                                                        id={a._id}
+                                                        handleQueueAlert={this.props.handleQueueAlert}
+                                                        availableGroups={this.props.availableGroups}
+                                                        classList={this.props.classList}
+                                                        assignmentList={this.props.assignmentList}
+                                                        user_email={this.props.user_email}
+                                                    />
+                                                </ListItemSecondaryAction>
+                                            </ListItem>
+                                            <Divider variant="inset"/>
+                                        </div>
+                                    );
+                                } else return null;
+                            })}
+                        </List>
                     </List>
-                </List>
-            );
-        });
-
+                );
+            });
+    
+        }
+ 
     }
 
     render() {
-        return (
-            <List dense={true} style={{ padding: 0 }} >
-                {
-                    this.nestItems(this.props.classList, this.props.assignmentList)
-                }
-            </List>
-        );
+      
+
+        // if(this.props.classList.length >= 1 && this.props.assignmentList.length >= 1){
+            return (
+                <List dense={true} style={{ padding: 0 }} >
+                    {
+                        this.nestItems(this.props.classList, this.props.assignmentList)
+                    }
+                </List>
+            );
+        // }else{
+            // return (
+            //     <p align='center'>
+            //         You are not the creator of any coursework.  
+            //     </p>
+            // );
+        // }
     }
 }
 

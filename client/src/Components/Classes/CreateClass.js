@@ -50,6 +50,8 @@ class CreateClass extends Component {
 
     async handleSubmitClass(event) {
         event.preventDefault();
+        let that = this;
+
         const data = {
             "name": this.state.ClassName,
             "note": this.state.ClassNote,
@@ -66,21 +68,28 @@ class CreateClass extends Component {
             },
         })
             .then((response) => {
-                if (response.status === 201){
+                if (response.status === 201 || response.ok){
+                    that.handleAlert("Class Created", "success");
                     this.setState({
-                        ClassName: "",
-                        ClassNote: "",
-                        open:false,
-                    },()=>this.handleAlert('Class Created', 'success'));
+                        open: false,
+                    })
+                    // this.setState({
+                    //     ClassName: "",
+                    //     ClassNote: "",
+                    //     open:false,
+                    // },()=>this.handleAlert('Class Created', 'success'));
                 }
                 else{
-                    this.setState({open:false},()=>this.handleAlert('Could not Create Class', 'error'));
+                    that.handleAlert('Could not Create Class', 'error');
+                    this.setState({
+                        open: false,
+                    });
+                    // this.setState({open:false},()=>this.handleAlert('Could not Create Class', 'error'));
                 }
         });
     }
 
     render(){
-        // let groups = <MenuItem> Test </MenuItem>;
         return(
                 <div>
                     <Fab type="button"
@@ -120,19 +129,7 @@ class CreateClass extends Component {
                                         name="ClassNote"
                                         style={{marginBottom: "1em"}} />
 
-                                        {/*<FormControl>*/}
-                                        {/*<InputLabel id="groupSelect-label-coursepg">Select Group (optional)</InputLabel>*/}
-                                        {/*<Select*/}
-                                        {/*    labelId={"groupSelect-label-coursepg"}*/}
-                                        {/*    name="GroupName"*/}
-                                        {/*    onChange={this.handleInputChange}*/}
-                                        {/*    value={this.state.GroupName}*/}
-                                        {/*    style={{minWidth: 150, marginBottom: "1em"}}*/}
-                                        {/*>*/}
-                                        {/*    <MenuItem value={""} disabled> Select a Group</MenuItem>*/}
-                                        {/*    {groups}*/}
-                                        {/*</Select>*/}
-                                        {/*</FormControl>*/}
+                                        
                                 <Button  variant="contained" type="submit" color="primary"> Submit </Button>
                                 </FormControl>
                             </form>

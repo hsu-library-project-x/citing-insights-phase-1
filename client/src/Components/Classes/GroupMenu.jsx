@@ -115,11 +115,21 @@ class GroupMenu extends Component {
         return listItems;
     }
 
-    addGroup(id, type, group, members){
+    addGroup(id, type, group, members, creator){
 
+        // If the owner of the course or assignment is not the owner of the group....we will need
+        // to add the group owner as a member to the course or assignmnet
+        let memberCheck = members;
+
+        if(this.props.user_email !== creator){
+            memberCheck.push(creator);
+        }
+
+  
+        
         let toAdd= {
             'group_id': group,
-            'members': members,
+            'members': memberCheck,
         }
         
         let body = JSON.stringify(toAdd);
@@ -145,8 +155,14 @@ class GroupMenu extends Component {
 
     }
 
-    removeGroup( id, type, group, members){
+    removeGroup( id, type, group, members, creator){
        
+        let memberCheck = members;
+
+        if(this.props.user_email !== creator){
+            memberCheck.push(creator);
+        }
+
         let toRemove = {
             'group_id': group,
             'members': members,
@@ -233,7 +249,7 @@ class GroupMenu extends Component {
                     />
                     <ListItemSecondaryAction>
                         <Tooltip title="Add Group" aria-label="add group">
-                            <IconButton edge="end" aria-label="add group" onClick={() => this.addGroup(id, type, group._id, group.members)}>
+                            <IconButton edge="end" aria-label="add group" onClick={() => this.addGroup(id, type, group._id, group.members, group.creator)}>
                                 <AddIcon />
                             </IconButton>
                         </Tooltip>
@@ -251,7 +267,7 @@ class GroupMenu extends Component {
                 />
                 <ListItemSecondaryAction>
                     <Tooltip title="Remove Group" aria-label="remove group">
-                        <IconButton edge="end" aria-label="remove group" onClick={()=> this.removeGroup(id,type,group._id, group.members)}>
+                        <IconButton edge="end" aria-label="remove group" onClick={()=> this.removeGroup(id,type,group._id, group.members, group.creator)}>
                             <ClearIcon />
                         </IconButton>
                     </Tooltip>

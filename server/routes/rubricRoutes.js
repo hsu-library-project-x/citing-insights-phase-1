@@ -15,7 +15,7 @@ router.get('/:user_id', rubricController.list);
  */
 router.get('/:id', rubricController.show);
 
-router.get('/by_email/:email', rubricController.sharedRubrics);
+router.get('/by_email_and_ID/:email/:id', rubricController.sharedRubrics);
 
 /*
  * POST

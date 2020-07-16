@@ -46,7 +46,11 @@ var citationSchema = new Schema({
 		},
 		'rubric_score': String,
 		'rubric_title': String,
-		'annotation': String
+		'annotation': String,
+		'user_id': {
+			type: Schema.Types.ObjectId,
+			ref: 'user'
+		}
 	}],
 	'evaluated': Boolean
 });

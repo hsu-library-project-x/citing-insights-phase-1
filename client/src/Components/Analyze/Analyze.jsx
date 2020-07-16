@@ -22,6 +22,7 @@ class Analyze extends PureComponent {
       },
       current_pdf_data: "this must get set",
       AvailableRubrics: [],
+      sharedRubrics: [],
       rubricSelected: true,
       assessingRubric: false,
       rubricId: "",
@@ -41,7 +42,9 @@ class Analyze extends PureComponent {
     };
 
     this.getPapers();
+    this.getSharedRubrics();
 
+    this.getSharedRubrics = this.getSharedRubrics.bind(this);
     this.getPapers = this.getPapers.bind(this);
     this.handleGetRubric = this.handleGetRubric.bind(this);
     this.handleChildUnmount = this.handleChildUnmount.bind(this);
@@ -147,24 +150,7 @@ class Analyze extends PureComponent {
         });
   }
 
-  // componentDidMount() {
-  //   let that = this;
-  //   //Grab info about the assignment
-  //   fetch('/api/assignments/' + this.props.selectedAssignmentId)
-      // .then(function (response) {
-      //   if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
-      //     return response.json();
-      //   }else{
-      //     that.handleQueueAlert('Could not Access Paper', 'error');
-          
-      //   }
-      // })
-      // .then(function (myJson) {
-      //   that.setState({
-      //     assignment: myJson
-      //   });
-      // });
-  // }
+ 
 
   getPapers(){
     let that = this;
@@ -210,6 +196,23 @@ class Analyze extends PureComponent {
       current_citation_id: citation_id
     });
   }
+
+  getSharedRubrics(){
+		let that = this;
+
+		fetch(`/api/rubrics/by_email_and_ID/${this.props.user.email}/${this.props.user.id}`)
+			.then(function (response) {
+				if (response.ok || response.status === 201) {
+					return response.json();
+				}
+				else {
+					that.handleQueueAlert('Could not Get Rubrics', 'error');
+					return {};
+				}
+			}).then(json => {
+				this.setState({ 'sharedRubrics' : json });
+			});
+	}
 
   //Here we populate citation source information and meta data
   //Do this call every time a new Paper is loaded into the  component
@@ -271,18 +274,20 @@ class Analyze extends PureComponent {
       });
 
 
+
+
   }
 
   handleGetRubric(event) {
     const target = event.target;
     const id = target.value;
-    const rubricArray = this.state.AvailableRubrics;
+    const rubricArray = this.state.AvailableRubrics.concat(this.state.sharedRubrics);
 
     for (let i = 0; i < rubricArray.length; i++) {
       if (rubricArray[i]._id === id) {
-        this.setState((state, props) => ({
-          currentRubric: state.AvailableRubrics[i]
-        }));
+        this.setState({
+          currentRubric: rubricArray[i]
+        });
       }
     }
 
@@ -307,7 +312,8 @@ class Analyze extends PureComponent {
       rubric_id: this.state.rubricId,
       rubric_score: this.state.radio_score,
       rubric_title: this.state.rubric_title,
-      annotation: this.state.annotation
+      annotation: this.state.annotation,
+      user_id: this.props.user.id,
     };
 
 
@@ -328,7 +334,7 @@ class Analyze extends PureComponent {
         // console.log(`current rub: ${that.state.rubricId} and \nnew rub: ${assessments[index].rubric_id}`);
 
         //If true, assessment already exists
-        if (assessments[index].rubric_id === that.state.rubricId) {
+        if (assessments[index].rubric_id === that.state.rubricId && assessments[index].user_id === this.props.user.id) {
 
             //Ask user to confirm rewrite
             if (window.confirm('Rewrite existing assessment?')) {
@@ -470,7 +476,7 @@ class Analyze extends PureComponent {
   render() {
     let pageNum = this.state.pageNumber === null ? 1 : this.state.pageNumber;
 
-    let rubrics = this.state.AvailableRubrics;
+    let rubrics = this.state.AvailableRubrics.concat(this.state.sharedRubrics);
     let rubricList = rubrics.map((rubric) =>
       <MenuItem value={rubric._id} key={rubric._id}>{rubric.name}</MenuItem>
     );

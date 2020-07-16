@@ -140,19 +140,7 @@ class CreateAssignment extends Component {
                                         multiline
                                         rowsMax="4"
                                         style={{marginBottom: "1em"}} />
-                                {/*     <FormControl>*/}
-                                {/*    <InputLabel id="groupSelect-label-assign">Select Group (optional)</InputLabel>*/}
-                                {/*    <Select*/}
-                                {/*        labelId={"groupSelect-label-assign"}*/}
-                                {/*        name="GroupName"*/}
-                                {/*        onChange={this.handleInputChange}*/}
-                                {/*        value={this.state.GroupName}*/}
-                                {/*        style={{minWidth: 150, marginBottom: "1em"}}*/}
-                                {/*    >*/}
-                                {/*        <MenuItem value={""} disabled> Select a Group</MenuItem>*/}
-                                {/*        {groups}*/}
-                                {/*    </Select>*/}
-                                {/*</FormControl>*/}
+                            
                             <Button  variant="contained" type="submit" color="primary"> Submit </Button>
                             </FormControl>
                         </form>

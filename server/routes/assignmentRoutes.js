@@ -17,7 +17,7 @@ router.get('/by_user_id/:id', assignmentController.by_user_id);
 
 router.get('/by_class_id/:id', assignmentController.by_class_id);
 
-router.get('/by_email/:email', assignmentController.sharedAssignments);
+router.get('/by_email_and_ID/:email/:id', assignmentController.sharedAssignments);
 
 
 /*

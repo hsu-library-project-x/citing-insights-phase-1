@@ -88,7 +88,7 @@ class Classes extends Component {
     }
 
     getSharedAssignments(){
-        fetch(`/api/assignments/by_email/${this.props.user.email}`,).then(function (response) {
+        fetch(`/api/assignments/by_email_and_ID/${this.props.user.email}/${this.props.user.id}`,).then(function (response) {
             if(response.status === 201){
                 return response.json();
             }
@@ -99,7 +99,7 @@ class Classes extends Component {
 
     getSharedCourses(){
 
-        fetch(`/api/courses/by_email/${this.props.user.email}`).then(function (response) {
+        fetch(`/api/courses/by_email_and_ID/${this.props.user.email}/${this.props.user.id}`).then(function (response) {
 
             if(response.status === 201){
                
@@ -240,6 +240,7 @@ class Classes extends Component {
                             availableGroups={this.state.availableGroups}
                             handleQueueAlert={this.handleQueueAlert}
                             user_id={this.props.user.id}
+                            user_email={this.props.user.email}
                         /> :
                         <CreateSharedList 
                             sharedClassList={this.state.sharedCourses}

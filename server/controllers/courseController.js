@@ -62,10 +62,14 @@ module.exports = {
     sharedCourses: function(req, res){
         if (req.session.user !== undefined) {
             let email = req.params.email;
+            let user_id = req.params.id; 
 
-            courseModel.find({
-                members: {$in: email}
-            }, function (err, courses) {
+            // if user is a group member and NOT the owner of the course 
+            courseModel.find({ 
+                $and : [
+                {members: {$in: email}},
+                {user_id: {$ne: user_id}}
+            ]}, function (err, courses) {
                 if (err) {
                     return res.status(500).json({
                         message: 'Error when getting courses.',
@@ -174,6 +178,7 @@ module.exports = {
     updateGroup: function (req, res) {
         if (req.session.user !== undefined) {
             let id = req.params.id;
+            
             courseModel.findOneAndUpdate({ _id: id },
                 {  $push: {group_ids: req.body.group_id, members: req.body.members} }, function (err, course) {
                     if (err) {

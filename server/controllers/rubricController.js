@@ -178,10 +178,13 @@ module.exports = {
         if (req.session.user !== undefined) {
 
             let email = req.params.email;
-            console.log(email);
+            let user_id = req.params.id;
+            
             rubricModel.find({
-                members: email 
-            }, function (err, rubrics) {
+                $and : [
+                    {members: {$in: email}},
+                    {user_id: {$ne: user_id}}
+                ]}, function (err, rubrics) {
                 if (err) {
                     console.log(err);
                     return res.status(500).json({
@@ -195,7 +198,6 @@ module.exports = {
                     });
                 }
 
-                console.log(rubrics);
                 return res.status(201).json(rubrics);
             });
         }

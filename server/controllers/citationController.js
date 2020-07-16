@@ -123,7 +123,8 @@ module.exports = {
           'rubric_id': req.body.rubric_id,
           'rubric_score': req.body.rubric_score,
           'rubric_title': req.body.rubric_title,
-          'annotation': req.body.annotation
+          'annotation': req.body.annotation,
+          'user_id': req.body.user_id,
         };
 
         //Push new item onto array

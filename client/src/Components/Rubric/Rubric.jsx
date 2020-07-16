@@ -42,9 +42,6 @@ class Rubric extends Component {
 		this.handleClose = this.handleClose.bind(this);
 		this.handleExited = this.handleExited.bind(this);
 		this.handleTabChange = this.handleTabChange.bind(this);
-
-
-
 	}
 
 	getGroups() {
@@ -102,8 +99,6 @@ class Rubric extends Component {
         this.setState({tab: newValue});
     }
 
-
-
 	handleStandardInputChange(event) {
 		const target = event.target;
 		const value = target.value;
@@ -113,10 +108,8 @@ class Rubric extends Component {
 		});
 	}
 
-
 	getRubrics() {
 		let that = this;
-
 		fetch('/api/rubrics/' + this.props.user.id)
 			.then(function (response) {
 				if (response.ok || response.status === 201) {
@@ -131,7 +124,6 @@ class Rubric extends Component {
 				that.setState({ AvailableRubrics: myJson });
 			});
 	}
-
 	
     createTreeItems(json, state) {
         let list = [];
@@ -141,23 +133,20 @@ class Rubric extends Component {
                 list.push(json[i]);
             }
         
-
             this.setState({ [state]: list });
         }
-     
     }
-
 
 	getSharedRubrics(){
 		let that = this;
 
-		fetch('/api/rubrics/by_email/' + this.props.user.email)
+		fetch(`/api/rubrics/by_email_and_ID/${this.props.user.email}/${this.props.user.id}`)
 			.then(function (response) {
 				if (response.ok || response.status === 201) {
 					return response.json();
 				}
 				else {
-					that.handleQueueAlert('Could not Get Rubrics', 'error');
+					that.handleQueueAlert('Could not Get Shared Rubrics ', 'error');
 					return {};
 				}
 			}).then(d => {
