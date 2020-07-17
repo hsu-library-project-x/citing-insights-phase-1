@@ -76,7 +76,11 @@ module.exports = {
                 cards: req.body.cards,
                 user_id: req.body.user_id
             });
-            rubricModel.findOne({ name: req.body.name }, function (err, foundRubric) {
+            rubricModel.findOne({ $and:[
+                { name: req.body.name },
+                {user_id: req.body.user_id}
+             ]
+             }, function (err, foundRubric) {
                 if (err) {
                     return res.status(500).json({
                         message: 'Error when getting rubric',
@@ -139,6 +143,62 @@ module.exports = {
 
                     return res.json(rubric);
                 });
+            });
+        }
+    },
+
+    updateGroup: function(req,res){
+        if (req.session.user !== undefined) {
+
+            let id = req.params.id;
+    
+            rubricModel.findOneAndUpdate({ _id: id },
+                {  $push: {group_ids: req.body.group_id, members: req.body.members} }, function (err, rubric) {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).json({
+                        message: 'Error when getting rubric',
+                        error: err
+                    });
+                }
+                if (!rubric) {
+                    return res.status(404).json({
+                        message: 'No such rubric'
+                    });
+                }
+
+
+                    return res.status(201).json(rubric);
+                });
+
+        }
+    },
+
+    sharedRubrics: function(req,res){
+        if (req.session.user !== undefined) {
+
+            let email = req.params.email;
+            let user_id = req.params.id;
+            
+            rubricModel.find({
+                $and : [
+                    {members: {$in: email}},
+                    {user_id: {$ne: user_id}}
+                ]}, function (err, rubrics) {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).json({
+                        message: 'Error when getting rubrics.',
+                        error: err
+                    });
+                }
+                if (!rubrics) {
+                    return res.status(404).json({
+                        message: 'No such member'
+                    });
+                }
+
+                return res.status(201).json(rubrics);
             });
         }
     },

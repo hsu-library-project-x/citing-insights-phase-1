@@ -213,57 +213,66 @@ class ManageGroups extends Component {
 
     GenList(type) {
         let groupList = [];
+        let that = this;
+
         if(type === 'owner'){
             groupList = this.state.AvailableGroups;
         }
         if(type === 'member'){
             groupList = this.state.MemberGroups;
         }
-        let that = this;
-        return <List
-            component={"div"}
-            disablePadding={true}
-            style={{ paddingLeft: "4em" }}
-            dense={true}
-        >
-            {groupList.map((group) => {
-                return (
-                    <ListItem
-                        key={group._id}>
-                        <ListItemAvatar>
-                            <Avatar>
-                                <GroupWorkIcon />
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={group.name}
-                            secondary={group.note}
-                        />
-                        {type === "owner" ? 
-                        <ListItemSecondaryAction>
-                            <EditGroup
-                                id={group._id}
-                                handleQueueAlert={this.handleQueueAlert}
+        
+           
+        if(groupList.length < 1){
+            return <p align='center'> {`You are not the ${type} of any groups`}  </p>
+                
+        } 
+        else{
+            return <List
+                component={"div"}
+                disablePadding={true}
+                style={{ paddingLeft: "4em" }}
+                dense={true}
+            >
+                {groupList.map((group) => {
+                    return (
+                        <ListItem
+                            key={group._id}>
+                            <ListItemAvatar>
+                                <Avatar>
+                                    <GroupWorkIcon />
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={group.name}
+                                secondary={group.note}
                             />
-                            <Tooltip title="Delete Group" aria-label="delete group">
-                                <IconButton edge="end"
-                                    aria-label="delete"
-                                    onClick={e => that.handleDeleteGroup(e, group._id)}
-                                >
-                                    <DeleteIcon />
-                                </IconButton>
-                            </Tooltip>
-                            <JoinRequests
-                                id={group._id}
-                                pendingMembers={group.pendingMembers}
-                                handleQueueAlert={this.handleQueueAlert}
-                                getGroups={this.getOwnedGroups}
-                            />
-                        </ListItemSecondaryAction> : null}
-                    </ListItem>
-                )
-            })}
-        </List>;
+                            {type === "owner" ? 
+                            <ListItemSecondaryAction>
+                                <EditGroup
+                                    id={group._id}
+                                    handleQueueAlert={this.handleQueueAlert}
+                                />
+                                <Tooltip title="Delete Group" aria-label="delete group">
+                                    <IconButton edge="end"
+                                        aria-label="delete"
+                                        onClick={e => that.handleDeleteGroup(e, group._id)}
+                                    >
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <JoinRequests
+                                    id={group._id}
+                                    pendingMembers={group.pendingMembers}
+                                    handleQueueAlert={this.handleQueueAlert}
+                                    getGroups={this.getOwnedGroups}
+                                />
+                            </ListItemSecondaryAction> : null}
+                        </ListItem>
+                    )
+                })}
+            </List>;      
+        }
     }
 
 

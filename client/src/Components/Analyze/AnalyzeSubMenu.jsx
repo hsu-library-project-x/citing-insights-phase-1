@@ -52,7 +52,7 @@ class AnalyzeSubMenu extends Component {
 
 
   getSharedAssignments(){
-    fetch(`/api/assignments/by_email/${this.props.user.email}`,).then(function (response) {
+    fetch(`/api/assignments/by_email_and_ID/${this.props.user.email}/${this.props.user.id}`,).then(function (response) {
         if(response.status === 201){
             return response.json();
         }
@@ -63,7 +63,7 @@ class AnalyzeSubMenu extends Component {
 
   getSharedCourses(){
 
-    fetch(`/api/courses/by_email/${this.props.user.email}`).then(function (response) {
+    fetch(`/api/courses/by_email_and_ID/${this.props.user.email}/${this.props.user.id}`).then(function (response) {
 
         if(response.status === 201){
           

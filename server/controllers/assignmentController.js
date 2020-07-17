@@ -96,10 +96,14 @@ module.exports = {
         if (req.session.user !== undefined) {
 
             let email = req.params.email;
-         
+            let user_id = req.params.id; 
+
+            // if user is a group member and NOT the owner of the assignment 
             assignmentModel.find({
-                members: email 
-            }, function (err, assignments) {
+                $and : [
+                    {members: {$in: email}},
+                    {user_id: {$ne: user_id}}
+            ]}, function (err, assignments) {
                 if (err) {
                     console.log(err);
                     return res.status(500).json({

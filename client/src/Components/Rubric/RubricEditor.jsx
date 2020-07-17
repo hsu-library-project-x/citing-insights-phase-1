@@ -126,7 +126,7 @@ class RubricEditor extends Component {
         const target = event.target;
         const value = target.value;
         const name = target.name;
-        let rubricData = this.state.rubricData;
+        let rubricData = this.props.rubricData;
         rubricData[name] = value;
         this.setState({
             rubricData:rubricData
