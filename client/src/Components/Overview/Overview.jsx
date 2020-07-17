@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Select, MenuItem, Container, Typography, FormControl, InputLabel, Grid, Paper, Tabs, Tab } from '@material-ui/core';
-import { isValidObjectId } from 'mongoose';
+// import { isValidObjectId } from 'mongoose';
 
 class Overview extends Component {
     constructor(props) {
@@ -113,6 +113,7 @@ class Overview extends Component {
 
     //Given a Class, this function makes a call to get all assignments in that class.
     handleClassSelection(event) {
+        
         let that = this;
         let target = event.target;
         fetch('/api/assignments/by_class_id/' + target.value)
@@ -122,6 +123,7 @@ class Overview extends Component {
             .then(myJson => {
                 that.setState({ AvailableAssignments: myJson });
             });
+
     }
 
     handleAssignmentSelection(event) {
@@ -277,7 +279,7 @@ class Overview extends Component {
 
                                         <Typography align={"center"} variant={"subtitle1"} component={"p"} gutterBottom={true}>
                                             Please select the group you want an overview for.
-                                            </Typography>
+                                        </Typography>
 
                                         <form style={{ textAlign: "center", margin: "1em" }} onSubmit={this.handleResultsChangeByGroup}>
                                             <FormControl required={true} style={{ minWidth: 250 }}>
@@ -301,13 +303,9 @@ class Overview extends Component {
                                                 Show Evaluations
                                                 </Button>
                                         </form>
-
-
-
                                     </Grid>
                                 }
                             </Grid>
-
                             {index === 0 ? true : false}
                         </Grid>
 
@@ -329,7 +327,8 @@ class Overview extends Component {
             <MenuItem value={course._id} key={course._id}>{course.name}</MenuItem>
         );
 
-        let assignments = this.state.assignmentList.concat(this.state.sharedAssignments);
+    
+        let assignments = this.state.AvailableAssignments.concat(this.state.sharedAssignments);
         let optionAssignments = assignments.map((assignment) =>
             <MenuItem value={assignment._id} key={assignment._id}>{assignment.name}</MenuItem>
         );
@@ -345,7 +344,8 @@ class Overview extends Component {
 
                 <Typography style={{ marginTop: "1em" }} align={"center"} variant={"h3"} component={"h1"} gutterBottom={true}>
                     Overview
-                                            </Typography>
+                </Typography>
+                
                 <Grid xs={12}>
                     <Paper square>
                         <Tabs
