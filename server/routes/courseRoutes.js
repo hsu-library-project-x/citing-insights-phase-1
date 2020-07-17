@@ -14,7 +14,7 @@ router.get('/:id', courseController.show);
 
 router.get('/by_email/:email/', courseController.sharedCourses);
 
-router.get('getCoursesByGroup/:groupId', courseController.getCoursesByGroup)
+router.get('/getCoursesByGroup/:groupId', courseController.getCoursesByGroup)
 
 /*
  * POST

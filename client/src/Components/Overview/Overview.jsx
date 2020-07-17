@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Select, MenuItem, Container, Typography, FormControl, InputLabel, Grid, Paper, Tabs, Tab } from '@material-ui/core';
+import { isValidObjectId } from 'mongoose';
 
 class Overview extends Component {
     constructor(props) {
@@ -9,8 +10,8 @@ class Overview extends Component {
             selectedId: '',
             classList: [],
             assignmentList: [],
-            sharedAssignments:[],
-            sharedCourses:[],
+            sharedAssignments: [],
+            sharedCourses: [],
             selectedPaperId: '',
             AvailableGroups: [],
             AvailableCourses: [],
@@ -27,13 +28,14 @@ class Overview extends Component {
 
         this.getGroups = this.getGroups.bind(this);
         this.getCourses = this.getCourses.bind(this);
+        this.getAssignments = this.getAssignments.bind(this);
         this.getRubrics = this.getRubrics.bind(this);
-
-        // this.handleClassSelection = this.handleClassSelection.bind(this);
-        this.handleSelection = this.handleSelection.bind(this);
+        this.handleClassSelection = this.handleClassSelection.bind(this);
         this.handlePaperSelection = this.handlePaperSelection.bind(this);
-        this.handleResultsChange = this.handleResultsChange.bind(this);
+        this.handleResultsChangeByPaper = this.handleResultsChangeByPaper.bind(this);
+        this.handleResultsChangeByGroup = this.handleResultsChangeByGroup.bind(this);
         this.handleTabChange = this.handleTabChange.bind(this);
+        this.TabPanel = this.TabPanel.bind(this);
 
     }
 
@@ -64,6 +66,22 @@ class Overview extends Component {
         );
     }
 
+
+
+    getAssignments() {
+        let that = this;
+        return (
+            fetch('/api/assignments/' + this.props.user.id)
+                .then(response => {
+                    return response.json();
+                })
+                .then(myJson => {
+                    that.setState({ AvailableAssignments: myJson });
+                })
+        );
+    }
+
+
     getRubrics() {
         let that = this;
         return (
@@ -80,15 +98,17 @@ class Overview extends Component {
 
     //Given a Group, this function makes a call to get all courses in that group.
     handleGroupSelection(event) {
-        let that = this;
+        // event.preventDefault();
         let target = event.target;
-        fetch('/api/getCoursesByGroup/' + target.value)
-            .then(response => {
-                return response.json();
-            })
-            .then(myJson => {
-                that.setState({ AvailableCourses: myJson });
-            });
+        let courses = [];
+        for (let i = 0; i < this.state.AvailableCourses.length; i++) {
+            for (let j = 0; j < this.state.AvailableCourses.group_ids.length; j++) {
+                if (this.state.AvailableCourses[i].group_ids[j] === target.value) {
+                    courses.push(this.state.AvailableCourses[i].group_ids[j]);
+
+                }
+            }
+        }
     }
 
     //Given a Class, this function makes a call to get all assignments in that class.
@@ -128,8 +148,29 @@ class Overview extends Component {
             });
     }
 
-    handleResultsChange(event) {
+    handleResultsChangeByPaper(event) {
         event.preventDefault();
+        this.props.updateOverviewPage(this.state.citations);
+    }
+
+    handleResultsChangeByGroup(event) {
+        event.preventDefault();
+
+        let that = this;
+        let target = event.target;
+
+        //Query for classes belong to group, 
+        // find all papers in found classes, 
+        // then find all citations with author = "Overall Student Paper"
+
+        fetch(`/api/courses/getCoursesByGroup/${target.value}`)
+            .then(response => {
+                return response.json();
+            })
+            .then(myJson => {
+                that.setState({ AvailableCourses: myJson })
+            });
+
         this.props.updateOverviewPage(this.state.citations);
     }
 
@@ -146,27 +187,8 @@ class Overview extends Component {
         };
     }
 
-    TabPanel(value, index) {
-
-        let groups = this.state.AvailableGroups;
-        let optionGroups = groups.map((group) =>
-            <MenuItem value={group._id} key={group._id}> {group.name} </MenuItem>
-        );
-
-        let courses = this.state.AvailableCourses;
-        let optionItems = courses.map((course) =>
-          <MenuItem value={course._id} key={course._id}>{course.name}</MenuItem>
-        );
-    
-        let assignments = this.state.assignmentList.concat(this.state.sharedAssignments);
-        let optionAssignments = assignments.map((assignment) =>
-          <MenuItem value={assignment._id} key={assignment._id}>{assignment.name}</MenuItem>
-        );
-    
-        let papers = this.state.AvailablePapers;
-        let optionPapers = papers.map((paper) =>
-            <MenuItem value={paper._id} key={paper._id}>{paper.title}</MenuItem>
-        );
+    TabPanel(value, index, optionGroups, optionItems, optionAssignments, optionPapers) {
+        console.log(optionAssignments);
 
         return (
             <Grid item xs={12}>
@@ -194,7 +216,7 @@ class Overview extends Component {
                                             Please select the paper you want an overview for.
                                             </Typography>
 
-                                        <form style={{ textAlign: "center", margin: "1em" }} onSubmit={this.handleResultsChange}>
+                                        <form style={{ textAlign: "center", margin: "1em" }} onSubmit={this.handleResultsChangeByPaper}>
                                             <FormControl required={true} style={{ minWidth: 250 }}>
                                                 <InputLabel id="selectClasslabelOverview">Select a Class</InputLabel>
                                                 <Select
@@ -248,7 +270,7 @@ class Overview extends Component {
                                                 Show Evaluations
                                                 </Button>
                                         </form>
-                                    </Grid> 
+                                    </Grid>
                                     :
                                     <Grid item>
                                         {/* View by group */}
@@ -257,7 +279,7 @@ class Overview extends Component {
                                             Please select the group you want an overview for.
                                             </Typography>
 
-                                        <form style={{ textAlign: "center", margin: "1em" }} onSubmit={this.handleResultsChange}>
+                                        <form style={{ textAlign: "center", margin: "1em" }} onSubmit={this.handleResultsChangeByGroup}>
                                             <FormControl required={true} style={{ minWidth: 250 }}>
                                                 <InputLabel id="selectGrouplabelOverview">Select a Group</InputLabel>
                                                 <Select
@@ -274,7 +296,7 @@ class Overview extends Component {
                                                     {optionGroups}
                                                 </Select>
                                             </FormControl>
-                                           < br />
+                                            < br />
                                             <Button variant={"contained"} color={'primary'} type={'submit'}>
                                                 Show Evaluations
                                                 </Button>
@@ -297,6 +319,26 @@ class Overview extends Component {
 
     render() {
 
+        let groups = this.state.AvailableGroups;
+        let optionGroups = groups.map((group) =>
+            <MenuItem value={group._id} key={group._id}> {group.name} </MenuItem>
+        );
+
+        let courses = this.state.AvailableCourses;
+        let optionItems = courses.map((course) =>
+            <MenuItem value={course._id} key={course._id}>{course.name}</MenuItem>
+        );
+
+        let assignments = this.state.assignmentList.concat(this.state.sharedAssignments);
+        let optionAssignments = assignments.map((assignment) =>
+            <MenuItem value={assignment._id} key={assignment._id}>{assignment.name}</MenuItem>
+        );
+
+        let papers = this.state.AvailablePapers;
+        let optionPapers = papers.map((paper) =>
+            <MenuItem value={paper._id} key={paper._id}>{paper.title}</MenuItem>
+        );
+
         return (
             <Container maxWidth={'md'}>
 
@@ -313,14 +355,14 @@ class Overview extends Component {
                             aria-label={"by paper vs by groups"}
                             centered
                         >
-                            <Tab label={"By Paper"} {...this.a11yProps(0)} />
+                            <Tab label={"By Class"} {...this.a11yProps(0)} />
                             <Tab label={"By Group"} {...this.a11yProps(1)} />
                         </Tabs>
                     </Paper>
                 </Grid>
 
-                {this.TabPanel(this.state.tab, 0)}
-                {this.TabPanel(this.state.tab, 1)}
+                {this.TabPanel(this.state.tab, 0, optionGroups, optionItems, optionAssignments, optionPapers)}
+                {this.TabPanel(this.state.tab, 1, optionGroups, optionItems, optionAssignments, optionPapers)}
 
             </Container>
         );
