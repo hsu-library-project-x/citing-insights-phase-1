@@ -154,9 +154,16 @@ class Rubric extends Component {
 			});
 	}
 
-	handleEditExistingRubric(rubricExists,selectedRubric,rubricTitle,rubricElements,rubricData){
-		this.props.updateisEditing(rubricExists,rubricTitle,rubricElements, selectedRubric,
-			this.state.AvailableRubrics, rubricData);
+	handleEditExistingRubric(rubricExists,selectedRubric,rubricTitle,rubricElements,rubricData, type){
+		if(type === 'edit'){
+			this.props.updateisEditing(rubricExists,rubricTitle,rubricElements, selectedRubric,
+				this.state.AvailableRubrics, rubricData, type);
+		}
+		if(type === 'view'){
+			this.props.updateisEditing(rubricExists,rubricTitle,rubricElements, selectedRubric,
+				this.state.sharedRubrics, rubricData, type);
+		}
+		
 	}
 
 	//toggles editor enabling editing or adding new rubrics
@@ -245,6 +252,7 @@ class Rubric extends Component {
 						<CreateSharedRubricList
 							SharedRubrics={this.state.sharedRubrics}
 							user_id={this.props.user.id}
+							handleEditExistingRubric={this.handleEditExistingRubric}
 						/>   
                     }
                     </Grid>
