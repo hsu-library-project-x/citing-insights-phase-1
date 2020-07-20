@@ -52,7 +52,7 @@ class CreateRubricList extends Component{
             rubricData[`cardText-${rubric.cards.indexOf(c)}`] = c.cardText;
         });
 
-        this.props.handleEditExistingRubric(true, curId, rubric.name, rubricData.length, rubricData);
+        this.props.handleEditExistingRubric(true, curId, rubric.name, rubricData.length, rubricData, 'edit');
     }
 
     //handles deleting a rubric

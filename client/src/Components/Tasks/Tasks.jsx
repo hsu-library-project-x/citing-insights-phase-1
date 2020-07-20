@@ -6,6 +6,7 @@ import Upload from "../Upload/Upload.jsx";
 import Analyze from "../Analyze/Analyze.jsx";
 import Rubric from "../Rubric/Rubric.jsx";
 import RubricEditor from "../Rubric/RubricEditor";
+import RubricViewer from "../Rubric/RubricViewer";
 import AnalyzeSubMenu from "../Analyze/AnalyzeSubMenu.jsx";
 import Overview from '../Overview/Overview.jsx';
 import OverviewTable from "../Overview/OverviewTable";
@@ -39,6 +40,7 @@ class Tasks extends PureComponent {
 			overviewPageGroup: null,
 			severity: null,
 			message: null,
+			type:null,
 		};
 
 		this.steps = ['Manage Courses', 'Upload Papers', 'Manage Rubrics', 'Analyze', 'Overview', "Manage Groups"];
@@ -146,7 +148,7 @@ class Tasks extends PureComponent {
 		}
 	}
 
-	updateisEditing = (rubricExists, rubricTitle, rubricElements, selectedRubric, availableRubrics, rubricData) => {
+	updateisEditing = (rubricExists, rubricTitle, rubricElements, selectedRubric, availableRubrics, rubricData, type) => {
 		this.setState({
 			isEditing: true,
 			rubricExists: rubricExists,
@@ -155,6 +157,7 @@ class Tasks extends PureComponent {
 			selectedRubric: selectedRubric,
 			AvailableRubrics: availableRubrics,
 			rubricData: rubricData,
+			type: type
 		}, this.renderPage);
 	};
 
@@ -168,8 +171,15 @@ class Tasks extends PureComponent {
 				return;
 			case 2:
 				if (this.state.isEditing !== null) {
-					this.props.history.push('/tasks/rubriceditor');
-					return;
+					if(this.state.type === 'edit'){
+						this.props.history.push('/tasks/rubriceditor');
+						return;
+					}
+					if(this.state.type === 'view'){
+						this.props.history.push('/tasks/rubricviewer');
+						return;
+					}
+					
 				} else {
 					this.props.history.push('/tasks/rubric');
 					return;
@@ -337,6 +347,18 @@ class Tasks extends PureComponent {
 							/>
 							<Route path="/tasks/rubriceditor" render={(props) =>
 								<RubricEditor
+									user={this.props.user}
+									rubricExists={this.state.rubricExists}
+									rubricElements={this.state.rubricElements}
+									rubricTitle={this.state.rubricTitle}
+									selectedRubric={this.state.selectedRubric}
+									AvailableRubrics={this.state.AvailableRubrics}
+									RubricAlert={this.RubricAlert}
+									rubricData={this.state.rubricData}
+									{...props} />}
+							/>
+							<Route path="/tasks/rubricviewer" render={(props) =>
+								<RubricViewer
 									user={this.props.user}
 									rubricExists={this.state.rubricExists}
 									rubricElements={this.state.rubricElements}

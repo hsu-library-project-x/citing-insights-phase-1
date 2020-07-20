@@ -123,13 +123,16 @@ class Overview extends Component {
     }
 
     handleAssignmentSelection(event) {
+        event.preventDefault();
         let that = this;
+        console.log(this);
         let target = event.target;
         fetch('/api/papers/by_ref_id/' + target.value)
             .then(function (response) {
                 return response.json();
             })
             .then(function (myJson) {
+                console.log(that);
                 that.setState({ AvailablePapers: myJson });
             });
     }

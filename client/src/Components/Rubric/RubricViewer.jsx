@@ -42,6 +42,8 @@ class RubricViewer extends Component {
                     </Card>
                 );
             }):null;
+
+            console.log(cards);
             return cards;
 
         } 
