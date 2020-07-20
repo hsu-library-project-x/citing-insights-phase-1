@@ -72,6 +72,7 @@ class Citation extends Component {
     render() {
         const cardText = this.generateCitationCard(this.props.citations, this.props.current_citation_id);
         const dropDownItems = this.generateDropDown(this.props.citations);
+        console.log(dropDownItems)
 
         return (
             <div>

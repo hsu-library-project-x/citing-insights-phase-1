@@ -9,6 +9,7 @@ import RubricEditor from "../Rubric/RubricEditor";
 import AnalyzeSubMenu from "../Analyze/AnalyzeSubMenu.jsx";
 import Overview from '../Overview/Overview.jsx';
 import OverviewTable from "../Overview/OverviewTable";
+import OverviewTableGroup from "../Overview/OverviewTableGroup";
 import ManageGroups from "../Groups/ManageGroups";
 
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
@@ -32,9 +33,12 @@ class Tasks extends PureComponent {
 			AvailableRubrics: [],
 			rubricData: {},
 			citations: [],
+			asssignments: [],
+			group_id: "",
 			overviewPage: null,
-			severity:null,
-			message:null,
+			overviewPageGroup: null,
+			severity: null,
+			message: null,
 		};
 
 		this.steps = ['Manage Courses', 'Upload Papers', 'Manage Rubrics', 'Analyze', 'Overview', "Manage Groups"];
@@ -45,7 +49,7 @@ class Tasks extends PureComponent {
 			"Step 4: Assess Student's citations using rubric and our Discovery tools",
 			"Step 5: See how you rated a student's citations",
 			'Step 6: Manage Groups',
-			];
+		];
 
 		this.pathnames = {
 			'/tasks/api/courses': 0, '/tasks/api/upload': 1, '/tasks/rubric': 2, '/tasks/rubriceditor': 2,
@@ -124,8 +128,22 @@ class Tasks extends PureComponent {
 		this.setState({ selectedId: newId }, this.renderPage);
 	}
 
-	updateOverviewPage(citations) {
-		this.setState({ citations: citations, overviewPage: true }, this.renderPage);
+	updateOverviewPage(array, group_id, index) {
+
+		//index = 0 is by paper, index = 1 is by group
+		if (index === 0) {
+			this.setState({
+				citations: array,
+				overviewPage: true
+			}, this.renderPage);
+		}
+		else if (index === 1) {
+			this.setState({
+				assignments: array,
+				group_id: group_id,
+				overviewPageGroup: true
+			}, this.renderPage);
+		}
 	}
 
 	updateisEditing = (rubricExists, rubricTitle, rubricElements, selectedRubric, availableRubrics, rubricData) => {
@@ -168,6 +186,9 @@ class Tasks extends PureComponent {
 				if (this.state.overviewPage !== null) {
 					this.props.history.push('/tasks/overviewtable');
 					return;
+				} else if (this.state.overviewPageGroup !== null) {
+					this.props.history.push('/tasks/overviewtablegroup');
+					return;
 				} else {
 					this.props.history.push('/tasks/overview');
 					return;
@@ -182,15 +203,18 @@ class Tasks extends PureComponent {
 		}
 	};
 
-	RubricAlert(message, severity){
+	RubricAlert(message, severity) {
 		this.setState({
-			message:message,
-			severity:severity
+			message: message,
+			severity: severity
 		});
 	}
 
-	ChangeOverview(){
-		this.setState({overviewPage:null});
+	ChangeOverview() {
+		this.setState({
+			overviewPage: null,
+			overviewPageGroup: null
+		});
 	}
 
 	render() {
@@ -262,7 +286,7 @@ class Tasks extends PureComponent {
 														<IconButton
 															aria-label="next-button"
 															size="small"
-															disabled={this.state.ActiveStep >= this.totalSteps() -1}
+															disabled={this.state.ActiveStep >= this.totalSteps() - 1}
 															onClick={this.handleNext}
 														>
 															<ArrowForwardIosIcon />
@@ -350,6 +374,16 @@ class Tasks extends PureComponent {
 									ChangeOverview={this.ChangeOverview}
 									{...props} />}
 							/>
+
+							<Route path="/tasks/overviewtablegroup" render={(props) =>
+								<OverviewTableGroup
+									user={this.props.user}
+									assignments={this.state.asssignments}
+									group_id={this.state.group_id}
+									ChangeOverview={this.ChangeOverview}
+									{...props} />}
+							/>
+
 							<Route path="/tasks/managegroups" render={(props) =>
 								<ManageGroups
 									user={this.props.user}

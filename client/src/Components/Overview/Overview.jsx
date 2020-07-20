@@ -20,6 +20,7 @@ class Overview extends Component {
             rubrics: [], //TODO: CHECK THAT WE ACTUALLY USE THIS
             citations: [],
             tab: 0,
+            group_id: ""
         };
 
         this.getGroups();
@@ -31,6 +32,8 @@ class Overview extends Component {
         this.getAssignments = this.getAssignments.bind(this);
         this.getRubrics = this.getRubrics.bind(this);
         this.handleClassSelection = this.handleClassSelection.bind(this);
+        this.handleGroupSelection = this.handleGroupSelection.bind(this);
+        this.handleAssignmentSelection = this.handleAssignmentSelection.bind(this);
         this.handlePaperSelection = this.handlePaperSelection.bind(this);
         this.handleResultsChangeByPaper = this.handleResultsChangeByPaper.bind(this);
         this.handleResultsChangeByGroup = this.handleResultsChangeByGroup.bind(this);
@@ -98,17 +101,10 @@ class Overview extends Component {
 
     //Given a Group, this function makes a call to get all courses in that group.
     handleGroupSelection(event) {
-        // event.preventDefault();
         let target = event.target;
-        let courses = [];
-        for (let i = 0; i < this.state.AvailableCourses.length; i++) {
-            for (let j = 0; j < this.state.AvailableCourses.group_ids.length; j++) {
-                if (this.state.AvailableCourses[i].group_ids[j] === target.value) {
-                    courses.push(this.state.AvailableCourses[i].group_ids[j]);
-
-                }
-            }
-        }
+        this.setState({
+            group_id: target.value
+        });
     }
 
     //Given a Class, this function makes a call to get all assignments in that class.
@@ -150,7 +146,7 @@ class Overview extends Component {
 
     handleResultsChangeByPaper(event) {
         event.preventDefault();
-        this.props.updateOverviewPage(this.state.citations);
+        this.props.updateOverviewPage(this.state.citations, null, 0);
     }
 
     handleResultsChangeByGroup(event) {
@@ -158,20 +154,21 @@ class Overview extends Component {
 
         let that = this;
         let target = event.target;
-
+        console.log(target.value);
         //Query for classes belong to group, 
         // find all papers in found classes, 
         // then find all citations with author = "Overall Student Paper"
 
-        fetch(`/api/courses/getCoursesByGroup/${target.value}`)
+        fetch(`/api/assignments/by_group_id/${this.state.group_id}`)
             .then(response => {
                 return response.json();
             })
             .then(myJson => {
-                that.setState({ AvailableCourses: myJson })
+                that.setState({ AvailableAssignments: myJson })
             });
 
-        this.props.updateOverviewPage(this.state.citations);
+            console.log(this.state);
+        this.props.updateOverviewPage(this.state.AvailableAssignments, this.state.group_id, 1);
     }
 
     handleTabChange(event, newValue) {
@@ -329,7 +326,7 @@ class Overview extends Component {
             <MenuItem value={course._id} key={course._id}>{course.name}</MenuItem>
         );
 
-        let assignments = this.state.assignmentList.concat(this.state.sharedAssignments);
+        let assignments = this.state.assignmentList.concat(this.state.AvailableAssignments);
         let optionAssignments = assignments.map((assignment) =>
             <MenuItem value={assignment._id} key={assignment._id}>{assignment.name}</MenuItem>
         );

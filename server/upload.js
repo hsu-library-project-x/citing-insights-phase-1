@@ -79,9 +79,10 @@ module.exports =  function upload(req, res) {
                 //Need a default citation that will represent the entire paper, to be envaluated with a rubric later
                 //(Overall Student Paper)
                 let defaultCitation = {
+                    "title": ["Overall Paper Assessment"],
                     "author": [
                         {
-                            "family": "Overall Student Paper"
+                            "family": "Overall Paper Assessment"
                         }
                     ],
                     "paper_id": paper.id

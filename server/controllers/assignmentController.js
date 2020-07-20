@@ -46,6 +46,27 @@ module.exports = {
         }
     },
 
+    by_group_id: function(req, res){
+        let id = req.params.id;
+
+        if(req.session.user !== undefined){
+            assignmentModel.find({group_ids: id }, function(err, group) {
+                if(err) {
+                    return res.status(500).json({
+                        message: 'Error when getting groups',
+                        error: err
+                    });
+                }
+                if(!group){
+                    return res.status(404).json({
+                        message: 'No such group'
+                    });
+                }
+                return res.json(group);
+            })
+        }
+    },
+    
     //assignmentController.by_class_id
 
     by_user_id: function (req, res) {
