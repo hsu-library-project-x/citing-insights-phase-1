@@ -17,10 +17,9 @@ class OverviewTableGroup extends Component {
 
         this.getAssignments = this.getAssignments.bind(this);
         this.getPapers = this.getPapers.bind(this);
-
+        this.fetchPapers = this.fetchPapers.bind(this);
         this.showCitations = this.showCitations.bind(this);
         this.formatCitation = this.formatCitation.bind(this);
-
         this.getAssignments();
     };
 
@@ -39,27 +38,34 @@ class OverviewTableGroup extends Component {
             .then(myJson => {
                 that.setState({
                     assignments: myJson
-                });
+                }, this.getPapers);
             })
     }
 
-    getPapers() {
-        let that = this;
+    async getPapers(){
+        let paper = {};
+        let paper_array = [];
+        for(let i = 0; i < this.state.assignments.length; i++){
+            paper.assignment =  this.state.assignments[i]._id;
+            paper.papers =  this.fetchPapers(this.state.assignments[i]._id);
+            paper_array.push(paper)
+        }
 
-        //Need to loop through each assignment, and grab all papers for that ssignment
-        //Going to need Async calls probably
+        this.setState({
+            papers: paper_array
+        });
+        
+        console.log(paper_array);
+
+    }
 
 
-        // fetch(`/api/papers/by_ref_id/${}`)
-        // .then(response => {
-        //     return response.json();
-        // })
-        // .then(MyJson => {
-        //     that.setState({
-        //         papers: myJson
-        //     });
-        // })
-
+    async fetchPapers(id) {
+        let response = await fetch(`/api/papers/by_ref_id/${id}`);
+        let json = await response.json();
+        
+        console.log(json);
+        return await json;
     }
 
     formatCitation(citation, assessment) {
