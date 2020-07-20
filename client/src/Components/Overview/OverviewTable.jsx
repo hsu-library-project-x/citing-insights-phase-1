@@ -3,6 +3,27 @@ import { withRouter } from 'react-router-dom';
 import { Button, Typography, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { CSVLink } from "react-csv";
 
+const columns = [
+    { id: 'authors', label: 'Author(s)', minWidth: 100, maxWidth: 120 },
+    { id: 'title', label: 'Title', minWidth: 140 },
+    {
+        id: 'comments',
+        label: 'Comments',
+        minWidth: 170,
+        maxWidth: 200
+    },
+    {
+        id: 'rubricUsed',
+        label: 'Rubric Used',
+        minWidth: 100,
+    },
+    {
+        id: 'rubricValue',
+        label: 'Rubric Value',
+        minWidth: 100,
+    },
+];
+
 class OverviewTable extends Component {
     constructor(props) {
         super(props);
@@ -80,30 +101,34 @@ class OverviewTable extends Component {
                 <Table aria-label="overview table">
                     <TableHead>
                         <TableRow>
-                            <TableCell align="left">Author(s)</TableCell>
-                            <TableCell align="left">Title</TableCell>
-                            <TableCell align="left">Comments</TableCell>
-                            <TableCell align="left">Rubric Used</TableCell>
-                            <TableCell align="left">Rubric Value</TableCell>
+                            {columns.map((column) => (
+                                <TableCell
+                                    key={column.id}
+                                    align={column.align}
+                                    style={{ minWidth: column.minWidth }}
+                                >
+                                    {column.label}
+                                    </TableCell>
+                            ))}
                         </TableRow>
                     </TableHead>
-                    <TableBody>
-                        {rows.map(row => (
-                            <TableRow key={row.author}>
-                                <TableCell component={"th"} scope={"row"}>
-                                    {row.author}
-                                </TableCell>
-                                <TableCell aligh={"left"}> {row.title}</TableCell>
-                                <TableCell aligh={"left"}> {row.comments}</TableCell>
-                                <TableCell aligh={"left"}> {row.rubric_title}</TableCell>
-                                <TableCell aligh={"left"}> {row.rubric_value} </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
+                        <TableBody>
+                            {rows.map(row => (
+                                <TableRow key={row.author}>
+                                    <TableCell component={"th"} scope={"row"}>
+                                        {row.author}
+                                    </TableCell>
+                                    <TableCell align={"left"}> {row.title}</TableCell>
+                                    <TableCell align={"left"}> {row.comments}</TableCell>
+                                    <TableCell align={"left"}> {row.rubric_title}</TableCell>
+                                    <TableCell align={"left"}> {row.rubric_value} </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
                 </Table>
             </div>
-        );
-    }
-}
-
+                );
+            }
+        }
+        
 export default withRouter(OverviewTable);

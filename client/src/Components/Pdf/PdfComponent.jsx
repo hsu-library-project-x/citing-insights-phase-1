@@ -285,8 +285,6 @@ class PdfComponent extends PureComponent {
 
                             }
 
-                        {console.log(`str: ${str}: index: ${itemIndex}`)}
-
                             return splitText.reduce((arr, element, index) =>
                                 (
                                     matches[index] ? [

@@ -243,11 +243,14 @@ class Analyze extends PureComponent {
                 }
               })
               .then(function (myJson) {
-                that.setState({ current_pdf_data: myJson["pdf"]["data"], raw_pdf_data: myJson['body'] });
+                that.setState({ 
+                  current_pdf_data: myJson["pdf"]["data"],
+                   raw_pdf_data: myJson['body'],
+                   curPaperId: myJson["_id"] });
                 that.get_citation_info(myJson["_id"])
                   .then((citations) => {
-                    if(citations[1]){
-                      that.setCurrentCitation(citations[1]["_id"]);
+                    if(citations[0]){
+                      that.setCurrentCitation(citations[0]["_id"]);
                     }
                   });
               });
@@ -487,6 +490,8 @@ class Analyze extends PureComponent {
     });
 
 
+    console.log(this.state);
+    
 
     return (
       <Grid
@@ -532,6 +537,7 @@ class Analyze extends PureComponent {
                 value={this.state.curPaperId}
                 inputProps={{
                   name: 'curPaperId',
+                  id: 'assignForAnalyze'
                 }}
               >
                 <MenuItem value="" disabled >select paper </MenuItem>
@@ -539,6 +545,7 @@ class Analyze extends PureComponent {
               </Select>
 
             </FormControl>
+            {console.log(this.state.current_citation_id)}
             {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
               <Citation
                 citations={this.state.citations}
