@@ -154,8 +154,16 @@ class Rubric extends Component {
 			});
 	}
 
-	handleEditExistingRubric(rubricExists,selectedRubric,rubricTitle,rubricElements,rubricData, type){
+	handleEditExistingRubric(
+		rubricExists,
+		selectedRubric,
+		rubricTitle,
+		rubricElements,
+		rubricData, 
+		type){
+		console.log("handleEditExistingRubric");
 		if(type === 'edit'){
+			console.log("edit");
 			this.props.updateisEditing(rubricExists,rubricTitle,rubricElements, selectedRubric,
 				this.state.AvailableRubrics, rubricData, type);
 		}
@@ -235,7 +243,7 @@ class Rubric extends Component {
 								
 								<Grid item>
 									<CreateRubric
-										updateisEditing={this.props.updateisEditing}
+										handleEditExistingRubric={this.handleEditExistingRubric}
 									/>
 								</Grid>
                             </Grid> : null}
