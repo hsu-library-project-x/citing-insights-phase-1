@@ -490,7 +490,7 @@ class Analyze extends PureComponent {
     });
 
 
-    console.log(this.state);
+ 
     
 
     return (
@@ -545,7 +545,7 @@ class Analyze extends PureComponent {
               </Select>
 
             </FormControl>
-            {console.log(this.state.current_citation_id)}
+       
             {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
               <Citation
                 citations={this.state.citations}

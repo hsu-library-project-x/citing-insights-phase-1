@@ -18,15 +18,28 @@ class Citation extends Component {
     }
 
     getAuthors(authors) {
-        return authors.map((d) =>
-            d.family + ", " + d.given + "\n"
-        );
+        return authors.map((d) => {
+            let family = d.family ? d.family : "";
+            let given = d.given ? d.given : "";
+    
+            return  family + ", " + given + "\n"
+            
+        });
     }
 
     formatCitation(citation) {
+       
+        let date = citation.date  ? "(" + citation.date + ").": "";
+
+        if(date === '().'){
+            date = "";
+        }
+        
+        let title = citation.title ? citation.title : "";
+        
         return (
             <div key={`${citation.title}-${citation.date}`}>
-                {this.getAuthors(citation.author)} ({citation.date}). {citation.title}
+                {this.getAuthors(citation.author)} {date} {title}
             </div>
         );
     }
@@ -37,6 +50,7 @@ class Citation extends Component {
 
     generateCitationCard(citations, id) {
         let text = '';
+     
         if (citations !== []) {
             text = citations.map(c => {
                 if (c.author[0] !== undefined && c._id === id) {
@@ -72,7 +86,7 @@ class Citation extends Component {
     render() {
         const cardText = this.generateCitationCard(this.props.citations, this.props.current_citation_id);
         const dropDownItems = this.generateDropDown(this.props.citations);
-        console.log(dropDownItems)
+       
 
         return (
             <div>

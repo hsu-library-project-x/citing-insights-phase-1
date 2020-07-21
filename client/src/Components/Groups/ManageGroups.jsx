@@ -141,11 +141,11 @@ class ManageGroups extends Component {
                     },
                 }).then((response) => {
                     if (response.status === 204) {
-                        this.handleAlert('Group Deleted', 'success');
+                        this.handleQueueAlert('Group Deleted', 'success');
                     }
                     else {
                      
-                        this.handleAlert('Could not Delete Group', 'error');
+                        this.handleQueueAlert('Could not Delete Group', 'error');
                     }
                     this.getOwnedGroups();
                 }
