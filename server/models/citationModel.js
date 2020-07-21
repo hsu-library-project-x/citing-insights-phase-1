@@ -50,7 +50,8 @@ var citationSchema = new Schema({
 		'user_id': {
 			type: Schema.Types.ObjectId,
 			ref: 'user'
-		}
+		},
+		'email': String
 	}],
 	'evaluated': Boolean
 });
