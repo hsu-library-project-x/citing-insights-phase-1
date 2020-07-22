@@ -159,7 +159,7 @@ class Upload extends Component {
                                     {courses}
                                 </Select>
                             </FormControl>
-                            <br />
+                            <br /> <p> OR </p>
                             <FormControl   style={{minWidth: 250, marginBottom:"1em"}}>
                                 <InputLabel id="selectAssignmentLabel">Select an Assignment</InputLabel>
                                 <Select

@@ -45,8 +45,16 @@ class CreateRubric extends Component {
 		let count = this.state.rubricElements;
 		let reg = new RegExp('^\\d+$');
 		if (count > 0 && count < 6 && count.match(reg)) {
-			this.props.updateisEditing(this.state.rubricExists, this.state.rubricTitle, this.state.rubricElements,
-				this.state.selectedRubric, this.state.AvailableRubrics, this.state.rubricData);
+            console.log('here --Liz');
+
+           
+			this.props.handleEditExistingRubric(
+                false, 
+                this.state.selectedRubric,
+                this.state.rubricTitle, 
+                this.state.rubricElements,
+                 this.state.rubricData, 
+                'edit');
 		}
 	}
     

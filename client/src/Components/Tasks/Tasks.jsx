@@ -43,19 +43,20 @@ class Tasks extends PureComponent {
 			type:null,
 		};
 
-		this.steps = ['Manage Courses', 'Upload Papers', 'Manage Rubrics', 'Analyze', 'Overview', "Manage Groups"];
+		this.steps = ['Manage Courses', "Manage Groups", 'Manage Rubrics', 'Upload Papers',  'Analyze', 'Overview', ];
 		this.stepContent = [
 			'Step 1: Add / Remove / Edit Classes and Assignments',
-			'Step 2: Upload Student Papers',
+			'Step 2: Manage Groups *optional',
 			'Step 3: Customize Rubrics or Use pre-loaded Rubrics. Either way add a rubric for Analyze Mode',
-			"Step 4: Assess Student's citations using rubric and our Discovery tools",
-			"Step 5: See how you rated a student's citations",
-			'Step 6: Manage Groups',
+			'Step 4: Upload Student Papers',
+			"Step 5: Assess Student's citations using rubric and our Discovery tools",
+			"Step 6: See how you (or group) rated a student's citations",
 		];
 
 		this.pathnames = {
-			'/tasks/api/courses': 0, '/tasks/api/upload': 1, '/tasks/rubric': 2, '/tasks/rubriceditor': 2,
-			'/tasks/analyzemenu': 3, '/tasks/analyze': 3, '/tasks/overview': 4, '/tasks/managegroups': 5
+			'/tasks/api/courses': 0, '/tasks/managegroups': 1, '/tasks/rubric': 2, '/tasks/rubriceditor': 2,
+			'/tasks/rubricviewer': 2,'/tasks/api/upload': 3, '/tasks/analyzemenu': 4, '/tasks/analyze': 4, 
+			'/tasks/overview': 5, '/tasks/overviewtable' : 5, '/tasks/overviewtablegroup': 5
 		};
 
 		this.renderPage();
@@ -167,7 +168,7 @@ class Tasks extends PureComponent {
 				this.props.history.push('/tasks/api/courses');
 				return;
 			case 1:
-				this.props.history.push('/tasks/api/upload');
+				this.props.history.push('/tasks/managegroups');
 				return;
 			case 2:
 				if (this.state.isEditing !== null) {
@@ -185,14 +186,18 @@ class Tasks extends PureComponent {
 					return;
 				}
 			case 3:
+				this.props.history.push('/tasks/api/upload');
+				return;
+			
+			case 4:
 				if (this.state.selectedId !== null) {
 					this.props.history.push('/tasks/analyze');
 					return;
 				} else {
 					this.props.history.push('/tasks/analyzemenu');
 					return;
-				}
-			case 4:
+				}				
+			case 5:
 				if (this.state.overviewPage !== null) {
 					this.props.history.push('/tasks/overviewtable');
 					return;
@@ -203,9 +208,6 @@ class Tasks extends PureComponent {
 					this.props.history.push('/tasks/overview');
 					return;
 				}
-			case 5:
-				this.props.history.push('/tasks/managegroups');
-				return;
 			case 6:
 				return <p align={"center"}> Click on the Reset Button to reset your progress or click on any step to go back </p>;
 			default:

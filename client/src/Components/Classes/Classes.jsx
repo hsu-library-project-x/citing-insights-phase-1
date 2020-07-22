@@ -260,6 +260,7 @@ class Classes extends Component {
 
 
     render() {
+        console.log(this.state);
         return (
             <Container maxWidth={"md"}>
                 {this.DisplayAlerts()}
