@@ -125,6 +125,7 @@ module.exports = {
           'rubric_title': req.body.rubric_title,
           'annotation': req.body.annotation,
           'user_id': req.body.user_id,
+          'email': req.body.email
         };
 
         //Push new item onto array

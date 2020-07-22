@@ -108,27 +108,27 @@ class OverviewTable extends Component {
                                     style={{ minWidth: column.minWidth }}
                                 >
                                     {column.label}
-                                    </TableCell>
+                                </TableCell>
                             ))}
                         </TableRow>
                     </TableHead>
-                        <TableBody>
-                            {rows.map(row => (
-                                <TableRow key={row.author}>
-                                    <TableCell component={"th"} scope={"row"}>
-                                        {row.author}
-                                    </TableCell>
-                                    <TableCell align={"left"}> {row.title}</TableCell>
-                                    <TableCell align={"left"}> {row.comments}</TableCell>
-                                    <TableCell align={"left"}> {row.rubric_title}</TableCell>
-                                    <TableCell align={"left"}> {row.rubric_value} </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
+                    <TableBody>
+                        {rows.map(row => (
+                            <TableRow key={row.author}>
+                                <TableCell component={"th"} scope={"row"}>
+                                    {row.author}
+                                </TableCell>
+                                <TableCell align={"left"}> {row.title}</TableCell>
+                                <TableCell align={"left"}> {row.comments}</TableCell>
+                                <TableCell align={"left"}> {row.rubric_title}</TableCell>
+                                <TableCell align={"left"}> {row.rubric_value} </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
                 </Table>
             </div>
-                );
-            }
-        }
-        
+        );
+    }
+}
+
 export default withRouter(OverviewTable);

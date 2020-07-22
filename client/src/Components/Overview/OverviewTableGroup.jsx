@@ -11,22 +11,47 @@ class OverviewTableGroup extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            group: {},
             assignments: [],
-            papers: []
+            papers: [],
+            citations: [],
+            assignmentList: []
         }
 
+        this.getGroup = this.getGroup.bind(this);
         this.getAssignments = this.getAssignments.bind(this);
         this.getPapers = this.getPapers.bind(this);
         this.fetchPapers = this.fetchPapers.bind(this);
+        this.getCitations = this.getCitations.bind(this);
+        this.fetchCitations = this.fetchCitations.bind(this);
+        this.buildAssignmentObjects = this.buildAssignmentObjects.bind(this);
+
         this.showCitations = this.showCitations.bind(this);
         this.formatCitation = this.formatCitation.bind(this);
-        this.getAssignments();
     };
+
+    componentDidMount() {
+        this.getGroup();
+        this.getAssignments();
+    }
 
     componentWillUnmount() {
         this.props.ChangeOverview();
     }
 
+    getGroup() {
+        let that = this;
+        let id = this.props.group_id;
+        fetch('/api/groups/' + id)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                that.setState({
+                    group: myJson
+                });
+            });
+    }
 
     getAssignments() {
         let that = this;
@@ -42,31 +67,130 @@ class OverviewTableGroup extends Component {
             })
     }
 
-    async getPapers(){
+    async getPapers() {
         let paper = {};
         let paper_array = [];
-        for(let i = 0; i < this.state.assignments.length; i++){
-            paper.assignment =  this.state.assignments[i]._id;
-            paper.papers =  this.fetchPapers(this.state.assignments[i]._id);
-            paper_array.push(paper)
+        let paper_response;
+        for (let i = 0; i < this.state.assignments.length; i++) {
+            paper.assignmentId = await this.state.assignments[i]._id;
+            paper.assignmentName = await this.state.assignments[i].name;
+            paper_response = await this.fetchPapers(this.state.assignments[i]._id)
+
+            if (paper_response.length > 0) {
+                paper.papers = paper_response;
+            }
+
+            paper_array.push(paper);
         }
 
         this.setState({
             papers: paper_array
-        });
-        
-        console.log(paper_array);
+        }, this.getCitations);
 
     }
 
 
     async fetchPapers(id) {
-        let response = await fetch(`/api/papers/by_ref_id/${id}`);
-        let json = await response.json();
-        
-        console.log(json);
-        return await json;
+        let response = await fetch(`/api/papers/by_ref_id/${id}`).then(r => r.json());
+        return await response;
     }
+
+    async getCitations() {
+        let citation_array = [];
+        for (let i = 0; i < this.state.papers.length; i++) {
+            let citation = {};
+            let citation_response = {};
+            for (let j = 0; j < this.state.papers[i].papers.length; j++) {
+                citation.paper_id = this.state.papers[i].papers[j]._id;
+                citation_response = await this.fetchCitations(this.state.papers[i].papers[j]._id);
+                if (citation_response.length > 0) {
+                    citation.citations = citation_response;
+                    let citationClone = JSON.parse(JSON.stringify(citation));
+                    citation_array.push(citationClone);
+                }
+
+            }
+        }
+
+        this.setState({
+            citations: citation_array
+        });
+
+        this.buildAssignmentObjects();
+
+
+    }
+
+    async fetchCitations(id) {
+        let response = await fetch(`/api/citations/by_paper_id/${id}`).then(r => r.json());
+        return await response;
+    }
+
+
+    buildAssignmentObjects() {
+        // Want object to look like: 
+        //  Assignment: { 
+        //       id : string,
+        //       name: string, 
+        //       papers: [{
+        //           title: string,
+        //           id: string,
+        //           assessments: [{
+        //                email: string, 
+        //                score: string
+        //           }]
+        //       }] 
+        //  }
+
+        let assignments = this.state.assignments;
+        let papers = this.state.papers;
+        let citations = this.state.citations;
+
+        let assignmentList = [];
+
+        for (let i = 0; i < assignments.length; i++) {
+            let assignment = {};
+            assignment.id = assignments[i]._id;
+            assignment.name = assignments[i].name;
+
+            let paperArray = [];
+
+            for (let j = 0; j < papers.length; j++) {
+                if (papers[j].assignmentId === assignment.id) {
+                    let paper = {};
+                    for (let k = 0; k < papers[j].papers.length; k++) {
+                        paper.title = papers[j].papers[k].title;
+                        paper.id = papers[j].papers[k]._id;
+                        let assessments = [];
+                        for (let t = 0; t < citations.length; t++) {
+                            if (citations[t].paper_id === paper.id) {
+                                for (let y = 0; y < citations[t].citations.length; y++) {
+                                    let assessment = {};
+                                    if (citations[t].citations[y].assessments.length > 0) {
+                                        assessment.email = citations[t].citations[0].assessments[0].email;
+                                        assessment.score = citations[t].citations[0].assessments[0].rubric_score;
+                                        assessments.push(assessment);
+                                    }
+                                }
+                            }
+                        }
+                        paper.assessments = assessments;
+                        let paperClone = JSON.parse(JSON.stringify(paper));
+                        paperArray.push(paperClone);
+                    }
+                }
+
+                assignment.papers = paperArray;
+                assignmentList.push(assignment);
+
+            }
+        }
+
+        this.setState({
+            assignmentList: assignmentList
+        })
+    }
+
 
     formatCitation(citation, assessment) {
         return (
@@ -95,7 +219,8 @@ class OverviewTableGroup extends Component {
     }
 
     render() {
-        let rows = {};
+        let assignmentList = this.state.assignmentList;
+
         return (
             <div>
                 <Typography align={"center"} variant={"subtitle1"} component={"p"} gutterBottom={true}>
@@ -114,10 +239,44 @@ class OverviewTableGroup extends Component {
                 </Button>
 
                 <Table aria-label="overview table">
-                    <TableHead>
-                    </TableHead>
-                    <TableBody>
-                    </TableBody>
+                    {/* {assignmentList.map(() => ( */}
+                        <div>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>
+                                        {/*Assignment name */}
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+
+                            <TableBody>
+                                <div>
+                                    <TableRow>
+                                        <TableCell rowSpan={1}></TableCell>
+                                        <TableCell colSpan={3}>
+                                            {/* Paper title */}
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell rowSpan={3} />
+                                        <Table>
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell>
+                                                        {/* Member emails*/}
+                                                    </TableCell>
+                                                    </TableRow>
+                                                <TableRow>
+                                                    <TableCell>
+                                                        {/* Rubric scores */}
+                                                    </TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                        </Table>
+                                    </TableRow>
+                                </div>
+                            </TableBody>
+                        </div>
                 </Table>
             </div>
         );

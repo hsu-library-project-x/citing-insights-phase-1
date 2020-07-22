@@ -317,6 +317,7 @@ class Analyze extends PureComponent {
       rubric_title: this.state.rubric_title,
       annotation: this.state.annotation,
       user_id: this.props.user.id,
+      email: this.props.user.email
     };
 
 
