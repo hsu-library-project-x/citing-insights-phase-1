@@ -25,9 +25,6 @@ class OverviewTableGroup extends Component {
         this.getCitations = this.getCitations.bind(this);
         this.fetchCitations = this.fetchCitations.bind(this);
         this.buildAssignmentObjects = this.buildAssignmentObjects.bind(this);
-
-        this.showCitations = this.showCitations.bind(this);
-        this.formatCitation = this.formatCitation.bind(this);
     };
 
     componentDidMount() {
@@ -136,8 +133,12 @@ class OverviewTableGroup extends Component {
         //           title: string,
         //           id: string,
         //           assessments: [{
-        //                email: string, 
-        //                score: string
+        //                user_eval : [{
+        //                      email: string, 
+        //                      rubric_score: string,
+        //                ]},
+        //                rubric_id: string,
+        //                rubric_name: string,
         //           }]
         //       }] 
         //  }
@@ -159,64 +160,126 @@ class OverviewTableGroup extends Component {
                 if (papers[j].assignmentId === assignment.id) {
                     let paper = {};
                     for (let k = 0; k < papers[j].papers.length; k++) {
-                        paper.title = papers[j].papers[k].title;
-                        paper.id = papers[j].papers[k]._id;
-                        let assessments = [];
-                        for (let t = 0; t < citations.length; t++) {
-                            if (citations[t].paper_id === paper.id) {
-                                for (let y = 0; y < citations[t].citations.length; y++) {
-                                    let assessment = {};
-                                    if (citations[t].citations[y].assessments.length > 0) {
-                                        assessment.email = citations[t].citations[0].assessments[0].email;
-                                        assessment.score = citations[t].citations[0].assessments[0].rubric_score;
-                                        assessments.push(assessment);
-                                    }
-                                }
+                        let paperExists = false;
+                        for (let h = 0; h < this.state.assignmentList.length; h++) {
+                            if (this.state.assignmentList[h].id === papers[j].papers[k].id) {
+                                paperExists = true;
+                                break;
                             }
                         }
-                        paper.assessments = assessments;
-                        let paperClone = JSON.parse(JSON.stringify(paper));
-                        paperArray.push(paperClone);
-                    }
-                }
+                        if (!paperExists) {
+                            paper.title = papers[j].papers[k].title;
+                            paper.id = papers[j].papers[k]._id;
+                            let assessments = [];
+                            for (let t = 0; t < citations.length; t++) {
+                                if (citations[t].paper_id === paper.id) {
 
+
+                                    let assessment = {
+                                        user_eval: [{}],
+                                        rubric_id: "",
+                                        rubric_title: ""
+                                    };
+                                    let user_eval_array = [];
+                                    for (let y = 0; y < citations[t].citations.length; y++) {
+                                        if (citations[t].citations[0].assessments.length > 0) {
+                                            for (let r = 0; r < citations[t].citations[0].assessments.length; r++) {
+
+                                                assessment = {
+                                                    user_eval: [],
+                                                    rubric_id: "",
+                                                    rubric_title: ""
+                                                };
+                                                let user = {};
+                                                let citation = citations[t].citations[0].assessments[r];
+
+                                                if (assessments.length > 0) {
+                                                    //this check is to see if assessment has been added yet
+                                                    let check = false;
+                                                    for (let w = 0; w < assessments.length; w++) {
+                                                        check = false;
+                                                        if (assessments[w].rubric_id === citation.rubric_id) {
+                                                            //check to see if assessment correctly lines up with rubric
+                                                            let check2 = false;
+
+                                                            if (assessments[w].user_eval.length > 0) {
+                                                                for (let f = 0; f < assessments[w].user_eval.length; f++) {
+                                                                    //see if user is already in user_evals
+                                                                    if (assessments[w].user_eval[f].email === citation.email) {
+                                                                        // if true, user is already in
+                                                                        check2 = true;
+                                                                        break;
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            //user is not in evals
+                                                            if (!check2) {
+                                                                user.email = citation.email;
+                                                                user.rubric_score = citation.rubric_score;
+                                                                console.log(user);
+                                                                user_eval_array.push(user);
+                                                                //toggle first check to signify user has been added
+                                                                check = true;
+                                                                break;
+                                                            }
+                                                        } else {
+                                                            if (!check) {
+                                                                //If we reach here, a new assessment must be created
+                                                                user.email = citation.email;
+                                                                user.rubric_score = citation.rubric_score;
+                                                                user_eval_array.push(user);
+                                                                assessment.rubric_title = citation.rubric_title;
+                                                                assessment.rubric_id = citation.rubric_id;
+                                                                assessment.user_eval = user_eval_array;
+                                                                user_eval_array = [];
+                                                                assessments.push(assessment);
+                                                                assessment = {};
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                else {
+                                                    //If we reach here, this is the first assessment created
+                                                    user.email = citation.email;
+                                                    user.rubric_score = citation.rubric_score;
+                                                    user_eval_array.push(user);
+                                                    assessment.rubric_title = citation.rubric_title;
+                                                    assessment.rubric_id = citation.rubric_id;
+                                                    assessment.user_eval = user_eval_array;
+                                                    user_eval_array = [];
+                                                    assessments.push(assessment);
+                                                    assessment = {};
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+                                    // assessments.push(assessment);
+                                    // user_eval_array = [];
+                                    // assessment = {};
+                                }
+                            }
+                            console.log(assessments);
+                            paper.assessments = assessments;
+                            let paperClone = JSON.parse(JSON.stringify(paper));
+                            paperArray.push(paperClone);
+                        }
+                    }
+
+
+                }
                 assignment.papers = paperArray;
                 assignmentList.push(assignment);
-
             }
+
+            this.setState({
+                assignmentList: assignmentList
+            })
         }
-
-        this.setState({
-            assignmentList: assignmentList
-        })
     }
 
 
-    formatCitation(citation, assessment) {
-        return (
-            {
-
-            }
-        );
-    }
-
-    showCitations() {
-        //Query for Citations where rubric value or annotation is not null
-        let data = [];
-
-        if (this.props.citations !== []) {
-            this.props.citations.forEach((citation) => {
-                if (citation.evaluated === true) { //fetch call also checks this
-                    citation.assessments.forEach((assessment => {
-                        data.push(this.formatCitation(citation, assessment));
-                    }));
-
-                }
-            });
-        }
-
-        return data;
-    }
 
     render() {
         let assignmentList = this.state.assignmentList;
@@ -239,46 +302,63 @@ class OverviewTableGroup extends Component {
                 </Button>
 
                 <Table aria-label="overview table">
-                    {/* {assignmentList.map(() => ( */}
+                    {assignmentList.map((assignment) => (
                         <div>
                             <TableHead>
                                 <TableRow>
                                     <TableCell>
-                                        {/*Assignment name */}
+                                        {assignment.name}
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
 
                             <TableBody>
-                                <div>
-                                    <TableRow>
-                                        <TableCell rowSpan={1}></TableCell>
-                                        <TableCell colSpan={3}>
-                                            {/* Paper title */}
-                                        </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell rowSpan={3} />
-                                        <Table>
-                                            <TableHead>
-                                                <TableRow>
-                                                    <TableCell>
-                                                        {/* Member emails*/}
-                                                    </TableCell>
-                                                    </TableRow>
-                                                <TableRow>
-                                                    <TableCell>
-                                                        {/* Rubric scores */}
-                                                    </TableCell>
-                                                </TableRow>
-                                            </TableHead>
-                                        </Table>
-                                    </TableRow>
-                                </div>
+                                {assignment.papers.map((paper) => (
+                                    <div>
+                                        <TableRow>
+                                            <TableCell rowSpan={10}></TableCell>
+                                            <TableCell>
+                                                {paper.title}
+                                            </TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            {paper.assessments.map((assessment) => (
+                                                <Table>
+                                                    <TableHead>
+                                                        <TableRow>
+                                                            <TableCell rowSpan={5} />
+                                                            <TableCell>
+                                                                {assessment.rubric_title}
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                        {assessment.user_eval.map((user) => (
+                                                            <TableRow>
+                                                                <TableCell colSpan={1} />
+                                                                <TableRow>
+                                                                    <TableCell>
+                                                                        {user.email}
+                                                                    </TableCell>
+                                                                </TableRow>
+                                                                <TableRow>
+                                                                    <TableCell>
+                                                                        {user.rubric_score}
+                                                                    </TableCell>
+                                                                </TableRow>
+                                                            </TableRow>
+                                                        ))}
+                                                    </TableBody>
+                                                </Table>
+                                            ))}
+                                        </TableRow>
+                                    </div>
+                                ))}
                             </TableBody>
                         </div>
+                    ))}
                 </Table>
-            </div>
+            </div >
         );
     }
 }
