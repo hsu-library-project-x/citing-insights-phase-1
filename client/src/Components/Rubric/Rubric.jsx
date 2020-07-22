@@ -161,9 +161,9 @@ class Rubric extends Component {
 		rubricElements,
 		rubricData, 
 		type){
-		console.log("handleEditExistingRubric");
+		
 		if(type === 'edit'){
-			console.log("edit");
+			
 			this.props.updateisEditing(rubricExists,rubricTitle,rubricElements, selectedRubric,
 				this.state.AvailableRubrics, rubricData, type);
 		}
