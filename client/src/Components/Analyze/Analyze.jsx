@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
-import { Grid, Select, MenuItem, Button, FormControl, Tooltip, InputLabel,
-  TextField, Fab, Snackbar } from '@material-ui/core';
+import {
+  Grid, Select, MenuItem, Button, FormControl, Tooltip, InputLabel,
+  TextField, Fab, Snackbar
+} from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Alert from '@material-ui/lab/Alert';
 
@@ -35,10 +37,10 @@ class Analyze extends PureComponent {
       annotation: "",
       pageNumber: null,
       radio_score: null,
-      raw_pdf_data:null,
+      raw_pdf_data: null,
       snackbarOpen: true,
-      messageInfo:"",
-      action:false,
+      messageInfo: "",
+      action: false,
     };
 
     this.getPapers();
@@ -70,63 +72,63 @@ class Analyze extends PureComponent {
   }
 
 
-  processQueue(){
-    if(this.queueRef.current.length >0){
+  processQueue() {
+    if (this.queueRef.current.length > 0) {
       this.setState({
         messageInfo: this.queueRef.current.shift(),
-        snackbarOpen:true
+        snackbarOpen: true
       });
     }
   };
 
-  handleQueueAlert(message, severity){
-    if(this.state.action === false){ this.setState({action:true});}
+  handleQueueAlert(message, severity) {
+    if (this.state.action === false) { this.setState({ action: true }); }
     this.queueRef.current.push({
       message: message,
-      severity:severity,
+      severity: severity,
       key: new Date().getTime(),
     });
 
-    if(this.state.snackbarOpen){
-      this.setState({snackbarOpen:false});
-    }else{
+    if (this.state.snackbarOpen) {
+      this.setState({ snackbarOpen: false });
+    } else {
       this.processQueue();
     }
 
   };
 
-  handleClose(event, reason){
-    if(reason === 'clickaway'){
+  handleClose(event, reason) {
+    if (reason === 'clickaway') {
       return;
     }
-    this.setState({snackbarOpen:false});
+    this.setState({ snackbarOpen: false });
   };
 
-  handleExited(){
+  handleExited() {
     this.processQueue();
   };
 
   DisplayAlerts = () => {
-    if(this.state.action) {
+    if (this.state.action) {
       return <Snackbar
-          key={this.state.messageInfo ? this.state.messageInfo.key : undefined}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-          open={this.state.snackbarOpen}
-          autoHideDuration={3000}
-          onClose={this.handleClose}
-          onExited={this.handleExited}
+        key={this.state.messageInfo ? this.state.messageInfo.key : undefined}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        open={this.state.snackbarOpen}
+        autoHideDuration={3000}
+        onClose={this.handleClose}
+        onExited={this.handleExited}
       >
         <Alert variant={'filled'}
-               severity={this.state.messageInfo ? this.state.messageInfo.severity : undefined}
-               onClose={this.handleClose}
+          severity={this.state.messageInfo ? this.state.messageInfo.severity : undefined}
+          onClose={this.handleClose}
         >
           {this.state.messageInfo ? this.state.messageInfo.message : undefined}
         </Alert>
       </Snackbar>
-    } else{
+    } else {
       return null;
     }
   };
@@ -138,37 +140,37 @@ class Analyze extends PureComponent {
   get_paper_info(paper_id) {
     let that = this;
     fetch('/api/papers/' + paper_id)
-        .then(function (response) {
-          if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
-            return response.json();
-          }else{
-            that.handleQueueAlert('Could not Access Paper', 'error');
-          }
-        })
-        .then(function (myJson) {
-          that.setState({ current_pdf_data: myJson["pdf"]["data"] ,raw_pdf_data: myJson['body'] });
-        });
+      .then(function (response) {
+        if (response.ok || (response.status !== 404 && response.status !== 500)) {
+          return response.json();
+        } else {
+          that.handleQueueAlert('Could not Access Paper', 'error');
+        }
+      })
+      .then(function (myJson) {
+        that.setState({ current_pdf_data: myJson["pdf"]["data"], raw_pdf_data: myJson['body'] });
+      });
   }
 
- 
 
-  getPapers(){
+
+  getPapers() {
     let that = this;
- 
+
     fetch('/api/papers/by_ref_id/' + this.props.selectedId)
-    .then(function (response) {
-      if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
-        return response.json();
-      }else{
-        that.handleQueueAlert('Could not Access Paper', 'error');
-        
-      }
-    })
-    .then(function (myJson) {
-      that.setState({
-        assignment: myJson
+      .then(function (response) {
+        if (response.ok || (response.status !== 404 && response.status !== 500)) {
+          return response.json();
+        } else {
+          that.handleQueueAlert('Could not Access Paper', 'error');
+
+        }
+      })
+      .then(function (myJson) {
+        that.setState({
+          assignment: myJson
+        });
       });
-    });
   }
 
   componentWillUnmount() {
@@ -179,9 +181,9 @@ class Analyze extends PureComponent {
     let that = this;
     return fetch('/api/citations/by_paper_id/' + paper_id)
       .then(function (response) {
-        if(response.ok || response.status === 201){
+        if (response.ok || response.status === 201) {
           return response.json();
-        }else{
+        } else {
           that.handleQueueAlert('Could not get Citations', 'error');
         }
       })
@@ -197,22 +199,22 @@ class Analyze extends PureComponent {
     });
   }
 
-  getSharedRubrics(){
-		let that = this;
+  getSharedRubrics() {
+    let that = this;
 
-		fetch(`/api/rubrics/by_email_and_ID/${this.props.user.email}/${this.props.user.id}`)
-			.then(function (response) {
-				if (response.ok || response.status === 201) {
-					return response.json();
-				}
-				else {
-					that.handleQueueAlert('Could not Get Rubrics', 'error');
-					return {};
-				}
-			}).then(json => {
-				this.setState({ 'sharedRubrics' : json });
-			});
-	}
+    fetch(`/api/rubrics/by_email_and_ID/${this.props.user.email}/${this.props.user.id}`)
+      .then(function (response) {
+        if (response.ok || response.status === 201) {
+          return response.json();
+        }
+        else {
+          that.handleQueueAlert('Could not Get Rubrics', 'error');
+          return {};
+        }
+      }).then(json => {
+        this.setState({ 'sharedRubrics': json });
+      });
+  }
 
   //Here we populate citation source information and meta data
   //Do this call every time a new Paper is loaded into the  component
@@ -222,9 +224,9 @@ class Analyze extends PureComponent {
     if (this.props.selectedId !== undefined) {
       fetch('/api/papers/by_ref_id/' + this.props.selectedId)
         .then(function (response) {
-          if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
+          if (response.ok || (response.status !== 404 && response.status !== 500)) {
             return response.json();
-          }else{
+          } else {
             that.handleQueueAlert('Could not get Citations', 'error');
 
           }
@@ -236,20 +238,21 @@ class Analyze extends PureComponent {
           try {
             fetch('/api/papers/' + myJson[0]["_id"])
               .then(function (response) {
-                if (response.ok || (response.status !== 404 && response.status !== 500 ) ){
+                if (response.ok || (response.status !== 404 && response.status !== 500)) {
                   return response.json();
-                }else{
+                } else {
                   that.handleQueueAlert('Could not get Paper', 'error');
                 }
               })
               .then(function (myJson) {
-                that.setState({ 
+                that.setState({
                   current_pdf_data: myJson["pdf"]["data"],
-                   raw_pdf_data: myJson['body'],
-                   curPaperId: myJson["_id"] });
+                  raw_pdf_data: myJson['body'],
+                  curPaperId: myJson["_id"]
+                });
                 that.get_citation_info(myJson["_id"])
                   .then((citations) => {
-                    if(citations[0]){
+                    if (citations[0]) {
                       that.setCurrentCitation(citations[0]["_id"]);
                     }
                   });
@@ -266,9 +269,9 @@ class Analyze extends PureComponent {
     }
     fetch('/api/rubrics/' + this.props.user.id)
       .then(function (response) {
-        if (response.ok || response.status !== 500 ) {
+        if (response.ok || response.status !== 500) {
           return response.json();
-        }else{
+        } else {
           that.handleQueueAlert('Could not get Citations', 'error');
         }
       })
@@ -327,79 +330,65 @@ class Analyze extends PureComponent {
     let json = await response.json();
     //Check to see if assessment has already been made.
     let assessments = json.assessments;
+    let check = false;
 
-    if (assessments !== undefined){
-
-    }
-    if (assessments.length !== 0) {
+    if (assessments !== undefined && assessments.length !== 0) {
       //Look at each assessment
-      for (let index in assessments) {
+      for (let index = 0; index < assessments.length; index++) {
 
         // console.log(`current rub: ${that.state.rubricId} and \nnew rub: ${assessments[index].rubric_id}`);
 
         //If true, assessment already exists
         if (assessments[index].rubric_id === that.state.rubricId && assessments[index].user_id === this.props.user.id) {
 
-            //Ask user to confirm rewrite
-            if (window.confirm('Rewrite existing assessment?')) {
-              //Delete Existing
-              let resp = await fetch(`/api/citations/remove_assessment/${that.state.current_citation_id}`, {
-                method: "PUT",
-                headers: {
-                  "Content-Type": "application/json"
-                },
-                body: JSON.stringify(assessment)
-              })
-                .then((response) => {
-                  if (response.ok || response.status === 200) {
-                    return fetch(`/api/citations/add_assessment/${that.state.current_citation_id}`, {
-                      method: "PUT",
-                      headers: {
-                        'Content-Type': 'application/json'
-                      },
-                      body: JSON.stringify(assessment)
-                    })
-                      .then((response) => {
-                        if (response.ok || response.status === 201) {
-                          that.handleQueueAlert('Assessment Save Success', 'success');
-                        }
-                        else {
-                          that.handleQueueAlert('Could not Save Assessment', 'error');
+          //Ask user to confirm rewrite
+          if (window.confirm('Rewrite existing assessment?')) {
+            //Delete Existing
+            let resp = await fetch(`/api/citations/remove_assessment/${that.state.current_citation_id}`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(assessment)
+            })
+              .then((response) => {
+                if (response.ok || response.status === 200) {
+                  return fetch(`/api/citations/add_assessment/${that.state.current_citation_id}`, {
+                    method: "PUT",
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(assessment)
+                  })
+                    .then((response) => {
+                      if (response.ok || response.status === 201) {
+                        that.handleQueueAlert('Assessment Save Success', 'success');
+                      }
+                      else {
+                        that.handleQueueAlert('Could not Save Assessment', 'error');
 
-                        }
-                      });
-                  }
-                  else {
-                    that.handleQueueAlert('Could not Save Assessment', 'error');
-                  }
-                });
-            } else {
-              //User declined to overwrite
-              window.alert('Keeping Previous Assessment.');
-              break;
-            }
-        } else {
-          fetch(`/api/citations/add_assessment/${that.state.current_citation_id}`, {
-            method: "PUT",
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(assessment)
-          })
-            .then((response) => {
-              if (response.ok || response.status === 201) {
-                that.handleQueueAlert('Assessment Save Success', 'success');
-              }
-              else {
-                that.handleQueueAlert('Could not Save Assessment', 'error');
-              }
-            });
+                      }
+                    });
+                }
+                else {
+                  that.handleQueueAlert('Could not Save Assessment', 'error');
+                }
+              });
+            check = true;
+            break;
+
+          } else {
+            //User declined to overwrite
+            window.alert('Keeping Previous Assessment.');
+            check = true;
+            break;
+          }
         }
       }
     }
-
-    else {
+    if (!check) {
       //Doesn't exist yet; good to go
+      console.log('HEEEEERRRREEEEEE');
       fetch(`/api/citations/add_assessment/${that.state.current_citation_id}`, {
         method: "PUT",
         headers: {
@@ -438,7 +427,7 @@ class Analyze extends PureComponent {
     });
   }
 
-  handlePaperChange(event){
+  handlePaperChange(event) {
     const target = event.target;
     const value = target.value;
     const name = target.name;
@@ -491,8 +480,8 @@ class Analyze extends PureComponent {
     });
 
 
- 
-    
+
+
 
     return (
       <Grid
@@ -546,7 +535,7 @@ class Analyze extends PureComponent {
               </Select>
 
             </FormControl>
-       
+
             {this.state.citations !== [] && this.state.current_citation_id !== 0 ?
               <Citation
                 citations={this.state.citations}

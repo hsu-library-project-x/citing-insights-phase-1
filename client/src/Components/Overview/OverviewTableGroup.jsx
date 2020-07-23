@@ -97,15 +97,17 @@ class OverviewTableGroup extends Component {
         for (let i = 0; i < this.state.papers.length; i++) {
             let citation = {};
             let citation_response = {};
-            for (let j = 0; j < this.state.papers[i].papers.length; j++) {
-                citation.paper_id = this.state.papers[i].papers[j]._id;
-                citation_response = await this.fetchCitations(this.state.papers[i].papers[j]._id);
-                if (citation_response.length > 0) {
-                    citation.citations = citation_response;
-                    let citationClone = JSON.parse(JSON.stringify(citation));
-                    citation_array.push(citationClone);
-                }
+            if (this.state.papers[i].papers !== undefined) {
+                for (let j = 0; j < this.state.papers[i].papers.length; j++) {
+                    citation.paper_id = this.state.papers[i].papers[j]._id;
+                    citation_response = await this.fetchCitations(this.state.papers[i].papers[j]._id);
+                    if (citation_response.length > 0) {
+                        citation.citations = citation_response;
+                        let citationClone = JSON.parse(JSON.stringify(citation));
+                        citation_array.push(citationClone);
+                    }
 
+                }
             }
         }
 
@@ -159,30 +161,39 @@ class OverviewTableGroup extends Component {
             for (let j = 0; j < papers.length; j++) {
                 if (papers[j].assignmentId === assignment.id) {
                     let paper = {};
-                    for (let k = 0; k < papers[j].papers.length; k++) {
-                        let paperExists = false;
-                        for (let h = 0; h < this.state.assignmentList.length; h++) {
-                            if (this.state.assignmentList[h].id === papers[j].papers[k].id) {
-                                paperExists = true;
-                                break;
+                    if (papers[j].papers !== undefined) {
+                        for (let k = 0; k < papers[j].papers.length; k++) {
+                            let paperExists = false;
+                            for (let h = 0; h < this.state.assignmentList.length; h++) {
+                                if (this.state.assignmentList[h].id === papers[j].papers[k].id) {
+                                    paperExists = true;
+                                    break;
+                                }
                             }
-                        }
-                        if (!paperExists) {
-                            paper.title = papers[j].papers[k].title;
-                            paper.id = papers[j].papers[k]._id;
-                            let assessments = [];
-                            for (let t = 0; t < citations.length; t++) {
-                                if (citations[t].paper_id === paper.id) {
+                            if (!paperExists) {
+                                paper.title = papers[j].papers[k].title;
+                                paper.id = papers[j].papers[k]._id;
+                                let assessments = [];
+                                for (let t = 0; t < citations.length; t++) {
+                                    if (citations[t].paper_id === paper.id) {
 
+                                        let assessment = {
+                                            user_eval: [{}],
+                                            rubric_id: "",
+                                            rubric_title: ""
+                                        };
 
-                                    let assessment = {
-                                        user_eval: [{}],
-                                        rubric_id: "",
-                                        rubric_title: ""
-                                    };
-                                    let user_eval_array = [];
-                                    for (let y = 0; y < citations[t].citations.length; y++) {
+                                        let user_eval_array = [];
+
+                                        /* Implement the below loop when we add more citations than the initial Overall score
+                                          
+                                           for (let y = 0; y < citations[t].citations.length; y++) {
+                                        
+                                        */
+
+                                        // check to see if 'Overall Student Paper' citation has any assessments
                                         if (citations[t].citations[0].assessments.length > 0) {
+
                                             for (let r = 0; r < citations[t].citations[0].assessments.length; r++) {
 
                                                 assessment = {
@@ -192,15 +203,19 @@ class OverviewTableGroup extends Component {
                                                 };
                                                 let user = {};
                                                 let citation = citations[t].citations[0].assessments[r];
+                                                console.log(citation);
 
                                                 if (assessments.length > 0) {
                                                     //this check is to see if assessment has been added yet
                                                     let check = false;
+                                                    //check to see if assessment correctly lines up with rubric
+                                                    let check2 = false;
+
+                                                    //loop to make sure we dont create duplicate
                                                     for (let w = 0; w < assessments.length; w++) {
                                                         check = false;
-                                                        if (assessments[w].rubric_id === citation.rubric_id) {
-                                                            //check to see if assessment correctly lines up with rubric
-                                                            let check2 = false;
+                                                        if (assessments[w].rubric_title === citation.rubric_title) {
+
 
                                                             if (assessments[w].user_eval.length > 0) {
                                                                 for (let f = 0; f < assessments[w].user_eval.length; f++) {
@@ -217,25 +232,21 @@ class OverviewTableGroup extends Component {
                                                             if (!check2) {
                                                                 user.email = citation.email;
                                                                 user.rubric_score = citation.rubric_score;
-                                                                console.log(user);
-                                                                user_eval_array.push(user);
+                                                                console.log(user)
+                                                                assessments[w].user_eval.push(user);
                                                                 //toggle first check to signify user has been added
                                                                 check = true;
                                                                 break;
                                                             }
                                                         } else {
-                                                            if (!check) {
-                                                                //If we reach here, a new assessment must be created
-                                                                user.email = citation.email;
-                                                                user.rubric_score = citation.rubric_score;
-                                                                user_eval_array.push(user);
-                                                                assessment.rubric_title = citation.rubric_title;
-                                                                assessment.rubric_id = citation.rubric_id;
-                                                                assessment.user_eval = user_eval_array;
-                                                                user_eval_array = [];
-                                                                assessments.push(assessment);
-                                                                assessment = {};
-                                                            }
+                                                            //If we reach here, a new assessment must be created
+                                                            user.email = citation.email;
+                                                            user.rubric_score = citation.rubric_score;
+                                                            user_eval_array.push(user);
+                                                            assessment.rubric_title = citation.rubric_title;
+                                                            assessment.rubric_id = citation.rubric_id;
+                                                            assessment.user_eval = user_eval_array;
+                                                            user_eval_array = [];
                                                         }
                                                     }
                                                 }
@@ -248,25 +259,27 @@ class OverviewTableGroup extends Component {
                                                     assessment.rubric_id = citation.rubric_id;
                                                     assessment.user_eval = user_eval_array;
                                                     user_eval_array = [];
-                                                    assessments.push(assessment);
-                                                    assessment = {};
                                                 }
+                                                if (assessment.user_eval.length > 0) {
+                                                    assessments.push(assessment);
+                                                }
+                                                assessment = {};
                                             }
                                             break;
                                         }
+
+                                        // assessments.push(assessment);
+                                        // user_eval_array = [];
+                                        // assessment = {};
                                     }
-                                    // assessments.push(assessment);
-                                    // user_eval_array = [];
-                                    // assessment = {};
                                 }
+                                console.log(assessments);
+                                paper.assessments = assessments;
+                                let paperClone = JSON.parse(JSON.stringify(paper));
+                                paperArray.push(paperClone);
                             }
-                            console.log(assessments);
-                            paper.assessments = assessments;
-                            let paperClone = JSON.parse(JSON.stringify(paper));
-                            paperArray.push(paperClone);
                         }
                     }
-
 
                 }
                 assignment.papers = paperArray;
@@ -301,62 +314,68 @@ class OverviewTableGroup extends Component {
                     Download PDF
                 </Button>
 
-                <Table aria-label="overview table">
+                <Typography align={"center"} variant={"h4"}>
+                    Overview for {this.state.group.name}
+                </Typography>
+
+                <Table>
                     {assignmentList.map((assignment) => (
                         <div>
                             <TableHead>
                                 <TableRow>
                                     <TableCell>
-                                        {assignment.name}
+                                        <strong>Assignment:</strong> {assignment.name}
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
 
                             <TableBody>
                                 {assignment.papers.map((paper) => (
-                                    <div>
+                                    <ul>
                                         <TableRow>
-                                            <TableCell rowSpan={10}></TableCell>
                                             <TableCell>
-                                                {paper.title}
+                                                <strong>Paper:</strong> {paper.title}
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
                                             {paper.assessments.map((assessment) => (
-                                                <Table>
-                                                    <TableHead>
-                                                        <TableRow>
-                                                            <TableCell rowSpan={5} />
-                                                            <TableCell>
-                                                                {assessment.rubric_title}
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    </TableHead>
-                                                    <TableBody>
-                                                        {assessment.user_eval.map((user) => (
+                                                <ul>
+                                                    <Table >
+                                                        <TableHead>
                                                             <TableRow>
-                                                                <TableCell colSpan={1} />
-                                                                <TableRow>
-                                                                    <TableCell>
-                                                                        {user.email}
-                                                                    </TableCell>
-                                                                </TableRow>
-                                                                <TableRow>
-                                                                    <TableCell>
-                                                                        {user.rubric_score}
-                                                                    </TableCell>
-                                                                </TableRow>
+                                                                <TableCell>
+                                                                    <strong>Rubric:</strong> {assessment.rubric_title}
+                                                                </TableCell>
                                                             </TableRow>
-                                                        ))}
-                                                    </TableBody>
-                                                </Table>
+                                                        </TableHead>
+                                                        <ul>
+                                                            <TableBody>
+                                                                <TableRow>
+                                                                    {assessment.user_eval.map((user) => (
+                                                                        <TableCell>
+                                                                            {user.email}
+                                                                        </TableCell>
+                                                                    ))}
+                                                                </TableRow>
+                                                                <TableRow>
+                                                                    {assessment.user_eval.map((user) => (
+                                                                        <TableCell>
+                                                                            {user.rubric_score}
+                                                                        </TableCell>
+                                                                    ))}
+                                                                </TableRow>
+                                                            </TableBody>
+                                                        </ul>
+                                                    </Table>
+                                                </ul>
                                             ))}
                                         </TableRow>
-                                    </div>
+                                    </ul>
                                 ))}
                             </TableBody>
                         </div>
-                    ))}
+                    ))
+                    }
                 </Table>
             </div >
         );
