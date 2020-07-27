@@ -15,6 +15,7 @@ class AnalyzeSubMenu extends Component {
       sharedAssignments:[],
       sharedCourses:[],
       redirect: false,
+      open: null,
     };
 
     this.getClasses();
@@ -95,6 +96,7 @@ createTreeItems(json, state) {
 
 
   handleInputChange(event) {
+
     const target = event.target;
     const value = target.value;
     const name = target.name;
@@ -132,10 +134,12 @@ createTreeItems(json, state) {
         </Typography>
 
         <form style={{textAlign:"center", margin:"1em"}} onSubmit={this.handleSubmit}>
-          <FormControl  style={{minWidth: 250, marginBottom:"1em"}}>
+          <FormControl  style={{minWidth: 250, marginBottom:"1em"}} disabled={this.state.open === 'assignment'}>
               <InputLabel id={"selectClasslabel"}>Select a Class</InputLabel>
               <Select
                   style={{textAlign:"center"}}
+                  onOpen={()=>{this.setState({'open': 'class'})}}
+                  onClose={()=>{this.setState({'open': null})}}
                   labelId={"selectClasslabel"}
                   onChange={this.handleInputChange}
                   defaultValue={""}
@@ -148,10 +152,12 @@ createTreeItems(json, state) {
               </Select>
           </FormControl>
             <br /> <p> OR </p>
-          <FormControl  style={{minWidth: 250, marginBottom:"1em"}}>
+          <FormControl  style={{minWidth: 250, marginBottom:"1em"}} disabled={this.state.open === 'class'}>
               <InputLabel id={'selectAssignmentlabel'}>Select an Assignment </InputLabel>
               <Select
                   style={{textAlign:"center"}}
+                  onOpen={()=>{this.setState({'open': 'assignment'})}}
+                  onClose={()=>{this.setState({'open': null})}}
                   labelId={"selectAssignmentlabel"}
                   onChange={this.handleInputChange}
                   defaultValue={""}

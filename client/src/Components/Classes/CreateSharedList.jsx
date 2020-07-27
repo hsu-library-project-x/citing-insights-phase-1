@@ -47,18 +47,106 @@ class CreateSharedList extends Component {
 
     
     nestItems(classes, assignments) {
-        if(classes === undefined && assignments === undefined){
+        console.log("EHY");
+        console.log(classes);
+        console.log(assignments);
+        if(classes === undefined  && assignments === undefined ){
             return <p align='center'> Currently no courses or assignments are being shared with you</p>
         }
         else{       
                 let singletonAssignmnets = [];
                 let nestedList=[];
+                          // user only has assingmnets shared 
+                          if( classes === undefined  && assignments !== undefined){
+                            
+                            if(assignments.length < 1){
+                                return <p align='center'> 
+                                    Currently no courses or assignments are being shared with you
+                                </p>
+                            }else{
+                               
+                                return assignments.map(a => {
+                                    let a_notes = a.note ? a.note : "";
+                                    return (
+                                        <div key={`divider-${a._id}`}>
+                                            <ListItem id={a._id} style={{margin: 0}} key={a._id}>
+                                                <ListItemAvatar>
+                                                    <Avatar>
+                                                        <AssignmentIcon/>
+                                                    </Avatar>
+                                                </ListItemAvatar>
+                                                <ListItemText
+                                                    primary={a.name}
+                                                    secondary={a_notes}
+                                                />
+                                            </ListItem>
+                                            <Divider variant="inset"/>
+                                        </div>
+                                    );
+                                });
+                            }  
+                        }
+                
+                        //user only has classes shared
+                        if( assignments === undefined && classes !== undefined){
+                            if(classes.length < 1){
+                                return <p align='center'> 
+                                    Currently no courses or assignments are being shared with you
+                                </p>
+                            }else{
+                                return classes.map(d => {
+                                    let notes = d.course_note ? d.course_note : "";
+                                    return (
+                                        <List key={d._id} component={"div"}
+                                              disablePadding={true}
+                                              style={{paddingLeft: "4em"}}
+                                              dense={true}
+                                        >
+                                            <ListItem key={d._id} id={d._id}>
+                                                <ListItemAvatar>
+                                                    <Avatar>
+                                                        <ClassIcon/>
+                                                    </Avatar>
+                                                </ListItemAvatar>
+                                                <ListItemText
+                                                    style={{padding: 0, margin: 0}}
+                                                    primary={d.name}
+                                                    secondary={notes}
+                                                />
+                                            </ListItem>
+                                            <Divider variant="inset"/>
+                                        </List>
+                                    );
+                             });
+                           }
+                    }
                 
                 //user has classes & assignments shared with them .... 
                 // coveres class with nested assignments and then just stand alone assignments
                 if (classes !== undefined && assignments !== undefined){
                     if(classes.length < 1 && assignments.length < 1){
                         return <p align='center'> Currently no courses or assignments are being shared with you</p>
+                    }
+                    else if (classes.length < 1 && assignments.length >= 1){
+                        assignments.map(a => {
+                            let a_notes = a.note ? a.note : "";
+                            singletonAssignmnets.push(
+                                <div key={`divider-${a._id}`}>
+                                    <ListItem id={a._id} style={{margin: 0}} key={a._id}>
+                                        <ListItemAvatar>
+                                            <Avatar>
+                                                <AssignmentIcon/>
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                            primary={a.name}
+                                            secondary={a_notes}
+                                        />
+                                    </ListItem>
+                                    <Divider variant="inset"/>
+                                </div>
+                            );
+                        }); 
                     }
                     else{
                         nestedList = classes.map(d => {
@@ -110,26 +198,27 @@ class CreateSharedList extends Component {
                                                         <Divider variant="inset"/>
                                                     </div>
                                                 );
-                                            } else{
-                                                //check other assignments
-                                                singletonAssignmnets.push(
-                                                <div key={`divider-${a._id}`}>
-                                                    <ListItem id={a._id} style={{margin: 0}} key={a._id}>
-                                                        <ListItemAvatar>
-                                                            <Avatar>
-                                                                <AssignmentIcon/>
-                                                            </Avatar>
-                                                        </ListItemAvatar>
-                                                        <ListItemText
-                                                            primary={a.name}
-                                                            secondary={a_notes}
-                                                        />
-                                                    </ListItem>
-                                                    <Divider variant="inset"/>
-                                                </div>
-                                            );
-                                            } 
-                                        }) }
+                                            }
+                                        //      else{
+                                        //         //check other assignments
+                                        //         singletonAssignmnets.push(
+                                        //         <div key={`divider-${a._id}`}>
+                                        //             <ListItem id={a._id} style={{margin: 0}} key={a._id}>
+                                        //                 <ListItemAvatar>
+                                        //                     <Avatar>
+                                        //                         <AssignmentIcon/>
+                                        //                     </Avatar>
+                                        //                 </ListItemAvatar>
+                                        //                 <ListItemText
+                                        //                     primary={a.name}
+                                        //                     secondary={a_notes}
+                                        //                 />
+                                        //             </ListItem>
+                                        //             <Divider variant="inset"/>
+                                        //         </div>
+                                        //     );
+                                        //     } 
+                                        }) }                
                                     </List>
                                     </ListItem>
                                 </List>
@@ -146,82 +235,25 @@ class CreateSharedList extends Component {
                              <ListItem>
                                 {nestedList}
                              </ListItem>
+                             <ListItem>
                              {singletonAssignmnets}
+                             </ListItem>
+                            
                         </List>
                     )
                   
                 }
         
-                // user only has assingmnets shared 
-                if(classes === undefined && assignments !== undefined){
-                    if(assignments.length < 1){
-                        return <p align='center'> 
-                            Currently no courses or assignments are being shared with you
-                        </p>
-                    }else{
-                        return assignments.map(a => {
-                            let a_notes = a.note ? a.note : "";
-                            return (
-                                <div key={`divider-${a._id}`}>
-                                    <ListItem id={a._id} style={{margin: 0}} key={a._id}>
-                                        <ListItemAvatar>
-                                            <Avatar>
-                                                <AssignmentIcon/>
-                                            </Avatar>
-                                        </ListItemAvatar>
-                                        <ListItemText
-                                            primary={a.name}
-                                            secondary={a_notes}
-                                        />
-                                    </ListItem>
-                                    <Divider variant="inset"/>
-                                </div>
-                            );
-                        });
-                    }  
-                }
-        
-                //user only has classes shared
-                if(assignments === undefined && classes !== undefined){
-                    if(classes.length < 1){
-                        return <p align='center'> 
-                            Currently no courses or assignments are being shared with you
-                        </p>
-                    }else{
-                        return classes.map(d => {
-                            let notes = d.course_note ? d.course_note : "";
-                            return (
-                                <List key={d._id} component={"div"}
-                                      disablePadding={true}
-                                      style={{paddingLeft: "4em"}}
-                                      dense={true}
-                                >
-                                    <ListItem key={d._id} id={d._id}>
-                                        <ListItemAvatar>
-                                            <Avatar>
-                                                <ClassIcon/>
-                                            </Avatar>
-                                        </ListItemAvatar>
-                                        <ListItemText
-                                            style={{padding: 0, margin: 0}}
-                                            primary={d.name}
-                                            secondary={notes}
-                                        />
-                                    </ListItem>
-                                    <Divider variant="inset"/>
-                                </List>
-                            );
-                     });
-                   }
-            }
+      
         }
     }
 
     render() {
+        console.log(this.props.assignmentList);
         return (
             <List dense={true} style={{ padding: 0 }} >
                 {
-                    this.nestItems(this.props.sharedClassList, this.props.sharedAssignmentList)
+                    this.nestItems(this.props.sharedClassList, this.props.assignmentList)
                 }
             </List>
         );      

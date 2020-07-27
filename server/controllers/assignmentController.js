@@ -138,8 +138,8 @@ module.exports = {
                     });
                 }
 
-                console.log("assignments");
-                console.log(assignments);
+                // console.log("assignments");
+                // console.log(assignments);
                 return res.status(201).json(assignments);
             });
         }

@@ -82,7 +82,8 @@ module.exports = {
                     });
                 }
 
-                console.log(courses);
+                // console.log("courses");
+                // console.log(courses);
  
                 return res.status(201).json(courses);
             });
