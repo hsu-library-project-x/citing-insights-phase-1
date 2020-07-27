@@ -19,6 +19,12 @@ class RubricEditor extends Component {
         this.handleAlert = this.handleAlert.bind(this);
     };
 
+    componentWillUnmount() {
+        if (window.confirm("Are you sure you want to leave this page? Any changes made without saving will be lost. ")) {
+           this.props.ChangeRubric();
+        }    
+    }
+
     handleAlert(message, severity){
         this.props.RubricAlert(message, severity);
     }

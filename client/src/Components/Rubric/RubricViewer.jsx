@@ -14,7 +14,11 @@ class RubricViewer extends Component {
         this.buildCards = this.buildCards.bind(this);
     };
 
-   
+    componentWillUnmount() {
+        if (window.confirm("Are you sure you want to leave this page? Any changes made without saving will be lost. ")) {
+            this.props.ChangeRubric();
+        }    
+    }
 
     buildCards() {
         let cards = [];

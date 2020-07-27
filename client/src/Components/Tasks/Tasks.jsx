@@ -76,7 +76,12 @@ class Tasks extends PureComponent {
 		this.updateOverviewPage = this.updateOverviewPage.bind(this);
 		this.RubricAlert = this.RubricAlert.bind(this);
 		this.ChangeOverview = this.ChangeOverview.bind(this);
+		this.ChangeRubric = this.ChangeRubric.bind(this);
 
+	}
+
+	ChangeRubric(){
+		this.setState({isEditing: null, type: null});
 	}
 
 	totalSteps = () => {
@@ -349,6 +354,7 @@ class Tasks extends PureComponent {
 							/>
 							<Route path="/tasks/rubriceditor" render={(props) =>
 								<RubricEditor
+									ChangeRubric={this.ChangeRubric}
 									user={this.props.user}
 									rubricExists={this.state.rubricExists}
 									rubricElements={this.state.rubricElements}
@@ -361,6 +367,7 @@ class Tasks extends PureComponent {
 							/>
 							<Route path="/tasks/rubricviewer" render={(props) =>
 								<RubricViewer
+									ChangeRubric={this.ChangeRubric}
 									user={this.props.user}
 									rubricExists={this.state.rubricExists}
 									rubricElements={this.state.rubricElements}
