@@ -14,7 +14,9 @@ class RubricViewer extends Component {
         this.buildCards = this.buildCards.bind(this);
     };
 
-   
+    componentWillUnmount() {
+        this.props.ChangeRubric();
+    }
 
     buildCards() {
         let cards = [];

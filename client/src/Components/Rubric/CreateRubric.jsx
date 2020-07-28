@@ -45,8 +45,6 @@ class CreateRubric extends Component {
 		let count = this.state.rubricElements;
 		let reg = new RegExp('^\\d+$');
 		if (count > 0 && count < 6 && count.match(reg)) {
-            console.log('here --Liz');
-
            
 			this.props.handleEditExistingRubric(
                 false, 

@@ -1,4 +1,7 @@
 var groupsModel = require('../models/groupsModel.js');
+const assignmentModel = require('../models/assignmentModel.js');
+const courseModel = require('../models/courseModel.js');
+const rubricModel = require('../models/rubricModel.js');
 
 /**
  * groupsController.js
@@ -106,6 +109,83 @@ module.exports = {
             note: req.body.note,
             members: req.body.members
         };
+
+        assignmentModel.find({ 
+            'group_ids':  {$in: groupId}},
+        function(err, assignments){
+            if(err){
+                return res.status(500).json({
+                    message: 'Error when getting assignment',
+                    error: err
+                });
+            }
+
+            for(let i=0; i < assignments.length; i++){
+               assignmentModel.findOneAndUpdate({ _id: assignments[i]._id},
+                {$push: 
+                   {'members':  members }
+                }, function(err, assignments){
+
+                    if(err){
+                        return res.status(500).json({
+                            message: 'Error when getting assignment',
+                            error: err
+                        });
+                    }
+                });
+            }
+        });
+
+        courseModel.find({ 
+            'group_ids':  {$in: groupId}},
+                function(err, courses){
+                    if(err){
+                        return res.status(500).json({
+                            message: 'Error when getting course',
+                            error: err
+                        });
+                    }
+
+            for(let i=0; i < courses.length; i++){
+               courseModel.findOneAndUpdate({ _id: courses[i]._id},
+                {$push: 
+                   {'members': members }
+                }, function(err, courses){
+                    if(err){
+                        return res.status(500).json({
+                            message: 'Error when getting course',
+                            error: err
+                        });
+                    }
+                });
+            }
+        });
+
+        rubricModel.find({ 
+            'group_ids':  {$in: groupId}},
+                function(err, rubrics){
+                    if(err){
+                        return res.status(500).json({
+                            message: 'Error when getting assignment',
+                            error: err
+                        });
+                    }
+
+                for(let i=0; i < rubrics.length; i++){
+                rubricModel.findOneAndUpdate({ _id: rubrics[i]._id},
+                    {$push: 
+                         {'members': members  }
+                    }, function(err, rubrics){
+
+                        if(err){
+                            return res.status(500).json({
+                                message: 'Error when getting assignment',
+                                error: err
+                            });
+                        }
+                    });
+                }
+        });
         
         groupsModel.findOneAndUpdate(
             { _id: groupId },
@@ -166,6 +246,85 @@ module.exports = {
                     });
                 }
                 else {
+                    assignmentModel.find({ 
+                        'group_ids':  {$in: groupId}},
+                    function(err, assignments){
+                        if(err){
+                            return res.status(500).json({
+                                message: 'Error when getting assignment',
+                                error: err
+                            });
+                        }
+            
+                        for(let i=0; i < assignments.length; i++){
+                           assignmentModel.findOneAndUpdate({ _id: assignments[i]._id},
+                            {$push: 
+                               {'members': pendingEmail }
+                            }, function(err, assignments){
+            
+                                if(err){
+                                    return res.status(500).json({
+                                        message: 'Error when getting assignment',
+                                        error: err
+                                    });
+                                }
+                            });
+                        }
+                    });
+            
+                    courseModel.find({ 
+                        'group_ids':  {$in: groupId}},
+                            function(err, courses){
+                                if(err){
+                                    return res.status(500).json({
+                                        message: 'Error when getting course',
+                                        error: err
+                                    });
+                                }
+            
+                        for(let i=0; i < courses.length; i++){
+                           courseModel.findOneAndUpdate({ _id: courses[i]._id},
+                            {$push: 
+                               {'members': pendingEmail }
+                            }, function(err, courses){
+                                if(err){
+                                    return res.status(500).json({
+                                        message: 'Error when getting course',
+                                        error: err
+                                    });
+                                }
+                            });
+                        }
+                    });
+            
+                    rubricModel.find({ 
+                        'group_ids':  {$in: groupId}},
+                            function(err, rubrics){
+                                if(err){
+                                    return res.status(500).json({
+                                        message: 'Error when getting assignment',
+                                        error: err
+                                    });
+                                }
+            
+                            for(let i=0; i < rubrics.length; i++){
+                            rubricModel.findOneAndUpdate({ _id: rubrics[i]._id},
+                                {$push: 
+                                     {'members':  pendingEmail }
+                                }, function(err, rubrics){
+            
+                                    if(err){
+                                        return res.status(500).json({
+                                            message: 'Error when getting assignment',
+                                            error: err
+                                        });
+                                    }
+                                });
+                            }
+                    });
+
+
+
                     groupsModel.findOneAndUpdate(
                         { _id: groupId },
                         { $push: { members: pendingEmail } },
@@ -218,6 +377,84 @@ module.exports = {
     removeMember: function (req, res) {
         var groupId = req.body.id;
         var member = req.body.member;
+
+        assignmentModel.find({ 
+            'group_ids':  {$in: groupId}},
+        function(err, assignments){
+            if(err){
+                return res.status(500).json({
+                    message: 'Error when getting assignment',
+                    error: err
+                });
+            }
+
+            for(let i=0; i < assignments.length; i++){
+               assignmentModel.findOneAndUpdate({ _id: assignments[i]._id},
+                {$pull: 
+                   {'members': {$in: member} }
+                }, function(err, assignments){
+
+                    if(err){
+                        return res.status(500).json({
+                            message: 'Error when getting assignment',
+                            error: err
+                        });
+                    }
+                });
+            }
+        });
+
+        courseModel.find({ 
+            'group_ids':  {$in: groupId}},
+                function(err, courses){
+                    if(err){
+                        return res.status(500).json({
+                            message: 'Error when getting course',
+                            error: err
+                        });
+                    }
+
+            for(let i=0; i < courses.length; i++){
+               courseModel.findOneAndUpdate({ _id: courses[i]._id},
+                {$pull: 
+                   {'members': {$in: member} }
+                }, function(err, courses){
+                    if(err){
+                        return res.status(500).json({
+                            message: 'Error when getting course',
+                            error: err
+                        });
+                    }
+                });
+            }
+        });
+
+        rubricModel.find({ 
+            'group_ids':  {$in: groupId}},
+                function(err, rubrics){
+                    if(err){
+                        return res.status(500).json({
+                            message: 'Error when getting assignment',
+                            error: err
+                        });
+                    }
+
+                for(let i=0; i < rubrics.length; i++){
+                rubricModel.findOneAndUpdate({ _id: rubrics[i]._id},
+                    {$pull: 
+                         {'members': {$in: member} }
+                    }, function(err, rubrics){
+
+                        if(err){
+                            return res.status(500).json({
+                                message: 'Error when getting assignment',
+                                error: err
+                            });
+                        }
+                    });
+                }
+        });
+        
         groupsModel.findOneAndUpdate(
             { _id: groupId },
             { $pull: { members: member } },

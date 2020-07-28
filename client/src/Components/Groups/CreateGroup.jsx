@@ -95,10 +95,16 @@ class CreateGroup extends Component {
 
 
                             let member_array = [];
-                            for(let l=0; l < member_array_parsed.length; l++){
-                                member_array.push(member_array_parsed[l][0]);
+                           
+                            for (let l = 0; l < member_array_parsed.length; l++) {
+                                if(member_array_parsed[l][0] !== this.props.user.email){
+                                    member_array.push(member_array_parsed[l][0]);
+                                }
+                                else{
+                                    this.handleAlert("Group owner cannot be a group member", "error");
+                                }
+                              
                             };
-
 
                             let validationCheck = this.handleValidation(member_array);
 

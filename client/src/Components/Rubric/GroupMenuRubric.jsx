@@ -81,10 +81,6 @@ class GroupMenuRubric extends Component {
 
         let allMembers = members.push(creator);
 
-
-        console.log(members);
-        console.log(creator);
-
         let toAdd= {
             'group_id': group,
             'members': members,
@@ -113,6 +109,43 @@ class GroupMenuRubric extends Component {
 
     }
 
+    removeGroup( id, group, members, creator){
+       
+        let memberCheck = members;
+
+        if(this.props.user_email !== creator){
+            memberCheck.push(creator);
+        }
+
+        let toRemove = {
+            'group_id': group,
+            'members': members,
+        }
+
+        let body = JSON.stringify(toRemove);
+
+        fetch(`/api/rubrics/removeGroup/${id}`, {
+            method: "PUT",
+            body: body,
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
+        })
+            .then((response) => {
+                if (response.status === 201) {
+                    this.handleAlert("Group Removed", "success");
+                }
+                else {
+                    this.handleAlert("Unable to remove group.", "error");
+                }
+                this.handleClose();
+
+            });
+
+    }
+
+
     groupMenu(id) {
         let currentGroupList =[];
         let couldAddList =[];
@@ -124,7 +157,6 @@ class GroupMenuRubric extends Component {
                     if(r.group_ids !== undefined){
                         listItem = r.group_ids;
                     }
-
                 }
             })
         }else{
@@ -176,13 +208,13 @@ class GroupMenuRubric extends Component {
                     style={{ padding: 0, margin: 0 }}
                     primary={group.name}
                 />
-                {/* <ListItemSecondaryAction>
+                <ListItemSecondaryAction>
                     <Tooltip title="Remove Group" aria-label="remove group">
-                        <IconButton edge="end" aria-label="remove group" onClick={()=> this.removeGroup(id,group._id, group.members)}>
+                        <IconButton edge="end" aria-label="remove group" onClick={()=> this.removeGroup(id, group._id, group.members, group.creator)}>
                             <ClearIcon />
                         </IconButton>
                     </Tooltip>
-                </ListItemSecondaryAction> */}
+                </ListItemSecondaryAction>
             </ListItem>);
         });
 

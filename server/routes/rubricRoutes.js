@@ -29,6 +29,8 @@ router.put('/:id', rubricController.update);
 
 router.put('/updateGroup/:id', rubricController.updateGroup);
 
+router.put('/removeGroup/:id', rubricController.removeGroup);
+
 
 /*
  * DELETE
