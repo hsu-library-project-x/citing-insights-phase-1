@@ -37,6 +37,7 @@ class Analyze extends PureComponent {
       annotation: "",
       pageNumber: null,
       radio_score: null,
+      rubric_value: "",
       raw_pdf_data: null,
       snackbarOpen: true,
       messageInfo: "",
@@ -134,8 +135,13 @@ class Analyze extends PureComponent {
     }
   };
 
-  AssessmentScore(newScore, title) {
-    this.setState({ radio_score: newScore, rubric_title: title });
+  AssessmentScore(newScore, value, title) {
+    console.log(value);
+    this.setState({
+      radio_score: newScore,
+      rubric_title: title,
+      rubric_value: value
+    });
   }
 
   get_paper_info(paper_id) {
@@ -321,12 +327,14 @@ class Analyze extends PureComponent {
     const assessment = {
       rubric_id: this.state.rubricId,
       rubric_score: this.state.radio_score,
+      rubric_value: this.state.rubric_value,
       rubric_title: this.state.rubric_title,
       annotation: this.state.annotation,
       user_id: this.props.user.id,
       email: this.props.user.email
     };
 
+    console.log(assessment);
 
 
     //Grab current citation from DB and check to see if rubric has already been assessed.

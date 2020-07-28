@@ -191,7 +191,7 @@ class RubricEditor extends Component {
                                 onChange={this.handleInputChange}
                                 type={'text'}
                                 label={'Rubric Item Score'}
-                                defaultValue={""}
+                                defaultValue={c.cardScore}
                             />
                             <TextField
                                 variant={"outlined"}
