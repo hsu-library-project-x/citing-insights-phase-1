@@ -188,8 +188,6 @@ class CreateList extends Component {
 
     render() {
       
-
-        // if(this.props.classList.length >= 1 && this.props.assignmentList.length >= 1){
             return (
                 <List dense={true} style={{ padding: 0 }} >
                     {
@@ -197,13 +195,7 @@ class CreateList extends Component {
                     }
                 </List>
             );
-        // }else{
-            // return (
-            //     <p align='center'>
-            //         You are not the creator of any coursework.  
-            //     </p>
-            // );
-        // }
+  
     }
 }
 
