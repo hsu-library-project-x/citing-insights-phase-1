@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import {Button, Card, CardContent, Container, FormControl, TextField} from "@material-ui/core";
+import { Button, Card, CardContent, Container, FormControl, TextField } from "@material-ui/core";
 
 class RubricEditor extends Component {
     constructor(props) {
         super(props);
-        this.state={
-                rubricData: this.props.rubricData,
-                rubricTitle: this.props.rubricTitle,
+        this.state = {
+            rubricData: this.props.rubricData,
+            rubricTitle: this.props.rubricTitle,
         };
 
         this.handleRubricSubmit = this.handleRubricSubmit.bind(this);
@@ -25,35 +25,38 @@ class RubricEditor extends Component {
         }    
     }
 
-    handleAlert(message, severity){
+
+    handleAlert(message, severity) {
         this.props.RubricAlert(message, severity);
     }
 
     handleRubricSubmit() {
         const keys = Object.keys(this.state.rubricData);
-        let newData =[];
+        let newData = [];
 
         keys.forEach(k => {
+            console.log(k);
             let name = k.split('-');
             let title = name[0];
             let index = name[1];
             let words = this.state.rubricData[k];
 
-            if (newData[index]){
+            if (newData[index]) {
                 let oldKey = Object.keys(newData[index])[0];
-                let oldValue= newData[index][oldKey];
-                newData[index]= {
-                    [oldKey] : oldValue,
-                    [title]:words
-                }
-            } else{
+                let oldValue = newData[index][oldKey];
                 newData[index] = {
-                    [title]:words
+                    [oldKey]: oldValue,
+                    [title]: words
+                }
+            } else {
+                newData[index] = {
+                    [title]: words
                 };
             }
 
         });
 
+        console.log(newData);
         if (this.props.rubricExists) {
             this.updateRequest(this.state.rubricTitle, newData);
         } else {
@@ -80,14 +83,14 @@ class RubricEditor extends Component {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-            }).then(function (response)  {
-                if (response.status === 201 || response.ok ){
+            }).then(function (response) {
+                if (response.status === 201 || response.ok) {
                     that.handleAlert('Added Custom Rubric', 'success');
                 }
                 else {
                     that.handleAlert('Could not Add Rubric', 'error');
                 }
-            }).then(()=> this.props.history.push('/tasks/rubric'));
+            }).then(() => this.props.history.push('/tasks/rubric'));
         });
     }
 
@@ -108,23 +111,23 @@ class RubricEditor extends Component {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-            }).then(function (response)  {
-                if (response.status === 201 || response.ok ){
+            }).then(function (response) {
+                if (response.status === 201 || response.ok) {
                     that.handleAlert('Updated Rubric Success', 'success');
                 }
                 else {
                     that.handleAlert('Could not Update Rubric', 'error');
                 }
-            }).then(()=> this.props.history.push('/tasks/rubric'));
+            }).then(() => this.props.history.push('/tasks/rubric'));
         });
     }
 
-    handleStandardInputChange(event){
+    handleStandardInputChange(event) {
         const target = event.target;
         const value = target.value;
         const name = target.name;
         this.setState({
-            [name]:value
+            [name]: value
         });
     }
 
@@ -135,36 +138,47 @@ class RubricEditor extends Component {
         let rubricData = this.props.rubricData;
         rubricData[name] = value;
         this.setState({
-            rubricData:rubricData
+            rubricData: rubricData
         });
     }
 
     //calls when the isEditing state is changed
     buildCards() {
         let cards = [];
-        let that=this;
+        let that = this;
+
+        //If rubric exists, then eidt, if not then creating a new one. 
         if (this.props.rubricExists) {
             let rubric = null;
-            that.props.AvailableRubrics.forEach( function(r) {
-                if (r._id === that.props.selectedRubric){
+            that.props.AvailableRubrics.forEach(function (r) {
+                if (r._id === that.props.selectedRubric) {
                     rubric = r;
                 }
             });
 
             cards = rubric ? rubric.cards.map(c => {
-                return(
+                return (
                     <Card key={`card number ${rubric.cards.indexOf(c)}`}>
                         <CardContent>
                             <TextField
                                 variant={"outlined"}
                                 margin={'normal'}
-                                fullWidth={true}
                                 required
                                 name={`cardTitle-${rubric.cards.indexOf(c)}`}
                                 onChange={this.handleInputChange}
                                 type={'text'}
                                 label={'Rubric Item Title'}
                                 defaultValue={c.cardTitle}
+                            />
+                            <TextField
+                                variant={"outlined"}
+                                margin={'normal'}
+                                required
+                                name={`cardScore-${rubric.cards.indexOf(c)}`}
+                                onChange={this.handleInputChange}
+                                type={'text'}
+                                label={'Rubric Item Score'}
+                                defaultValue={""}
                             />
                             <TextField
                                 variant={"outlined"}
@@ -178,23 +192,21 @@ class RubricEditor extends Component {
                                 type={'text'}
                                 label={'Rubric Item Description'}
                                 defaultValue={c.cardText}
-
                             />
                         </CardContent>
                     </Card>
                 );
-            }):null;
+            }) : null;
             return cards;
 
         } else {
             //loop the value of rubric Size building a card for each one
-            for (let i = 0; i < that.props.rubricElements ; i++) {
+            for (let i = 0; i < that.props.rubricElements; i++) {
                 cards.push(
                     <Card key={`card number ${i}`}>
                         <CardContent>
                             <TextField
                                 variant={"outlined"}
-                                fullWidth={true}
                                 required
                                 name={`cardTitle-${i}`}
                                 onChange={this.handleInputChange}
@@ -202,6 +214,15 @@ class RubricEditor extends Component {
                                 label={'Rubric Item Title'}
                                 placeholder={"Rubric Item Title"}
                                 margin={'normal'}
+                            />
+                            <TextField
+                                variant={"outlined"}
+                                margin={'normal'}
+                                required
+                                name={`cardScore-${i}`}
+                                onChange={this.handleInputChange}
+                                type={'text'}
+                                label={'Rubric Item Score'}
                             />
                             <TextField
                                 variant={"outlined"}
@@ -226,16 +247,16 @@ class RubricEditor extends Component {
     }
 
     render() {
-        return(
+        return (
             <div>
                 <Button color='primary' variant='contained'
-                        onClick={() => this.props.history.push('/tasks/rubric')}>
+                    onClick={() => this.props.history.push('/tasks/rubric')}>
                     Go Back to Rubric Menu
                 </Button>
-                <Button style={{float:'right'}}
-                        color='primary'
-                        variant='contained'
-                        onClick={this.handleRubricSubmit}>
+                <Button style={{ float: 'right' }}
+                    color='primary'
+                    variant='contained'
+                    onClick={this.handleRubricSubmit}>
                     Save
                 </Button>
                 <Container maxWidth={"sm"}>

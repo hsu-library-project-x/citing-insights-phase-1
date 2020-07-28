@@ -46,6 +46,7 @@ class Analyze extends PureComponent {
     this.getPapers();
     this.getSharedRubrics();
 
+    this.populateCitations = this.populateCitations.bind(this);
     this.getSharedRubrics = this.getSharedRubrics.bind(this);
     this.getPapers = this.getPapers.bind(this);
     this.handleGetRubric = this.handleGetRubric.bind(this);
@@ -216,9 +217,16 @@ class Analyze extends PureComponent {
       });
   }
 
+
+  componentDidMount() {
+    this.populateCitations();
+  }
+
+
   //Here we populate citation source information and meta data
   //Do this call every time a new Paper is loaded into the  component
-  componentWillMount() {
+  populateCitations() {
+
     let that = this;
 
     if (this.props.selectedId !== undefined) {
@@ -278,10 +286,6 @@ class Analyze extends PureComponent {
       .then(function (myJson) {
         that.setState({ AvailableRubrics: myJson });
       });
-
-
-
-
   }
 
   handleGetRubric(event) {
