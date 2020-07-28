@@ -56,7 +56,7 @@ class RubricEditor extends Component {
 
         });
 
-        console.log(newData);
+  
         if (this.props.rubricExists) {
             this.updateRequest(this.state.rubricTitle, newData);
         } else {
