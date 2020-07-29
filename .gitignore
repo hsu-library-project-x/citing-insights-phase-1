@@ -5,6 +5,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+.idea
+.vscode
+
 # Runtime data
 pids
 *.pid
@@ -61,6 +64,8 @@ typings/
 .next
 
 
-./server/fileUpload/* 
+/server/fileUpload/u*
+
+/server/config.js
 
 #test

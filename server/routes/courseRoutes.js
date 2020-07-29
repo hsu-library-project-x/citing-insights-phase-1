@@ -12,15 +12,24 @@ router.get('/:id', courseController.list);
  */
 router.get('/:id', courseController.show);
 
+router.get('/by_email_and_ID/:email/:id', courseController.sharedCourses);
+
+router.get('/getCoursesByGroup/:groupId', courseController.getCoursesByGroup)
+
 /*
  * POST
  */
-router.post('/', courseController.create);
+
+ router.post('/', courseController.create);
 
 /*
  * PUT
  */
 router.put('/:id', courseController.update);
+
+router.put('/update/:id', courseController.updateGroup);
+
+router.put('/removeGroup/:id', courseController.removeGroup);
 
 /*
  * DELETE

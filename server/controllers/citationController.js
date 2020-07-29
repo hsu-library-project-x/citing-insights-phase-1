@@ -1,15 +1,6 @@
 var citationModel = require('../models/citationModel.js');
-const request = require('request');
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-
-
-function Get(yourUrl){
-  var Httpreq = new XMLHttpRequest(); // a new request
-  Httpreq.open("GET",yourUrl,false);
-  Httpreq.send(null);
-  return Httpreq.responseText;
-}
-
+// const request = require('request');
+// var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 /**
  * citationController.js
@@ -22,346 +13,178 @@ module.exports = {
    * citationController.list()
    */
   list: function (req, res) {
-    citationModel.find(function (err, citations) {
-      if (err) {
-        return res.status(500).json({
-          message: 'Error when getting citation.',
-          error: err
-        });
-      }
-      return res.json(citations);
-    });
+    if (req.session.user !== undefined) {
+
+      citationModel.find(function (err, citations) {
+        if (err) {
+          return res.status(500).json({
+            message: 'Error when getting citation.',
+            error: err
+          });
+        }
+        return res.json(citations);
+      });
+    }
   },
 
   /**
    * citationController.show()
    */
   show: function (req, res) {
-    var id = req.params.id;
-    citationModel.findOne({_id: id}, function (err, citation) {
-      if (err) {
-        return res.status(500).json({
-          message: 'Error when getting citation.',
-          error: err
-        });
-      }
-      if (!citation) {
-        return res.status(404).json({
-          message: 'No such citation'
-        });
-      }
-      return res.json(citation);
-    });
-  },
+    if (req.session.user !== undefined) {
 
-  by_user_id: function (req, res) {
-
-    var user_id = req.parans.user_id;
-    citationModel.findOne({ _user_id})
-  },
-
-  s2: function (req, res) {
-    var id = req.params.id;
-    console.log('s2');
-    citationModel.findOne({_id: id}, function (err, citation) {
-      if (err) {
-        return res.status(500).json({
-          message: 'Error when getting citation.',
-          error: err
-        });
-      }
-      if (!citation) {
-        return res.status(404).json({
-          message: 'No such citation'
-        });
-      }
-
-      var author_name = "";
-      if (citation.author.length > 0 && "given" in citation.author[0] && "family" in citation.author[0]) {
-        author_name = citation.author[0]["family"] + "+" + citation.author[0]["given"];
-      }
-      var title_name = "";
-      if (citation.title.length > 0) {
-        title_name = citation.title[0];
-      }
-
-      console.log(author_name);
-      console.log(title_name);
-	
-      var json_obj = JSON.parse(Get("https://api.crossref.org/works?query.author=" + author_name + "&query.bibliographic=" + title_name + '&mailto=citinginsightsheroku@gmail.com' ));
-
-      //console.log("this is the DOI: "+ json_obj.message.items[0].DOI);
-
-      if (json_obj.message.items != undefined) {
-        var doi = json_obj.message.items[0].DOI;
-
-        var final_var = JSON.parse(Get("http://api.semanticscholar.org/v1/paper/" + doi));
-
-        console.log(final_var.citationVelocity);
-        if (final_var.citationVelocity != undefined) {
-          return res.json({ "citation_velocity": final_var.citationVelocity, "influential_citation_count": final_var.influentialCitationCount})
-        } else {
-          return res.json({ "error": "citation not found"  });
+      var id = req.params.id;
+      citationModel.findOne({ _id: id }, function (err, citation) {
+        if (err) {
+          return res.status(500).json({
+            message: 'Error when getting citation.',
+            error: err
+          });
         }
-      } else {
-        return res.json({ "error": "citation not found"  });
-      }
-      return res.json(citation); 
-    });
+        if (!citation) {
+          return res.status(404).json({
+            message: 'No such citation'
+          });
+        }
+        return res.json(citation);
+      });
+    }
   },
 
 
   by_paper_id: function (req, res) {
-    var id = req.params.id;
-    citationModel.find({paper_id: id}, function (err, citation) {
-      if (err) {
-        return res.status(500).json({
-          message: 'Error when getting citation.',
-          error: err
-        });
-      }
-      if (!citation) {
-        return res.status(404).json({
-          message: 'No such citation'
-        });
-      }
-      return res.json(citation);
-    });
-  },
-  /**
-   * citationController.create()
-   */
-  create: function (req, res) {
-    var citation = new citationModel({
-      author : req.body.author,
-      date : req.body.date,
-      editor : req.body.editor,
-      edition : req.body.edition,
-      volume : req.body.volume,
-      pages : req.body.pages,
-      type : req.body.type,
-      title : req.body.title,
-      annotation : req.body.annotation,
-      doi : req.body.doi,
-      paper_id : req.body.paper_id
+    if (req.session.user !== undefined) {
 
-    });
-
-    citation.save(function (err, citation) {
-      if (err) {
-        return res.status(500).json({
-          message: 'Error when creating citation',
-          error: err
-        });
-      }
-      return res.status(201).json(citation);
-    });
-  },
-
-  /**
-   * citationController.update()
-   */
-  update: function (req, res) {
-    var id = req.params.id;
-    citationModel.findOne({_id: id}, function (err, citation) {
-      if (err) {
-        return res.status(500).json({
-          message: 'Error when getting citation',
-          error: err
-        });
-      }
-      if (!citation) {
-        return res.status(404).json({
-          message: 'No such citation'
-        });
-      }
-
-      citation.author = req.body.author ? req.body.author : citation.author;
-      citation.date = req.body.date ? req.body.date : citation.date;
-      citation.editor = req.body.editor ? req.body.editor : citation.editor;
-      citation.edition = req.body.edition ? req.body.edition : citation.edition;
-      citation.volume = req.body.volume ? req.body.volume : citation.volume;
-      citation.pages = req.body.pages ? req.body.pages : citation.pages;
-      citation.type = req.body.type ? req.body.type : citation.type;
-      citation.title = req.body.title ? req.body.title : citation.title;
-      citation.annotation = req.body.annotation ? req.body.annotation : citation.annotation;
-      citation.doi = req.body.doi ? req.body.doi : citation.doi;
-      citation.paper_id = req.body.paper_id ? req.body.paper_id : citation.paper_id;
-
-      citation.save(function (err, citation) {
+      var id = req.params.id;
+      citationModel.find({ paper_id: id }, function (err, citation) {
         if (err) {
           return res.status(500).json({
-            message: 'Error when updating citation.',
+            message: 'Error when getting citation.',
             error: err
           });
         }
-
-        return res.json(citation);
+        if (!citation) {
+          return res.status(404).json({
+            message: 'No such citation'
+          });
+        }
+        return res.status(201).json(citation);
       });
-    });
+    }
   },
 
-  save_citation_grade: function (req, res) {
-    var id = req.params.id;
-    console.log('SAVING CITATION GRADE');
-    console.log(id);
-    citationModel.findOne({_id: id}, function (err, citation) {
-      if (err) {
-        return res.status(500).json({
-          message: 'Error when getting citation',
-          error: err
-        });
-      }
-      if (!citation) {
-        return res.status(404).json({
-          message: 'No such citation'
-        });
-      }
 
-      citation.rubricId = req.params.rubricId;
-      citation.rubricTitle = req.params.rubricTitle;
-      citation.rubricScore = req.params.grade;
-      citation.annotation = req.params.annotation;
-      citation.evaluated = true;
+  remove_assessment: function (req, res) {
+    if (req.session.user !== undefined) {
 
-      citation.save(function (err, citation) {
+      var id = req.params.id;
+
+      //Removes assessment from array
+      citationModel.findOneAndUpdate(
+        { _id: id },
+        { $pull: { assessments: { rubric_id: req.body.rubric_id } } },
+        { new: true },
+        function (err, val) {
+          if (err) {
+            return res.status(500).json({
+              message: 'Could not remove field from array',
+              error: err
+            });
+          }
+          return res.status(200).json({
+            message: 'Updated array successfully'
+          });
+        });
+    }
+  },
+
+  add_assessment: function (req, res) {
+    if (req.session.user !== undefined) {
+
+      var id = req.params.id;
+
+
+      //Find the current citation
+      citationModel.findById({ _id: id }, function (err, citation) {
         if (err) {
           return res.status(500).json({
-            message: 'Error when updating citation.',
+            message: 'Error when getting citation',
             error: err
           });
         }
-
-        return res.json(citation);
-      });
-    });
-  },
-
-  find_evaluations: function (req,res){ 
-
-    var paper_id = req.params.paper_id;
-    citationModel.find({paper_id: paper_id, evaluated: true}, function(err, citation) {
-      if(err){
-        return res.status(500).json({
-          message: 'Error when getting citation',
-          error: err
-        });
-      }
-      if (!citation) {
-        return res.status(404).json({
-          message: 'No Evaluations Found'
-        });
-      }
-      return res.json(citation);
-    })
-  },
-
-  //called by Rubric Submit, sets empty array to correct Scores
-  add_rubric_score: function(req, res){
-    console.log(req.body);
-    var id = req.params.id;
-    citationModel.findOne({_id: id}, function (err, citation) {
-      if (err) {
-        return res.status(500).json({
-          message: 'Error when getting citation',
-          error: err
-        });
-      }
-      if (!citation) {
-        return res.status(404).json({
-          message: 'No such citation'
-        });
-      }
-
-      citation.rubricScore = req.body.rubricScore ? req.body.rubricScore : citation.rubricScore;
-
-      citation.save(function (err, citation) {
-        if (err) {
-          return res.status(500).json({
-            message: 'Error when updating citation.',
-            error: err
+        if (!citation) {
+          return res.status(404).json({
+            message: 'No such citation'
           });
         }
 
-        return res.json(citation);
+        //Get new assessment ready
+        let new_assessment = {
+          'rubric_id': req.body.rubric_id,
+          'rubric_score': req.body.rubric_score,
+          'rubric_value': req.body.rubric_value,
+          'rubric_title': req.body.rubric_title,
+          'annotation': req.body.annotation,
+          'user_id': req.body.user_id,
+          'email': req.body.email
+        };
+
+        //Push new item onto array
+        citation.assessments.push(new_assessment);
+        citation.evaluated = true;
+
+        //Save to DB
+        citation.save(function (err, citation) {
+          if (err) {
+            return res.status(500).json({
+              message: 'Error when updating citation.',
+              error: err
+            });
+          }
+          return res.status(201).json(citation);
+        });
       });
-    });
+    }
   },
 
-  add_intext_citations: function(req, res){
-    console.log(req.body);
-    var id = req.params.id;
-    citationModel.findOne({_id: id}, function (err, citation) {
-      if (err) {
-        return res.status(500).json({
-          message: 'Error when getting citation',
-          error: err
-        });
-      }
-      if (!citation) {
-        return res.status(404).json({
-          message: 'No such citation'
-        });
-      }
+  find_evaluations: function (req, res) {
+    if (req.session.user !== undefined) {
 
-      citation.intextCitations = req.body.intextCitations ? req.body.intextCitations : citation.intextCitations;
 
-      citation.save(function (err, citation) {
+      var paper_id = req.params.paper_id;
+      citationModel.find({ paper_id: paper_id, evaluated: true }, function (err, citation) {
         if (err) {
           return res.status(500).json({
-            message: 'Error when updating citation.',
+            message: 'Error when getting citation',
             error: err
           });
         }
-
-        return res.json(citation);
-      });
-    });
-  },
-
-  add_annotation: function(req, res){
-    console.log(req.body);
-    var id = req.params.id;
-    citationModel.findOne({_id: id}, function (err, citation) {
-      if (err) {
-        return res.status(500).json({
-          message: 'Error when getting citation',
-          error: err
-        });
-      }
-      if (!citation) {
-        return res.status(404).json({
-          message: 'No such citation'
-        });
-      }
-
-      citation.annotation = req.body.annotation ? req.body.annotation : citation.annotation;
-
-      citation.save(function (err, citation) {
-        if (err) {
-          return res.status(500).json({
-            message: 'Error when updating citation.',
-            error: err
+        if (!citation) {
+          return res.status(404).json({
+            message: 'No Evaluations Found'
           });
         }
-
         return res.json(citation);
-      });
-    });
+      })
+    }
   },
+
   /**
    * citationController.remove()
    */
   remove: function (req, res) {
-    var id = req.params.id;
-    citationModel.findByIdAndRemove(id, function (err, citation) {
-      if (err) {
-        return res.status(500).json({
-          message: 'Error when deleting the citation.',
-          error: err
-        });
-      }
-      return res.status(204).json();
-    });
+    if (req.session.user !== undefined) {
+
+      var id = req.params.id;
+      citationModel.findByIdAndRemove(id, function (err, citation) {
+        if (err) {
+          return res.status(500).json({
+            message: 'Error when deleting the citation.',
+            error: err
+          });
+        }
+        return res.status(204).json();
+      });
+    }
   }
 };

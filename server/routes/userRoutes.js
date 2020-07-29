@@ -5,6 +5,7 @@ var passport = require("passport");
 
 var { generateToken, sendToken } = require('../utils/token.utils');
 require('../passport')();
+
 /*
  * GET
  */
@@ -23,16 +24,19 @@ router.get('/:id', userController.show);
 
 
 router.route('/auth')
-  .post(passport.authenticate('google-token', { session: false }), function (req, res, next) {
-    console.log("in auth route");
-    if (!req.user) {
-      return res.send(401, 'User Not Authenticated');
-    }
-    req.auth = {
-      id: req.user.id
-    };
-    next();
-  }, generateToken, sendToken);
+  .post(passport.authenticate(
+    'google-token',
+    { session: false }),
+    function (req, res, next) {
+      if (!req.user) {
+        return res.send(401, 'User Not Authenticated');
+      }
+      req.session.user = req.user;
+      req.auth = {
+        id: req.user.id
+      };
+      next();
+    }, generateToken, sendToken);
 
 /*
  * PUT

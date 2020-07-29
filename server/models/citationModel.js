@@ -26,21 +26,35 @@ var citationSchema = new Schema({
 	'title': [
 		String
 	],
-	'annotation': String,
 	'doi': [
 		String
 	],
-	'rubricId': { type: Schema.Types.ObjectId, ref: 'rubric' },
-	'rubricTitle': String,
-	'rubricScore': String,
+	'citationVelocity': String,
+	'influentialCitationCount': String,
+	's2PaperUrl': String,
 	'intextCitations': Array,
 	'arxivid': String,
-	'annotation': String,
 	'paper_id': {
 		type: Schema.Types.ObjectId,
 		ref: 'paper'
 	},
-	'evaluated' : Boolean
+	'assessments': [{
+		'rubric_id':
+		{
+			type: Schema.Types.ObjectId,
+			ref: 'rubric'
+		},
+		'rubric_score': String,
+		'rubric_value': String,
+		'rubric_title': String,
+		'annotation': String,
+		'user_id': {
+			type: Schema.Types.ObjectId,
+			ref: 'user'
+		},
+		'email': String
+	}],
+	'evaluated': Boolean
 });
 
 module.exports = mongoose.model('citation', citationSchema);

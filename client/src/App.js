@@ -1,131 +1,143 @@
-// App.js is going to interact with our server
-
-// Libraries that we imported
-//import ReactDOM from 'react-dom';
 import React, { Component } from 'react';
-import './css/App.css';
-
-// Hashrouter allows us to do routing for website
-import { Switch, Route, HashRouter} from "react-router-dom";
-
-// Analyze, Login, and Home are all pages for our website
-import Analyze from "./Analyze.jsx";
-import Login from "./Login.jsx";
-import Home from "./Home.jsx";
-import Tasks from "./Tasks.jsx";
-import AccountSettings from "./AccountSettings.jsx";
+import { withRouter, Route, HashRouter, Redirect } from "react-router-dom";
 import { ProtectedRoute } from "./ProtectedRoute.jsx";
-import Navibar from './Navibar.jsx';
-//import Error from "./Error.jsx";
 
+import Login from "./Components/Login/Login.jsx";
+import Tasks from "./Components/Tasks/Tasks.jsx";
+import Navibar from './Components/Navibar/Navibar.jsx';
+import SplashScreen from './SplashScreen';
+import BottomNavBar from "./Components/BottomNavBar/BottomNavBar";
+import ConfigurationForm from "./ConfigurationForm";
 
-
-// App acts as the main page for intial rendering -- all pages and stages are called 
-// from App function
+import './App.css';
 
 class App extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       isAuthenticated: false,
       user: null,
-      token: ""
+      configurations: null,
+      loading: true,
     };
+
+    this.getConfigurations();
+
+    this.getConfigurations = this.getConfigurations.bind(this);
     this.passInfoLogin = this.passInfoLogin.bind(this);
     this.passInfoLogout = this.passInfoLogout.bind(this);
+    this.handleConfigurationChange = this.handleConfigurationChange.bind(this);
   }
 
-  passInfoLogin(isAuthenticated, token, user) {
+  getConfigurations = () => {
+    fetch('/api/configurations/', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    }).then(response => {
+      if (response.status === 200 || response.ok) {
+        return response.json();
+      }
+      else {
+        alert("Could not access database");
+      }
+    }).then(json => {
+      this.setState({ configurations: json[0], loading: false });
+    });
+  };
+
+  passInfoLogin(isAuthenticated, user) {
     this.setState({
       isAuthenticated: isAuthenticated,
-      user: user,
-      token: token
+      user: user
     });
-    //Persist our user into localStorage(right now its the whole object, for production just need token)
-    localStorage.setItem("user", JSON.stringify(this.state))
   };
 
   passInfoLogout() {
+    localStorage.clear();
     this.setState({
       isAuthenticated: false,
-      user: null,
-      token: ""
+      user: null
     });
-    localStorage.clear();
+
   };
 
+  handleConfigurationChange() {
+    this.setState({ loading: true }, () => this.getConfigurations());
+  }
+
   componentDidMount() {
+
+    // Seems redundant, but used for ensuring persisted login if refreshed is pressed
     const persistedState = localStorage.getItem("user");
-    //Test to see if user object is valid
-    if (persistedState) {
-      this.setState(JSON.parse(persistedState));    
+
+    //Test to see if user  is logged in
+    if (persistedState !== undefined) {
+      this.setState(JSON.parse(persistedState));
     }
   }
 
-
+  componentWillUnmount() {
+    localStorage.clear();
+  }
 
   render() {
-    return (
-      <div>
-        <div class="head">
-          {/* <h2 class="alt-text">Citing Insights</h2>
-          <p class="alt-text">Welcome to Citing Insights Portal</p> */}
-          {/*Hashrouter! Defining our Router (React-Dom)*/}
-          <HashRouter>
+    if (this.state.loading) {
+      return <SplashScreen />;
+    }
+    else {
+      if (this.state.configurations) {
+        return (<div className="head">
+          <HashRouter history={this.props.history}>
             <Navibar
               isAuthenticated={this.state.isAuthenticated}
               passInfoLogout={this.passInfoLogout}
               user={this.state.user}
+              configurations={this.state.configurations}
             />
-
-            {/*This tells us what compenent to loaauthd after going to login, home, demo etc.*/}
-            <div id="id01" class="pop content">
-              <Switch>
-                <Route
-                  exact path="/login"
-                  render={
-                    (props) =>
-                      <Login
-                        passInfoLogin={this.passInfoLogin}
-                        isAuthenticated={this.state.isAuthenticated}
-                      />
-                  }
-                />
-                <ProtectedRoute
-                  exact path="/"
-                  component={Tasks}
-                  {...this.state}
-                />
-                <ProtectedRoute
-                  path="/tasks"
-                  component={Tasks}
-                  {...this.state}
-                />
-                <ProtectedRoute
-                  exact path="/home"
-                  component={Home}
-                  {...this.state}
-                />
-                <ProtectedRoute
-                  path="/analyze"
-                  component={Analyze}
-                  {...this.state}
-                />
-                <ProtectedRoute
-                  path="/accountSettings"
-                  component={AccountSettings}
-                  {...this.state}
-                />
-              </Switch>
+            <div id="id01" className="pop content">
+              <Route
+                exact path="/login"
+                render={
+                  () =>
+                    <Login
+                      passInfoLogin={this.passInfoLogin}
+                      isAuthenticated={this.state.isAuthenticated}
+                      configurations={this.state.configurations}
+                    />
+                }
+              />
+              <ProtectedRoute
+                exact path="/"
+                component={Tasks}
+                {...this.state}
+                {...this.props}
+              />
+              <ProtectedRoute
+                path="/tasks"
+                component={Tasks}
+                {...this.state}
+                {...this.props}
+              />
             </div>
-            {/*End our router*/}
+            <BottomNavBar
+              isAuthenticated={this.state.isAuthenticated}
+              passInfoLogout={this.passInfoLogout}
+              user={this.state.user}
+              configurations={this.state.configurations}
+            />
           </HashRouter>
-        </div>
-      </div>
-    );
+        </div>);
+      }
+      else {
+        return (
+          <ConfigurationForm
+            handleConfigurationChange={this.handleConfigurationChange}
+          />);
+      }
+    }
   }
 }
-
-
 export default App;

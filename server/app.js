@@ -1,35 +1,49 @@
-//Some comments are from https://github.com/passport/express-4.x-facebook-example/blob/master/server.js
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var bodyParser = require('body-parser');
-
+const express = require('express');
+const session = require('express-session');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
+require('dotenv').config({ path: `${__dirname}/../.env` });
+const config = require("./config.js");
 const upload = require('./upload');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo')(session);
+const passport = require("passport");
+const helmet = require('helmet');
+// const multer = require('multer');
+const fs = require('fs');
 
-mongoose.connect('mongodb://localhost:27017/test', { useNewUrlParser: true });
+const url = `mongodb://${config.db.host}:${config.db.port}/${config.db.name}`;
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 
-var routes = require('./routes/index');
-var users = require('./routes/userRoutes');
-var courses = require('./routes/courseRoutes');
-var assignments = require('./routes/assignmentRoutes');
-var papers = require('./routes/paperRoutes');
-var citations = require('./routes/citationRoutes');
-var rubrics = require('./routes/rubricRoutes');
-var feedback = require("./routes/feedbackRoutes");
+let routes = require('./routes/index');
+let users = require('./routes/userRoutes');
+let courses = require('./routes/courseRoutes');
+let assignments = require('./routes/assignmentRoutes');
+let papers = require('./routes/paperRoutes');
+let citations = require('./routes/citationRoutes');
+let rubrics = require('./routes/rubricRoutes');
+let feedback = require("./routes/feedbackRoutes");
+let configurations = require("./routes/configurationsRoutes");
+let groups = require("./routes/groupsRoutes");
 
-var app = express();
-var router = express.Router();
+let app = express();
 
+app.use(helmet());
 
-
+app.use(session({
+  'secret': 'nufv98y984hfouijdso8fu32089r32tpbgg0bg01n2',
+  'store': new MongoStore({ mongooseConnection: mongoose.connection }),
+  'resave': true,
+  'saveUninitialized': false
+}));
 
 //this line is just for the file uypload test
 app.engine('html', require('ejs').renderFile);
 
-var corsOptions = {
+let corsOptions = {
   origin: "*",
   optionsSuccessStatus: 200,
   methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
@@ -37,41 +51,48 @@ var corsOptions = {
   exposedHeaders: ['x-auth-token']
 };
 
-app.use(logger('dev'));
-app.use(express.json());
+if (app.get('env') === 'production') {
+  app.use(logger('common', {
+    stream: fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
+  }));
+} else {
+  app.use(logger('dev'));
+}
 
+app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static('/home/citing_insights/citing-insights-phase-1/client/build/'));
 
+app.use(passport.initialize());
+app.use(passport.session());
 
-
+app.use(express.static(path.join(__dirname, '../client/build')));
 app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.post('/upload', upload);
+app.post('/api/upload', upload);
+app.use('/api', routes);
+app.use('/api/users', users);
+app.use('/api/courses', courses);
+app.use('/api/assignments', assignments);
+app.use('/api/papers', papers);
+app.use('/api/citations', citations);
+app.use('/api/rubrics', rubrics);
+app.use('/api/feedback', feedback);
+app.use('/api/configurations', configurations);
+app.use('/api/groups', groups);
 
-app.use('/users', users);
-app.use('/courses', courses);
-app.use('/assignments', assignments);
-app.use('/papers', papers);
-app.use('/citations', citations);
-app.use('/rubrics', rubrics);
-app.use('/feedback', feedback);
-
-// this delivers a test uploader page
-app.get('/file_upload', function (req, res) {
-  res.render('test.html');
-})
-
-app.get('*', (req, res) => {
-
-  console.log(req);
-  console.log(res);
-  console.log(path.join(__dirname + '../../client/build/index.html'));
-  res.sendFile(path.join(__dirname + '../../client/build/index.html'));
+app.get('/api/logout', function (req, res) {
+  req.session.destroy();
+  return res.status(200).json();
 });
+
+if (app.get('env') === 'production') {
+  app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/../client/build/index.html'));
+  });
+}
 
 
 module.exports = app;

@@ -17,7 +17,8 @@ var userSchema = new Schema({
 	googleProvider: {
 		type: {
 			id: String,
-			token: String
+			token: String,
+			refresh: String
 		},
 		select: false
 	}
@@ -41,7 +42,8 @@ userSchema.statics.upsertGoogleUser = function (accessToken, refreshToken, profi
 				email: profile.emails[0].value,
 				googleProvider: {
 					id: profile.id,
-					token: accessToken
+					token: accessToken,
+					refresh: refreshToken
 				}
 			});
 
