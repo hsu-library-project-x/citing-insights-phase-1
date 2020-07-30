@@ -132,15 +132,23 @@ class EditGroup extends Component {
 
                             let member_array_parsed = Papa.parse(this.state.newMembers).data;
 
+                           
                             let validationCheck = this.handleValidation(member_array_parsed);
 
                             if (validationCheck !== "true") {
                                 this.handleAlert(validationCheck + ' is not a valid email. Please try again.', 'error');
                             }
                             else {
+                                console.log(member_array_parsed);
 
                                 for (let l = 0; l < member_array_parsed.length; l++) {
-                                    this.state.members.push(member_array_parsed[l][0]);
+                                    if(member_array_parsed[l][0] !== this.state.creator){
+                                        this.state.members.push(member_array_parsed[l][0]);
+                                    }
+                                    else{
+                                        this.handleAlert("Group owner cannot be a group member", "error");
+                                    }
+                                  
                                 }
 
                                 let group = {
