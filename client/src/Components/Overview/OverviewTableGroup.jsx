@@ -336,7 +336,7 @@ class OverviewTableGroup extends Component {
                     Overview for {this.state.group.name}
                 </Typography>
 
-                <Table style={{border: "1px black solid", margin: "2px"}}>
+                <Table>
                     {assignmentList.map((assignment) => (
                         <div>
                             <TableHead>

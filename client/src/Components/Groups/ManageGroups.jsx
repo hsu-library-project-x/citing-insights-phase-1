@@ -250,6 +250,7 @@ class ManageGroups extends Component {
                             {type === "owner" ? 
                             <ListItemSecondaryAction>
                                 <EditGroup
+                                    user={this.props.user}
                                     id={group._id}
                                     handleQueueAlert={this.handleQueueAlert}
                                 />

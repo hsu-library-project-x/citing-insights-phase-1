@@ -52,7 +52,14 @@ class EditGroup extends Component {
     };
 
     handleClose = () => {
-        this.setState({ open: false });
+        this.setState({
+            open: false,
+            groupName: '',
+            creator: '',
+            groupNote: '',
+            members: [],
+            newMembers: ''
+        });
     };
 
     //call when input changes to update the state
@@ -76,9 +83,10 @@ class EditGroup extends Component {
 
         //Validate each email
         for (let i = 0; i < members.length; i++) {
-            if (expression.test(String(members[i]).toLowerCase()) === false) {
+            if (expression.test(String(members[i]).toLowerCase()) === false ||
+                members[i][0] === this.props.user.email) {
                 valid = false;
-                invalid_email = members[i];
+                invalid_email = members[i][0];
             }
         }
 
@@ -132,23 +140,24 @@ class EditGroup extends Component {
 
                             let member_array_parsed = Papa.parse(this.state.newMembers).data;
 
-                           
-                            let validationCheck = this.handleValidation(member_array_parsed);
 
-                            if (validationCheck !== "true") {
+                            let validationCheck = this.handleValidation(member_array_parsed);
+                            if (validationCheck === this.props.user.email) {
+                                this.handleAlert('Cannot add yourself as a member to a group you own', 'error');
+                            }
+                            else if (validationCheck !== "true") {
                                 this.handleAlert(validationCheck + ' is not a valid email. Please try again.', 'error');
                             }
                             else {
-                                console.log(member_array_parsed);
 
                                 for (let l = 0; l < member_array_parsed.length; l++) {
-                                    if(member_array_parsed[l][0] !== this.state.creator){
+                                    if (member_array_parsed[l][0] !== this.state.creator) {
                                         this.state.members.push(member_array_parsed[l][0]);
                                     }
-                                    else{
+                                    else {
                                         this.handleAlert("Group owner cannot be a group member", "error");
                                     }
-                                  
+
                                 }
 
                                 let group = {
