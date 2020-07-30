@@ -337,7 +337,7 @@ class Overview extends Component {
             <MenuItem value={paper._id} key={paper._id}>{paper.title}</MenuItem>
         );
 
-        console.log(optionAssignments)
+
         return (
             <Container maxWidth={'md'}>
 
