@@ -138,9 +138,11 @@ class OverviewTableGroup extends Component {
         //                user_eval : [{
         //                      email: string, 
         //                      rubric_score: string,
+        //                      rubric_value: string   /**NEW**/
         //                ]},
         //                rubric_id: string,
         //                rubric_name: string,
+        //                average_value: string,   /**NEW**/
         //           }]
         //       }] 
         //  }
@@ -174,11 +176,13 @@ class OverviewTableGroup extends Component {
                                 paper.title = papers[j].papers[k].title;
                                 paper.id = papers[j].papers[k]._id;
                                 let assessments = [];
+                                let average = 0;
                                 for (let t = 0; t < citations.length; t++) {
                                     if (citations[t].paper_id === paper.id) {
 
                                         let assessment = {
-                                            user_eval: [{}],
+                                            user_eval: [],
+                                            average_value: 0.0,
                                             rubric_id: "",
                                             rubric_title: ""
                                         };
@@ -198,12 +202,12 @@ class OverviewTableGroup extends Component {
 
                                                 assessment = {
                                                     user_eval: [],
+                                                    average_value: 0,
                                                     rubric_id: "",
                                                     rubric_title: ""
                                                 };
                                                 let user = {};
                                                 let citation = citations[t].citations[0].assessments[r];
-                                                console.log(citation);
 
                                                 if (assessments.length > 0) {
                                                     //this check is to see if assessment has been added yet
@@ -232,8 +236,9 @@ class OverviewTableGroup extends Component {
                                                             if (!check2) {
                                                                 user.email = citation.email;
                                                                 user.rubric_score = citation.rubric_score;
-                                                                console.log(user)
+                                                                user.rubric_value = citation.rubric_value;
                                                                 assessments[w].user_eval.push(user);
+                                                                assessments[w].average_value += Number(user.rubric_value);
                                                                 //toggle first check to signify user has been added
                                                                 check = true;
                                                                 break;
@@ -242,10 +247,12 @@ class OverviewTableGroup extends Component {
                                                             //If we reach here, a new assessment must be created
                                                             user.email = citation.email;
                                                             user.rubric_score = citation.rubric_score;
+                                                            user.rubric_value = citation.rubric_value;
                                                             user_eval_array.push(user);
                                                             assessment.rubric_title = citation.rubric_title;
                                                             assessment.rubric_id = citation.rubric_id;
                                                             assessment.user_eval = user_eval_array;
+                                                            assessment.average_value += Number(user.rubric_value);
                                                             user_eval_array = [];
                                                         }
                                                     }
@@ -254,26 +261,36 @@ class OverviewTableGroup extends Component {
                                                     //If we reach here, this is the first assessment created
                                                     user.email = citation.email;
                                                     user.rubric_score = citation.rubric_score;
+                                                    user.rubric_value = citation.rubric_value;
                                                     user_eval_array.push(user);
                                                     assessment.rubric_title = citation.rubric_title;
                                                     assessment.rubric_id = citation.rubric_id;
                                                     assessment.user_eval = user_eval_array;
+                                                    assessment.average_value += Number(user.rubric_value);
                                                     user_eval_array = [];
                                                 }
+
                                                 if (assessment.user_eval.length > 0) {
+                                                    console.log(assessment.user_eval.length);
+                                                    assessment.average_value = (assessment.average_value / assessment.user_eval.length);
                                                     assessments.push(assessment);
                                                 }
+
                                                 assessment = {};
+
                                             }
                                             break;
                                         }
-
-                                        // assessments.push(assessment);
-                                        // user_eval_array = [];
-                                        // assessment = {};
                                     }
                                 }
                                 console.log(assessments);
+                                let avg = 0.0;
+                                for(let b = 0; b < assessments.length; b++){
+                                    for(let c = 0; c < assessments[b].user_eval.length; c++){
+                                        avg += Number(assessments[b].user_eval[c].rubric_value);
+                                    }
+                                    assessments[b].average_value = avg /  assessments[b].user_eval.length
+                                }
                                 paper.assessments = assessments;
                                 let paperClone = JSON.parse(JSON.stringify(paper));
                                 paperArray.push(paperClone);
@@ -285,6 +302,7 @@ class OverviewTableGroup extends Component {
                 assignment.papers = paperArray;
                 assignmentList.push(assignment);
             }
+
 
             this.setState({
                 assignmentList: assignmentList
@@ -318,7 +336,7 @@ class OverviewTableGroup extends Component {
                     Overview for {this.state.group.name}
                 </Typography>
 
-                <Table>
+                <Table style={{border: "1px black solid", margin: "2px"}}>
                     {assignmentList.map((assignment) => (
                         <div>
                             <TableHead>
@@ -340,7 +358,7 @@ class OverviewTableGroup extends Component {
                                         <TableRow>
                                             {paper.assessments.map((assessment) => (
                                                 <ul>
-                                                    <Table >
+                                                    <Table>
                                                         <TableHead>
                                                             <TableRow>
                                                                 <TableCell>
@@ -352,17 +370,23 @@ class OverviewTableGroup extends Component {
                                                             <TableBody>
                                                                 <TableRow>
                                                                     {assessment.user_eval.map((user) => (
-                                                                        <TableCell>
+                                                                        <TableCell style={{border: "1px black solid"}}>
                                                                             {user.email}
                                                                         </TableCell>
                                                                     ))}
+                                                                    <TableCell style={{border: "1px black solid"}}>
+                                                                        Average
+                                                                    </TableCell>
                                                                 </TableRow>
                                                                 <TableRow>
                                                                     {assessment.user_eval.map((user) => (
-                                                                        <TableCell>
+                                                                        <TableCell style={{border: "1px black solid"}}>
                                                                             {user.rubric_score}
                                                                         </TableCell>
                                                                     ))}
+                                                                    <TableCell style={{border: "1px black solid"}}>
+                                                                        {assessment.average_value}
+                                                                    </TableCell>
                                                                 </TableRow>
                                                             </TableBody>
                                                         </ul>

@@ -122,6 +122,7 @@ module.exports = {
         let new_assessment = {
           'rubric_id': req.body.rubric_id,
           'rubric_score': req.body.rubric_score,
+          'rubric_value': req.body.rubric_value,
           'rubric_title': req.body.rubric_title,
           'annotation': req.body.annotation,
           'user_id': req.body.user_id,

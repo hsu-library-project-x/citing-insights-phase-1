@@ -32,22 +32,35 @@ class RubricEditor extends Component {
 
     handleRubricSubmit() {
         const keys = Object.keys(this.state.rubricData);
+        console.log(keys);
         let newData = [];
 
         keys.forEach(k => {
+            
             console.log(k);
+
             let name = k.split('-');
             let title = name[0];
             let index = name[1];
             let words = this.state.rubricData[k];
 
+            console.log('--title');
+            console.log(title);
+            console.log("--index");
+            console.log(index);
+            console.log('--words');
+            console.log(words);
+            console.log("NewData");
+            console.log(newData);
+
+
             if (newData[index]) {
+
                 let oldKey = Object.keys(newData[index])[0];
                 let oldValue = newData[index][oldKey];
-                newData[index] = {
-                    [oldKey]: oldValue,
-                    [title]: words
-                }
+
+                newData[index][title]= words;
+                
             } else {
                 newData[index] = {
                     [title]: words
@@ -178,7 +191,7 @@ class RubricEditor extends Component {
                                 onChange={this.handleInputChange}
                                 type={'text'}
                                 label={'Rubric Item Score'}
-                                defaultValue={""}
+                                defaultValue={c.cardScore}
                             />
                             <TextField
                                 variant={"outlined"}

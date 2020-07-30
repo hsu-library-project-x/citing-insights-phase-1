@@ -45,6 +45,7 @@ var citationSchema = new Schema({
 			ref: 'rubric'
 		},
 		'rubric_score': String,
+		'rubric_value': String,
 		'rubric_title': String,
 		'annotation': String,
 		'user_id': {
