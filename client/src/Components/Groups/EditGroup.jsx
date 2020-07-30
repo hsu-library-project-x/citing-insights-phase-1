@@ -139,17 +139,14 @@ class EditGroup extends Component {
                                 this.handleAlert(validationCheck + ' is not a valid email. Please try again.', 'error');
                             }
                             else {
-                                console.log(member_array_parsed);
+                        
 
                                 for (let l = 0; l < member_array_parsed.length; l++) {
-                                    if(member_array_parsed[l][0] !== this.state.creator){
+                                   
                                         this.state.members.push(member_array_parsed[l][0]);
-                                    }
-                                    else{
-                                        this.handleAlert("Group owner cannot be a group member", "error");
-                                    }
+                                   
                                   
-                                }
+                                };
 
                                 let group = {
                                     id: this.props.id,

@@ -95,10 +95,12 @@ class CreateGroup extends Component {
 
 
                             let member_array = [];
-                            for(let l=0; l < member_array_parsed.length; l++){
-                                member_array.push(member_array_parsed[l][0]);
+                           
+                            for (let l = 0; l < member_array_parsed.length; l++) {
+                                
+                                    member_array.push(member_array_parsed[l][0]);
+                              
                             };
-
 
                             let validationCheck = this.handleValidation(member_array);
 

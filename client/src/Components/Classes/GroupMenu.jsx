@@ -260,6 +260,7 @@ class GroupMenu extends Component {
 
         let currentGroups = currentGroupList.map((group) => {
             // if this IS an added group
+
             return (<ListItem key={group._id}>
                 <ListItemText
                     style={{ padding: 0, margin: 0 }}
@@ -274,6 +275,12 @@ class GroupMenu extends Component {
                 </ListItemSecondaryAction>
             </ListItem>);
         });
+
+        // console.log("current groups");
+        // console.log(currentGroupList);
+
+        // console.log("option groups");
+        // console.log(couldAddList);
 
         let groupMemberArrays = currentGroupList.map(group => group.members);
         let toReturn = [];
@@ -362,6 +369,7 @@ class GroupMenu extends Component {
     }
 
     render(){
+        
         return(
             <span>
             <Tooltip title="Groups" aria-label="groups">
