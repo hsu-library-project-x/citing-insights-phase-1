@@ -36,9 +36,7 @@ class AddDefaultRubric extends Component {
 		event.preventDefault();
 
 		let rubricToAdd = defaultRubricsJson[event.target.value];
-		
-		console.log(rubricToAdd);
-		
+				
 		rubricToAdd.user_id = this.props.user.id;
 		const defaultString = JSON.stringify(rubricToAdd);
 
@@ -80,7 +78,7 @@ class AddDefaultRubric extends Component {
                     open={this.state.open}
                     onClose={this.handleClose}
                     closeAfterTransition={true}
-                    style={{ marginTop: '5%', width: '50%', marginRight: 'auto', marginLeft: 'auto' }}
+                    style={{marginTop:'5%', width:'50%', marginRight:'auto', marginLeft:'auto', overflow: 'auto'}}
                 >
                     <Paper>
                         <Typography style={{ paddingTop: "1em" }} align={"center"} variant={"h4"}

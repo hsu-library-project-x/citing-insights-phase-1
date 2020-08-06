@@ -115,15 +115,15 @@ class Classes extends Component {
     createTreeItems(json, state) {
         let list = [];
         if(json !== undefined){
-            if(state === 'myGroups'){
-                for (let i = 0; i < json.length; i++) {
-                    list.push(json[i]["_id"]);
-                }
-            }else{
+            // if(state === 'myGroups'){
+            //     for (let i = 0; i < json.length; i++) {
+            //         list.push(json[i]["_id"]);
+            //     }
+            // }else{
                 for (let i = 0; i < json.length; i++) {
                     list.push(json[i]);
                 }
-            }
+            // }
 
             this.setState({ [state]: list });
         }
@@ -237,7 +237,7 @@ class Classes extends Component {
                         <CreateList
                             classList={this.state.classList}
                             assignmentList={this.state.assignmentList}
-                            availableGroups={this.state.availableGroups}
+                            availableGroups={this.state.myGroups}
                             handleQueueAlert={this.handleQueueAlert}
                             user_id={this.props.user.id}
                             user_email={this.props.user.email}
@@ -260,6 +260,7 @@ class Classes extends Component {
 
 
     render() {
+
         return (
             <Container maxWidth={"md"}>
                 {this.DisplayAlerts()}

@@ -104,7 +104,6 @@ class RemoveAssignment extends Component {
     }
 
     render() {
-        console.log(this.state.assignments);
         return (
             <span>
                 <Tooltip title="Add Assignment for Group" aria-label="add assignment for group">
@@ -120,7 +119,7 @@ class RemoveAssignment extends Component {
                     open={this.state.open}
                     onClose={this.handleClose}
                     closeAfterTransition={true}
-                    style={{ marginTop: '5%', width: '50%', marginRight: 'auto', marginLeft: 'auto' }}
+                    style={{marginTop:'5%', width:'50%', marginRight:'auto', marginLeft:'auto', overflow: 'auto'}}
                 >
                     <Paper>
                         <Typography style={{ paddingTop: "1em" }} align={"center"} variant={"h4"}

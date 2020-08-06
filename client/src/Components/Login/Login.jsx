@@ -19,8 +19,8 @@ class Login extends Component {
 
 	responseGoogle = (response) => {
 
-		let access_token = response.accessToken === undefined ? response.uc.access_token : response.accessToken;
-		
+		let access_token = response.accessToken === undefined ? response.wc.access_token : response.accessToken;
+			
 		const tokenBlob = new Blob(
 			[JSON.stringify({ access_token: access_token  }, null, 2)],
 			{ type: 'application/json' }

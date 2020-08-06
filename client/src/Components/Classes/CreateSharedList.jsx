@@ -47,9 +47,6 @@ class CreateSharedList extends Component {
 
     
     nestItems(classes, assignments) {
-        console.log("EHY");
-        console.log(classes);
-        console.log(assignments);
         if(classes === undefined  && assignments === undefined ){
             return <p align='center'> Currently no courses or assignments are being shared with you</p>
         }
@@ -249,7 +246,6 @@ class CreateSharedList extends Component {
     }
 
     render() {
-        console.log(this.props.assignmentList);
         return (
             <List dense={true} style={{ padding: 0 }} >
                 {

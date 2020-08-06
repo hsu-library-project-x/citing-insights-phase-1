@@ -68,7 +68,6 @@ class RequestGroup extends Component {
                 requestGroups.push(groupList[x]);
             };
         };
-        console.log(requestGroups);
         let optionGroups = requestGroups.map((group) => 
             <MenuItem value={group._id} key={group._id}> {group.name}</MenuItem>
         );
@@ -88,7 +87,7 @@ class RequestGroup extends Component {
                     open={this.state.open}
                     onClose={this.handleClose}
                     closeAfterTransition={true}
-                    style={{ marginTop: '5%', width: '50%', marginRight: 'auto', marginLeft: 'auto' }}
+                    style={{marginTop:'5%', width:'50%', marginRight:'auto', marginLeft:'auto', overflow: 'auto'}}
                 >
                     <Paper>
                         <Typography style={{ paddingTop: "1em" }} align={"center"} variant={"h4"} component={"h2"}
