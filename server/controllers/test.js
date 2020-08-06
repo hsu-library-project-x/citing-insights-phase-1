@@ -6,7 +6,6 @@ async function printRows(rows) {
     Object.keys(rows) // => array of y-positions (type: float)
         .sort((y1, y2) => parseFloat(y1) - parseFloat(y2)) // sort float positions
         .forEach(y =>{
-            console.log(rows[y] || []).join("");
             return ((rows[y] || []).join(""));
         });
 }

@@ -136,7 +136,6 @@ class Analyze extends PureComponent {
   };
 
   AssessmentScore(newScore, value, title) {
-    console.log(value);
     this.setState({
       radio_score: newScore,
       rubric_title: title,
@@ -334,8 +333,6 @@ class Analyze extends PureComponent {
       email: this.props.user.email
     };
 
-    console.log(assessment);
-
 
     //Grab current citation from DB and check to see if rubric has already been assessed.
     let response = await fetch(`/api/citations/${that.state.current_citation_id}`);
@@ -347,8 +344,6 @@ class Analyze extends PureComponent {
     if (assessments !== undefined && assessments.length !== 0) {
       //Look at each assessment
       for (let index = 0; index < assessments.length; index++) {
-
-        // console.log(`current rub: ${that.state.rubricId} and \nnew rub: ${assessments[index].rubric_id}`);
 
         //If true, assessment already exists
         if (assessments[index].rubric_id === that.state.rubricId && assessments[index].user_id === this.props.user.id) {
@@ -400,7 +395,6 @@ class Analyze extends PureComponent {
     }
     if (!check) {
       //Doesn't exist yet; good to go
-      console.log('HEEEEERRRREEEEEE');
       fetch(`/api/citations/add_assessment/${that.state.current_citation_id}`, {
         method: "PUT",
         headers: {

@@ -14,7 +14,6 @@ module.exports = {
 
     list: function (req, res) {
         if (req.session.user !== undefined) {
-            console.log(req.session);
             paperModel.find(function (err, papers) {
                 if (err) {
                     return res.status(500).json({
@@ -70,7 +69,6 @@ module.exports = {
                     });
                 }
 
-                // console.log(paper);
                 return res.json(paper);
             });
         }

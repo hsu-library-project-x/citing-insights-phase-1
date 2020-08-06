@@ -125,14 +125,12 @@ class Overview extends Component {
     handleAssignmentSelection(event) {
         event.preventDefault();
         let that = this;
-        console.log(this);
         let target = event.target;
         fetch('/api/papers/by_ref_id/' + target.value)
             .then(function (response) {
                 return response.json();
             })
             .then(function (myJson) {
-                console.log(that);
                 that.setState({ AvailablePapers: myJson });
             });
     }
@@ -159,7 +157,6 @@ class Overview extends Component {
 
         let that = this;
         let target = event.target;
-        console.log(target.value);
         //Query for classes belong to group, 
         // find all papers in found classes, 
         // then find all citations with author = "Overall Student Paper"
@@ -172,12 +169,10 @@ class Overview extends Component {
                 that.setState({ AvailableAssignments: myJson })
             });
 
-            console.log(this.state);
         this.props.updateOverviewPage(this.state.AvailableAssignments, this.state.group_id, 1);
     }
 
     handleTabChange(event, newValue) {
-        console.log(this.state)
         this.setState({ tab: newValue });
     }
 
@@ -190,7 +185,6 @@ class Overview extends Component {
     }
 
     TabPanel(value, index, optionGroups, optionItems, optionAssignments, optionPapers) {
-        console.log(optionAssignments);
 
         return (
             <Grid item xs={12}>

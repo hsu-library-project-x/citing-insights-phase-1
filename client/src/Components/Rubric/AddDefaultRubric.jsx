@@ -36,9 +36,7 @@ class AddDefaultRubric extends Component {
 		event.preventDefault();
 
 		let rubricToAdd = defaultRubricsJson[event.target.value];
-		
-		console.log(rubricToAdd);
-		
+				
 		rubricToAdd.user_id = this.props.user.id;
 		const defaultString = JSON.stringify(rubricToAdd);
 

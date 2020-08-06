@@ -260,8 +260,6 @@ class Classes extends Component {
 
 
     render() {
-        console.log(this.state.myGroups);
-
 
         return (
             <Container maxWidth={"md"}>

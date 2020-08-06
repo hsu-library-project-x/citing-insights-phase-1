@@ -132,8 +132,6 @@ class CreateGroup extends Component {
 
                                 let json = JSON.stringify(data);
 
-                                console.log('about to post');
-                                console.log(json);
                                 fetch("/api/groups/", {
                                     method: "POST",
                                     body: json,

@@ -68,7 +68,6 @@ class RequestGroup extends Component {
                 requestGroups.push(groupList[x]);
             };
         };
-        console.log(requestGroups);
         let optionGroups = requestGroups.map((group) => 
             <MenuItem value={group._id} key={group._id}> {group.name}</MenuItem>
         );
