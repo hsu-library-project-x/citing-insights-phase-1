@@ -7,33 +7,40 @@ class Overview extends Component {
         super(props);
         this.state = {
             className: '',
-            selectedId: '',
+            selectedId: null,
             classList: [],
             assignmentList: [],
             sharedAssignments: [],
             sharedCourses: [],
             selectedPaperId: '',
             AvailableGroups: [],
-            AvailableCourses: [],
-            AvailableAssignments: [],
+            classList: [],
+            assignmentList: [],
             AvailablePapers: [],
             rubrics: [], //TODO: CHECK THAT WE ACTUALLY USE THIS
             citations: [],
             tab: 0,
-            group_id: ""
+            group_id: "",
+            open: null,
         };
 
         this.getGroups();
-        this.getCourses();
         this.getRubrics();
+        this.getClasses();
+        this.getAssignments();
+        this.getSharedAssignments();
+        this.getSharedCourses();
 
         this.getGroups = this.getGroups.bind(this);
-        this.getCourses = this.getCourses.bind(this);
+        this.getClasses = this.getClasses.bind(this);
         this.getAssignments = this.getAssignments.bind(this);
         this.getRubrics = this.getRubrics.bind(this);
+        this.getSharedAssignments = this.getSharedAssignments.bind(this);
+        this.getSharedCourses = this.getSharedCourses.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
         this.handleClassSelection = this.handleClassSelection.bind(this);
         this.handleGroupSelection = this.handleGroupSelection.bind(this);
-        this.handleAssignmentSelection = this.handleAssignmentSelection.bind(this);
+        this.handleAssignmentOrClassSelection = this.handleAssignmentOrClassSelection.bind(this);
         this.handlePaperSelection = this.handlePaperSelection.bind(this);
         this.handleResultsChangeByPaper = this.handleResultsChangeByPaper.bind(this);
         this.handleResultsChangeByGroup = this.handleResultsChangeByGroup.bind(this);
@@ -41,6 +48,18 @@ class Overview extends Component {
         this.TabPanel = this.TabPanel.bind(this);
 
     }
+
+    handleInputChange(event) {
+
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+        this.setState({
+          [name]: value
+        },
+        );
+    
+      }
 
     getGroups() {
         let that = this;
@@ -55,35 +74,49 @@ class Overview extends Component {
         );
     }
 
+    getSharedAssignments(){
+        fetch(`/api/assignments/by_email_and_ID/${this.props.user.email}/${this.props.user.id}`,).then(function (response) {
+            if(response.status === 201){
+                return response.json();
+            }
+        }).then(d => {
+            this.createTreeItems(d, 'sharedAssignments');
+        });
+      }
+    
+      getSharedCourses(){
+    
+        fetch(`/api/courses/by_email_and_ID/${this.props.user.email}/${this.props.user.id}`).then(function (response) {
+    
+            if(response.status === 201){
+              
+                return response.json();
+            }
+    
+        }).then(d => {
+            this.createTreeItems(d, 'sharedCourses');
+        });
+      }
+    
+   
 
-    getCourses() {
-        let that = this;
-        return (
-            fetch('/api/courses/' + this.props.user.id)
-                .then(response => {
-                    return response.json();
-                })
-                .then(myJson => {
-                    that.setState({ AvailableCourses: myJson });
-                })
-        );
-    }
-
-
-
-    getAssignments() {
-        let that = this;
-        return (
-            fetch('/api/assignments/' + this.props.user.id)
-                .then(response => {
-                    return response.json();
-                })
-                .then(myJson => {
-                    that.setState({ AvailableAssignments: myJson });
-                })
-        );
-    }
-
+      getClasses() {
+        fetch('/api/courses/' + this.props.user.id)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(d => this.createTreeItems(d, 'classList'));
+      }
+    
+      getAssignments() {
+          fetch('/api/assignments/by_user_id/' + this.props.user.id)
+              .then(function (response) {
+                  return response.json();
+              })
+              .then(d => {
+                  this.createTreeItems(d, 'assignmentList');
+              });
+      }
 
     getRubrics() {
         let that = this;
@@ -98,6 +131,22 @@ class Overview extends Component {
         );
     }
 
+    createTreeItems(json, state) {
+        let list = [];
+        if(json !== undefined){
+            if(state === 'myGroups'){
+                for (let i = 0; i < json.length; i++) {
+                    list.push(json[i]["_id"]);
+                }
+            }else{
+                for (let i = 0; i < json.length; i++) {
+                    list.push(json[i]);
+                }
+            }
+      
+            this.setState({ [state]: list });
+        }
+      }
 
     //Given a Group, this function makes a call to get all courses in that group.
     handleGroupSelection(event) {
@@ -122,17 +171,24 @@ class Overview extends Component {
 
     }
 
-    handleAssignmentSelection(event) {
+    handleAssignmentOrClassSelection(event) {
         event.preventDefault();
         let that = this;
-        console.log(this);
-        let target = event.target;
-        fetch('/api/papers/by_ref_id/' + target.value)
+
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+        this.setState({
+          [name]: value
+        },
+        );
+ 
+        fetch('/api/papers/by_ref_id/' + this.state.selectedId)
             .then(function (response) {
                 return response.json();
             })
             .then(function (myJson) {
-                console.log(that);
+            
                 that.setState({ AvailablePapers: myJson });
             });
     }
@@ -159,7 +215,7 @@ class Overview extends Component {
 
         let that = this;
         let target = event.target;
-        console.log(target.value);
+       
         //Query for classes belong to group, 
         // find all papers in found classes, 
         // then find all citations with author = "Overall Student Paper"
@@ -172,12 +228,12 @@ class Overview extends Component {
                 that.setState({ AvailableAssignments: myJson })
             });
 
-            console.log(this.state);
+       
         this.props.updateOverviewPage(this.state.AvailableAssignments, this.state.group_id, 1);
     }
 
     handleTabChange(event, newValue) {
-        console.log(this.state)
+     
         this.setState({ tab: newValue });
     }
 
@@ -190,7 +246,7 @@ class Overview extends Component {
     }
 
     TabPanel(value, index, optionGroups, optionItems, optionAssignments, optionPapers) {
-        console.log(optionAssignments);
+     
 
         return (
             <Grid item xs={12}>
@@ -219,39 +275,47 @@ class Overview extends Component {
                                             </Typography>
 
                                         <form style={{ textAlign: "center", margin: "1em" }} onSubmit={this.handleResultsChangeByPaper}>
-                                            <FormControl required={true} style={{ minWidth: 250 }}>
-                                                <InputLabel id="selectClasslabelOverview">Select a Class</InputLabel>
-                                                <Select
-                                                    style={{ textAlign: "center" }}
-                                                    labelId={"selectClasslabelOverview"}
-                                                    defaultValue={""}
-                                                    onChange={this.handleClassSelection}
-                                                    inputProps={{
-                                                        name: 'className',
-                                                        id: 'assignForAnalyze',
-                                                    }}
-                                                >
-                                                    <MenuItem value="" disabled >select class</MenuItem>
-                                                    {optionItems}
-                                                </Select>
-                                            </FormControl>
-                                            <br />
-                                            <FormControl required={true} style={{ minWidth: 250 }}>
-                                                <InputLabel id="selectAssignmentLabelOverview">Select an Assignment</InputLabel>
-                                                <Select
-                                                    style={{ textAlign: "center" }}
-                                                    defaultValue={""}
-                                                    onChange={this.handleAssignmentSelection}
-                                                    inputProps={{
-                                                        name: 'selectedAssignmentId',
-                                                        id: 'assignForAnalyze',
-                                                    }}
-                                                >
-                                                    <MenuItem value="" disabled> select assignment</MenuItem>
-                                                    {optionAssignments}
-                                                </Select>
-                                            </FormControl>
-                                            <br />
+                                            
+                                            
+                                        <FormControl  style={{minWidth: 250, marginBottom:"1em"}} disabled={this.state.open === 'assignment'}>
+                                            <InputLabel id={"selectClasslabel"}>Select a Class</InputLabel>
+                                            <Select
+                                                style={{textAlign:"center"}}
+                                                onOpen={()=>{this.setState({'open': 'class'})}}
+                                                onClose={()=>{this.setState({'open': null})}}
+                                                labelId={"selectClasslabel"}
+                                                onChange={this.handleAssignmentOrClassSelection}
+                                                defaultValue={""}
+                                                value={this.state.selectedId}
+                                                inputProps={{
+                                                    name: 'selectedId',
+                                                }}
+                                            >
+                                                <MenuItem value="" disabled >select class</MenuItem>
+                                                {optionItems}
+                                            </Select>
+                                        </FormControl>
+                                            <br /> <p> OR </p>
+                                        <FormControl  style={{minWidth: 250, marginBottom:"1em"}} disabled={this.state.open === 'class'}>
+                                            <InputLabel id={'selectAssignmentlabel'}>Select an Assignment </InputLabel>
+                                            <Select
+                                                style={{textAlign:"center"}}
+                                                onOpen={()=>{this.setState({'open': 'assignment'})}}
+                                                onClose={()=>{this.setState({'open': null})}}
+                                                labelId={"selectAssignmentlabel"}
+                                                onChange={this.handleAssignmentOrClassSelection}
+                                                defaultValue={""}
+                                                value={this.state.selectedId}
+                                                inputProps={{
+                                                    name: 'selectedId',
+                                                }}
+                                            >
+                                                <MenuItem value="" disabled >select an assignment </MenuItem>
+                                                {optionAssignments}
+                                            </Select>
+                                        </FormControl>
+
+                                            <br /> <p> Then </p>
                                             <FormControl required={true} style={{ minWidth: 250, marginBottom: "1em" }}>
                                                 <InputLabel id="selectAssignmentLabelOverview">Select a Paper</InputLabel>
                                                 <Select
@@ -268,9 +332,10 @@ class Overview extends Component {
                                                 </Select>
                                             </FormControl>
                                             <br />
-                                            <Button variant={"contained"} color={'primary'} type={'submit'}>
+                                            <Button type="submit" color={"primary"} variant={"contained"} disabled={this.state.selectedId === null}>
                                                 Show Evaluations
-                                                </Button>
+                                            </Button>
+                                    
                                         </form>
                                     </Grid>
                                     :
@@ -282,7 +347,7 @@ class Overview extends Component {
                                         </Typography>
 
                                         <form style={{ textAlign: "center", margin: "1em" }} onSubmit={this.handleResultsChangeByGroup}>
-                                            <FormControl required={true} style={{ minWidth: 250 }}>
+                                            <FormControl required={true} style={{ minWidth: 250, marginBottom: "1em"}}>
                                                 <InputLabel id="selectGrouplabelOverview">Select a Group</InputLabel>
                                                 <Select
                                                     style={{ textAlign: "center" }}
@@ -322,14 +387,14 @@ class Overview extends Component {
             <MenuItem value={group._id} key={group._id}> {group.name} </MenuItem>
         );
 
-        let courses = this.state.AvailableCourses;
+        let courses = this.state.classList.concat(this.state.sharedCourses);
         let optionItems = courses.map((course) =>
-            <MenuItem value={course._id} key={course._id}>{course.name}</MenuItem>
+          <MenuItem value={course._id} key={course._id}>{course.name}</MenuItem>
         );
-
-        let assignments = this.state.assignmentList.concat(this.state.AvailableAssignments);
+    
+        let assignments = this.state.assignmentList.concat(this.state.sharedAssignments);
         let optionAssignments = assignments.map((assignment) =>
-            <MenuItem value={assignment._id} key={assignment._id}>{assignment.name}</MenuItem>
+          <MenuItem value={assignment._id} key={assignment._id}>{assignment.name}</MenuItem>
         );
 
         let papers = this.state.AvailablePapers;
@@ -355,7 +420,7 @@ class Overview extends Component {
                             aria-label={"by paper vs by groups"}
                             centered
                         >
-                            <Tab label={"By Class"} {...this.a11yProps(0)} />
+                            <Tab label={"By Paper"} {...this.a11yProps(0)} />
                             <Tab label={"By Group"} {...this.a11yProps(1)} />
                         </Tabs>
                     </Paper>
