@@ -11,6 +11,7 @@ class Overview extends Component {
             classList: [],
             assignmentList: [],
             sharedAssignments: [],
+            AvailableAssignments: [],
             sharedCourses: [],
             selectedPaperId: '',
             AvailableGroups: [],
@@ -38,7 +39,6 @@ class Overview extends Component {
         this.getSharedAssignments = this.getSharedAssignments.bind(this);
         this.getSharedCourses = this.getSharedCourses.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleClassSelection = this.handleClassSelection.bind(this);
         this.handleGroupSelection = this.handleGroupSelection.bind(this);
         this.handleAssignmentOrClassSelection = this.handleAssignmentOrClassSelection.bind(this);
         this.handlePaperSelection = this.handlePaperSelection.bind(this);
@@ -156,21 +156,6 @@ class Overview extends Component {
         });
     }
 
-    //Given a Class, this function makes a call to get all assignments in that class.
-    handleClassSelection(event) {
-        
-        let that = this;
-        let target = event.target;
-        fetch('/api/assignments/by_class_id/' + target.value)
-            .then(response => {
-                return response.json();
-            })
-            .then(myJson => {
-                that.setState({ AvailableAssignments: myJson });
-            });
-
-    }
-
     handleAssignmentOrClassSelection(event) {
         event.preventDefault();
         let that = this;
@@ -180,10 +165,8 @@ class Overview extends Component {
         const name = target.name;
         this.setState({
           [name]: value
-        },
-        );
- 
-        fetch('/api/papers/by_ref_id/' + this.state.selectedId)
+        }, () => {
+            fetch('/api/papers/by_ref_id/' + this.state.selectedId)
             .then(function (response) {
                 return response.json();
             })
@@ -191,6 +174,7 @@ class Overview extends Component {
             
                 that.setState({ AvailablePapers: myJson });
             });
+        });
     }
 
     handlePaperSelection(event) {
