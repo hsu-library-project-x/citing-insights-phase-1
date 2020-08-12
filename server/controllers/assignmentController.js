@@ -137,9 +137,6 @@ module.exports = {
                         message: 'No such assignment'
                     });
                 }
-
-                // console.log("assignments");
-                // console.log(assignments);
                 return res.status(201).json(assignments);
             });
         }

@@ -276,12 +276,6 @@ class GroupMenu extends Component {
             </ListItem>);
         });
 
-        // console.log("current groups");
-        // console.log(currentGroupList);
-
-        // console.log("option groups");
-        // console.log(couldAddList);
-
         let groupMemberArrays = currentGroupList.map(group => group.members);
         let toReturn = [];
         for (let j = 0; j < groupMemberArrays.length; j++) {

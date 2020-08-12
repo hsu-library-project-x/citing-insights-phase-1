@@ -261,7 +261,6 @@ class Classes extends Component {
 
     render() {
 
-
         return (
             <Container maxWidth={"md"}>
                 {this.DisplayAlerts()}

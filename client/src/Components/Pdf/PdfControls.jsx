@@ -34,7 +34,6 @@ class PdfControls extends Component {
 
     render() {
         const { numPages } = this.props;
-        console.log(this.props);
         return (
             <div className="hide-pdf">
                 {Array.from(

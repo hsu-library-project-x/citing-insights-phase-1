@@ -104,7 +104,6 @@ class RemoveAssignment extends Component {
     }
 
     render() {
-        console.log(this.state.assignments);
         return (
             <span>
                 <Tooltip title="Add Assignment for Group" aria-label="add assignment for group">
